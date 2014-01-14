@@ -1,6 +1,6 @@
 release_dash
 ============
 
-Dashboard for Tracking Release Statuses of Mozillian Awesomeness.
+Dashboard for tracking Release Statuses of Mozillian Awesomeness.
 
 More details coming soon.
