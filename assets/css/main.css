@@ -1,0 +1,56 @@
+
+
+/* ==========================================================================
+   Author's custom styles
+   ========================================================================== */
+
+
+.row {
+    text-align: center;
+}
+
+.channels {
+    display: none;
+}
+
+.channel {
+    padding: 5px;
+    border: dotted;
+}
+
+.channel#release, .channel#convergence {
+    background-color: #3ADF00;
+}
+
+.channel#beta, .channel#aurora, .channel#central {
+    background-color: #FF8000;
+}
+
+.channel#nightly {
+    background-color: #B40404;
+}
+
+.toggler {
+    margin-top: 20px;
+    padding: 10px;
+    font-size: x-large;
+    border: double;
+}
+
+.descriptor#product-channel {
+    text-transform:capitalize;
+}
+
+/**********************************/
+/* CUSTOM MOZILLIAN NAVBAR STYLES */
+
+
+/* END OF CUSTOM MOZILLIAN NAVBAR STYLES */
+/*****************************************/
+
+
+
+
+
+
+
