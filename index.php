@@ -18,7 +18,13 @@
  * NOTE: If you change these, also change the error_reporting() code below
  *
  */
-	define('ENVIRONMENT', 'development');
+
+if ( $_SERVER['SERVER_NAME'] == 'relman.dev' ) {
+    define('ENVIRONMENT', 'development');
+} else {
+    define('ENVIRONMENT', 'production');
+}
+	
 /*
  *---------------------------------------------------------------
  * ERROR REPORTING
