@@ -6,6 +6,7 @@ CREATE TABLE `product` (
 
 CREATE TABLE `branch` (
     `id` int(11) not null,
+    `product_id` int(11) not null,
     `nightly` timestamp,
     `aurora` timestamp,
     `beta` timestamp,
@@ -17,26 +18,14 @@ CREATE TABLE `branch` (
 
 CREATE TABLE `query` (
     `id` int(11) not null auto_increment,
+    `branch_id` int(11) not null,
     `name` varchar(255) not null,
-    `query_string` text,
+    `query_string_qb` text,
+    `deprecate_on` timestamp,
     `is_plot` tinyint(4) not null default '0',
     `is_number` tinyint(4) not null default '0',
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
-
-CREATE TABLE `product_query_defaults` (
-    `product_id` int(11) not null,
-    `query_id` int(11) not null,
-    PRIMARY KEY (`product_id`,`query_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
-
-CREATE TABLE `branch_query_runners` (
-    `branch_id` int(11) not null,
-    `query_id` int(11) not null,
-    `deprecate_on` timestamp,
-    PRIMARY KEY (`branch_id`,`query_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
-
 
 INSERT INTO `product` (`name`) VALUES 
 ('desktop'),

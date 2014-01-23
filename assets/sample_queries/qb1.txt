@@ -1,0 +1,39 @@
+{
+
+    "from":"public_bugs",
+
+    "select":{"name":"num","value":"bug_id","aggregate":"count"},
+
+    "esfilter":{"and":[
+
+        {"term":{"cf_tracking_firefox29":"+"}},
+
+        {"not":{"terms":{"status-firefox29":["resolved","verified","closed"]}}}
+
+    ]},
+
+    "edges":[
+
+        "cf_tracking_firefox29",
+
+        {
+
+            "range":{"min":"modified_ts","max":"expires_on"},
+
+            "domain":{
+
+                "type":"date",
+
+                "min":1389910987000,
+
+                "max":1389911006000,
+
+                "interval":"second"
+
+            }
+
+        }
+
+    ]
+
+}
