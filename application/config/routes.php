@@ -38,8 +38,8 @@
 |
 */
 
-$route['default_controller'] = "main";
-$route['404_override'] = 'main/lost';
+$route['default_controller'] = "home";
+$route['404_override'] = 'lost';
 
 
 /* End of file routes.php */
