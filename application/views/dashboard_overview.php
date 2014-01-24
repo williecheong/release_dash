@@ -1,7 +1,13 @@
 <?php 
-  // First we declare view specific CSS and JS files inside $include
-  // Then send it to the respective views for appending to the DOM
-  // As usual, CSS to the header, JS to the footer.
+  // Note that we have received a big $data array
+  // $data contains all the products, 
+  // Their respective branches that are active,
+  // And the respective queries on each branch
+
+  //  Now the fun begins where we compile the view:
+  //    First we declare view specific CSS and JS files inside $include
+  //    Then send it to the respective views for appending to the DOM
+  //    As usual, CSS to the header, JS to the footer.
   $include = array( 
     'css' => '<link rel="stylesheet" href="/assets/css/dashboard_overview.css">',
     'js'  => '<script src="/assets/js/dashboard_overview.js"></script>' 
