@@ -2,6 +2,8 @@
 
 class product extends CI_Model{
     
+    // BEGIN BASIC CRUD FUNCTIONALITY
+
     function create( $data = array() ){
         $this->db->insert('product', $data);
         return;

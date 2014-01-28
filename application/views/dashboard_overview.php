@@ -10,7 +10,7 @@
   //    As usual, CSS to the header, JS to the footer.
   $include = array( 
     'css' => '<link rel="stylesheet" href="/assets/css/dashboard_overview.css">',
-    'js'  => '<script src="/assets/js/dashboard_overview.js"></script>' 
+    'js'  => '<script src="/assets/js/dashboard_overview.js"></script>'
   );
 ?>
 
@@ -96,8 +96,45 @@
   </footer>
 </div><!-- /container -->
 
+<!-- DECLARING JSON CONTAINING QUERIES AND META DATA. -->
+<script>
+  var data = <?= json_encode($data); ?>
+</script>
+
+<!-- MODALS AND FOOTER -->
 <?php 
   $this->load->view('modals/branch_overview'); 
   $this->load->view('templates/footer', $include); 
 ?>
+
+
+<script type="application/javascript;version=1.7">
+/*
+  importScript(["/assets/js/vendor/es_translate/js/main.js", "/assets/js/vendor/es_translate/Qb_translate.js"], function(){
+      var executeCube = function(event){ //THIS IS A GENERATOR
+
+          //EVAL THE Qb
+          var code = '{"from":"public_bugs","select":{"name":"num","value":"bug_id","aggregate":"count"},"esfilter":{"and":[{"term":{"cf_tracking_firefox27":"+"}}]},"edges":[{"range":{"min":"modified_ts","max":"expires_on"},"domain":{"type":"date","min":1379376000000,"max":1390865991000,"interval":"day"}}]}';
+          if (code.trim().left(1) != "{") code = "{" + code;
+          if (code.trim().right(1) != "}") code = code + "}";
+
+          //var backupCode = code;
+          var cubeQuery;
+          try{
+              //USE JSONLINT TO FORMAT AND TEST-COMPILE THE code
+              code = jsl.format.formatJson(code);
+              //$("#cube").val(code);
+              esQuery = yield (esTranslate(code));
+              console.log(esQuery);
+              //$("#esquery").val(esQuery);
+          } catch(e){
+              $("#esquery").val(e.message);
+              yield(null);
+          }//try
+      };
+  });  
+*/
+</script>
+
+
 

@@ -1,7 +1,9 @@
 <?php
 
 class branch extends CI_Model{
-    
+
+    // BEGIN BASIC CRUD FUNCTIONALITY
+
     function create( $data = array() ){
         $this->db->insert('branch', $data);
         return;

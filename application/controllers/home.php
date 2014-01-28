@@ -28,7 +28,7 @@ class Home extends CI_Controller {
         
         foreach ( $products as $product ) {
             // Store a pretty title for this product
-            $data[$product->key]['title'] = $product->title;
+            $data[$product->tag]['title'] = $product->title;
 
             //  Find branches that are currently active
             $by_product = array( 'product_id' => $product->id );
@@ -36,7 +36,7 @@ class Home extends CI_Controller {
             
             foreach ( $branches as $branch ) {
                 // Store a pretty title for this branch
-                $data[$product->key][$branch->key]['title'] = $branch->title;
+                $data[$product->tag][$branch->tag]['title'] = $branch->title;
 
                 //  Retrieve the stored Qb queries.
                 $by_branch = array( 'branch_id' => $branch->id );
@@ -44,15 +44,17 @@ class Home extends CI_Controller {
 
                 foreach ( $queries as $query ) {
                     //  Replace soft timestamps with current time
+                    $transformed_query = replace_soft_timestamps($query->query_qb);
+
                     //  Append the Qb queries and other meta-data into $data
-                    $data[$product->key][$branch->key][$query->key]['title']    = $query->title;
-                    $data[$product->key][$branch->key][$query->key]['qb_query'] = $query->query_qb;
-                    $data[$product->key][$branch->key][$query->key]['is_plot']  = $query->is_plot;
-                    $data[$product->key][$branch->key][$query->key]['is_number']= $query->is_number;
+                    $data[$product->tag][$branch->tag][$query->tag]['title']    = $query->title;
+                    $data[$product->tag][$branch->tag][$query->tag]['qb_query'] = $transformed_query;
+                    $data[$product->tag][$branch->tag][$query->tag]['is_plot']  = $query->is_plot;
+                    $data[$product->tag][$branch->tag][$query->tag]['is_number']= $query->is_number;
                 }
             }
         }
-
+        
         // Send the resulting data array into the view
         $this->load->view('dashboard_overview', array('data' => $data) );
 	}
