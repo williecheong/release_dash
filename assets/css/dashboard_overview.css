@@ -4,11 +4,6 @@
    Author's custom styles
    ========================================================================== */
 
-
-.row {
-    text-align: center;
-}
-
 .channels {
     display: none;
 }
@@ -17,6 +12,48 @@
     padding: 5px;
     border: dotted;
 }
+
+.modal.modal-wide .modal-dialog {
+  width: 70%;
+}
+
+
+.toggler {
+    margin-top: 20px;
+    padding: 10px;
+    font-size: x-large;
+    border: double;
+}
+
+.descriptor#product-channel {
+    text-transform: capitalize;
+}
+
+/***********************/
+/* GRAPHING PROPERTIES */
+
+.graph#main-plot {
+    position: relative;
+    left: 40px;
+}
+
+.graph#y-axis {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 40px;
+}
+
+.rickshaw_legend .label {
+    white-space: normal;
+}
+
+
+
+
+/* END OF GRAPHING PROPERTIES */
+/******************************/
+
 
 /*
 .channel#release, .channel#convergence {
@@ -31,20 +68,6 @@
     background-color: #B40404;
 }
 */
-.toggler {
-    margin-top: 20px;
-    padding: 10px;
-    font-size: x-large;
-    border: double;
-}
-
-.descriptor#product-channel {
-    text-transform: capitalize;
-}
-
-.graph#main-plot {
-    text-align: center;
-}
 
 /**********************************/
 /* CUSTOM MOZILLIAN NAVBAR STYLES */

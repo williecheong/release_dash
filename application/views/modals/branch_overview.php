@@ -1,5 +1,5 @@
 <!-- Modal -->
-<div class="modal fade" id="branch_overview" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal modal-wide fade" id="branch_overview" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -9,11 +9,20 @@
         </h4>
       </div>
       <div class="modal-body"> 
-        <div class="graph js-clear" id="main-plot"></div>
-        <div class="caption js-clear" id="under-plot">Under the plot</div>
-        <div class="js-clear" id="misc-text">Misc Text</div>
+        <div class="row ">
+          <div class="col-lg-10 graph" id="graph-container">
+            <div class="graph js-clear" id="y-axis"></div>
+            <div class="graph js-clear" id="main-plot"></div>
+          </div>
+          <div class="col-lg-2 graph" id="legend-container">
+            <div class="graph js-clear" id="legend"></div>
+          </div>
+        </div>
+        <div class="caption text-center js-clear" id="under-plot"></div>
+        <div class="text-center js-clear" id="misc-text"></div>
       </div>
       <div class="modal-footer">
+        <button type="button" class="btn btn-primary">New query</button>
         <button type="button" class="btn btn-primary">More details &raquo;</button>
       </div>
     </div><!-- /.modal-content -->

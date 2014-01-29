@@ -29,14 +29,17 @@ class Home extends CI_Controller {
         foreach ( $products as $product ) {
             // Store a pretty title for this product
             $data[$product->tag]['title'] = $product->title;
+            $data[$product->tag]['branches'] = array();
 
             //  Find branches that are currently active
             $by_product = array( 'product_id' => $product->id );
-            $branches = $this->branch->retrieve( $by_product );
+            $branches = $this->branch->retrieve_actives( $by_product );
             
+
             foreach ( $branches as $branch ) {
                 // Store a pretty title for this branch
-                $data[$product->tag][$branch->tag]['title'] = $branch->title;
+                $data[$product->tag]['branches'][$branch->tag]['title'] = $branch->title;
+                $data[$product->tag]['branches'][$branch->tag]['queries'] = array();
 
                 //  Retrieve the stored Qb queries.
                 $by_branch = array( 'branch_id' => $branch->id );
@@ -47,14 +50,14 @@ class Home extends CI_Controller {
                     $transformed_query = replace_soft_timestamps($query->query_qb);
 
                     //  Append the Qb queries and other meta-data into $data
-                    $data[$product->tag][$branch->tag][$query->tag]['title']    = $query->title;
-                    $data[$product->tag][$branch->tag][$query->tag]['qb_query'] = $transformed_query;
-                    $data[$product->tag][$branch->tag][$query->tag]['is_plot']  = $query->is_plot;
-                    $data[$product->tag][$branch->tag][$query->tag]['is_number']= $query->is_number;
+                    $data[$product->tag]['branches'][$branch->tag]['queries'][$query->tag]['title']    = $query->title;
+                    $data[$product->tag]['branches'][$branch->tag]['queries'][$query->tag]['qb_query'] = $transformed_query;
+                    $data[$product->tag]['branches'][$branch->tag]['queries'][$query->tag]['is_plot']  = $query->is_plot;
+                    $data[$product->tag]['branches'][$branch->tag]['queries'][$query->tag]['is_number']= $query->is_number;
                 }
             }
         }
-        
+      
         // Send the resulting data array into the view
         $this->load->view('dashboard_overview', array('data' => $data) );
 	}
