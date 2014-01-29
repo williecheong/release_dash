@@ -9,7 +9,8 @@ if ( ! function_exists('replace_soft_timestamps')) {
         if ( $timestamp !== '' ) {
             // Some timestamp has been specified
             // Let's use that in our helper function.
-
+            $timestamp = strtotime($timestamp) * 1000;
+            $input_string = str_replace("<timestamp>", $timestamp, $input_string);
         } else {
             // No timestamp specified, use current timestamp
             $current_epoch = time() * 1000;

@@ -46,8 +46,8 @@ class Home extends CI_Controller {
                 $queries = $this->query->retrieve( $by_branch );
 
                 foreach ( $queries as $query ) {
-                    //  Replace soft timestamps with current time
-                    $transformed_query = replace_soft_timestamps($query->query_qb);
+                    //  Replace soft timestamps with timestamp of branch deprecation
+                    $transformed_query = replace_soft_timestamps($query->query_qb, $branch->deprecate);
 
                     //  Append the Qb queries and other meta-data into $data
                     $data[$product->tag]['branches'][$branch->tag]['queries'][$query->tag]['title']    = $query->title;

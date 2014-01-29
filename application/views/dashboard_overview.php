@@ -21,20 +21,21 @@
 
 <div class="container">
     <?php foreach ($data as $product_tag => $product) { ?>
-        <div class="row text-center toggler" id="<?= $product_tag; ?>">
-            <div class="col-lg-12"><?= $product['title']; ?></div>
-        </div>
-  
-        <div class="row text-center channels" id="<?= $product_tag; ?>">
-    
+    <div class="row text-center toggler" id="<?= $product_tag; ?>">
+        <div class="col-lg-12"><?= $product['title']; ?></div>
+    </div>
+
+    <div class="row text-center channels" id="<?= $product_tag; ?>">
         <?php foreach ($product['branches'] as $branch_tag => $branch) { ?>
-            <div class="col-lg-3 channel" id="<?= $branch_tag ?>">
-                <h2><?= $branch['title']; ?></h2>
-            </div>
-        <?php } ?>
+        <div class="col-lg-3 channel" id="<?= $branch_tag ?>">
+            <h2><?= $branch['title']; ?></h2>
         </div>
-    <?php } ?>
+        <?php } //End foreach branch ?>
+    </div>
+    <?php } //End foreach product ?>
+    
     <hr>
+    
     <footer>
         <p>&copy; Mozilla - RelMan <?= date("Y"); ?> </p>
     </footer>
