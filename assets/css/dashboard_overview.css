@@ -32,24 +32,21 @@
 /***********************/
 /* GRAPHING PROPERTIES */
 
-.graph#main-plot {
-    position: relative;
-    left: 40px;
-}
+    .graph#main-plot {
+        position: relative;
+        left: 40px;
+    }
 
-.graph#y-axis {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 40px;
-}
+    .graph#y-axis {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 40px;
+    }
 
-.rickshaw_legend .label {
-    white-space: normal;
-}
-
-
-
+    .rickshaw_legend .label {
+        white-space: normal;
+    }
 
 /* END OF GRAPHING PROPERTIES */
 /******************************/

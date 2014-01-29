@@ -19,9 +19,7 @@ class branch extends CI_Model{
                     (`beta`<'" . $current . "' AND `release`>'" . $current . "') OR 
                     (`release`<'" . $current . "' AND `deprecate`>'" . $current . "'))";
             }
-
         } 
-        
         return $this->retrieve($conditions);
     }
 

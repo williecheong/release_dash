@@ -1,57 +1,54 @@
 <?php 
-  // Note that we have received a big $data array
-  // $data contains all the products, 
-  // Their respective branches that are active,
-  // And the respective queries on each branch
+    // Note that we have received a big $data array
+    // $data contains all the products, 
+    // Their respective branches that are active,
+    // And the respective queries on each branch
 
-  //  Now the fun begins where we compile the view:
-  //    First we declare view specific CSS and JS files inside $include
-  //    Then send it to the respective views for appending to the DOM
-  //    As usual, CSS to the header, JS to the footer.
-  $include = array( 
-    'css' => '<link rel="stylesheet" href="/assets/css/dashboard_overview.css">',
-    'js'  => '<script src="/assets/js/dashboard_overview.js"></script>'
-  );
+    //  Now the fun begins where we compile the view:
+    //    First we declare view specific CSS and JS files inside $include
+    //    Then send it to the respective views for appending to the DOM
+    //    As usual, CSS to the header, JS to the footer.
+    $include = array( 
+        'css' => '<link rel="stylesheet" href="/assets/css/dashboard_overview.css">',
+        'js'  => '<script src="/assets/js/dashboard_overview.js"></script>'
+    );
 ?>
 
 <?php 
-  $this->load->view('templates/header', $include);
-  $this->load->view('templates/bug_watch');
+    $this->load->view('templates/header', $include);
+    $this->load->view('templates/bug_watch');
 ?>
 
 <div class="container">
-<?php foreach ($data as $product_tag => $product) { ?>
-  <div class="row text-center toggler" id="<?= $product_tag; ?>">
-    <div class="col-lg-12"><?= $product['title']; ?></div>
-  </div>
+    <?php foreach ($data as $product_tag => $product) { ?>
+        <div class="row text-center toggler" id="<?= $product_tag; ?>">
+            <div class="col-lg-12"><?= $product['title']; ?></div>
+        </div>
   
-  <div class="row text-center channels" id="<?= $product_tag; ?>">
+        <div class="row text-center channels" id="<?= $product_tag; ?>">
     
-    <?php foreach ($product['branches'] as $branch_tag => $branch) { ?>
-      <div class="col-lg-3 channel" id="<?= $branch_tag ?>">
-        <h2><?= $branch['title']; ?></h2>
-      </div>
+        <?php foreach ($product['branches'] as $branch_tag => $branch) { ?>
+            <div class="col-lg-3 channel" id="<?= $branch_tag ?>">
+                <h2><?= $branch['title']; ?></h2>
+            </div>
+        <?php } ?>
+        </div>
     <?php } ?>
-  
-  </div>
-<?php } ?>
-
-  <hr>
-
-  <footer>
-    <p>&copy; Mozilla - RelMan <?= date("Y"); ?> </p>
-  </footer>
+    <hr>
+    <footer>
+        <p>&copy; Mozilla - RelMan <?= date("Y"); ?> </p>
+    </footer>
 </div><!-- /container -->
 
 <!-- DECLARING JSON CONTAINING QUERIES AND META DATA. -->
-<script>
-  var data = <?= json_encode($data); ?>
-</script>
+    <script>
+        var data = <?= json_encode($data); ?>
+    </script>
 
 <!-- MODALS AND FOOTER -->
 <?php 
-  $this->load->view('modals/branch_overview'); 
-  $this->load->view('templates/footer', $include); 
+    $this->load->view('modals/branch_overview'); 
+    $this->load->view('templates/footer', $include); 
 ?>
 
 
