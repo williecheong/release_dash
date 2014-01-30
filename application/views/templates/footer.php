@@ -4,6 +4,7 @@
         <script src="/assets/js/vendor/rickshaw/vendor/d3.min.js"></script>
         <script src="/assets/js/vendor/rickshaw/vendor/d3.layout.min.js"></script>
         <script src="/assets/js/vendor/rickshaw/rickshaw.min.js"></script>
-        <?= $js; ?>
+        <script type="application/javascript;version=1.7" src="/assets/js/vendor/Qb/html/js/ESQueryRunner.js"></script>
+        <?= $bottom; ?>
     </body>
 </html>

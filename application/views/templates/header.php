@@ -19,7 +19,8 @@
         </style>
         <link rel="stylesheet" href="/assets/css/bootstrap-theme.min.css">
         <link rel="stylesheet" href="/assets/js/vendor/rickshaw/rickshaw.min.css">
-        <?= $css; ?>
+        <script type="application/javascript;version=1.7" src="/assets/js/vendor/Qb/html/js/imports/import.js"></script>
+        <?= $top; ?>
         
         <script src="/assets/js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script> 
     </head>

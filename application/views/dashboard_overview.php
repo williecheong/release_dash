@@ -9,8 +9,8 @@
     //    Then send it to the respective views for appending to the DOM
     //    As usual, CSS to the header, JS to the footer.
     $include = array( 
-        'css' => '<link rel="stylesheet" href="/assets/css/dashboard_overview.css">',
-        'js'  => '<script src="/assets/js/dashboard_overview.js"></script>'
+        'top' => '<link rel="stylesheet" href="/assets/css/dashboard_overview.css">',
+        'bottom' => '<script src="/assets/js/dashboard_overview.js"></script>'
     );
 ?>
 
