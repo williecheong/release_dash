@@ -43,7 +43,7 @@
 
 <!-- DECLARING JSON CONTAINING QUERIES AND META DATA. -->
     <script>
-        var data = <?= json_encode($data); ?>
+        var coreData = <?= json_encode($data); ?>
     </script>
 
 <!-- MODALS AND FOOTER -->
