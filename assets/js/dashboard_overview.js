@@ -21,14 +21,21 @@
 
     $('.channel').click(function(){
         clearDiv();
+        product = $(this).closest('.channels').attr('id');
+        branch = $(this).attr('id');
+
+        $('span.descriptor#product-channel').html( coreData[product].branches[branch]['title'] );
+
         // Put Zillaboy on the modal and show the modal. 
         $('#misc-text').html('<img src="/assets/img/mozchomp.gif"><br>... chomp chomp DATA!');
         $('#branch_overview').modal('show');
 
-        // Zillaboy now entertaining user. Let's grab data now.
-        product = $(this).closest('.channels').attr('id');
-        branch = $(this).attr('id');    
-        
+        // Zillaboy now entertaining user. 
+        // Grabbing data starts right after the modal has displayed
+        // Neccessary because we are inheriting width of the modal for plot.
+    });
+
+    $('#branch_overview').on('shown.bs.modal', function (e) {
         // Looping through the queries for this product branch.
         $.each( coreData[product].branches[branch].queries, function( key, value ) {
             if( coreData[product].branches[branch].queries[key]['es_data'] === undefined ) {
@@ -46,7 +53,7 @@
 
                         coreData[product].branches[branch].queries[key]['es_data'] = tempStore;
                         executePlot();
-                    }       
+                    }
                 );
             } else {
                 // Data is here already. 
@@ -78,6 +85,7 @@
                     // View graphing documentation here
                     // https://github.com/shutterstock/rickshaw
 
+                clearDiv();
                 // Building up an array for each line that goes into the plot
                 var rickshawData = new Array() ; 
                 var palette = new Rickshaw.Color.Palette(); 
@@ -115,7 +123,7 @@
                     graph: graph,
                     legend: legend
                 });
-                
+
                 graph.render();
                 // End of graphing
 
