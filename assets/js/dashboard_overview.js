@@ -6,10 +6,10 @@
     });
 
     //Toggles the view of channels on each product
-    $('.toggler').click(function(){
-        $( '.channels#' + $(this).attr('id') ).toggle('slow');
+    $('[data-toggler]').click(function(){
+        var toToggle = $(this).data('toggler');
+        $( toToggle ).toggle('slow');
     });
-
 
 /*************************************
     MODAL GENERATION AND ES RETRIEVAL
@@ -26,7 +26,7 @@
 
         // Put Zillaboy and Branch title on the modal and show
         $('span.descriptor#product-channel').html( coreData[product].branches[branch]['title'] ); 
-        $('#misc-text').html('<img src="/assets/img/mozchomp.gif"><br>... chomp chomp DATA!');
+        $('#load-status').html('<img src="/assets/img/mozchomp.gif"><br>... chomp chomp DATA!');
         $('#branch_overview').modal('show');
 
         // Zillaboy now entertaining user. 
