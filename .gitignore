@@ -7,4 +7,4 @@ application/cache/*
 application/logs/*
 !application/logs/index.html
 !application/logs/.htaccess
-assets/js/vendor/Qb/
+
