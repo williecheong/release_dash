@@ -513,7 +513,7 @@ Rickshaw.Graph = function(args) {
 
 		var data = this.series.active()
 			.map( function(d) { return d.data } )
-			.map( function(d) { return d.filter( function(d) { return this._slice(d) }, this ) }, this);
+			.map( function(d) { return d.filter( function(d) { return true }, this ) }, this);
 
 		var preserve = this.preserve;
 		if (!preserve) {

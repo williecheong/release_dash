@@ -6,10 +6,10 @@
     });
 
     //Toggles the view of channels on each product
-    $('.toggler').click(function(){
-        $( '.channels#' + $(this).attr('id') ).toggle('slow');
+    $('[data-toggler]').click(function(){
+        var toToggle = $(this).data('toggler');
+        $( toToggle ).toggle('slow');
     });
-
 
 /*************************************
     MODAL GENERATION AND ES RETRIEVAL
@@ -21,22 +21,27 @@
 
     $('.channel').click(function(){
         clearDiv();
-        // Put Zillaboy on the modal and show the modal. 
-        $('#misc-text').html('<img src="/assets/img/mozchomp.gif"><br>... chomp chomp DATA!');
+        product = $(this).closest('.channels').attr('id');
+        branch = $(this).attr('id');
+
+        // Put Zillaboy and Branch title on the modal and show
+        $('span.descriptor#product-channel').html( coreData[product].branches[branch]['title'] ); 
+        $('#load-status').html('<img src="/assets/img/mozchomp.gif"><br>... chomp chomp DATA!');
         $('#branch_overview').modal('show');
 
-        // Zillaboy now entertaining user. Let's grab data now.
-        product = $(this).closest('.channels').attr('id');
-        branch = $(this).attr('id');    
-        
+        // Zillaboy now entertaining user. 
+        // Grabbing data starts right after the modal has displayed
+        // Neccessary because we are inheriting width of the modal for plot.
+    });
+
+    $('#branch_overview').on('shown.bs.modal', function (e) {
         // Looping through the queries for this product branch.
         $.each( coreData[product].branches[branch].queries, function( key, value ) {
             if( coreData[product].branches[branch].queries[key]['es_data'] === undefined ) {
                 // Retrieve the data for this query if it is not done yet
                 ESQueryRunner( 
                     $.parseJSON( coreData[product].branches[branch].queries[key].qb_query ), 
-                    function( response ){ 
-                        // Executes after data is returned from ES.
+                    function( response ){ // Executes after data is returned from ES.
                         var tempStore = new Array();
                         $.each( response.cube, function( key, value ) {
                             // Put the data we have in an array for plotting {date, count}
@@ -46,11 +51,9 @@
 
                         coreData[product].branches[branch].queries[key]['es_data'] = tempStore;
                         executePlot();
-                    }       
+                    }
                 );
             } else {
-                // Data is here already. 
-                // Let's execute the plot.
                 executePlot();
             }
         });
@@ -78,6 +81,7 @@
                     // View graphing documentation here
                     // https://github.com/shutterstock/rickshaw
 
+                clearDiv();
                 // Building up an array for each line that goes into the plot
                 var rickshawData = new Array() ; 
                 var palette = new Rickshaw.Color.Palette(); 
@@ -93,7 +97,7 @@
                 var graph = new Rickshaw.Graph({
                     element: document.querySelector(".graph#main-plot"),
                     width: $('.graph#main-plot').width() * 0.90,
-                    height: $('.graph#main-plot').width() * 0.60,
+                    height: $('.graph#main-plot').width() * 0.55,
                     renderer: 'line',
                     series: rickshawData
                 });
@@ -115,7 +119,7 @@
                     graph: graph,
                     legend: legend
                 });
-                
+
                 graph.render();
                 // End of graphing
 
@@ -129,8 +133,7 @@
                 console.log("Not all data is ready.");
             }
         } else {
-            console.log("Product and branch not specified.");
-            alert("Error: Check console.");
+            console.log("Product and branch not specified. Has the plot been made already?");
         }
     }
 

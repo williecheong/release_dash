@@ -21,7 +21,7 @@
 
 <div class="container">
     <?php foreach ($data as $product_tag => $product) { ?>
-    <div class="row text-center toggler" id="<?= $product_tag; ?>">
+    <div class="row text-center product" id="<?= $product_tag; ?>" data-toggler=".channels#<?= $product_tag; ?>">
         <div class="col-lg-12"><?= $product['title']; ?></div>
     </div>
 
@@ -37,7 +37,7 @@
     <hr>
     
     <footer>
-        <p>&copy; Mozilla - RelMan <?= date("Y"); ?> </p>
+        <p>&copy; Mozilla - Release Management <?= date("Y"); ?> </p>
     </footer>
 </div><!-- /container -->
 

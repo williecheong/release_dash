@@ -17,16 +17,16 @@
   width: 70%;
 }
 
-
-.toggler {
+.product {
     margin-top: 20px;
     padding: 10px;
     font-size: x-large;
     border: double;
 }
-
-.descriptor#product-channel {
-    text-transform: capitalize;
+#toggle-add-new-query {
+    width: 100%;
+    margin-top: 30px;
+    margin-bottom: 15px;
 }
 
 /***********************/
