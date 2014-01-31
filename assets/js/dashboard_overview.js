@@ -24,9 +24,8 @@
         product = $(this).closest('.channels').attr('id');
         branch = $(this).attr('id');
 
-        $('span.descriptor#product-channel').html( coreData[product].branches[branch]['title'] );
-
-        // Put Zillaboy on the modal and show the modal. 
+        // Put Zillaboy and Branch title on the modal and show
+        $('span.descriptor#product-channel').html( coreData[product].branches[branch]['title'] ); 
         $('#misc-text').html('<img src="/assets/img/mozchomp.gif"><br>... chomp chomp DATA!');
         $('#branch_overview').modal('show');
 
@@ -42,8 +41,7 @@
                 // Retrieve the data for this query if it is not done yet
                 ESQueryRunner( 
                     $.parseJSON( coreData[product].branches[branch].queries[key].qb_query ), 
-                    function( response ){ 
-                        // Executes after data is returned from ES.
+                    function( response ){ // Executes after data is returned from ES.
                         var tempStore = new Array();
                         $.each( response.cube, function( key, value ) {
                             // Put the data we have in an array for plotting {date, count}
@@ -56,8 +54,6 @@
                     }
                 );
             } else {
-                // Data is here already. 
-                // Let's execute the plot.
                 executePlot();
             }
         });
@@ -137,8 +133,7 @@
                 console.log("Not all data is ready.");
             }
         } else {
-            console.log("Product and branch not specified.");
-            alert("Error: Check console.");
+            console.log("Product and branch not specified. Has the plot been made already?");
         }
     }
 
