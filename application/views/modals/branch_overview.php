@@ -58,7 +58,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary">More details &raquo;</button>
+                <button type="button" class="btn btn-primary">Generate report &raquo;</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
