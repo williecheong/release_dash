@@ -37,7 +37,7 @@
     <hr>
     
     <footer>
-        <p>&copy; Mozilla - RelMan <?= date("Y"); ?> </p>
+        <p>&copy; Mozilla - Release Management <?= date("Y"); ?> </p>
     </footer>
 </div><!-- /container -->
 

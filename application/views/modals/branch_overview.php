@@ -20,9 +20,11 @@
                     </div>
                 </div>
                 <div class="caption text-center js-clear" id="under-plot"></div>
+                
+                <div class="text-center">
+                    <button type="button" class="btn btn-default btn-xs text-center" id="toggle-add-new-query" data-toggler=".form#new-query">New Query</button>
+                </div>
                 <div class="form" id="new-query" style="display:none;">
-                    <hr>
-                    <h3>Add New Query</h3>
                     <form class="form-horizontal" role="form">
                         <div class="form-group">
                             <label for="inputEmail3" class="col-sm-2 control-label">Title</label>
@@ -33,7 +35,7 @@
                         <div class="form-group">
                             <label for="inputPassword3" class="col-sm-2 control-label">Qb Query</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="inputQuery3" placeholder="The actual query in Qb format (JSON)">
+                                <input type="text" class="form-control" id="inputQuery3" placeholder="The actual query in json format">
                             </div>
                         </div>
                         <?php /*
@@ -49,14 +51,13 @@
                         */ ?>
                         <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-10">
-                                <button type="submit" class="btn btn-default">Submit Query</button>
+                                <button type="button" class="btn btn-default">Submit Query</button>
                             </div>
                         </div>
                     </form>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-toggler=".form#new-query">New query</button>
                 <button type="button" class="btn btn-primary">More details &raquo;</button>
             </div>
         </div><!-- /.modal-content -->

@@ -97,7 +97,7 @@
                 var graph = new Rickshaw.Graph({
                     element: document.querySelector(".graph#main-plot"),
                     width: $('.graph#main-plot').width() * 0.90,
-                    height: $('.graph#main-plot').width() * 0.60,
+                    height: $('.graph#main-plot').width() * 0.55,
                     renderer: 'line',
                     series: rickshawData
                 });
