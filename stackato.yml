@@ -1,2 +1,12 @@
 # so that we can deploy with 'stackato push --no-prompt'
-name: relman
+name: release-dash
+services: 
+    ${name}-db: mysql
+hooks:
+    post-staging:
+        #- dbshell < assets/sql/schema.sql
+
+
+# we need to not run schema.sql on every post-staging (Lukas look at other hooks)
+# how to migrate schema without clobbering db on update?
+# could temporarily use migrate.sql and increment but also look into permanent solution for auto-deploy
