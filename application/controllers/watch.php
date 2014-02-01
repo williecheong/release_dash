@@ -10,7 +10,7 @@ class Watch extends CI_Controller {
 
         // Load models for playing with local data 
         $this->load->model('product');
-        $this->load->model('branch');
+        $this->load->model('version');
         $this->load->model('query');
 
         // Load some helpers for convenience
@@ -18,8 +18,8 @@ class Watch extends CI_Controller {
         $this->load->helper('release_dash');
     }
     
-    public function single( $product = '', $branch = '' ) {
+    public function single( $product = '', $version = '' ) {
         echo $product . '<br>';
-        echo $branch;
+        echo $version;
     }
 }

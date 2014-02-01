@@ -1,7 +1,7 @@
 /*********************************
     JUST SETTING UP THE PAGE HERE
 *********************************/
-    $('#branch_overview').modal({
+    $('#overview').modal({
         show : false
     });
 
@@ -15,32 +15,32 @@
     MODAL GENERATION AND ES RETRIEVAL
 *************************************/
     var product = '';
-    var branch = '';
+    var version = '';
     //var totalQueries = 0;
     //var completedRetrievals = 0;
 
     $('.channel').click(function(){
         clearDiv();
         product = $(this).closest('.channels').attr('id');
-        branch = $(this).attr('id');
+        version = $(this).attr('id');
 
-        // Put Zillaboy and Branch title on the modal and show
-        $('span.descriptor#product-channel').html( coreData[product].branches[branch]['title'] ); 
+        // Put Zillaboy and Version title on the modal and show
+        $('span.descriptor#product-channel').html( coreData[product].versions[version]['title'] ); 
         $('#load-status').html('<img src="/assets/img/mozchomp.gif"><br>... chomp chomp DATA!');
-        $('#branch_overview').modal('show');
+        $('#overview').modal('show');
 
         // Zillaboy now entertaining user. 
         // Grabbing data starts right after the modal has displayed
         // Neccessary because we are inheriting width of the modal for plot.
     });
 
-    $('#branch_overview').on('shown.bs.modal', function (e) {
-        // Looping through the queries for this product branch.
-        $.each( coreData[product].branches[branch].queries, function( key, value ) {
-            if( coreData[product].branches[branch].queries[key]['es_data'] === undefined ) {
+    $('#overview').on('shown.bs.modal', function (e) {
+        // Looping through the queries for this product version.
+        $.each( coreData[product].versions[version].queries, function( key, value ) {
+            if( coreData[product].versions[version].queries[key]['es_data'] === undefined ) {
                 // Retrieve the data for this query if it is not done yet
                 ESQueryRunner( 
-                    $.parseJSON( coreData[product].branches[branch].queries[key].qb_query ), 
+                    $.parseJSON( coreData[product].versions[version].queries[key].qb_query ), 
                     function( response ){ // Executes after data is returned from ES.
                         var tempStore = new Array();
                         $.each( response.cube, function( key, value ) {
@@ -49,7 +49,7 @@
                             tempStore.push( { x: d , y: value } );
                         });
 
-                        coreData[product].branches[branch].queries[key]['es_data'] = tempStore;
+                        coreData[product].versions[version].queries[key]['es_data'] = tempStore;
                         executePlot();
                     }
                 );
@@ -63,15 +63,15 @@
     VERY IMPORTANT FUNCTIONS
 ************************/
     // Note that this does not generate a plot everytime it is called
-    // All queries inside the branch are checked for retrieved elasticsearch data
+    // All queries inside the version are checked for retrieved elasticsearch data
     // If any one of the data sets are missing, we escape the function.
     // And wait for this to be called again when new data arrives.
     function executePlot() {
-        if ( product !== '' && branch !== '' ) { 
-            // Searches through the product branch we are interested in for esData.
+        if ( product !== '' && version !== '' ) { 
+            // Searches through the product version we are interested in for esData.
             var dataMissing = false;
-            $.each( coreData[product].branches[branch].queries, function( key, value ) {
-                if( coreData[product].branches[branch].queries[key]['es_data'] === undefined ) {
+            $.each( coreData[product].versions[version].queries, function( key, value ) {
+                if( coreData[product].versions[version].queries[key]['es_data'] === undefined ) {
                     dataMissing = true;
                 }
             });
@@ -85,7 +85,7 @@
                 // Building up an array for each line that goes into the plot
                 var rickshawData = new Array() ; 
                 var palette = new Rickshaw.Color.Palette(); 
-                $.each( coreData[product].branches[branch].queries, function( key, value ) {
+                $.each( coreData[product].versions[version].queries, function( key, value ) {
                     rickshawData.push({
                         name: value['title'],
                         data: value['es_data'],
@@ -125,7 +125,7 @@
 
                 // Reset checkers for next modal
                 product = '';
-                branch = '';
+                version = '';
 
             } else {
                 // Do nothing
@@ -133,7 +133,7 @@
                 console.log("Not all data is ready.");
             }
         } else {
-            console.log("Product and branch not specified. Has the plot been made already?");
+            console.log("Product and version not specified. Has the plot been made already?");
         }
     }
 

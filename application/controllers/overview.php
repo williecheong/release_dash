@@ -10,7 +10,7 @@ class Overview extends CI_Controller {
 
         // Load models for playing with local data 
         $this->load->model('product');
-        $this->load->model('branch');
+        $this->load->model('version');
         $this->load->model('query');
 
         // Load some helpers for convenience
@@ -29,31 +29,31 @@ class Overview extends CI_Controller {
         foreach ( $products as $product ) {
             // Store a pretty title for this product
             $data[$product->tag]['title'] = $product->title;
-            $data[$product->tag]['branches'] = array();
+            $data[$product->tag]['versions'] = array();
 
-            //  Find branches that are currently active
+            //  Find versions that are currently active
             $by_product = array( 'product_id' => $product->id );
-            $branches = $this->branch->retrieve_actives( $by_product );
+            $versions = $this->version->retrieve_actives( $by_product );
             
 
-            foreach ( $branches as $branch ) {
-                // Store a pretty title for this branch
-                $data[$product->tag]['branches'][$branch->tag]['title'] = $branch->title;
-                $data[$product->tag]['branches'][$branch->tag]['queries'] = array();
+            foreach ( $versions as $version ) {
+                // Store a pretty title for this version
+                $data[$product->tag]['versions'][$version->tag]['title'] = $version->title;
+                $data[$product->tag]['versions'][$version->tag]['queries'] = array();
 
                 //  Retrieve the stored Qb queries.
-                $by_branch = array( 'branch_id' => $branch->id );
-                $queries = $this->query->retrieve( $by_branch );
+                $by_version = array( 'version_id' => $version->id );
+                $queries = $this->query->retrieve( $by_version );
 
                 foreach ( $queries as $query ) {
-                    //  Replace soft timestamps with timestamp of branch deprecation
-                    $transformed_query = replace_soft_timestamps($query->query_qb, $branch->deprecate);
+                    //  Replace soft timestamps with timestamp of version deprecation
+                    $transformed_query = replace_soft_timestamps($query->query_qb, $version->deprecate);
 
                     //  Append the Qb queries and other meta-data into $data
-                    $data[$product->tag]['branches'][$branch->tag]['queries'][$query->tag]['title']    = $query->title;
-                    $data[$product->tag]['branches'][$branch->tag]['queries'][$query->tag]['qb_query'] = $transformed_query;
-                    $data[$product->tag]['branches'][$branch->tag]['queries'][$query->tag]['is_plot']  = $query->is_plot;
-                    $data[$product->tag]['branches'][$branch->tag]['queries'][$query->tag]['is_number']= $query->is_number;
+                    $data[$product->tag]['versions'][$version->tag]['queries'][$query->tag]['title']    = $query->title;
+                    $data[$product->tag]['versions'][$version->tag]['queries'][$query->tag]['qb_query'] = $transformed_query;
+                    $data[$product->tag]['versions'][$version->tag]['queries'][$query->tag]['is_plot']  = $query->is_plot;
+                    $data[$product->tag]['versions'][$version->tag]['queries'][$query->tag]['is_number']= $query->is_number;
                 }
             }
         }
@@ -62,8 +62,8 @@ class Overview extends CI_Controller {
         $this->load->view('dashboard_overview', array('data' => $data) );
 	}
 
-    public function single( $product='', $branch='' ){
+    public function single( $product='', $version='' ){
         echo $product . '<br>';
-        echo $branch;
+        echo $version;
     }
 }

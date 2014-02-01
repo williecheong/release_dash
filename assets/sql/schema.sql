@@ -5,7 +5,7 @@ CREATE TABLE `product` (
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
-CREATE TABLE `branch` (
+CREATE TABLE `version` (
     `id` int(11) not null auto_increment,
     `tag` varchar(255) not null,
     `title` varchar(255) not null,
@@ -24,7 +24,7 @@ CREATE TABLE `query` (
     `id` int(11) not null auto_increment,
     `tag` varchar(255) not null,
     `title` varchar(255) not null,
-    `branch_id` int(11) not null,
+    `version_id` int(11) not null,
     `deprecate_on` timestamp,
     `is_plot` tinyint(4) not null default '0',
     `is_number` tinyint(4) not null default '0',
@@ -37,7 +37,7 @@ INSERT INTO `product` (`tag`, `title`) VALUES
 ('fennec', 'Firefox for Android'),
 ('b2g', 'Firefox OS');
 
-INSERT INTO `branch` (`tag`, `title`, `product_id`, `central`, `aurora`, `beta`, `release`, `deprecate`, `b2g_functional_complete`, `b2g_code_freeze`) VALUES
+INSERT INTO `version` (`tag`, `title`, `product_id`, `central`, `aurora`, `beta`, `release`, `deprecate`, `b2g_functional_complete`, `b2g_code_freeze`) VALUES
 ('v10', 'Firefox 10', '1', '2011-09-27 00:00:00', '2011-11-08 00:00:00', '2011-12-20 00:00:00', '2012-01-31 00:00:00', '2012-03-13 00:00:00', '', ''),
 ('v11', 'Firefox 11', '1', '2011-11-08 00:00:00', '2011-12-20 00:00:00', '2012-01-31 00:00:00', '2012-03-13 00:00:00', '2012-04-24 00:00:00', '', ''),
 ('v12', 'Firefox 12', '1', '2011-12-20 00:00:00', '2012-01-31 00:00:00', '2012-03-13 00:00:00', '2012-04-24 00:00:00', '2012-06-05 00:00:00', '', ''),
@@ -88,7 +88,7 @@ INSERT INTO `branch` (`tag`, `title`, `product_id`, `central`, `aurora`, `beta`,
 ('v33', 'Firefox for Android 33', '2', '2014-06-10 00:00:00', '2014-07-22 00:00:00', '2014-09-02 00:00:00', '2014-10-14 00:00:00', '2014-11-25 00:00:00', '', '');
 
 
-INSERT INTO `query` (`tag`, `title`, `branch_id`, `is_plot`, `is_number`, `query_qb`) VALUES
+INSERT INTO `query` (`tag`, `title`, `version_id`, `is_plot`, `is_number`, `query_qb`) VALUES
 ('tracking_desktop26', '# Bugs Tracking Firefox 26', '17', '1', '1', '{"from":"public_bugs","select":{"name":"num","value":"bug_id","aggregate":"count"},"esfilter":{"and":[{"term":{"cf_tracking_firefox26":"+"}}]},"edges":[{"range":{"min":"modified_ts","max":"expires_on"},"domain":{"type":"date","min":1375747200000,"max":<timestamp>,"interval":"day"}}]}'),
 ('tracking_desktop27', '# Bugs Tracking Firefox 27', '18', '1', '1', '{"from":"public_bugs","select":{"name":"num","value":"bug_id","aggregate":"count"},"esfilter":{"and":[{"term":{"cf_tracking_firefox27":"+"}}]},"edges":[{"range":{"min":"modified_ts","max":"expires_on"},"domain":{"type":"date","min":1379376000000,"max":<timestamp>,"interval":"day"}}]}'),
 ('tracking_desktop28', '# Bugs Tracking Firefox 28', '19', '1', '1', '{"from":"public_bugs","select":{"name":"num","value":"bug_id","aggregate":"count"},"esfilter":{"and":[{"term":{"cf_tracking_firefox28":"+"}}]},"edges":[{"range":{"min":"modified_ts","max":"expires_on"},"domain":{"type":"date","min":1383004800000,"max":<timestamp>,"interval":"day"}}]}'),

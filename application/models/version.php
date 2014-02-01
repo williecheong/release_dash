@@ -1,6 +1,6 @@
 <?php
 
-class branch extends CI_Model{
+class version extends CI_Model{
 
     function retrieve_actives( $data = array() ){
         $conditions = '';
@@ -26,24 +26,24 @@ class branch extends CI_Model{
 
     // BEGIN BASIC CRUD FUNCTIONALITY
     function create( $data = array() ){
-        $this->db->insert('branch', $data);
+        $this->db->insert('version', $data);
         return;
     }
 
     function retrieve( $data = array() ){
         $this->db->where($data);
-        $query = $this->db->get('branch');
+        $query = $this->db->get('version');
         return $query->result();
     }
     
     function update( $data = array() ){
         $this->db->where($data);
-        $this->db->update('branch', $data);
+        $this->db->update('version', $data);
     }
     
     function delete( $data = array() ){
         $this->db->where($data);
-        $this->db->delete('branch');
+        $this->db->delete('version');
     }
 
 }

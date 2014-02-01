@@ -1,5 +1,5 @@
 <!-- Modal -->
-<div class="modal modal-wide fade" id="branch_overview" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal modal-wide fade" id="overview" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -9,6 +9,7 @@
                 </h4>
             </div>
             <div class="modal-body"> 
+                <?php // Graph and plots ?>
                 <div class="text-center js-clear" id="load-status"></div>
                 <div class="row">
                     <div class="col-lg-10 graph" id="graph-container">
@@ -20,7 +21,9 @@
                     </div>
                 </div>
                 <div class="caption text-center js-clear" id="under-plot"></div>
-                
+                <?php // End of graph and plots ?>
+
+                <?php // Add new query ?>
                 <div class="text-center">
                     <button type="button" class="btn btn-default btn-xs text-center" id="toggle-add-new-query" data-toggler=".form#new-query">New Query</button>
                 </div>
@@ -56,6 +59,7 @@
                         </div>
                     </form>
                 </div>
+                <?php // End of Add new query ?>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary">Generate report &raquo;</button>
