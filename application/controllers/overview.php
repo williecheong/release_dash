@@ -1,6 +1,6 @@
 <?php // if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Home extends CI_Controller {
+class Overview extends CI_Controller {
 
     function __construct() {
         parent::__construct();
@@ -9,8 +9,8 @@ class Home extends CI_Controller {
         $this->load->database();
 
         // Load models for playing with local data 
-        $this->load->model('branch');
         $this->load->model('product');
+        $this->load->model('branch');
         $this->load->model('query');
 
         // Load some helpers for convenience
@@ -62,4 +62,8 @@ class Home extends CI_Controller {
         $this->load->view('dashboard_overview', array('data' => $data) );
 	}
 
+    public function single( $product='', $branch='' ){
+        echo $product . '<br>';
+        echo $branch;
+    }
 }
