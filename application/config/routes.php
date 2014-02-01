@@ -14,7 +14,7 @@ $route['404_override'] = 'lost';
 | -------------------------------------------------------------------------
 */
 
-$route['watch/(:any)/(:any)'] = "watch/single/$1/$2";
+$route['for/(:any)/(:any)'] = "watch/single/$1/$2";
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */
