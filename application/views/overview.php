@@ -48,7 +48,7 @@
 
 <!-- MODALS AND FOOTER -->
 <?php 
-    $this->load->view('modals/version_overview'); 
+    $this->load->view('modals/overview'); 
     $this->load->view('templates/footer', $include); 
 ?>
 

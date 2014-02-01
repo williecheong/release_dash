@@ -59,7 +59,7 @@ class Overview extends CI_Controller {
         }
       
         // Send the resulting data array into the view
-        $this->load->view('dashboard_overview', array('data' => $data) );
+        $this->load->view('overview', array('data' => $data) );
 	}
 
     public function single( $product='', $version='' ){
