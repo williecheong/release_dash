@@ -14,12 +14,21 @@ class Watch extends CI_Controller {
         $this->load->model('query');
 
         // Load some helpers for convenience
+        $this->load->helper('url');
         $this->load->helper('date');
         $this->load->helper('release_dash');
     }
     
     public function single( $product = '', $version = '' ) {
-        echo $product . '<br>';
-        echo $version;
+        $product_obj = $this->product->retrieve( array( 'tag' => $product ) );
+        $version_obj = $this->version->retrieve( array( 'tag' => $version ) );
+        if ( empty($product_obj) || empty($version_obj) ) {
+            $this->load->view('templates/404_not_found');
+        } else { 
+            // OK we're good.
+            // Product and version was found.
+
+        }
+
     }
 }
