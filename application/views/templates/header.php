@@ -41,7 +41,7 @@
                       <span class="icon-bar"></span>
                     </button>
                     */ ?>
-                    <a class="navbar-brand" href="#">Release Readiness Dashboard</a>
+                    <a class="navbar-brand" href="/">Release Readiness Dashboard</a>
                 </div>
                 <?php /*
                 <div class="navbar-collapse collapse">
