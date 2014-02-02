@@ -10,7 +10,8 @@
     //    As usual, CSS to the header, JS to the footer.
     $include = array( 
         'top' => '<link rel="stylesheet" href="/assets/css/overview.css">',
-        'bottom' => '<script src="/assets/js/overview.js"></script>'
+        'bottom' => '<script src="/assets/js/overview.js"></script>
+                     <script>var coreData = '. json_encode($data) .'</script>'
     );
 ?>
 
@@ -33,20 +34,8 @@
         <?php } //End foreach version ?>
     </div>
     <?php } //End foreach product ?>
-    
-    <hr>
-    
-    <footer>
-        <p>&copy; Mozilla - Release Management <?= date("Y"); ?> </p>
-    </footer>
 </div><!-- /container -->
 
-<!-- DECLARING JSON CONTAINING QUERIES AND META DATA. -->
-    <script>
-        var coreData = <?= json_encode($data); ?>
-    </script>
-
-<!-- MODALS AND FOOTER -->
 <?php 
     $this->load->view('modals/overview'); 
     $this->load->view('templates/footer', $include); 

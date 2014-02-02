@@ -2,6 +2,7 @@ CREATE TABLE `product` (
     `id` int(11) not null auto_increment,
     `tag` varchar(255) not null,   
     `title` varchar(255) not null,
+    UNIQUE (`tag`),
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
@@ -17,6 +18,7 @@ CREATE TABLE `version` (
     `deprecate` timestamp,
     `b2g_functional_complete` timestamp,
     `b2g_code_freeze` timestamp,
+    UNIQUE (`product_id`, `tag`),
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
