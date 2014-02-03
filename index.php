@@ -19,7 +19,7 @@
  *
  */
 
-if ( $_SERVER['SERVER_NAME'] == 'relman.dev' ) {
+if ( $_SERVER['SERVER_ADDR'] == '127.0.0.1' ) {
     define('ENVIRONMENT', 'development');
 } else {
     define('ENVIRONMENT', 'production');

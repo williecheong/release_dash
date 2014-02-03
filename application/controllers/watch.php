@@ -11,6 +11,7 @@ class Watch extends CI_Controller {
         // Load models for playing with local data 
         $this->load->model('product');
         $this->load->model('version');
+        $this->load->model('group');
         $this->load->model('query');
 
         // Load some helpers for convenience
@@ -47,21 +48,31 @@ class Watch extends CI_Controller {
 
         // Initializing a main data variable before we begin
         $data = array();
-        $data[$version->tag]['title'] = $version->title;
-                
-        // Now retrieve the stored Qb queries.
-        $by_version = array( 'version_id' => $version->id );
-        $queries = $this->query->retrieve( $by_version );
-        
-        foreach ( $queries as $query ) {
-            //  Replace soft timestamps with timestamp of version deprecation
-            $transformed_query = replace_soft_timestamps($query->query_qb, $version->deprecate);
+        $data['title'] = $version->title;
+        $data['query_groups'] = array();
 
-            //  Append the Qb queries and other meta-data into $data
-            $data[$version->tag]['queries'][$query->tag]['title']    = $query->title;
-            $data[$version->tag]['queries'][$query->tag]['qb_query'] = $transformed_query;
-            $data[$version->tag]['queries'][$query->tag]['is_plot']  = $query->is_plot;
-            $data[$version->tag]['queries'][$query->tag]['is_number']= $query->is_number;
+        // Now retrieve the groups of Qb queries.
+        $by_version = array( 'version_id' => $version->id );
+        $groups = $this->group->retrieve( $by_version );
+        
+        foreach ( $groups as $group ) {
+            $data['query_groups'][$group->tag]['title'] = $group->title;
+            $data['query_groups'][$group->tag]['is_plot']  = $group->is_plot;
+            $data['query_groups'][$group->tag]['is_number']= $group->is_number;
+            $data['query_groups'][$group->tag]['queries'] = array();    
+
+            // Retrieve the stored Qb queries in this group.
+            $by_group = array( 'group_id' => $group->id );
+            $queries = $this->query->retrieve( $by_group );
+
+            foreach ( $queries as $query ) {
+                //  Replace soft timestamps with timestamp of version deprecation
+                $transformed_query = replace_soft_timestamps($query->query_qb, $version->deprecate);
+
+                //  Append the Qb queries and other meta-data into $data
+                $data['query_groups'][$group->tag]['queries'][$query->tag]['title']    = $query->title;
+                $data['query_groups'][$group->tag]['queries'][$query->tag]['qb_query'] = $transformed_query;
+            }
         }
 
         $this->load->view('watch_single', array('data' => $data) );   

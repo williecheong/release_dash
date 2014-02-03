@@ -20,7 +20,7 @@
 ?>
 
 <div class="container">
-    HEYYYY
+    <?php var_dump($data); ?>
 </div><!-- /container -->
 
 <?php 

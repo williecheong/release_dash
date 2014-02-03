@@ -9,60 +9,10 @@
                 </h4>
             </div>
             <div class="modal-body"> 
-                <?php // Graph and plots ?>
-                <div class="text-center js-clear" id="load-status"></div>
-                <div class="row">
-                    <div class="col-lg-10 graph" id="graph-container">
-                        <div class="graph js-clear" id="y-axis"></div>
-                        <div class="graph js-clear" id="main-plot"></div>
-                    </div>
-                    <div class="col-lg-2 graph" id="legend-container">
-                        <div class="graph js-clear" id="legend"></div>
-                    </div>
-                </div>
-                <div class="caption text-center js-clear" id="under-plot"></div>
-                <?php // End of graph and plots ?>
-
-                <?php // Add new query ?>
-                <div class="text-center">
-                    <button type="button" class="btn btn-default btn-xs text-center" id="toggle-add-new-query" data-toggler=".form#new-query">New Query</button>
-                </div>
-                <div class="form" id="new-query" style="display:none;">
-                    <form class="form-horizontal" role="form">
-                        <div class="form-group">
-                            <label for="inputEmail3" class="col-sm-2 control-label">Title</label>
-                                <div class="col-sm-10">
-                                <input type="text" class="form-control" id="inputTitle3" placeholder="Descriptive name for this query">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="inputPassword3" class="col-sm-2 control-label">Qb Query</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="inputQuery3" placeholder="The actual query in json format">
-                            </div>
-                        </div>
-                        <?php /*
-                        <div class="form-group">
-                            <div class="col-sm-offset-2 col-sm-10">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox">
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        */ ?>
-                        <div class="form-group">
-                            <div class="col-sm-offset-2 col-sm-10">
-                                <button type="button" class="btn btn-default">Submit Query</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <?php // End of Add new query ?>
+                <div class="js-clear" id="comments"></div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary">Generate report &raquo;</button>
+                <a class="btn btn-primary" id="redirect-details" href="">Details &raquo;</a>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

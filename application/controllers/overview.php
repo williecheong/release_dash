@@ -35,35 +35,16 @@ class Overview extends CI_Controller {
             $by_product = array( 'product_id' => $product->id );
             $versions = $this->version->retrieve_actives( $by_product );
             
-
             foreach ( $versions as $version ) {
                 // Store a pretty title for this version
                 $data[$product->tag]['versions'][$version->tag]['title'] = $version->title;
-                $data[$product->tag]['versions'][$version->tag]['queries'] = array();
-
-                //  Retrieve the stored Qb queries.
-                $by_version = array( 'version_id' => $version->id );
-                $queries = $this->query->retrieve( $by_version );
-
-                foreach ( $queries as $query ) {
-                    //  Replace soft timestamps with timestamp of version deprecation
-                    $transformed_query = replace_soft_timestamps($query->query_qb, $version->deprecate);
-
-                    //  Append the Qb queries and other meta-data into $data
-                    $data[$product->tag]['versions'][$version->tag]['queries'][$query->tag]['title']    = $query->title;
-                    $data[$product->tag]['versions'][$version->tag]['queries'][$query->tag]['qb_query'] = $transformed_query;
-                    $data[$product->tag]['versions'][$version->tag]['queries'][$query->tag]['is_plot']  = $query->is_plot;
-                    $data[$product->tag]['versions'][$version->tag]['queries'][$query->tag]['is_number']= $query->is_number;
-                }
+                
+                // To be implemented: 
+                // Retrieve and set comments for this version
             }
         }
       
         // Send the resulting data array into the view
         $this->load->view('overview', array('data' => $data) );
 	}
-
-    public function single( $product='', $version='' ){
-        echo $product . '<br>';
-        echo $version;
-    }
 }
