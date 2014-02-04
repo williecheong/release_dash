@@ -11,7 +11,9 @@ class Overview extends CI_Controller {
         // Load models for playing with local data 
         $this->load->model('product');
         $this->load->model('version');
+        $this->load->model('group');
         $this->load->model('query');
+        $this->load->model('comment');
 
         // Load some helpers for convenience
         $this->load->helper('date');
@@ -41,6 +43,14 @@ class Overview extends CI_Controller {
                 
                 // To be implemented: 
                 // Retrieve and set comments for this version
+                $by_version = array( 'entity' => 'version',
+                                     'entity_id' => $version->id );
+                $comments = $this->comment->retrieve( $by_version );
+
+                foreach ( $comments as $key => $comment ) {
+                    $data[$product->tag]['versions'][$version->tag]['comments'][$key]['comment'] = $comment->comment;
+                    $data[$product->tag]['versions'][$version->tag]['comments'][$key]['comment'] = $comment->created_on; 
+                }
             }
         }
       

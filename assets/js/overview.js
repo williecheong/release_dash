@@ -6,8 +6,8 @@
     });
 
     //Toggles the view of channels on each product
-    $('[data-toggler]').click(function(){
-        var toToggle = $(this).data('toggler');
+    $('[data-mytoggler]').click(function(){
+        var toToggle = $(this).data('mytoggler');
         $( toToggle ).toggle('slow');
     });
 
@@ -19,17 +19,17 @@
     //var totalQueries = 0;
     //var completedRetrievals = 0;
 
-    $('.channel').click(function(){
+    $('.version').click(function(){
         clearDiv();
         
         // Identify chosen product and version
-        product = $(this).closest('.channels').attr('id');
+        product = $(this).closest('.versions').attr('id');
         version = $(this).attr('id');
 
         // Put version title on header
             $('span.descriptor#product-channel').html( coreData[product].versions[version]['title'] ); 
         // Put comments inside the body
-            $('.modal-body #comments').html( generateComments() );
+            $('.modal-body #comments').html( templateComments() );
         // Setup the link to see details
             $('.modal-footer #redirect-details').attr("href", "/for/"+product+"/"+version);
         
@@ -44,7 +44,7 @@
 /************************
     VERY IMPORTANT FUNCTIONS
 ************************/
-    function generateComments(){
+    function templateComments(){
         return 'Comments for ' + product + version ;
     }
 

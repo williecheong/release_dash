@@ -2,11 +2,11 @@
    Author's custom styles
    ========================================================================== */
 
-    .channels {
+    .versions {
         display: none;
     }
 
-    .channel {
+    .version {
         padding: 5px;
         border: dotted;
     }

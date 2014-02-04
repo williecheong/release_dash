@@ -2,31 +2,25 @@
    Author's custom styles
    ========================================================================== */
 
-    .channels {
-        display: none;
+    .group .group-graph {
+        position: absolute;
     }
 
-    .channel {
-        padding: 5px;
-        border: dotted;
-    }
-
-    .product {
-        margin-top: 20px;
-        padding: 10px;
-        font-size: x-large;
-        border: double;
+    .group #group-title {
+        position: absolute;
+        width: 100%;
+        bottom: 0px;
     }
 
 /***********************/
 /* GRAPHING PROPERTIES */
 
-    .graph#main-plot {
+    .plot {
         position: relative;
         left: 40px;
     }
 
-    .graph#y-axis {
+    .y-axis {
         position: absolute;
         top: 0;
         bottom: 0;
@@ -41,25 +35,30 @@
 /******************************/
 
 
-/*
-.channel#release, .channel#convergence {
-    background-color: #3ADF00;
-}
-
-.channel#beta, .channel#aurora, .channel#central {
-    background-color: #FF8000;
-}
-
-.channel#nightly {
-    background-color: #B40404;
-}
-*/
-
 /**********************************/
-/* CUSTOM MOZILLIAN NAVBAR STYLES */
+/* GRIDSTER STYLES */
+    
+    .gridster ul {
+        list-style-type: none;
+    }
 
+    li.plot {
+        position: relative;
+    }
 
-/* END OF CUSTOM MOZILLIAN NAVBAR STYLES */
+    .gridster {
+        width: 100%;
+        margin: 0 auto;
+    }
+    
+    .gridster .gs-w {
+        background: #FFF;
+        cursor: pointer;
+        -webkit-box-shadow: 0 0 5px rgba(0,0,0,0.3);
+        box-shadow: 0 0 5px rgba(0,0,0,0.3);
+    }
+
+/* END OF GRIDSTER STYLES */
 /*****************************************/
 
 

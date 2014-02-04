@@ -13,6 +13,7 @@ class Watch extends CI_Controller {
         $this->load->model('version');
         $this->load->model('group');
         $this->load->model('query');
+        $this->load->model('comment');
 
         // Load some helpers for convenience
         $this->load->helper('url');

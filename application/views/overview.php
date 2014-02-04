@@ -22,13 +22,13 @@
 
 <div class="container">
     <?php foreach ($data as $product_tag => $product) { ?>
-    <div class="row text-center product" id="<?= $product_tag; ?>" data-toggler=".channels#<?= $product_tag; ?>">
+    <div class="row text-center product" id="<?= $product_tag; ?>" data-mytoggler=".versions#<?= $product_tag; ?>">
         <div class="col-lg-12"><?= $product['title']; ?></div>
     </div>
 
-    <div class="row text-center channels" id="<?= $product_tag; ?>">
+    <div class="row text-center versions" id="<?= $product_tag; ?>">
         <?php foreach ($product['versions'] as $version_tag => $version) { ?>
-        <div class="col-lg-3 channel" id="<?= $version_tag ?>">
+        <div class="col-lg-3 version" id="<?= $version_tag ?>">
             <h2><?= $version['title']; ?></h2>
         </div>
         <?php } //End foreach version ?>
