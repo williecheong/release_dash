@@ -68,7 +68,7 @@ class Watch extends CI_Controller {
 
             foreach ( $queries as $query ) {
                 //  Replace soft timestamps with timestamp of version deprecation
-                $transformed_query = replace_soft_timestamps($query->query_qb, $version->deprecate);
+                $transformed_query = replace_soft_timestamps($query->query_qb);
 
                 //  Append the Qb queries and other meta-data into $data
                 $data['query_groups'][$group->tag]['queries'][$query->tag]['title']    = $query->title;

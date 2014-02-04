@@ -5,7 +5,7 @@
     var gridsterWidth = $('.gridster').width();
     $(".gridster ul").gridster({
         widget_margins: [ gridsterWidth*0.01, gridsterWidth*0.01 ],
-        widget_base_dimensions: [ gridsterWidth*0.313, gridsterWidth*0.313 ]
+        widget_base_dimensions: [ gridsterWidth*0.104, gridsterWidth*0.104 ]
     });
 
     // Toggles whatever element is inside "data-toggler"
@@ -18,11 +18,8 @@
     ES RETRIEVAL
 *************************************/
     $(document).ready(function(){
-        // Need Thread to be fully loaded before this can start
-        setTimeout(function() {
-            startLoading(); 
-        }, 1000);
-        
+        // Need Thread to be fully loaded before we can startLoading()
+        // The call is made at the bottom of ESQueryRunner.js as a callback
     });
 
     function startLoading() {
@@ -78,9 +75,9 @@
 
             // Start the plot
             var graph = new Rickshaw.Graph({
-                element: document.querySelector('.group#'+group_key+' #group-graph div .plot'),
-                width: $('.graph#main-plot').width() * 0.90,
-                height: $('.graph#main-plot').width() * 0.55,
+                element: document.querySelector('.plot#'+group_key),
+                width: $('.group#' + group_key).width() * 0.80,
+                height: $('.group#' + group_key).width() * 0.40,
                 renderer: 'line',
                 series: rickshawData
             });
@@ -90,21 +87,12 @@
                 graph: graph,
                 orientation: 'left',
                 tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
-                element: document.querySelector('.group#'+group_key+' #group-graph div .y-axis')
+                element: document.querySelector('.y-axis#'+group_key)
             });
             
             var hoverDetail = new Rickshaw.Graph.HoverDetail( { graph: graph } );
-            /*
-            var legend = new Rickshaw.Graph.Legend( {
-                graph: graph,
-                element: document.querySelector('.group#'+group_key+' .group-graph #legend')
-            });
-            */
-            var shelving = new Rickshaw.Graph.Behavior.Series.Toggle( {
-                graph: graph
-            });
-
-            $('.group#'+group_key+' #group-title img.load-status').remove();
+            
+            $('.group-title#'+group_key+' img.load-status').remove();
             graph.render();
             // End of graphing
 

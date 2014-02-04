@@ -11,7 +11,10 @@
     $include = array( 
         'version'  => $data['title'] ,    
         'top'    => '<link rel="stylesheet" href="/assets/js/vendor/ducksboard-gridster/jquery.gridster.min.css">
-                     <link rel="stylesheet" href="/assets/css/watch_single.css">',
+                     <link rel="stylesheet" href="/assets/css/watch_single.css">
+                     <script type="application/javascript;version=1.7" src="/assets/js/vendor/Qb/html/js/imports/import.js"></script>
+                     <script type="application/javascript;version=1.7" src="/assets/js/vendor/Qb/html/js/ESQueryRunner.js"></script>',
+        
         'bottom' => '<script src="/assets/js/vendor/ducksboard-gridster/jquery.gridster.min.js"></script>
                      <script>var coreData = '. json_encode($data) .'</script>
                      <script src="/assets/js/watch_single.js"></script>'
@@ -26,15 +29,12 @@
     <div class="gridster">
         <ul class="plots">
             <?php foreach ( $data['query_groups'] as $group_tag => $group ) { ?>
-            <li class="group" id="<?= $group_tag; ?>" data-row="1" data-col="1" data-sizex="1" data-sizey="1">
-                <div class="row" id="group-graph">
-                    <div class="col-lg-9">
-                        <div class="y-axis"></div>
-                        <div class="plot"></div>
-                    </div>
-                    <div class="col-lg-3" id="legend"></div>
+            <li class="group" id="<?= $group_tag; ?>" data-row="1" data-col="1" data-sizex="3" data-sizey="2">
+                <div class="group-graph" id="<?= $group_tag; ?>">
+                    <div class="y-axis" id="<?= $group_tag; ?>"></div>
+                    <div class="plot" id="<?= $group_tag; ?>"></div>
                 </div>
-                <div class="text-center" id="group-title">
+                <div class="text-center group-title" id="<?= $group_tag; ?>">
                     <img class="load-status" src="/assets/img/mozchomp.gif">
                     <h4><?= $group['title']; ?></h4>
                 </div>

@@ -26,6 +26,9 @@
         product = $(this).closest('.versions').attr('id');
         version = $(this).attr('id');
 
+
+        window.location.href = "/for/" + product + "/" + version;
+
         // Put version title on header
             $('span.descriptor#product-channel').html( coreData[product].versions[version]['title'] ); 
         // Put comments inside the body

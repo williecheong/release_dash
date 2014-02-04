@@ -37,7 +37,7 @@
 </div><!-- /container -->
 
 <?php 
-    $this->load->view('modals/overview'); 
+    //$this->load->view('modals/overview'); 
     $this->load->view('templates/footer', $include); 
 ?>
 

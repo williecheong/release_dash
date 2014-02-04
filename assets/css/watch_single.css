@@ -2,11 +2,19 @@
    Author's custom styles
    ========================================================================== */
 
-    .group .group-graph {
-        position: absolute;
+    img.load-status{
+        max-width: 80%;
     }
 
-    .group #group-title {
+    .group .group-graph {
+        position: absolute;
+        margin-top: 10%;
+        margin-bottom: 5%;
+        margin-left: 5%;
+        margin-right: 5%;
+    }
+
+    .group .group-title {
         position: absolute;
         width: 100%;
         bottom: 0px;
@@ -17,14 +25,14 @@
 
     .plot {
         position: relative;
-        left: 40px;
+        left: 9%;
     }
 
     .y-axis {
         position: absolute;
         top: 0;
         bottom: 0;
-        width: 40px;
+        width: 9%;
     }
 
     .rickshaw_legend .label {
