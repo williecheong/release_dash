@@ -24,6 +24,7 @@
         <?= $top; ?>
         
         <script type="application/javascript;version=1.7" src="/assets/js/vendor/Qb/html/js/imports/import.js"></script>
+        <script type="application/javascript;version=1.7" src="/assets/js/vendor/Qb/html/js/ESQueryRunner.js"></script>
         <script src="/assets/js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script> 
     </head>
     

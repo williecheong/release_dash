@@ -19,7 +19,10 @@
 *************************************/
     $(document).ready(function(){
         // Need Thread to be fully loaded before this can start
-        // startLoading();
+        setTimeout(function() {
+            startLoading(); 
+        }, 1000);
+        
     });
 
     function startLoading() {
