@@ -20,6 +20,15 @@
         bottom: 0px;
     }
 
+    li.action {
+        position: relative;
+    }
+
+    .action#add-new-group{
+        position: absolute;
+        text-align: center;   
+    }
+
 /***********************/
 /* GRAPHING PROPERTIES */
 
@@ -50,7 +59,7 @@
         list-style-type: none;
     }
 
-    li.plot {
+    li.group {
         position: relative;
     }
 

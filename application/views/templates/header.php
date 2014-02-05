@@ -11,6 +11,8 @@
         <meta name="description" content="A dashboard for monitoring the readiness of new releases for Mozilla products.">
         <meta name="viewport" content="width=device-width">
         <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+        <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+
         <style>
             body {
                 padding-top: 50px;

@@ -40,6 +40,9 @@
                 </div>
             </li>
             <?php } // End foreach query_group ?>
+            <li class="action" id="add-new-group" data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+                <i class="icon-plus icon-4x icon-border"></i>
+            </li>
         </ul>
     </div>
 </div><!-- /container -->
