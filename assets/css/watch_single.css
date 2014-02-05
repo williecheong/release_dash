@@ -1,0 +1,86 @@
+/* ==========================================================================
+   Author's custom styles
+   ========================================================================== */
+
+    img.load-status{
+        max-width: 80%;
+    }
+
+    .group .group-graph {
+        position: absolute;
+        margin-top: 10%;
+        margin-bottom: 5%;
+        margin-left: 5%;
+        margin-right: 5%;
+    }
+
+    .group .group-title {
+        position: absolute;
+        width: 100%;
+        bottom: 0px;
+    }
+
+    li.action {
+        position: relative;
+    }
+
+    .action#add-new-group{
+        position: absolute;
+        text-align: center;   
+    }
+
+/***********************/
+/* GRAPHING PROPERTIES */
+
+    .plot {
+        position: relative;
+        left: 9%;
+    }
+
+    .y-axis {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 9%;
+    }
+
+    .rickshaw_legend .label {
+        white-space: normal;
+    }
+
+/* END OF GRAPHING PROPERTIES */
+/******************************/
+
+
+/**********************************/
+/* GRIDSTER STYLES */
+    
+    .gridster ul {
+        list-style-type: none;
+    }
+
+    li.group {
+        position: relative;
+    }
+
+    .gridster {
+        width: 100%;
+        margin: 0 auto;
+    }
+    
+    .gridster .gs-w {
+        background: #FFF;
+        cursor: pointer;
+        -webkit-box-shadow: 0 0 5px rgba(0,0,0,0.3);
+        box-shadow: 0 0 5px rgba(0,0,0,0.3);
+    }
+
+/* END OF GRIDSTER STYLES */
+/*****************************************/
+
+
+
+
+
+
+
