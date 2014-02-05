@@ -11,11 +11,14 @@
     $include = array( 
         'version'  => $data['title'] ,    
         'top'    => '<link rel="stylesheet" href="/assets/js/vendor/ducksboard-gridster/jquery.gridster.min.css">
-                     <link rel="stylesheet" href="/assets/css/watch_single.css">
-                     <script type="application/javascript;version=1.7" src="/assets/js/vendor/Qb/html/js/imports/import.js"></script>
-                     <script type="application/javascript;version=1.7" src="/assets/js/vendor/Qb/html/js/ESQueryRunner.js"></script>',
+                     <link rel="stylesheet" href="/assets/css/watch_single.css">',
         
-        'bottom' => '<script src="/assets/js/vendor/ducksboard-gridster/jquery.gridster.min.js"></script>
+        'bottom' => '<script type="application/javascript;version=1.7" src="/assets/js/vendor/Qb/html/js/imports/import.js"></script>
+                     <script type="application/javascript;version=1.7" src="/assets/js/vendor/Qb/html/js/ESQueryRunner.js"></script>
+                     <script src="/assets/js/vendor/ducksboard-gridster/jquery.gridster.min.js"></script>
+                     <script src="/assets/js/vendor/rickshaw/vendor/d3.min.js"></script>
+                     <script src="/assets/js/vendor/rickshaw/vendor/d3.layout.min.js"></script>
+                     <script src="/assets/js/vendor/rickshaw/rickshaw.js"></script>
                      <script>var coreData = '. json_encode($data) .'</script>
                      <script src="/assets/js/watch_single.js"></script>'
     );

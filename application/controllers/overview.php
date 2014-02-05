@@ -10,12 +10,15 @@ class Overview extends CI_Controller {
 
         // Load models for playing with local data 
         $this->load->model('product');
+        $this->load->model('channel');        
         $this->load->model('version');
         $this->load->model('group');
         $this->load->model('query');
-        $this->load->model('comment');
+        $this->load->model('cycle');
+        //$this->load->model('comment');
 
         // Load some helpers for convenience
+        $this->load->helper('url');
         $this->load->helper('date');
         $this->load->helper('release_dash');
     }
@@ -34,23 +37,11 @@ class Overview extends CI_Controller {
             $data[$product->tag]['versions'] = array();
 
             //  Find versions that are currently active
-            $by_product = array( 'product_id' => $product->id );
-            $versions = $this->version->retrieve_actives( $by_product );
-            
+            $versions = $this->version->get_actives_by_product( $product->id );
+
             foreach ( $versions as $version ) {
                 // Store a pretty title for this version
                 $data[$product->tag]['versions'][$version->tag]['title'] = $version->title;
-                
-                // To be implemented: 
-                // Retrieve and set comments for this version
-                $by_version = array( 'entity' => 'version',
-                                     'entity_id' => $version->id );
-                $comments = $this->comment->retrieve( $by_version );
-
-                foreach ( $comments as $key => $comment ) {
-                    $data[$product->tag]['versions'][$version->tag]['comments'][$key]['comment'] = $comment->comment;
-                    $data[$product->tag]['versions'][$version->tag]['comments'][$key]['comment'] = $comment->created_on; 
-                }
             }
         }
       

@@ -10,10 +10,12 @@ class Watch extends CI_Controller {
 
         // Load models for playing with local data 
         $this->load->model('product');
+        $this->load->model('channel');
         $this->load->model('version');
         $this->load->model('group');
         $this->load->model('query');
-        $this->load->model('comment');
+        $this->load->model('cycle');
+        //$this->load->model('comment');
 
         // Load some helpers for convenience
         $this->load->helper('url');
@@ -67,8 +69,11 @@ class Watch extends CI_Controller {
             $queries = $this->query->retrieve( $by_group );
 
             foreach ( $queries as $query ) {
-                //  Replace soft timestamps with timestamp of version deprecation
-                $transformed_query = replace_soft_timestamps($query->query_qb);
+                // Replace soft timestamps with current timestamp and birthday
+                $transformed_query = $query->query_qb;
+                $transformed_query = replace_timestamp( $transformed_query );
+                    $birthday = $this->version->get_birthday( $version->id );
+                $transformed_query = replace_birthday( $transformed_query, $birthday );
 
                 //  Append the Qb queries and other meta-data into $data
                 $data['query_groups'][$group->tag]['queries'][$query->tag]['title']    = $query->title;
