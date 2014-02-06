@@ -70,6 +70,7 @@
 </div><!-- /container -->
 
 <?php 
+    $this->load->view('modals/watch_single');
     $this->load->view('templates/footer', $include); 
 ?>
 

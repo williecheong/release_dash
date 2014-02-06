@@ -24,7 +24,6 @@ class Watch extends CI_Controller {
     }
     
     public function single( $product_tag = '', $version_tag = '' ) {
-        
         // Validate Product and Version 
         // Return lost page if either are not found in the DB
         // If all is well, we have 2 objects for product and version
