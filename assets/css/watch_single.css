@@ -20,6 +20,12 @@
         bottom: 0px;
     }
 
+    .non-group .group-title {
+        position: absolute;
+        width: 100%;
+        bottom: 40%;
+    }
+
     li.action {
         position: relative;
     }

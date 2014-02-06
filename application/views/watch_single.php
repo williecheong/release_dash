@@ -62,8 +62,12 @@
                 <?php } // End if group is_number ?>
             <?php } // End foreach query_group ?>
 
-            <li class="action" id="add-new-group" data-row="1" data-col="1" data-sizex="1" data-sizey="1">
-                <i class="icon-plus icon-4x icon-border"></i>
+            <li class="non-group" data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+                <div class="text-center group-title">
+                    <button type="button" class="btn btn-success show-form" id="add-new-group">
+                        <i class="icon-plus"></i>
+                    </button>
+                </div>
             </li>
         </ul>
     </div>

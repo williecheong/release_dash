@@ -8,10 +8,18 @@
         widget_base_dimensions: [ gridsterWidth*0.104, gridsterWidth*0.104 ]
     });
 
+    $('#new-group').modal({
+        show : false
+    });
+
     // Toggles whatever element is inside "data-toggler"
     $('[data-mytoggler]').click(function(){
         var toToggle = $(this).data('mytoggler');
         $( toToggle ).toggle('slow');
+    });
+
+    $('.show-form#add-new-group').click(function(){
+        $('#new-group').modal('toggle');
     });
 
 /*************************************
