@@ -35,7 +35,12 @@
                             tempStore.push( { x: d , y: value } );
                         });
                         coreData.query_groups[group_key].queries[query_key]['es_data'] = tempStore;
-                        executePlot( group_key );
+                        if ( coreData.query_groups[group_key].is_plot == 1 )    { 
+                            executePlot( group_key ); 
+                        }
+                        if ( coreData.query_groups[group_key].is_number == 1 )  { 
+                            executeNumber( group_key ); 
+                        }    
                     }
                 );
             });
@@ -66,10 +71,18 @@
             var rickshawData = new Array() ; 
             var palette = new Rickshaw.Color.Palette(); 
             $.each( coreData.query_groups[group_key].queries, function( key, value ) {
+                
+                var plot_colour;
+                if ( coreData.query_groups[group_key].queries.plot_colour == null ) {
+                    plot_colour = palette.color();
+                } else {
+                    plot_colour = coreData.query_groups[group_key].queries.plot_colour;
+                }
+
                 rickshawData.push({
                     name: value['title'],
                     data: value['es_data'],
-                    color: palette.color()
+                    color: plot_colour
                 });
             });
 
@@ -92,21 +105,46 @@
             
             var hoverDetail = new Rickshaw.Graph.HoverDetail( { graph: graph } );
             
-            $('.group-title#'+group_key+' img.load-status').remove();
+            removeLoader( group_key );
             graph.render();
             // End of graphing
 
         } else {
             // Do nothing
             // We are probably still retrieving data
-            console.log("Not all data is ready.");
+            console.log("Not all data is ready for plotting "+group_key+".");
+        }
+    }
+
+    function executeNumber( group_key ) {
+        // Searches through the group we are interested in for esData.
+        var dataMissing = false;
+        $.each( coreData.query_groups[group_key].queries, function( key, value ) {
+            if( value.es_data === undefined ) {
+                dataMissing = true;
+            }
+        });
+
+        if ( dataMissing === false ) {
+            $.each( coreData.query_groups[group_key].queries, function( key, value ) {
+                $('.group-number #'+key).html('<h2>' + value.es_data[value.es_data.length - 1].y + '</h2>');
+            });
+
+            removeLoader( group_key );
+        
+        } else {
+            // Do nothing
+            // We are probably still retrieving data
+            console.log("Not all data is ready for logging "+group_key+".");
         }
     }
 
 /*****************************
     MAKE LIFE AWESOME FUNCTIONS
 *****************************/
-    // None yet
+    function removeLoader( group_key ) {
+        $('.group-title#'+group_key+' img.load-status').remove();
+    }
 
 
 
