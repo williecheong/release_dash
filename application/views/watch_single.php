@@ -32,17 +32,36 @@
     <div class="gridster">
         <ul class="plots">
             <?php foreach ( $data['query_groups'] as $group_tag => $group ) { ?>
-            <li class="group" id="<?= $group_tag; ?>" data-row="1" data-col="1" data-sizex="3" data-sizey="2">
-                <div class="group-graph" id="<?= $group_tag; ?>">
-                    <div class="y-axis" id="<?= $group_tag; ?>"></div>
-                    <div class="plot" id="<?= $group_tag; ?>"></div>
-                </div>
-                <div class="text-center group-title" id="<?= $group_tag; ?>">
-                    <img class="load-status" src="/assets/img/mozchomp.gif">
-                    <h4><?= $group['title']; ?></h4>
-                </div>
-            </li>
+                <?php if ( $group['is_plot'] == 1 ) { ?>
+                <li class="group" id="<?= $group_tag; ?>" data-row="1" data-col="1" data-sizex="3" data-sizey="2">
+                    <div class="group-graph" id="<?= $group_tag; ?>">
+                        <div class="y-axis" id="<?= $group_tag; ?>"></div>
+                        <div class="plot" id="<?= $group_tag; ?>"></div>
+                    </div>
+                    <div class="text-center group-title" id="<?= $group_tag; ?>">
+                        <img class="load-status" src="/assets/img/mozchomp.gif">
+                        <h4><?= $group['title']; ?></h4>
+                    </div>
+                </li>
+                <?php } // End if group is_plot ?>
             <?php } // End foreach query_group ?>
+
+            <?php foreach ( $data['query_groups'] as $group_tag => $group ) { ?>
+                <?php if ( $group['is_number'] == 1 ) { ?>
+                <li class="group" id="<?= $group_tag; ?>" data-row="1" data-col="1" data-sizex="<?= min(2, count($group['queries'])); ?>" data-sizey="1">
+                    <div class="row group-number" id="<?= $group_tag; ?>">
+                        <?php foreach( $group['queries'] as $query_tag => $query ) { ?>
+                        <div class="text-center col-lg-<?= floor( 12 / count($group['queries']) ); ?>" id="<?= $query_tag; ?>" title="<?= $query['title'] ?>"></div>
+                        <?php } ?>
+                    </div>
+                    <div class="text-center group-title" id="<?= $group_tag; ?>">
+                        <img class="load-status" src="/assets/img/mozchomp.gif">
+                        <h4><?= $group['title']; ?></h4>
+                    </div>
+                </li>
+                <?php } // End if group is_number ?>
+            <?php } // End foreach query_group ?>
+
             <li class="action" id="add-new-group" data-row="1" data-col="1" data-sizex="1" data-sizey="1">
                 <i class="icon-plus icon-4x icon-border"></i>
             </li>

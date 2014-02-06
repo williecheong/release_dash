@@ -2,6 +2,18 @@
 
 class version extends CI_Model{
 
+    function get_shipday( $version_id = 0 ) { 
+        if ($version_id == 0) { return array(); }
+
+        $this->db->select_max('end');
+        $this->db->from('version_channel_cycle');
+        $this->db->join('cycle', 'cycle.id = version_channel_cycle.cycle_id');
+        $this->db->where( array( 'version_channel_cycle.version_id' => $version_id ) );
+        $query = $this->db->get();
+
+        return $query->result()[0]->end;
+    }
+
     function get_birthday( $version_id = 0 ) { 
         if ($version_id == 0) { return array(); }
 

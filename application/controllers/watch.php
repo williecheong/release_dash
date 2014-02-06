@@ -71,13 +71,17 @@ class Watch extends CI_Controller {
             foreach ( $queries as $query ) {
                 // Replace soft timestamps with current timestamp and birthday
                 $transformed_query = $query->query_qb;
-                $transformed_query = replace_timestamp( $transformed_query );
-                    $birthday = $this->version->get_birthday( $version->id );
+                
+                $shipday = $this->version->get_shipday( $version->id );
+                $transformed_query = replace_timestamp( $transformed_query, $shipday );
+
+                $birthday = $this->version->get_birthday( $version->id );
                 $transformed_query = replace_birthday( $transformed_query, $birthday );
 
                 //  Append the Qb queries and other meta-data into $data
-                $data['query_groups'][$group->tag]['queries'][$query->tag]['title']    = $query->title;
-                $data['query_groups'][$group->tag]['queries'][$query->tag]['qb_query'] = $transformed_query;
+                $data['query_groups'][$group->tag]['queries'][$query->tag]['title']       = $query->title;
+                $data['query_groups'][$group->tag]['queries'][$query->tag]['plot_colour'] = $query->plot_colour;
+                $data['query_groups'][$group->tag]['queries'][$query->tag]['qb_query']    = $transformed_query;
             }
         }
 
