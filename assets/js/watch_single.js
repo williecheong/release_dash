@@ -8,6 +8,7 @@
         widget_base_dimensions: [ gridsterWidth*0.104, gridsterWidth*0.104 ]
     });
 
+    // Initializes the #new-group modal
     $('#new-group').modal({
         show : false
     });
@@ -18,9 +19,42 @@
         $( toToggle ).toggle('slow');
     });
 
-    $('.show-form#add-new-group').click(function(){
-        $('#new-group').modal('toggle');
+/*********************************
+    ALL THINGS ABOUT ADDING GROUPS
+*********************************/
+    // Brings up the modal for adding a new group
+    $('.btn#add-new-group').click(function(){
+        $('.modal#new-group').modal('toggle');
     });
+
+    var new_query_unique_counter = 0;
+    $('.btn#new-query-template').click(function(){
+        new_query_unique_counter++;
+
+        $('.modal#new-group').find('form').append( templateNewGroup( number ));
+
+        // Initializing remove button for this new item
+        $('button#remove-new-query').click(function(){
+            $(this).closest('div.new-query').remove();
+        });
+        // Initializing colorpicker for this new item
+        $(".colourpicker[id='"+number+"']").spectrum({
+            showInput: true,
+            preferredFormat: 'hex6',
+            clickoutFiresChange: true,
+            showButtons: false,
+            move: function(color) {
+                $(".colourpicker[id='"+number+"']").css( 'color', color.toHexString() );
+            }
+        });
+    });
+
+    //onsave
+    /*
+        $.each( $('.new-query'), function(key, value){ 
+            console.log(value.id); 
+        });
+    */
 
 /*************************************
     ES RETRIEVAL
@@ -81,10 +115,10 @@
             $.each( coreData.query_groups[group_key].queries, function( key, value ) {
                 
                 var plot_colour;
-                if ( coreData.query_groups[group_key].queries.plot_colour == null ) {
-                    plot_colour = palette.color();
+                if ( value.colour ) {
+                    plot_colour = value.colour;
                 } else {
-                    plot_colour = coreData.query_groups[group_key].queries.plot_colour;
+                    plot_colour = palette.color();
                 }
 
                 rickshawData.push({
@@ -135,7 +169,9 @@
 
         if ( dataMissing === false ) {
             $.each( coreData.query_groups[group_key].queries, function( key, value ) {
-                $('.group-number #'+key).html('<h2>' + value.es_data[value.es_data.length - 1].y + '</h2>');
+                var font_colour = '#000000';
+                if ( value.colour ) { font_colour = value.colour; }
+                $('.group-number #'+key).html('<h2 style="'+font_colour+'">' + value.es_data[value.es_data.length - 1].y + '</h2>');
             });
 
             removeLoader( group_key );
@@ -154,6 +190,32 @@
         $('.group-title#'+group_key+' img.load-status').remove();
     }
 
+    function templateNewGroup ( number ) {
+        var html = '<div class="new-query" id="'+ number +'">'+
+                        '<button type="button" class="btn btn-xs btn-default" id="remove-new-query">'+
+                            '<i class="icon-remove"></i>'+
+                        '</button>'+
+                        '<div class="form-group">'+
+                            '<label class="col-sm-3 control-label" for="new-query-name">Query Name</label>'+
+                            '<div class="col-sm-9 input-group">'+
+                                '<input type="text" class="form-control" id="new-query-name" placeholder="Description for this query.">'+
+                                '<span class="input-group-btn">'+
+                                    '<button class="btn btn-default colourpicker" type="button" id="'+number+'">'+
+                                        '<i class="icon-tint icon-large"></i>'+
+                                    '</button>'+
+                                    '<em id="colorpicker-log"></em>'+
+                                '</span>'+
+                            '</div>'+
+                        '</div>'+
+                        '<div class="form-group">'+
+                            '<label class="col-sm-3 control-label" for="new-query-qb">Qb Query</label>'+
+                            '<div class="col-sm-9">'+
+                                '<textarea class="form-control" rows="3" id="new-query-qb" placeholder="Query in Qb format as a json object."></textarea>'+
+                            '</div>'+
+                        '</div>'+
+                    '</div>';
+        return html;
+    }
 
 
 

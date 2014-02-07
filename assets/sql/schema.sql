@@ -44,7 +44,8 @@ CREATE TABLE `group` (
     `id` int(11) not null auto_increment,
     `tag` varchar(255) not null,
     `title` varchar(255) not null,
-    `version_id` int(11) not null,
+    `entity` varchar(255) not null,
+    `entity_id` int(11) not null,
     `is_plot` tinyint(4) not null default '0',
     `is_number` tinyint(4) not null default '0',
     PRIMARY KEY (`id`)
@@ -56,7 +57,7 @@ CREATE TABLE `query` (
     `title` varchar(255) not null,
     `group_id` int(11) not null,
     `query_qb` text,
-    `plot_colour` varchar(255),
+    `colour` varchar(255),
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
@@ -120,13 +121,13 @@ INSERT INTO `version_channel_cycle` (`version_id`, `channel_id`, `cycle_id`) VAL
 ('15','9', '6');
 
 
-INSERT INTO `group` (`tag`, `title`, `version_id`, `is_plot`, `is_number`) VALUES
-('tracking_desktop25', 'Bugs Tracking Firefox 25', '1', '1', '1'),
-('tracking_desktop26', 'Bugs Tracking Firefox 26', '2', '1', '1'),
-('tracking_desktop27', 'Bugs Tracking Firefox 27', '3', '1', '1'),
-('tracking_desktop28', 'Bugs Tracking Firefox 28', '4', '1', '1'),
-('tracking_desktop29', 'Bugs Tracking Firefox 29', '5', '1', '1'),
-('tracking_desktop30', 'Bugs Tracking Firefox 30', '6', '1', '1');
+INSERT INTO `group` (`tag`, `title`, `entity`, `entity_id`, `is_plot`, `is_number`) VALUES
+('tracking_desktop25', 'Bugs Tracking Firefox 25', 'version', '1', '1', '1'),
+('tracking_desktop26', 'Bugs Tracking Firefox 26', 'version', '2', '1', '1'),
+('tracking_desktop27', 'Bugs Tracking Firefox 27', 'version', '3', '1', '1'),
+('tracking_desktop28', 'Bugs Tracking Firefox 28', 'version', '4', '1', '1'),
+('tracking_desktop29', 'Bugs Tracking Firefox 29', 'version', '5', '1', '1'),
+('tracking_desktop30', 'Bugs Tracking Firefox 30', 'version', '6', '1', '1');
 
 INSERT INTO `query` (`tag`, `title`, `group_id`, `query_qb`) VALUES
 ('tracking_desktop25', '# Bugs Tracking Firefox 25', '1', '{"from":"public_bugs","select":{"name":"num","value":"bug_id","aggregate":"count"},"esfilter":{"and":[{"term":{"cf_tracking_firefox25":"+"}}]},"edges":[{"range":{"min":"modified_ts","max":"expires_on"},"domain":{"type":"date","min":<birthday>,"max":<timestamp>,"interval":"day"}}]}'),

@@ -2,8 +2,18 @@
    Author's custom styles
    ========================================================================== */
 
+    textarea {
+        resize: vertical;
+    }
+
+    form div.new-query {
+        margin: 0.2%;
+        padding: 1%;
+        border: solid;
+    } 
+
     img.load-status{
-        max-width: 80%;
+        max-width: 60%;
     }
 
     .group .group-graph {
