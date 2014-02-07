@@ -27,6 +27,7 @@
         $('.modal#new-group').modal('toggle');
     });
 
+    // Append a new HTML query template for the group
     var new_query_unique_counter = 0;
     $('.btn#new-query-template').click(function(){
         new_query_unique_counter++;
@@ -49,12 +50,16 @@
         });
     });
 
-    //onsave
-    /*
+    // Proceed to save the group
+    $('.btn#save-new-group').click(function(){
+        if ( $('.new-query').length == 0 ) {
+            alert( "No queries found." );
+        } 
+
         $.each( $('.new-query'), function(key, value){ 
             console.log(value.id); 
         });
-    */
+    });
 
 /*************************************
     ES RETRIEVAL

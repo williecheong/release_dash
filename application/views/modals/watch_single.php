@@ -32,7 +32,7 @@
                 <button class="btn btn-default btn-sm" id="new-query-template">
                     <i class="icon-plus"></i> Query
                 </button>
-                <button class="btn btn-success" id="save-group">
+                <button class="btn btn-success" id="save-new-group">
                     <i class="icon-save"></i> Save
                 </button>
             </div>
