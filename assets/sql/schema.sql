@@ -48,6 +48,7 @@ CREATE TABLE `group` (
     `entity_id` int(11) not null,
     `is_plot` tinyint(4) not null default '0',
     `is_number` tinyint(4) not null default '0',
+    UNIQUE (`entity`, `entity_id`, `tag`),
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
@@ -58,8 +59,11 @@ CREATE TABLE `query` (
     `group_id` int(11) not null,
     `query_qb` text,
     `colour` varchar(255),
+    UNIQUE (`group_id`, `tag`),
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+
+
 
 INSERT INTO `product` (`tag`, `title`) VALUES 
 ('desktop', 'Firefox for Desktop'),
