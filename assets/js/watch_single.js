@@ -31,20 +31,20 @@
     $('.btn#new-query-template').click(function(){
         new_query_unique_counter++;
 
-        $('.modal#new-group').find('form').append( templateNewGroup( number ));
+        $('.modal#new-group').find('form').append( templateNewGroup( new_query_unique_counter ));
 
         // Initializing remove button for this new item
         $('button#remove-new-query').click(function(){
             $(this).closest('div.new-query').remove();
         });
         // Initializing colorpicker for this new item
-        $(".colourpicker[id='"+number+"']").spectrum({
+        $(".colourpicker[id='"+new_query_unique_counter+"']").spectrum({
             showInput: true,
             preferredFormat: 'hex6',
             clickoutFiresChange: true,
             showButtons: false,
             move: function(color) {
-                $(".colourpicker[id='"+number+"']").css( 'color', color.toHexString() );
+                $(".colourpicker[id='"+new_query_unique_counter+"']").css( 'color', color.toHexString() );
             }
         });
     });
