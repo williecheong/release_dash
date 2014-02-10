@@ -40,5 +40,6 @@ importScript([
 	"/assets/js/vendor/Qb/html/js/aLibrary.js",
 	"/assets/js/vendor/Qb/html/js/qb/ESQuery.js"
 ], function(){
+	startLoading();   
 	return "done";
 });

@@ -1,33 +1,22 @@
-
-
 /* ==========================================================================
    Author's custom styles
    ========================================================================== */
 
-.channels {
-    display: none;
-}
+    .versions {
+        display: none;
+    }
 
-.channel {
-    padding: 5px;
-    border: dotted;
-}
+    .version {
+        padding: 5px;
+        border: dotted;
+    }
 
-.modal.modal-wide .modal-dialog {
-  width: 70%;
-}
-
-.product {
-    margin-top: 20px;
-    padding: 10px;
-    font-size: x-large;
-    border: double;
-}
-#toggle-add-new-query {
-    width: 100%;
-    margin-top: 30px;
-    margin-bottom: 15px;
-}
+    .product {
+        margin-top: 20px;
+        padding: 10px;
+        font-size: x-large;
+        border: double;
+    }
 
 /***********************/
 /* GRAPHING PROPERTIES */
