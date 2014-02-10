@@ -52,13 +52,42 @@
 
     // Proceed to save the group
     $('.btn#save-new-group').click(function(){
+        var saveGroup = {};
+
+        saveGroup = {
+            group_entity : "version"
+            group_entity_id : coreData['id'],
+            group_title : $('#new-group-name').val(),
+            group_is_plot : $('#new-group-is-plot:checked').length,
+            group_is_number : $('#new-group-is-number:checked').length,
+            group_queries : {} 
+        };
+
+        // Validation for the new group's input values
+        if ( saveGroup['group_title'] == '' ) {
+            alert( "Group name cannot be empty." );
+        }
+        if ( (saveGroup['group_is_plot'] + saveGroup['group_is_number']) == 0 ) {
+            alert( "Group has to be either a plot or number." );
+            return false;
+        }
         if ( $('.new-query').length == 0 ) {
             alert( "No queries found." );
+            return false;
         } 
 
         $.each( $('.new-query'), function(key, value){ 
-            console.log(value.id); 
+            saveGroup.group_queries[value.id] = {
+                query_title : $('.new-query#'+value.id).find('input#new-query-name').val(),
+                query_colour : $('.new-query#'+value.id).find('button.colourpicker').css('color'),
+                query_query_qb : $('.new-query#'+value.id).find('textarea#new-query-qb').val()
+            }
+
+            // Validation for the group queries' input values
+
         });
+
+        console.log(saveGroup);
     });
 
 /*************************************
@@ -94,7 +123,7 @@
         });
     }
 /************************
-    VERY IMPORTANT FUNCTIONS
+    EXECUTES PLOT AND NUMBER PRINTING
 ************************/
     // Note that this does not generate a plot everytime it is called
     // All queries inside the version are checked for retrieved elasticsearch data

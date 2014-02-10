@@ -19,10 +19,10 @@
                     <div class="form-group">
                         <div class="col-sm-offset-3 col-sm-9">
                             <label class="checkbox-inline">
-                                <input type="checkbox" id="is-plot" value="0"> Show plot 
+                                <input type="checkbox" id="new-group-is-plot"> Show plot 
                             </label>
                             <label class="checkbox-inline">
-                                <input type="checkbox" id="is-number" value="1"> Show number
+                                <input type="checkbox" id="new-group-is-number"> Show number
                             </label>
                         </div>
                     </div>

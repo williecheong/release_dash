@@ -25,11 +25,11 @@ class Groups extends REST_Controller {
     }
 
     public function index_get() {
-        echo time() * 1000;
+        $time = date( 'Y/m/d h:i:s') ;
+        echo $time;
     }
 
     public function index_post() {
-        echo "OK";
+        $test = $this->post('test');
     }
-
 }

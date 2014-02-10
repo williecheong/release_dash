@@ -50,6 +50,7 @@ class Watch extends CI_Controller {
 
         // Initializing a main data variable before we begin
         $data = array();
+        $data['id'] = $version->id;
         $data['title'] = $version->title;
         $data['query_groups'] = array();
 
