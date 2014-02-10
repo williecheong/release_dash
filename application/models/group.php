@@ -6,7 +6,7 @@ class group extends CI_Model{
 
     function create( $data = array() ){
         $this->db->insert('group', $data);    
-        return;
+        return $this->db->insert_id();
     }
 
     function retrieve( $data = array() ){

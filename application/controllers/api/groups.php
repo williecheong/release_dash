@@ -30,6 +30,29 @@ class Groups extends REST_Controller {
     }
 
     public function index_post() {
-        $test = $this->post('test');
+        $data = $this->post();
+        $new_group = array( 
+                'tag'       => taggify( $data['group_title'] ),
+                'title'     => $data['group_title'],
+                'entity'    => $data['group_entity'],
+                'entity_id' => $data['group_entity_id'],
+                'is_plot'   => $data['group_is_plot'],
+                'is_number' => $data['group_is_number'] 
+            ); 
+        $group_id = $this->group->create( $new_group );
+
+        foreach ( $data['group_queries'] as $html_id => $query ) {
+            $new_query = array(
+                    'tag'       => taggify( $query['query_title'] ),
+                    'title'     => $query['query_title'],
+                    'group_id'  => $group_id,
+                    'query_qb'  => $query['query_query_qb'],
+                    'colour'    => $query['query_colour']
+                );
+            $query_id = $this->query->create( $new_query );
+        }
+
+        echo 'OK';
+        return;
     }
 }

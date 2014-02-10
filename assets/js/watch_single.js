@@ -52,12 +52,14 @@
 
     // Proceed to save the group
     $('.btn#save-new-group').click(function(){
+        $this = $(this);
+        $this.addClass('disabled');
         var saveGroup = {};
 
         saveGroup = {
-            group_entity : "version"
+            group_entity : "version",
             group_entity_id : coreData['id'],
-            group_title : $('#new-group-name').val(),
+            group_title : $.trim( $('#new-group-name').val() ),
             group_is_plot : $('#new-group-is-plot:checked').length,
             group_is_number : $('#new-group-is-number:checked').length,
             group_queries : {} 
@@ -66,28 +68,60 @@
         // Validation for the new group's input values
         if ( saveGroup['group_title'] == '' ) {
             alert( "Group name cannot be empty." );
+            $this.removeClass('disabled');
+            return false;
         }
         if ( (saveGroup['group_is_plot'] + saveGroup['group_is_number']) == 0 ) {
             alert( "Group has to be either a plot or number." );
+            $this.removeClass('disabled');
             return false;
         }
         if ( $('.new-query').length == 0 ) {
             alert( "No queries found." );
+            $this.removeClass('disabled');
             return false;
         } 
 
         $.each( $('.new-query'), function(key, value){ 
             saveGroup.group_queries[value.id] = {
-                query_title : $('.new-query#'+value.id).find('input#new-query-name').val(),
+                query_title : $.trim( $('.new-query#'+value.id).find('input#new-query-name').val() ),
                 query_colour : $('.new-query#'+value.id).find('button.colourpicker').css('color'),
                 query_query_qb : $('.new-query#'+value.id).find('textarea#new-query-qb').val()
-            }
+            };
 
             // Validation for the group queries' input values
-
+            if ( saveGroup.group_queries[value.id].query_title == '' ) {
+                alert( 'Query name cannot be empty.' );
+                $this.removeClass('disabled');
+                return false;
+            }
+            /*
+            var json = $.parseJSON( saveGroup.group_queries[value.id].query_query_qb );
+            if( typeof json != 'object' ) {
+                alert( 'Qb Query is not in JSON format.' );
+                $this.removeClass('disabled');
+                return false;      
+            } 
+            */
         });
 
-        console.log(saveGroup);
+        $.ajax({
+            url: '/api/groups',
+            type: 'POST',
+            data: saveGroup,
+            success: function(response) {
+                if ( response == 'OK' ) {
+                    $this.html('<i class="icon-ok"></i> Success');
+                }
+
+                console.log(response);
+            }, 
+            error: function(response) {
+                alert('Fail: API could not be reached.');
+                $this.removeClass('disabled');
+                console.log(response);
+            }
+        });
     });
 
 /*************************************
@@ -122,6 +156,7 @@
             });
         });
     }
+
 /************************
     EXECUTES PLOT AND NUMBER PRINTING
 ************************/
