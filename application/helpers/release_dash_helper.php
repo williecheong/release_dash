@@ -1,5 +1,19 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+if ( ! function_exists('taggify')) {
+    function taggify( $input_string = '' ) {
+        if ( $input_string == '' ) {
+            // Missing parameters
+            return $input_string;
+        } else {
+            $input_string = preg_replace( '/[^a-z0-9]+/', '-', $input_string );
+            $input_string = trim( $input_string, '-' );
+            $input_string = strtolower( $input_string );
+        }        
+        return $input_string;
+    }   
+}
+
 if ( ! function_exists('replace_birthday')) {
     function replace_birthday($input_string = '', $birthday = '') {
         if ( $input_string == '' || $birthday == '' ) {

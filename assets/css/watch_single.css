@@ -2,8 +2,31 @@
    Author's custom styles
    ========================================================================== */
 
+    button#edit-old-group {
+        width: 100%;
+        display: none;
+    }   
+
+    li.group:hover button#edit-old-group {
+        display: block;
+    }
+
+    textarea {
+        resize: vertical;
+    }
+
+    form div.new-query, form div.old-query {
+        margin: 0.2%;
+        padding: 1%;
+        border: solid;
+    } 
+
     img.load-status{
-        max-width: 80%;
+        max-width: 60%;
+    }
+
+    .group .group-number {
+        margin-top: 5%;
     }
 
     .group .group-graph {
@@ -18,6 +41,12 @@
         position: absolute;
         width: 100%;
         bottom: 0px;
+    }
+
+    .non-group .group-title {
+        position: absolute;
+        width: 100%;
+        bottom: 40%;
     }
 
     li.action {
