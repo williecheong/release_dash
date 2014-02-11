@@ -83,9 +83,9 @@ INSERT INTO `version` (`tag`, `title`, `product_id`) VALUES
 ('28',   'Firefox for Android 28',   '2'),
 ('29',   'Firefox for Android 29',   '2'),
 ('30',   'Firefox for Android 30',   '2'),
-('1_2',  'FirefoxOS 1.2',            '3'),
-('1_3',  'FirefoxOS 1.3',            '3'),
-('1_4',  'FirefoxOS 1.4',            '3');
+('1_2',  'Firefox OS 1.2',            '3'),
+('1_3',  'Firefox OS 1.3',            '3'),
+('1_4',  'Firefox OS 1.4',            '3');
 
 INSERT INTO `channel` (`tag`, `title`, `product_id`) VALUES
 ('central',         'Central',          '1'),
@@ -126,22 +126,11 @@ INSERT INTO `version_channel_cycle` (`version_id`, `channel_id`, `cycle_id`) VAL
 
 
 INSERT INTO `group` (`tag`, `title`, `entity`, `entity_id`, `is_plot`, `is_number`) VALUES
-('tracking_firefox25', 'Bugs Tracking Firefox 25', 'version', '1', '1', '1'),
-('tracking_firefox26', 'Bugs Tracking Firefox 26', 'version', '2', '1', '1'),
-('tracking_firefox27', 'Bugs Tracking Firefox 27', 'version', '3', '1', '1'),
-('tracking_firefox28', 'Bugs Tracking Firefox 28', 'version', '4', '1', '1'),
-('tracking_firefox29', 'Bugs Tracking Firefox 29', 'version', '5', '1', '1'),
-('tracking_firefox30', 'Bugs Tracking Firefox 30', 'version', '6', '1', '1');
+('tracked_vs_fixed', 'Tracked vs Fixed Bugs', 'product', '1', '1', '1');
 
-INSERT INTO `query` (`tag`, `title`, `group_id`, `query_qb`) VALUES
-('tracking_firefox25', '# Bugs Tracking Firefox 25', '1', '{"from":"public_bugs","select":{"name":"num","value":"bug_id","aggregate":"count"},"esfilter":{"and":[{"term":{"cf_tracking_firefox25":"+"}}]},"edges":[{"range":{"min":"modified_ts","max":"expires_on"},"domain":{"type":"date","min":<birthday>,"max":<timestamp>,"interval":"day"}}]}'),
-('tracking_firefox26', '# Bugs Tracking Firefox 26', '2', '{"from":"public_bugs","select":{"name":"num","value":"bug_id","aggregate":"count"},"esfilter":{"and":[{"term":{"cf_tracking_firefox26":"+"}}]},"edges":[{"range":{"min":"modified_ts","max":"expires_on"},"domain":{"type":"date","min":<birthday>,"max":<timestamp>,"interval":"day"}}]}'),
-('tracking_firefox27', '# Bugs Tracking Firefox 27', '3', '{"from":"public_bugs","select":{"name":"num","value":"bug_id","aggregate":"count"},"esfilter":{"and":[{"term":{"cf_tracking_firefox27":"+"}}]},"edges":[{"range":{"min":"modified_ts","max":"expires_on"},"domain":{"type":"date","min":<birthday>,"max":<timestamp>,"interval":"day"}}]}'),
-('tracking_firefox28', '# Bugs Tracking Firefox 28', '4', '{"from":"public_bugs","select":{"name":"num","value":"bug_id","aggregate":"count"},"esfilter":{"and":[{"term":{"cf_tracking_firefox28":"+"}}]},"edges":[{"range":{"min":"modified_ts","max":"expires_on"},"domain":{"type":"date","min":<birthday>,"max":<timestamp>,"interval":"day"}}]}'),
-('tracking_firefox29', '# Bugs Tracking Firefox 29', '5', '{"from":"public_bugs","select":{"name":"num","value":"bug_id","aggregate":"count"},"esfilter":{"and":[{"term":{"cf_tracking_firefox29":"+"}}]},"edges":[{"range":{"min":"modified_ts","max":"expires_on"},"domain":{"type":"date","min":<birthday>,"max":<timestamp>,"interval":"day"}}]}'),
-('tracking_firefox30', '# Bugs Tracking Firefox 30', '6', '{"from":"public_bugs","select":{"name":"num","value":"bug_id","aggregate":"count"},"esfilter":{"and":[{"term":{"cf_tracking_firefox30":"+"}}]},"edges":[{"range":{"min":"modified_ts","max":"expires_on"},"domain":{"type":"date","min":<birthday>,"max":<timestamp>,"interval":"day"}}]}'),
-('fixed_firefox27', '# Fixed Bugs Tracking Firefox 27', '3', '{"from":"public_bugs","select":{"name":"num","value":"bug_id","aggregate":"count"},"esfilter":{"and":[{"term":{"cf_tracking_firefox27":"+"}},{"term":{"cf_status_firefox27":"fixed"}}]},"edges":[{"range":{"min":"modified_ts","max":"expires_on"},"domain":{"type":"date","min":<birthday>,"max":<timestamp>,"interval":"day"}}]}'),
-('fixed_firefox28', '# Fixed Bugs Tracking Firefox 28', '4', '{"from":"public_bugs","select":{"name":"num","value":"bug_id","aggregate":"count"},"esfilter":{"and":[{"term":{"cf_tracking_firefox28":"+"}},{"term":{"cf_status_firefox28":"fixed"}}]},"edges":[{"range":{"min":"modified_ts","max":"expires_on"},"domain":{"type":"date","min":<birthday>,"max":<timestamp>,"interval":"day"}}]}');
+INSERT INTO `query` (`tag`, `title`, `group_id`, `colour`, `query_qb`) VALUES
+('tracking_firefox<version_tag>', '# Bugs Tracking <version_title>', '1', 'rgb(194, 127, 127)', '{"from":"public_bugs","select":{"name":"num","value":"bug_id","aggregate":"count"},"esfilter":{"and":[{"term":{"cf_tracking_firefox<version_tag>":"+"}}]},"edges":[{"range":{"min":"modified_ts","max":"expires_on"},"domain":{"type":"date","min":<birthday>,"max":<timestamp>,"interval":"day"}}]}'),
+('fixed_firefox<version_tag>', '# Fixed Bugs Tracking <version_title>', '1', 'rgb(108, 10, 238)', '{"from":"public_bugs","select":{"name":"num","value":"bug_id","aggregate":"count"},"esfilter":{"and":[{"term":{"cf_tracking_firefox<version_tag>":"+"}},{"term":{"cf_status_firefox<version_tag>":"fixed"}}]},"edges":[{"range":{"min":"modified_ts","max":"expires_on"},"domain":{"type":"date","min":<birthday>,"max":<timestamp>,"interval":"day"}}]}');
 
 
 

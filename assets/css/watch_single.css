@@ -18,12 +18,16 @@
     form div.new-query, form div.old-query {
         margin: 0.2%;
         padding: 1%;
-        border: solid;
+        border: 1px lightgray dashed;
     } 
 
     img.load-status{
         max-width: 60%;
     }
+
+    li.is-rule {
+        background-color: rgb( 240, 240, 240 ) !important;
+    }  
 
     .group .group-number {
         margin-top: 5%;

@@ -324,7 +324,7 @@
             $.each( coreData.query_groups[group_key].queries, function( key, value ) {
                 var font_colour = '#000000';
                 if ( value.colour ) { font_colour = value.colour; }
-                $('.group-number #'+key).html('<h2 style="'+font_colour+'">' + value.es_data[value.es_data.length - 1].y + '</h2>');
+                $('.group-number #'+key).html('<h2 style="color:'+font_colour+';">' + value.es_data[value.es_data.length - 1].y + '</h2>');
             });
 
             removeLoader( group_key );
