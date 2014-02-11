@@ -14,20 +14,42 @@ if ( ! function_exists('taggify')) {
     }   
 }
 
-if ( ! function_exists('replace_birthday')) {
-    function replace_birthday($input_string = '', $birthday = '') {
-        if ( $input_string == '' || $birthday == '' ) {
+/***************************************
+    FIND AND REPLACE TYPE OF FUNCTIONS
+****************************************/
+
+if ( ! function_exists('replace_version_attr') ) {
+    function replace_version_attr( $input_string = '', $version = '' ) {
+        if ( $input_string == '' || $version == '' ) {
             // Missing parameters
             return $input_string;
+        
         } else {
-            $birthday = strtotime($birthday) * 1000;
-            $input_string = str_replace("<birthday>", $birthday, $input_string);
+            $input_string = str_replace("<version_tag>", $version->tag, $input_string);
+            $input_string = str_replace("<version_title>", $version->title, $input_string);
+
         }        
+        
         return $input_string;
     }   
 }
 
-if ( ! function_exists('replace_timestamp')) {
+if ( ! function_exists('replace_birthday') ) {
+    function replace_birthday($input_string = '', $birthday = '') {
+        if ( $input_string == '' || $birthday == '' ) {
+            // Missing parameters
+            return $input_string;
+        
+        } else {
+            $birthday = strtotime($birthday) * 1000;
+            $input_string = str_replace("<birthday>", $birthday, $input_string);
+        }        
+        
+        return $input_string;
+    }   
+}
+
+if ( ! function_exists('replace_timestamp') ) {
     // By default, soft timestamps <timestamp> are replaced with current timestamp
     // If a second parameter is specified, that timestamp will be used instead
     // ElasticSearch works on milliseconds since epoch (GMT).
