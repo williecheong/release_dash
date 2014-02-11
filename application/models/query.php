@@ -6,7 +6,7 @@ class query extends CI_Model{
 
     function create( $data = array() ){
         $this->db->insert('query', $data);    
-        return;
+        return $this->db->insert_id();
     }
 
     function retrieve( $data = array() ){

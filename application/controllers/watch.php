@@ -50,17 +50,22 @@ class Watch extends CI_Controller {
 
         // Initializing a main data variable before we begin
         $data = array();
+        $data['id'] = $version->id;
         $data['title'] = $version->title;
         $data['query_groups'] = array();
 
         // Now retrieve the groups of Qb queries.
-        $by_version = array( 'version_id' => $version->id );
+        $by_version = array( 
+            'entity'    => 'version',
+            'entity_id' => $version->id );
         $groups = $this->group->retrieve( $by_version );
         
         foreach ( $groups as $group ) {
             $data['query_groups'][$group->tag]['title'] = $group->title;
+            $data['query_groups'][$group->tag]['group_id']  = $group->id;
             $data['query_groups'][$group->tag]['is_plot']  = $group->is_plot;
-            $data['query_groups'][$group->tag]['is_number']= $group->is_number;
+            $data['query_groups'][$group->tag]['is_number'] = $group->is_number;
+            $data['query_groups'][$group->tag]['is_rule'] = '0';
             $data['query_groups'][$group->tag]['queries'] = array();    
 
             // Retrieve the stored Qb queries in this group.
@@ -79,7 +84,8 @@ class Watch extends CI_Controller {
 
                 //  Append the Qb queries and other meta-data into $data
                 $data['query_groups'][$group->tag]['queries'][$query->tag]['title']       = $query->title;
-                $data['query_groups'][$group->tag]['queries'][$query->tag]['plot_colour'] = $query->plot_colour;
+                $data['query_groups'][$group->tag]['queries'][$query->tag]['query_id']    = $query->id;
+                $data['query_groups'][$group->tag]['queries'][$query->tag]['colour']      = $query->colour;
                 $data['query_groups'][$group->tag]['queries'][$query->tag]['qb_query']    = $transformed_query;
             }
         }
