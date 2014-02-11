@@ -2,11 +2,20 @@
    Author's custom styles
    ========================================================================== */
 
+    button#edit-old-group {
+        width: 100%;
+        display: none;
+    }   
+
+    li.group:hover button#edit-old-group {
+        display: block;
+    }
+
     textarea {
         resize: vertical;
     }
 
-    form div.new-query {
+    form div.new-query, form div.old-query {
         margin: 0.2%;
         padding: 1%;
         border: solid;
@@ -14,6 +23,10 @@
 
     img.load-status{
         max-width: 60%;
+    }
+
+    .group .group-number {
+        margin-top: 5%;
     }
 
     .group .group-graph {

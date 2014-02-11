@@ -55,4 +55,19 @@ class Groups extends REST_Controller {
         echo 'OK';
         return;
     }
+
+    public function index_delete( $group_id = '' ) {
+        if ( $group_id == '' ) {
+            return ;
+        }
+
+        $this->query->delete( 
+            array( 'group_id' => $group_id ) );
+        
+        $this->group->delete( 
+            array( 'id' => $group_id) );
+
+        echo 'OK';
+        return;
+    }
 }
