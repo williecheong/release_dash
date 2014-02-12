@@ -70,7 +70,7 @@ class Watch extends CI_Controller {
             $data['query_groups'][$group_tag]['group_id']  = $group->id;
             $data['query_groups'][$group_tag]['is_plot']  = $group->is_plot;
             $data['query_groups'][$group_tag]['is_number'] = $group->is_number;
-            $data['query_groups'][$group_tag]['is_rule'] = '1';
+            $data['query_groups'][$group_tag]['is_default'] = '1';
             $data['query_groups'][$group_tag]['queries'] = array();    
 
             // Retrieve the stored Qb queries in this group.
@@ -112,7 +112,7 @@ class Watch extends CI_Controller {
             $data['query_groups'][$group->tag]['group_id']  = $group->id;
             $data['query_groups'][$group->tag]['is_plot']  = $group->is_plot;
             $data['query_groups'][$group->tag]['is_number'] = $group->is_number;
-            $data['query_groups'][$group->tag]['is_rule'] = '0';
+            $data['query_groups'][$group->tag]['is_default'] = '0';
             $data['query_groups'][$group->tag]['queries'] = array();    
 
             // Retrieve the stored Qb queries in this group.
