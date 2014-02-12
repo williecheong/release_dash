@@ -36,7 +36,15 @@
             <?php foreach ( $data['query_groups'] as $group_tag => $group ) { ?>
                 <?php if ( $group['is_plot'] == 1 && $group['is_default'] == 1 ) { ?>
                 <li class="group is-default" id="<?= $group_tag; ?>" data-row="1" data-col="1" data-sizex="3" data-sizey="2">
-                    <div class="group-graph" id="<?= $group_tag; ?>">
+                    <div class="top-menu">
+                        <?php foreach ( $group['queries'] as $query ) { ?>
+                        <?php if ( !empty($query['bz_query']) ) { ?>
+                        <a class="btn btn-xs pull-right" href="<?= $query['bz_query']; ?>" style="color:<?= $query['colour']; ?>;">
+                            <i class="icon-bug"></i>
+                        </a>
+                        <?php } ?>
+                        <?php } ?>
+                    </div><div class="group-graph" id="<?= $group_tag; ?>">
                         <div class="y-axis" id="<?= $group_tag; ?>"></div>
                         <div class="plot" id="<?= $group_tag; ?>"></div>
                     </div>
@@ -51,6 +59,15 @@
             <?php foreach ( $data['query_groups'] as $group_tag => $group ) { ?>
                 <?php if ( $group['is_number'] == 1 && $group['is_default'] == 1 ) { ?>
                 <li class="group is-default" id="<?= $group_tag; ?>" data-row="1" data-col="1" data-sizex="<?= min(2, count($group['queries'])); ?>" data-sizey="1">
+                    <div class="top-menu">
+                        <?php foreach ( $group['queries'] as $query ) { ?>
+                        <?php if ( !empty($query['bz_query']) ) { ?>
+                        <a class="btn btn-xs pull-right" href="<?= $query['bz_query']; ?>" style="color:<?= $query['colour']; ?>;">
+                            <i class="icon-bug"></i>
+                        </a>
+                        <?php } ?>
+                        <?php } ?>
+                    </div>
                     <div class="group-number text-center" id="<?= $group_tag; ?>">
                         <?php foreach( $group['queries'] as $query_tag => $query ) { ?>
                         <div class="text-center" id="<?= $query_tag; ?>" title="<?= $query['title'] ?>" style="width:<?= 90 / count($group['queries']); ?>%; display:inline-block;"></div>
@@ -67,9 +84,18 @@
             <?php foreach ( $data['query_groups'] as $group_tag => $group ) { ?>
                 <?php if ( $group['is_plot'] == 1 && $group['is_default'] == 0 ) { ?>
                 <li class="group" id="<?= $group_tag; ?>" data-row="1" data-col="1" data-sizex="3" data-sizey="2">
-                    <button class="btn btn-xs pull-right" id="edit-old-group" data-group-tag="<?= $group_tag; ?>">
-                        <i class="icon-pencil"></i>
-                    </button>
+                    <div class="top-menu">
+                        <button class="btn btn-xs pull-right" id="edit-old-group" data-group-tag="<?= $group_tag; ?>">
+                            <i class="icon-pencil"></i>
+                        </button>
+                        <?php foreach ( $group['queries'] as $query ) { ?>
+                        <?php if ( !empty($query['bz_query']) ) { ?>
+                        <a class="btn btn-xs pull-right" href="<?= $query['bz_query']; ?>" style="color:<?= $query['colour']; ?>;">
+                            <i class="icon-bug"></i>
+                        </a>
+                        <?php } ?>
+                        <?php } ?>
+                    </div>
                     <div class="group-graph" id="<?= $group_tag; ?>">
                         <div class="y-axis" id="<?= $group_tag; ?>"></div>
                         <div class="plot" id="<?= $group_tag; ?>"></div>
@@ -85,9 +111,18 @@
             <?php foreach ( $data['query_groups'] as $group_tag => $group ) { ?>
                 <?php if ( $group['is_number'] == 1 && $group['is_default'] == 0 ) { ?>
                 <li class="group" id="<?= $group_tag; ?>" data-row="1" data-col="1" data-sizex="<?= min(2, count($group['queries'])); ?>" data-sizey="1">
-                    <button class="btn btn-xs pull-right" id="edit-old-group" data-group-tag="<?= $group_tag; ?>">
-                        <i class="icon-pencil"></i>
-                    </button>
+                    <div class="top-menu">
+                        <button class="btn btn-xs pull-right" id="edit-old-group" data-group-tag="<?= $group_tag; ?>">
+                            <i class="icon-pencil"></i>
+                        </button>
+                        <?php foreach ( $group['queries'] as $query ) { ?>
+                        <?php if ( !empty($query['bz_query']) ) { ?>
+                        <a class="btn btn-xs pull-right" href="<?= $query['bz_query']; ?>" style="color:<?= $query['colour']; ?>;">
+                            <i class="icon-bug"></i>
+                        </a>
+                        <?php } ?>
+                        <?php } ?>
+                    </div>
                     <div class="group-number text-center" id="<?= $group_tag; ?>">
                         <?php foreach( $group['queries'] as $query_tag => $query ) { ?>
                         <div class="text-center" id="<?= $query_tag; ?>" title="<?= $query['title'] ?>" style="width:<?= 90 / count($group['queries']); ?>%; display:inline-block;"></div>
@@ -100,6 +135,8 @@
                 </li>
                 <?php } // End if non-default group that is_number ?>
             <?php } // End foreach query_group ?>
+
+
 
             <li class="non-group" data-row="1" data-col="1" data-sizex="1" data-sizey="1">
                 <div class="text-center group-title">
