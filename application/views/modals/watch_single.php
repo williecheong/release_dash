@@ -30,10 +30,10 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-default btn-sm" id="new-query-template">
-                    <i class="icon-plus"></i> Query
+                    <i class="fa fa-plus"></i> Query
                 </button>
                 <button class="btn btn-success" id="save-new-group">
-                    <i class="icon-save"></i> Save
+                    <i class="fa fa-save"></i> Save
                 </button>
             </div>
         </div><!-- /.modal-content -->
@@ -75,7 +75,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-danger" id="delete-old-group" data-group-id="">
-                    <i class="icon-remove"></i> Delete
+                    <i class="fa fa-remove"></i> Delete
                 </button>
             </div>
         </div><!-- /.modal-content -->

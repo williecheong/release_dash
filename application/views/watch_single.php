@@ -40,7 +40,7 @@
                         <?php foreach ( $group['queries'] as $query ) { ?>
                         <?php if ( !empty($query['bz_query']) ) { ?>
                         <a class="btn btn-xs pull-right" href="<?= $query['bz_query']; ?>" style="color:<?= $query['colour']; ?>;">
-                            <i class="icon-bug"></i>
+                            <i class="fa fa-bug"></i>
                         </a>
                         <?php } ?>
                         <?php } ?>
@@ -63,7 +63,7 @@
                         <?php foreach ( $group['queries'] as $query ) { ?>
                         <?php if ( !empty($query['bz_query']) ) { ?>
                         <a class="btn btn-xs pull-right" href="<?= $query['bz_query']; ?>" style="color:<?= $query['colour']; ?>;">
-                            <i class="icon-bug"></i>
+                            <i class="fa fa-bug"></i>
                         </a>
                         <?php } ?>
                         <?php } ?>
@@ -86,12 +86,12 @@
                 <li class="group" id="<?= $group_tag; ?>" data-row="1" data-col="1" data-sizex="3" data-sizey="2">
                     <div class="top-menu">
                         <button class="btn btn-xs pull-right" id="edit-old-group" data-group-tag="<?= $group_tag; ?>">
-                            <i class="icon-pencil"></i>
+                            <i class="fa fa-pencil"></i>
                         </button>
                         <?php foreach ( $group['queries'] as $query ) { ?>
                         <?php if ( !empty($query['bz_query']) ) { ?>
                         <a class="btn btn-xs pull-right" href="<?= $query['bz_query']; ?>" style="color:<?= $query['colour']; ?>;">
-                            <i class="icon-bug"></i>
+                            <i class="fa fa-bug"></i>
                         </a>
                         <?php } ?>
                         <?php } ?>
@@ -113,12 +113,12 @@
                 <li class="group" id="<?= $group_tag; ?>" data-row="1" data-col="1" data-sizex="<?= min(2, count($group['queries'])); ?>" data-sizey="1">
                     <div class="top-menu">
                         <button class="btn btn-xs pull-right" id="edit-old-group" data-group-tag="<?= $group_tag; ?>">
-                            <i class="icon-pencil"></i>
+                            <i class="fa fa-pencil"></i>
                         </button>
                         <?php foreach ( $group['queries'] as $query ) { ?>
                         <?php if ( !empty($query['bz_query']) ) { ?>
                         <a class="btn btn-xs pull-right" href="<?= $query['bz_query']; ?>" style="color:<?= $query['colour']; ?>;">
-                            <i class="icon-bug"></i>
+                            <i class="fa fa-bug"></i>
                         </a>
                         <?php } ?>
                         <?php } ?>
@@ -141,7 +141,7 @@
             <li class="non-group" data-row="1" data-col="1" data-sizex="1" data-sizey="1">
                 <div class="text-center group-title">
                     <button type="button" class="btn btn-success" id="add-new-group">
-                        <i class="icon-plus"></i>
+                        <i class="fa fa-plus"></i>
                     </button>
                 </div>
             </li>

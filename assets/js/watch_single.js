@@ -29,7 +29,7 @@
             $('.modal#new-group').find('input').val('');
             $('.modal#new-group').find('input[type="checkbox"]').prop('checked', false);
             $('.modal#new-group').find('div.new-query').remove();
-            $('.modal#new-group').find('.btn#save-new-group').html('<i class="icon-save"></i> Save');
+            $('.modal#new-group').find('.btn#save-new-group').html('<i class="fa fa-save"></i> Save');
             $('.modal#new-group').find('.btn#save-new-group').removeClass('disabled');
             $('.modal#new-group').find('.btn#save-new-group').removeClass('previousSuccess');       
         }
@@ -125,10 +125,10 @@
             success: function(response) {
                 if ( response == 'OK' ) {
                     $this.addClass('previousSuccess');
-                    $this.html('<i class="icon-ok"></i> Success');
+                    $this.html('<i class="fa fa-ok"></i> Success');
                     setTimeout(function() {
                         // Refresh page after 1.5 seconds
-                        $this.html('<i class="icon-time"></i> Refreshing');
+                        $this.html('<i class="fa fa-refresh"></i> Refreshing');
                         location.reload();
                     }, 1500);
                 }
@@ -154,7 +154,7 @@
         // Cleaning up the modal from prior use
         $('.modal#old-group').find('form div.old-query').remove();
         $('.btn#delete-old-group').removeClass('disabled');
-        $('.btn#delete-old-group').html('<i class="icon-remove"></i> Delete');
+        $('.btn#delete-old-group').html('<i class="fa fa-times"></i> Delete');
         // End of cleaning up the modal from prior use
 
         // Setting the values inside the modal's form fields
@@ -201,10 +201,10 @@
             type: 'DELETE',
             success: function(response) {
                 if ( response == 'OK' ) {
-                    $this.html('<i class="icon-ok"></i> Success');
+                    $this.html('<i class="fa fa-ok"></i> Success');
                     setTimeout(function() {
                         // Refresh page after 1.5 seconds
-                        $this.html('<i class="icon-time"></i> Refreshing');
+                        $this.html('<i class="fa fa-refresh"></i> Refreshing');
                         location.reload();
                     }, 1500);
                 }
@@ -357,7 +357,7 @@
     function templateNewGroup ( number ) {
         var html = '<div class="new-query" id="'+ number +'">'+
                         '<button type="button" class="btn btn-xs btn-default" id="remove-new-query">'+
-                            '<i class="icon-remove"></i>'+
+                            '<i class="fa fa-times"></i>'+
                         '</button>'+
                         '<div class="form-group">'+
                             '<label class="col-sm-3 control-label" for="new-query-name">Query Name</label>'+
@@ -365,7 +365,7 @@
                                 '<input type="text" class="form-control" id="new-query-name" placeholder="Description for this query.">'+
                                 '<span class="input-group-btn">'+
                                     '<button class="btn btn-default colourpicker" type="button" id="'+number+'">'+
-                                        '<i class="icon-tint icon-large"></i> Color'+
+                                        '<i class="fa fa-tint fa-lg"></i> Color'+
                                     '</button>'+
                                     '<em id="colorpicker-log"></em>'+
                                 '</span>'+
@@ -398,7 +398,7 @@
                                 '<input type="text" class="form-control" id="query-name" placeholder="Description for this query." value="'+query.title+'">'+
                                 '<span class="input-group-btn">'+
                                     '<button class="btn btn-default colourpicker" type="button" id="'+query.query_id+'" style="color:'+query.colour+';">'+
-                                        '<i class="icon-tint icon-large"></i> Color'+
+                                        '<i class="fa fa-tint fa-lg"></i> Color'+
                                     '</button>'+
                                     '<em id="colorpicker-log"></em>'+
                                 '</span>'+
