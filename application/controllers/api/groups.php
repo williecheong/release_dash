@@ -47,6 +47,7 @@ class Groups extends REST_Controller {
                     'title'     => $query['query_title'],
                     'group_id'  => $group_id,
                     'query_qb'  => $query['query_query_qb'],
+                    'query_bz'  => $query['query_query_bz'],
                     'colour'    => $query['query_colour']
                 );
             $query_id = $this->query->create( $new_query );
