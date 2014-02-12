@@ -6,7 +6,7 @@ if ( ! function_exists('taggify')) {
             // Missing parameters
             return $input_string;
         } else {
-            $input_string = preg_replace( '/[^a-z0-9]+/', '-', $input_string );
+            $input_string = preg_replace( '/[^a-zA-Z0-9]+/', '-', $input_string );
             $input_string = trim( $input_string, '-' );
             $input_string = strtolower( $input_string );
         }        
