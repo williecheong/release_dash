@@ -79,7 +79,7 @@ class Watch extends CI_Controller {
 
             foreach ( $queries as $query ) {
                 $query_tag = replace_version_attr( $query->tag, $version );
-                $query_title = replace_version_attr( $query->title, $product, $version );
+                $query_title = replace_version_attr( $query->title, $version );
 
                 // Replace soft timestamps with current timestamp and birthday
                 $transformed_query = $query->query_qb;
