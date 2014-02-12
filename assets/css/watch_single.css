@@ -2,12 +2,12 @@
    Author's custom styles
    ========================================================================== */
 
-    button#edit-old-group {
-        width: 100%;
+    div.top-menu {
+        float: right;
         display: none;
     }   
 
-    li.group:hover button#edit-old-group {
+    li.group:hover div.top-menu {
         display: block;
     }
 

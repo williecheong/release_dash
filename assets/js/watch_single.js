@@ -98,6 +98,7 @@
             saveGroup.group_queries[value.id] = {
                 query_title : $.trim( $('.new-query#'+value.id).find('input#new-query-name').val() ),
                 query_colour : $('.new-query#'+value.id).find('button.colourpicker').css('color'),
+                query_query_bz : $('.new-query#'+value.id).find('input#new-query-bz').val(),
                 query_query_qb : $('.new-query#'+value.id).find('textarea#new-query-qb').val()
             };
 
@@ -125,6 +126,11 @@
                 if ( response == 'OK' ) {
                     $this.addClass('previousSuccess');
                     $this.html('<i class="icon-ok"></i> Success');
+                    setTimeout(function() {
+                        // Refresh page after 1.5 seconds
+                        $this.html('<i class="icon-time"></i> Refreshing');
+                        location.reload();
+                    }, 1500);
                 }
 
                 console.log(response);
@@ -195,7 +201,12 @@
             type: 'DELETE',
             success: function(response) {
                 if ( response == 'OK' ) {
-                    $this.html('<i class="icon-ok"></i> OK');
+                    $this.html('<i class="icon-ok"></i> Success');
+                    setTimeout(function() {
+                        // Refresh page after 1.5 seconds
+                        $this.html('<i class="icon-time"></i> Refreshing');
+                        location.reload();
+                    }, 1500);
                 }
 
                 console.log(response);
@@ -354,10 +365,16 @@
                                 '<input type="text" class="form-control" id="new-query-name" placeholder="Description for this query.">'+
                                 '<span class="input-group-btn">'+
                                     '<button class="btn btn-default colourpicker" type="button" id="'+number+'">'+
-                                        '<i class="icon-tint icon-large"></i>'+
+                                        '<i class="icon-tint icon-large"></i> Color'+
                                     '</button>'+
                                     '<em id="colorpicker-log"></em>'+
                                 '</span>'+
+                            '</div>'+
+                        '</div>'+
+                        '<div class="form-group">'+
+                            '<label class="col-sm-3 control-label" for="new-query-bz">Bugzilla URL</label>'+
+                            '<div class="col-sm-9">'+
+                                '<input class="form-control" id="new-query-bz" placeholder="URL that links to this query in Bugzilla.">'+
                             '</div>'+
                         '</div>'+
                         '<div class="form-group">'+
@@ -381,10 +398,16 @@
                                 '<input type="text" class="form-control" id="query-name" placeholder="Description for this query." value="'+query.title+'">'+
                                 '<span class="input-group-btn">'+
                                     '<button class="btn btn-default colourpicker" type="button" id="'+query.query_id+'" style="color:'+query.colour+';">'+
-                                        '<i class="icon-tint icon-large"></i>'+
+                                        '<i class="icon-tint icon-large"></i> Color'+
                                     '</button>'+
                                     '<em id="colorpicker-log"></em>'+
                                 '</span>'+
+                            '</div>'+
+                        '</div>'+
+                        '<div class="form-group">'+
+                            '<label class="col-sm-3 control-label" for="query-bz">Bugzilla URL</label>'+
+                            '<div class="col-sm-9">'+
+                                '<input class="form-control" id="query-bz" value="'+query.bz_query+'" placeholder="URL that links to this query in Bugzilla.">'+
                             '</div>'+
                         '</div>'+
                         '<div class="form-group">'+
