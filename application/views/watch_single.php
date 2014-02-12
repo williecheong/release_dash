@@ -34,8 +34,8 @@
     <div class="gridster">
         <ul class="grids">
             <?php foreach ( $data['query_groups'] as $group_tag => $group ) { ?>
-                <?php if ( $group['is_plot'] == 1 && $group['is_rule'] == 1 ) { ?>
-                <li class="group is-rule" id="<?= $group_tag; ?>" data-row="1" data-col="1" data-sizex="3" data-sizey="2">
+                <?php if ( $group['is_plot'] == 1 && $group['is_default'] == 1 ) { ?>
+                <li class="group is-default" id="<?= $group_tag; ?>" data-row="1" data-col="1" data-sizex="3" data-sizey="2">
                     <div class="group-graph" id="<?= $group_tag; ?>">
                         <div class="y-axis" id="<?= $group_tag; ?>"></div>
                         <div class="plot" id="<?= $group_tag; ?>"></div>
@@ -45,12 +45,12 @@
                         <h4><?= $group['title']; ?></h4>
                     </div>
                 </li>
-                <?php } // End if rule group that is_plot ?>
+                <?php } // End if default group that is_plot ?>
             <?php } // End foreach query_group ?>
 
             <?php foreach ( $data['query_groups'] as $group_tag => $group ) { ?>
-                <?php if ( $group['is_number'] == 1 && $group['is_rule'] == 1 ) { ?>
-                <li class="group is-rule" id="<?= $group_tag; ?>" data-row="1" data-col="1" data-sizex="<?= min(2, count($group['queries'])); ?>" data-sizey="1">
+                <?php if ( $group['is_number'] == 1 && $group['is_default'] == 1 ) { ?>
+                <li class="group is-default" id="<?= $group_tag; ?>" data-row="1" data-col="1" data-sizex="<?= min(2, count($group['queries'])); ?>" data-sizey="1">
                     <div class="group-number text-center" id="<?= $group_tag; ?>">
                         <?php foreach( $group['queries'] as $query_tag => $query ) { ?>
                         <div class="text-center" id="<?= $query_tag; ?>" title="<?= $query['title'] ?>" style="width:<?= 90 / count($group['queries']); ?>%; display:inline-block;"></div>
@@ -61,11 +61,11 @@
                         <h4><?= $group['title']; ?></h4>
                     </div>
                 </li>
-                <?php } // End if rule group that is_number ?>
+                <?php } // End if default group that is_number ?>
             <?php } // End foreach query_group ?>
 
             <?php foreach ( $data['query_groups'] as $group_tag => $group ) { ?>
-                <?php if ( $group['is_plot'] == 1 && $group['is_rule'] == 0 ) { ?>
+                <?php if ( $group['is_plot'] == 1 && $group['is_default'] == 0 ) { ?>
                 <li class="group" id="<?= $group_tag; ?>" data-row="1" data-col="1" data-sizex="3" data-sizey="2">
                     <button class="btn btn-xs pull-right" id="edit-old-group" data-group-tag="<?= $group_tag; ?>">
                         <i class="icon-pencil"></i>
@@ -79,11 +79,11 @@
                         <h4><?= $group['title']; ?></h4>
                     </div>
                 </li>
-                <?php } // End if non-rule group that is_plot ?>
+                <?php } // End if non-default group that is_plot ?>
             <?php } // End foreach query_group ?>
 
             <?php foreach ( $data['query_groups'] as $group_tag => $group ) { ?>
-                <?php if ( $group['is_number'] == 1 && $group['is_rule'] == 0 ) { ?>
+                <?php if ( $group['is_number'] == 1 && $group['is_default'] == 0 ) { ?>
                 <li class="group" id="<?= $group_tag; ?>" data-row="1" data-col="1" data-sizex="<?= min(2, count($group['queries'])); ?>" data-sizey="1">
                     <button class="btn btn-xs pull-right" id="edit-old-group" data-group-tag="<?= $group_tag; ?>">
                         <i class="icon-pencil"></i>
@@ -98,7 +98,7 @@
                         <h4><?= $group['title']; ?></h4>
                     </div>
                 </li>
-                <?php } // End if non-rule group that is_number ?>
+                <?php } // End if non-default group that is_number ?>
             <?php } // End foreach query_group ?>
 
             <li class="non-group" data-row="1" data-col="1" data-sizex="1" data-sizey="1">
