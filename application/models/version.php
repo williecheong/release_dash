@@ -11,7 +11,8 @@ class version extends CI_Model{
         $this->db->where( array( 'version_channel_cycle.version_id' => $version_id ) );
         $query = $this->db->get();
 
-        return $query->result()[0]->end;
+        $query_result = $query->result();
+        return $query_result[0]->end;
     }
 
     function get_birthday( $version_id = 0 ) { 
@@ -23,7 +24,8 @@ class version extends CI_Model{
         $this->db->where( array( 'version_channel_cycle.version_id' => $version_id ) );
         $query = $this->db->get();
 
-        return $query->result()[0]->start;
+        $query_result = $query->result();
+        return $query_result[0]->start;
     }
 
     function get_actives_by_product( $product_id = 0 ) {
