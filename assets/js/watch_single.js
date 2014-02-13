@@ -8,8 +8,11 @@
         widget_base_dimensions: [ gridsterWidth*0.104, gridsterWidth*0.104 ]
     });
 
-    // Initializes the #new-group modal
-    $('#new-group').modal({
+    // Initializes the modals
+    $('.modal#new-group').modal({
+        show : false
+    });
+    $('.modal#old-group').modal({
         show : false
     });
 
@@ -29,7 +32,7 @@
             $('.modal#new-group').find('input').val('');
             $('.modal#new-group').find('input[type="checkbox"]').prop('checked', false);
             $('.modal#new-group').find('div.new-query').remove();
-            $('.modal#new-group').find('.btn#save-new-group').html('<i class="icon-save"></i> Save');
+            $('.modal#new-group').find('.btn#save-new-group').html('<i class="fa fa-save"></i> Save');
             $('.modal#new-group').find('.btn#save-new-group').removeClass('disabled');
             $('.modal#new-group').find('.btn#save-new-group').removeClass('previousSuccess');       
         }
@@ -94,6 +97,7 @@
             return false;
         } 
 
+        var queryError = false;
         $.each( $('.new-query'), function(key, value){ 
             saveGroup.group_queries[value.id] = {
                 query_title : $.trim( $('.new-query#'+value.id).find('input#new-query-name').val() ),
@@ -106,17 +110,12 @@
             if ( saveGroup.group_queries[value.id].query_title == '' ) {
                 alert( 'Query name cannot be empty.' );
                 $this.removeClass('disabled');
-                return false;
+                queryError = true;
             }
-            /*
-            var json = $.parseJSON( saveGroup.group_queries[value.id].query_query_qb );
-            if( typeof json != 'object' ) {
-                alert( 'Qb Query is not in JSON format.' );
-                $this.removeClass('disabled');
-                return false;      
-            } 
-            */
         });
+        if ( queryError ) {
+            return false;
+        }
 
         $.ajax({
             url: '/api/groups',
@@ -125,10 +124,10 @@
             success: function(response) {
                 if ( response == 'OK' ) {
                     $this.addClass('previousSuccess');
-                    $this.html('<i class="icon-ok"></i> Success');
+                    $this.html('<i class="fa fa-check"></i> Success');
                     setTimeout(function() {
                         // Refresh page after 1.5 seconds
-                        $this.html('<i class="icon-time"></i> Refreshing');
+                        $this.html('<i class="fa fa-refresh"></i> Refreshing');
                         location.reload();
                     }, 1500);
                 }
@@ -154,7 +153,7 @@
         // Cleaning up the modal from prior use
         $('.modal#old-group').find('form div.old-query').remove();
         $('.btn#delete-old-group').removeClass('disabled');
-        $('.btn#delete-old-group').html('<i class="icon-remove"></i> Delete');
+        $('.btn#delete-old-group').html('<i class="fa fa-times"></i> Delete');
         // End of cleaning up the modal from prior use
 
         // Setting the values inside the modal's form fields
@@ -201,10 +200,10 @@
             type: 'DELETE',
             success: function(response) {
                 if ( response == 'OK' ) {
-                    $this.html('<i class="icon-ok"></i> Success');
+                    $this.html('<i class="fa fa-check"></i> Success');
                     setTimeout(function() {
                         // Refresh page after 1.5 seconds
-                        $this.html('<i class="icon-time"></i> Refreshing');
+                        $this.html('<i class="fa fa-refresh"></i> Refreshing');
                         location.reload();
                     }, 1500);
                 }
@@ -357,18 +356,20 @@
     function templateNewGroup ( number ) {
         var html = '<div class="new-query" id="'+ number +'">'+
                         '<button type="button" class="btn btn-xs btn-default" id="remove-new-query">'+
-                            '<i class="icon-remove"></i>'+
+                            '<i class="fa fa-times"></i>'+
                         '</button>'+
                         '<div class="form-group">'+
                             '<label class="col-sm-3 control-label" for="new-query-name">Query Name</label>'+
-                            '<div class="col-sm-9 input-group">'+
-                                '<input type="text" class="form-control" id="new-query-name" placeholder="Description for this query.">'+
-                                '<span class="input-group-btn">'+
-                                    '<button class="btn btn-default colourpicker" type="button" id="'+number+'">'+
-                                        '<i class="icon-tint icon-large"></i> Color'+
-                                    '</button>'+
-                                    '<em id="colorpicker-log"></em>'+
-                                '</span>'+
+                            '<div class="col-sm-9 controls">'+
+                                '<div class="input-group">'+
+                                    '<input type="text" class="form-control" id="new-query-name" placeholder="Description for this query.">'+
+                                    '<span class="input-group-btn">'+
+                                        '<button class="btn btn-default colourpicker" type="button" id="'+number+'">'+
+                                            '<i class="fa fa-tint fa-lg"></i> Color'+
+                                        '</button>'+
+                                        '<em id="colorpicker-log"></em>'+
+                                    '</span>'+
+                                '</div>'+
                             '</div>'+
                         '</div>'+
                         '<div class="form-group">'+
@@ -394,14 +395,16 @@
                         '</div>'+
                         '<div class="form-group">'+
                             '<label class="col-sm-3 control-label" for="query-name">Query Name</label>'+
-                            '<div class="col-sm-9 input-group">'+
-                                '<input type="text" class="form-control" id="query-name" placeholder="Description for this query." value="'+query.title+'">'+
-                                '<span class="input-group-btn">'+
-                                    '<button class="btn btn-default colourpicker" type="button" id="'+query.query_id+'" style="color:'+query.colour+';">'+
-                                        '<i class="icon-tint icon-large"></i> Color'+
-                                    '</button>'+
-                                    '<em id="colorpicker-log"></em>'+
-                                '</span>'+
+                            '<div class="col-sm-9 controls" >'+
+                                '<div class="input-group">'+
+                                    '<input type="text" class="form-control" id="query-name" placeholder="Description for this query." value="'+query.title+'">'+
+                                    '<span class="input-group-btn">'+
+                                        '<button class="btn btn-default colourpicker" type="button" id="'+query.query_id+'" style="color:'+query.colour+';">'+
+                                            '<i class="fa fa-tint fa-lg"></i> Color'+
+                                        '</button>'+
+                                        '<em id="colorpicker-log"></em>'+
+                                    '</span>'+
+                                '</div>'+
                             '</div>'+
                         '</div>'+
                         '<div class="form-group">'+

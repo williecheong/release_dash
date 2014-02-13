@@ -7,11 +7,15 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <link rel="shortcut icon" href="/assets/favicon.ico" type="image/x-icon">
+        <link rel="icon" href="/assets/favicon.ico" type="image/x-icon">
         <title>Release Readiness Dashboard<?= (isset($version) ? " :: ".$version : ""); ?></title>
         <meta name="description" content="A dashboard for monitoring the readiness of new releases for Mozilla products.">
         <meta name="viewport" content="width=device-width">
-        <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
-        <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap-theme.min.css">
 
         <style>
             body {
@@ -20,11 +24,10 @@
             }
         </style>
 
-        <link rel="stylesheet" href="/assets/css/bootstrap-theme.min.css">
-        <link rel="stylesheet" href="/assets/js/vendor/rickshaw/rickshaw.min.css">
+        <link rel="stylesheet" href="/assets/vendor/rickshaw/rickshaw.min.css">
         <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
         <?= $top; ?>
-        <script src="/assets/js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script> 
+        <script src="/assets/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script> 
     </head>
     
     <body>
