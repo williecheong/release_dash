@@ -10,17 +10,17 @@
     //    As usual, CSS to the header, JS to the footer.
     $include = array( 
         'version'  => $data['title'] ,    
-        'top'    => '<link rel="stylesheet" href="/assets/js/vendor/ducksboard-gridster/jquery.gridster.min.css">
-                     <link rel="stylesheet" href="/assets/js/vendor/spectrum/spectrum.css">
+        'top'    => '<link rel="stylesheet" href="/assets/vendor/ducksboard-gridster/jquery.gridster.min.css">
+                     <link rel="stylesheet" href="/assets/vendor/spectrum/spectrum.css">
                      <link rel="stylesheet" href="/assets/css/watch_single.css">',
         
-        'bottom' => '<script type="application/javascript;version=1.7" src="/assets/js/vendor/Qb/html/js/imports/import.js"></script>
-                     <script type="application/javascript;version=1.7" src="/assets/js/vendor/Qb/html/js/ESQueryRunner.js"></script>
-                     <script src="/assets/js/vendor/ducksboard-gridster/jquery.gridster.min.js"></script>
-                     <script src="/assets/js/vendor/rickshaw/vendor/d3.min.js"></script>
-                     <script src="/assets/js/vendor/rickshaw/vendor/d3.layout.min.js"></script>
-                     <script src="/assets/js/vendor/rickshaw/rickshaw.js"></script>
-                     <script src="/assets/js/vendor/spectrum/spectrum.js"></script>
+        'bottom' => '<script src="/assets/vendor/Qb/html/js/imports/import.js" type="application/javascript;version=1.7"></script>
+                     <script src="/assets/vendor/Qb/html/js/ESQueryRunner.js" type="application/javascript;version=1.7"></script>
+                     <script src="/assets/vendor/ducksboard-gridster/jquery.gridster.min.js"></script>
+                     <script src="/assets/vendor/rickshaw/vendor/d3.min.js"></script>
+                     <script src="/assets/vendor/rickshaw/vendor/d3.layout.min.js"></script>
+                     <script src="/assets/vendor/rickshaw/rickshaw.js"></script>
+                     <script src="/assets/vendor/spectrum/spectrum.js"></script>
                      <script>var coreData = '. json_encode($data) .'</script>
                      <script src="/assets/js/watch_single.js"></script>'
     );
