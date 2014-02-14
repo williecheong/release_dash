@@ -60,13 +60,25 @@ class Groups extends REST_Controller {
             return ;
         }
 
-        $this->query->delete( 
-            array( 'group_id' => $group_id ) );
-        
-        $this->group->delete( 
-            array( 'id' => $group_id) );
+        // Check if group is available to delete
+        //  Note: product groups are default and cannot be deleted here
+        $availability = $this->group->retrieve( 
+                    array(  'id'     => $group_id,
+                            'entity' => 'version'   )); 
 
-        echo 'OK';
+        if ( count($availability) > 0 ) {
+            // Group is available to delete
+            $this->query->delete( 
+                array( 'group_id' => $group_id ) ); 
+            $this->group->delete( 
+                array( 'id' => $group_id) );
+
+            echo 'OK';
+        } else { 
+            // Group not available to delete 
+            echo 'Delete failed - group not found';     
+        }
+
         return;
     }
 }
