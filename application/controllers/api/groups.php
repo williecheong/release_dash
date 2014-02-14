@@ -32,7 +32,6 @@ class Groups extends REST_Controller {
     public function index_post() {
         $data = $this->post();
         $new_group = array( 
-                'tag'       => taggify( $data['group_title'] ),
                 'title'     => $data['group_title'],
                 'entity'    => $data['group_entity'],
                 'entity_id' => $data['group_entity_id'],
@@ -43,7 +42,6 @@ class Groups extends REST_Controller {
 
         foreach ( $data['group_queries'] as $html_id => $query ) {
             $new_query = array(
-                    'tag'       => taggify( $query['query_title'] ),
                     'title'     => $query['query_title'],
                     'group_id'  => $group_id,
                     'query_qb'  => $query['query_query_qb'],
