@@ -33,9 +33,9 @@
 <div class="container">
     <div class="gridster">
         <ul class="grids">
-            <?php foreach ( $data['query_groups'] as $group_tag => $group ) { ?>
+            <?php foreach ( $data['query_groups'] as $group_id => $group ) { ?>
                 <?php if ( $group['is_plot'] == 1 && $group['is_default'] == 1 ) { ?>
-                <li class="group is-default" id="<?= $group_tag; ?>" data-row="1" data-col="1" data-sizex="3" data-sizey="2">
+                <li class="group is-default" id="g<?= $group_id; ?>" data-row="1" data-col="1" data-sizex="3" data-sizey="2">
                     <div class="top-menu">
                         <?php foreach ( $group['queries'] as $query ) { ?>
                         <?php if ( !empty($query['bz_query']) ) { ?>
@@ -44,11 +44,12 @@
                         </a>
                         <?php } ?>
                         <?php } ?>
-                    </div><div class="group-graph" id="<?= $group_tag; ?>">
-                        <div class="y-axis" id="<?= $group_tag; ?>"></div>
-                        <div class="plot" id="<?= $group_tag; ?>"></div>
                     </div>
-                    <div class="text-center group-title" id="<?= $group_tag; ?>">
+                    <div class="group-graph" id="g<?= $group_id; ?>">
+                        <div class="y-axis" id="g<?= $group_id; ?>"></div>
+                        <div class="plot" id="g<?= $group_id; ?>"></div>
+                    </div>
+                    <div class="text-center group-title" id="g<?= $group_id; ?>">
                         <img class="load-status" src="/assets/img/mozchomp.gif">
                         <h4><?= $group['title']; ?></h4>
                     </div>
@@ -56,9 +57,9 @@
                 <?php } // End if default group that is_plot ?>
             <?php } // End foreach query_group ?>
 
-            <?php foreach ( $data['query_groups'] as $group_tag => $group ) { ?>
+            <?php foreach ( $data['query_groups'] as $group_id => $group ) { ?>
                 <?php if ( $group['is_number'] == 1 && $group['is_default'] == 1 ) { ?>
-                <li class="group is-default" id="<?= $group_tag; ?>" data-row="1" data-col="1" data-sizex="<?= min(2, count($group['queries'])); ?>" data-sizey="1">
+                <li class="group is-default" id="g<?= $group_id; ?>" data-row="1" data-col="1" data-sizex="<?= min(2, count($group['queries'])); ?>" data-sizey="1">
                     <div class="top-menu">
                         <?php foreach ( $group['queries'] as $query ) { ?>
                         <?php if ( !empty($query['bz_query']) ) { ?>
@@ -68,12 +69,12 @@
                         <?php } ?>
                         <?php } ?>
                     </div>
-                    <div class="group-number text-center" id="<?= $group_tag; ?>">
-                        <?php foreach( $group['queries'] as $query_tag => $query ) { ?>
-                        <div class="text-center" id="<?= $query_tag; ?>" title="<?= $query['title'] ?>" style="width:<?= 90 / count($group['queries']); ?>%; display:inline-block;"></div>
+                    <div class="group-number text-center" id="g<?= $group_id; ?>">
+                        <?php foreach( $group['queries'] as $query_id => $query ) { ?>
+                        <div class="text-center" id="q<?= $query_id; ?>" title="<?= $query['title'] ?>" style="width:<?= 90 / count($group['queries']); ?>%; display:inline-block;"></div>
                         <?php } ?>
                     </div>
-                    <div class="text-center group-title" id="<?= $group_tag; ?>">
+                    <div class="text-center group-title" id="g<?= $group_id; ?>">
                         <img class="load-status" src="/assets/img/mozchomp.gif">
                         <h4><?= $group['title']; ?></h4>
                     </div>
@@ -81,11 +82,11 @@
                 <?php } // End if default group that is_number ?>
             <?php } // End foreach query_group ?>
 
-            <?php foreach ( $data['query_groups'] as $group_tag => $group ) { ?>
+            <?php foreach ( $data['query_groups'] as $group_id => $group ) { ?>
                 <?php if ( $group['is_plot'] == 1 && $group['is_default'] == 0 ) { ?>
-                <li class="group" id="<?= $group_tag; ?>" data-row="1" data-col="1" data-sizex="3" data-sizey="2">
+                <li class="group" id="g<?= $group_id; ?>" data-row="1" data-col="1" data-sizex="3" data-sizey="2">
                     <div class="top-menu">
-                        <button class="btn btn-xs pull-right" id="edit-old-group" data-group-tag="<?= $group_tag; ?>">
+                        <button class="btn btn-xs pull-right" id="edit-old-group" data-group-id="<?= $group_id; ?>">
                             <i class="fa fa-pencil"></i>
                         </button>
                         <?php foreach ( $group['queries'] as $query ) { ?>
@@ -96,11 +97,11 @@
                         <?php } ?>
                         <?php } ?>
                     </div>
-                    <div class="group-graph" id="<?= $group_tag; ?>">
-                        <div class="y-axis" id="<?= $group_tag; ?>"></div>
-                        <div class="plot" id="<?= $group_tag; ?>"></div>
+                    <div class="group-graph" id="g<?= $group_id; ?>">
+                        <div class="y-axis" id="g<?= $group_id; ?>"></div>
+                        <div class="plot" id="g<?= $group_id; ?>"></div>
                     </div>
-                    <div class="text-center group-title" id="<?= $group_tag; ?>">
+                    <div class="text-center group-title" id="g<?= $group_id; ?>">
                         <img class="load-status" src="/assets/img/mozchomp.gif">
                         <h4><?= $group['title']; ?></h4>
                     </div>
@@ -108,11 +109,11 @@
                 <?php } // End if non-default group that is_plot ?>
             <?php } // End foreach query_group ?>
 
-            <?php foreach ( $data['query_groups'] as $group_tag => $group ) { ?>
+            <?php foreach ( $data['query_groups'] as $group_id => $group ) { ?>
                 <?php if ( $group['is_number'] == 1 && $group['is_default'] == 0 ) { ?>
-                <li class="group" id="<?= $group_tag; ?>" data-row="1" data-col="1" data-sizex="<?= min(2, count($group['queries'])); ?>" data-sizey="1">
+                <li class="group" id="g<?= $group_id; ?>" data-row="1" data-col="1" data-sizex="<?= min(2, count($group['queries'])); ?>" data-sizey="1">
                     <div class="top-menu">
-                        <button class="btn btn-xs pull-right" id="edit-old-group" data-group-tag="<?= $group_tag; ?>">
+                        <button class="btn btn-xs pull-right" id="edit-old-group" data-group-id="<?= $group_id; ?>">
                             <i class="fa fa-pencil"></i>
                         </button>
                         <?php foreach ( $group['queries'] as $query ) { ?>
@@ -123,12 +124,12 @@
                         <?php } ?>
                         <?php } ?>
                     </div>
-                    <div class="group-number text-center" id="<?= $group_tag; ?>">
-                        <?php foreach( $group['queries'] as $query_tag => $query ) { ?>
-                        <div class="text-center" id="<?= $query_tag; ?>" title="<?= $query['title'] ?>" style="width:<?= 90 / count($group['queries']); ?>%; display:inline-block;"></div>
+                    <div class="group-number text-center" id="g<?= $group_id; ?>">
+                        <?php foreach( $group['queries'] as $query_id => $query ) { ?>
+                        <div class="text-center" id="q<?= $query_id; ?>" title="<?= $query['title'] ?>" style="width:<?= 90 / count($group['queries']); ?>%; display:inline-block;"></div>
                         <?php } ?>
                     </div>
-                    <div class="text-center group-title" id="<?= $group_tag; ?>">
+                    <div class="text-center group-title" id="g<?= $group_id; ?>">
                         <img class="load-status" src="/assets/img/mozchomp.gif">
                         <h4><?= $group['title']; ?></h4>
                     </div>
