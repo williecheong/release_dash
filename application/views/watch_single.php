@@ -22,8 +22,19 @@
                      <script src="/assets/vendor/rickshaw/rickshaw.js"></script>
                      <script src="/assets/vendor/spectrum/spectrum.js"></script>
                      <script>var coreData = '. json_encode($data) .'</script>
-                     <script src="/assets/js/watch_single.js"></script>'
+                     <script src="/assets/js/watch_single.js"></script>',
+
+        'rule_scripts' => ''
     );
+    
+    // Load the scripts for the rules that we want to apply.
+    //  Groups with rules are those that have a function defined in the DB.
+    foreach ( $data['query_groups'] as $group_id => $group ) { 
+        if ( $group['rule_function'] != '' ) {
+            $include['rule_scripts'] .= 
+                '<script src="/assets/rules/rule_'.$group_id.'.js"></script>';
+        }
+    }
 ?>
 
 <?php 

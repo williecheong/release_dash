@@ -47,7 +47,7 @@ CREATE TABLE `group` (
     `entity_id` int(11) not null,
     `is_plot` tinyint(4) not null default '0',
     `is_number` tinyint(4) not null default '0',
-    `rule_js` varchar(255) not null default '',
+    `rule_function` varchar(255) not null default '',
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 

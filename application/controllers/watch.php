@@ -85,6 +85,7 @@ class Watch extends CI_Controller {
             $data['query_groups'][$group->id]['title'] = $group_title;
             $data['query_groups'][$group->id]['is_plot']  = $group->is_plot;
             $data['query_groups'][$group->id]['is_number'] = $group->is_number;
+            $data['query_groups'][$group->id]['rule_function'] = trim( $group->rule_function );
             $data['query_groups'][$group->id]['queries'] = array();    
 
             if ( $is_default ) {
