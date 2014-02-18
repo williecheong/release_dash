@@ -30,7 +30,7 @@
     // Load the scripts for the rules that we want to apply.
     //  Groups with rules are those that have a function defined in the DB.
     foreach ( $data['query_groups'] as $group_id => $group ) { 
-        if ( $group['rule_function'] != '' ) {
+        if ( $group['has_rule'] ) {
             $include['rule_scripts'] .= 
                 '<script src="/assets/rules/rule_'.$group_id.'.js"></script>';
         }

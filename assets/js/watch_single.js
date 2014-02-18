@@ -307,7 +307,7 @@
             
             removeLoader( 'g' + group_id );
 
-            if ( coreData.query_groups[group_id].rule_function ) {
+            if ( coreData.query_groups[group_id].has_rule ) {
                 applyStatus( group_id );
             }
 
@@ -339,7 +339,7 @@
 
             removeLoader( 'g' + group_id );
             
-            if ( coreData.query_groups[group_id].rule_function ) {
+            if ( coreData.query_groups[group_id].has_rule ) {
                 applyStatus( group_id );
             }
 
@@ -358,7 +358,7 @@
     }
 
     function applyStatus( group_id ) {
-        var ruled = eval( coreData.query_groups[group_id].rule_function );
+        var ruled = eval( 'rule_' + group_id + '()' );
         var status_colour = '';
         
         if ( ruled == 'green' ) {
