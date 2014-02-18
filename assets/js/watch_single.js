@@ -306,6 +306,11 @@
             var hoverDetail = new Rickshaw.Graph.HoverDetail( { graph: graph } );
             
             removeLoader( 'g' + group_id );
+
+            if ( coreData.query_groups[group_id].rule_function ) {
+                applyStatus( group_id );
+            }
+
             graph.render();
             // End of graphing
 
@@ -333,7 +338,11 @@
             });
 
             removeLoader( 'g' + group_id );
-        
+            
+            if ( coreData.query_groups[group_id].rule_function ) {
+                applyStatus( group_id );
+            }
+
         } else {
             // Do nothing
             // We are probably still retrieving data
@@ -346,6 +355,23 @@
 *****************************/
     function removeLoader( group_key ) {
         $('.group-title#'+group_key+' img.load-status').remove();
+    }
+
+    function applyStatus( group_id ) {
+        var ruled = eval( coreData.query_groups[group_id].rule_function );
+        var status_colour = '';
+        
+        if ( ruled == 'green' ) {
+            status_colour = 'lightgreen';
+
+        } else if ( ruled == 'yellow' ) {
+            status_colour = 'lightyellow';
+        
+        } else if ( ruled == 'red' ) {
+            status_colour = 'lightpink';
+        }
+
+        $('.group-title#g'+group_id).css('background', status_colour);
     }
 
     function templateNewGroup ( number ) {
