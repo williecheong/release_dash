@@ -1,15 +1,16 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 if ( ! function_exists('taggify')) {
+    // Use this for modifying any read-friendly text
+    // Into a string that is friendly towards URLs and JSON keys
     function taggify( $input_string = '' ) {
-        if ( $input_string == '' ) {
-            // Missing parameters
-            return $input_string;
-        } else {
-            $input_string = preg_replace( '/[^a-zA-Z0-9]+/', '-', $input_string );
-            $input_string = trim( $input_string, '-' );
-            $input_string = strtolower( $input_string );
-        }        
+        // Check for missing parameters
+        if ( $input_string == '' ) { return $input_string; }
+        
+        $input_string = preg_replace( '/[^a-zA-Z0-9]+/', '-', $input_string );
+        $input_string = trim( $input_string, '-' );
+        $input_string = strtolower( $input_string );
+                
         return $input_string;
     }   
 }
@@ -19,32 +20,35 @@ if ( ! function_exists('taggify')) {
 ****************************************/
 
 if ( ! function_exists('replace_version_attr') ) {
+    // When executing default groups on a specific version
+    // Use this for decoding <version_tag> and <version_title> on strings
+    // A second parameter containing the target version object must be specified
     function replace_version_attr( $input_string = '', $version = '' ) {
-        if ( $input_string == '' || $version == '' ) {
-            // Missing parameters
-            return $input_string;
+        // Check for missing parameters
+        if ( $input_string == '' || $version == '' ) { return $input_string; }
         
-        } else {
-            $input_string = str_replace("<version_tag>", $version->tag, $input_string);
-            $input_string = str_replace("<version_title>", $version->title, $input_string);
-
-        }        
+        // Replace soft <version_tag> with the actual tag of specified version
+        $input_string = str_replace("<version_tag>", $version->tag, $input_string);
+        // Replace soft <version_title> with the actual title of specified version
+        $input_string = str_replace("<version_title>", $version->title, $input_string);
         
         return $input_string;
     }   
 }
 
 if ( ! function_exists('replace_birthday') ) {
+    // Soft birthdays <birthday> are replaced with a birthday timestamp
+    // CodeIgniter helper functions cannot perform database transactions
+    //      ,', A second parameter for the version's birthday must be specified
+    // ElasticSearch works on milliseconds since epoch (GMT).
+    // For example, 1389453465000 == 11-Jan-2014 15:17:45 (GMT)
     function replace_birthday($input_string = '', $birthday = '') {
-        if ( $input_string == '' || $birthday == '' ) {
-            // Missing parameters
-            return $input_string;
+        // Check for missing parameters
+        if ( $input_string == '' || $birthday == '' ) { return $input_string; }
         
-        } else {
-            $birthday = strtotime($birthday) * 1000;
-            $input_string = str_replace("<birthday>", $birthday, $input_string);
-        }        
-        
+        $birthday = strtotime($birthday) * 1000;
+        $input_string = str_replace("<birthday>", $birthday, $input_string);
+    
         return $input_string;
     }   
 }
@@ -56,8 +60,7 @@ if ( ! function_exists('replace_timestamp') ) {
     // For example, 1389453465000 == 11-Jan-2014 15:17:45 (GMT)
     function replace_timestamp($input_string = '', $timestamp = '') {
         if ( $timestamp !== '' ) {
-            // Some timestamp has been specified
-            // Let's use that in our helper function.
+            // Use the specified custom timestamp
             $timestamp = strtotime($timestamp) * 1000;
             $input_string = str_replace("<timestamp>", $timestamp, $input_string);
         } else {
