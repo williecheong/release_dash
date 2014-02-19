@@ -9,26 +9,28 @@
     //    Then send it to the respective views for appending to the DOM
     //    As usual, CSS to the header, JS to the footer.
     $include = array( 
-        'version'  => $data['title'] ,    
-        'top'    => '<link rel="stylesheet" href="/assets/vendor/ducksboard-gridster/jquery.gridster.min.css">
-                     <link rel="stylesheet" href="/assets/vendor/spectrum/spectrum.css">
-                     <link rel="stylesheet" href="/assets/css/watch_single.css">',
+        'version'  => $data['title'],
+
+        'top'    => '
+            <link rel="stylesheet" href="/assets/vendor/ducksboard-gridster/jquery.gridster.min.css">
+            <link rel="stylesheet" href="/assets/vendor/spectrum/spectrum.css">
+            <link rel="stylesheet" href="/assets/css/watch_single.css">',
         
-        'bottom' => '<script src="/assets/vendor/Qb/html/js/imports/import.js" type="application/javascript;version=1.7"></script>
-                     <script src="/assets/vendor/Qb/html/js/ESQueryRunner.js" type="application/javascript;version=1.7"></script>
-                     <script src="/assets/vendor/ducksboard-gridster/jquery.gridster.min.js"></script>
-                     <script src="/assets/vendor/rickshaw/vendor/d3.min.js"></script>
-                     <script src="/assets/vendor/rickshaw/vendor/d3.layout.min.js"></script>
-                     <script src="/assets/vendor/rickshaw/rickshaw.js"></script>
-                     <script src="/assets/vendor/spectrum/spectrum.js"></script>
-                     <script>var coreData = '. json_encode($data) .'</script>
-                     <script src="/assets/js/watch_single.js"></script>',
+        'bottom' => '
+            <script src="/assets/vendor/Qb/html/js/imports/import.js" type="application/javascript;version=1.7"></script>
+            <script src="/assets/vendor/Qb/html/js/ESQueryRunner.js" type="application/javascript;version=1.7"></script>
+            <script src="/assets/vendor/ducksboard-gridster/jquery.gridster.min.js"></script>
+            <script src="/assets/vendor/rickshaw/vendor/d3.min.js"></script>
+            <script src="/assets/vendor/rickshaw/vendor/d3.layout.min.js"></script>
+            <script src="/assets/vendor/rickshaw/rickshaw.js"></script>
+            <script src="/assets/vendor/spectrum/spectrum.js"></script>
+            <script>var coreData = '. json_encode($data) .'</script>
+            <script src="/assets/js/watch_single.js"></script>',
 
         'rule_scripts' => ''
     );
     
     // Load the scripts for the rules that we want to apply.
-    //  Groups with rules are those that have a function defined in the DB.
     foreach ( $data['query_groups'] as $group_id => $group ) { 
         if ( $group['has_rule'] ) {
             $include['rule_scripts'] .= 
