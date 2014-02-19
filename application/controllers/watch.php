@@ -29,17 +29,18 @@ class Watch extends CI_Controller {
         } else {
             $version = $version[0];
         }
-        // OK. Product and version found.
+        // End of validation. 
+        // Product and version found.
         // $product and $version are available now
 
-        // Initializing a main data variable before we begin
+        // Initializing a data variable that becomes coreData JSON
         $data = array();
         $data['id'] = $version->id;
         $data['title'] = $version->title;
         $data['query_groups'] = array();
 
         /********************************************
-            Retrieving groups and queries by product
+            Retrieving default groups by product
         *********************************************/
         $by_product = array( 
             'entity'    => 'product',
@@ -47,21 +48,21 @@ class Watch extends CI_Controller {
         $groups_by_product = $this->group->retrieve( $by_product );
         $data = $this->_groups_to_data( $data, $version, $groups_by_product, true );
        
-
         /********************************************
-            Retrieving groups and queries by version
+            Retrieving custom groups by version
         *********************************************/
         $by_version = array( 
             'entity'    => 'version',
             'entity_id' => $version->id );
         $groups_by_version = $this->group->retrieve( $by_version );
         $data = $this->_groups_to_data( $data, $version, $groups_by_version );
-        
 
         $this->load->view('watch_single', array('data' => $data) );   
-
     }
 
+    // Receives an existing data array
+    // Appends version + group data before returning that data array
+    // Takes care of both default groups and custom groups, specify in fourth parameter
     private function _groups_to_data( $data = array(), $version = array(), $groups = array(), $is_default = false ) {
         foreach ( $groups as $group ) {
             $group_title = replace_version_attr( $group->title, $version );
@@ -94,7 +95,6 @@ class Watch extends CI_Controller {
                 $transformed_query = replace_birthday( $transformed_query, $birthday );
                     $shipday = $this->version->get_shipday( $version->id );
                 $transformed_query = replace_timestamp( $transformed_query, $shipday );
-
 
                 //  Append the Qb queries and other meta-data into $data
                 $data['query_groups'][$group->id]['queries'][$query->id]['title']       = $query_title;
