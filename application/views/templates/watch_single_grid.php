@@ -2,13 +2,16 @@
     <div class="top-menu">
         <?php if ( $group['is_default'] == 0 ) { ?>
             <button class="btn btn-xs pull-right" id="edit-old-group" data-group-id="<?= $group_id; ?>">
-                <i class="fa fa-pencil"></i>
+                <i class="fa fa-pencil fa-lg"></i>
             </button>
         <?php } ?>
+        <button class="btn btn-xs pull-right" id="get-rule-boilerplate" data-group-id="<?= $group_id; ?>">
+            <i class="fa fa-tachometer fa-lg"></i>
+        </button>
         <?php foreach ( $group['queries'] as $query ) { ?>
             <?php if ( !empty($query['bz_query']) ) { ?>
                 <a class="btn btn-xs pull-right" href="<?= $query['bz_query']; ?>" style="color:<?= $query['colour']; ?>;">
-                    <i class="fa fa-bug"></i>
+                    <i class="fa fa-bug fa-lg"></i>
                 </a>
             <?php } ?>
         <?php } ?>
