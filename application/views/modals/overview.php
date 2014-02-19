@@ -14,6 +14,6 @@
             <div class="modal-footer">
                 <a class="btn btn-primary" id="redirect-details" href="">Details &raquo;</a>
             </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+        </div>
+    </div>
+</div>

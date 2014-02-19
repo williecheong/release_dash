@@ -1,6 +1,12 @@
 /*********************************
     JUST SETTING UP THE PAGE HERE
 *********************************/
+    // Toggles whatever element is inside "data-toggler"
+    $('[data-mytoggler]').click(function(){
+        var toToggle = $(this).data('mytoggler');
+        $( toToggle ).toggle('fast');
+    });
+
     // Initializing duckster gridster
     var gridsterWidth = $('.gridster').width();
     $(".gridster ul").gridster({
@@ -10,19 +16,15 @@
 
     // Initializes the modals
     $('.modal#new-group').modal({
+        show : false 
+    });
+    
+    $('.modal#old-group').modal({ 
         show : false
     });
-    $('.modal#old-group').modal({
-        show : false
-    });
+    
     $('.modal#rule-boilerplate').modal({
         show : false
-    });
-
-    // Toggles whatever element is inside "data-toggler"
-    $('[data-mytoggler]').click(function(){
-        var toToggle = $(this).data('mytoggler');
-        $( toToggle ).toggle('fast');
     });
 
 /*********************************
@@ -30,26 +32,14 @@
 *********************************/
     // Brings up the modal for adding a new group
     $('.btn#add-new-group').click(function(){
-        // Cleaning up the new group modal if previous was successful
-        if ( $('.btn#save-new-group').hasClass('previousSuccess') ) {
-            $('.modal#new-group').find('input').val('');
-            $('.modal#new-group').find('input[type="checkbox"]').prop('checked', false);
-            $('.modal#new-group').find('div.new-query').remove();
-            $('.modal#new-group').find('.btn#save-new-group').html('<i class="fa fa-save"></i> Save');
-            $('.modal#new-group').find('.btn#save-new-group').removeClass('disabled');
-            $('.modal#new-group').find('.btn#save-new-group').removeClass('previousSuccess');       
-        }
-        // End of cleaning up the new group modal
-
         $('.modal#new-group').modal('toggle');
     });
 
     // Append a new HTML query template for the group
     var new_query_unique_counter = 0;
-    $('.btn#new-query-template').click(function(){
+    $('.btn#new-query-template').click( function() {
         new_query_unique_counter++;
         var thisNum = new_query_unique_counter;
-
         $('.modal#new-group').find('form').append( templateNewGroup( thisNum ));
 
         // Initializing remove button for this new item
@@ -58,7 +48,7 @@
         });
         // Initializing colorpicker for this new item
         $(".colourpicker[id='"+thisNum+"']").spectrum({
-            showInput: true,
+            showInput: false,
             preferredFormat: 'hex6',
             clickoutFiresChange: true,
             showButtons: false,
@@ -68,12 +58,13 @@
         });
     });
 
-    // Proceed to save the group
+    // Proceed to execute and save the group
     $('.btn#save-new-group').click(function(){
         $this = $(this);
         $this.addClass('disabled');
-        var saveGroup = {};
 
+        // Retrieving input group values into saveGroup
+        var saveGroup = {};
         saveGroup = {
             group_entity : "version",
             group_entity_id : coreData['id'],
@@ -82,6 +73,7 @@
             group_is_number : $('#new-group-is-number:checked').length,
             group_queries : {} 
         };
+        // End of retrieving input group values into saveGroup
 
         // Validation for the new group's input values
         if ( saveGroup['group_title'] == '' ) {
@@ -89,34 +81,44 @@
             $this.removeClass('disabled');
             return false;
         }
+        
         if ( (saveGroup['group_is_plot'] + saveGroup['group_is_number']) == 0 ) {
             alert( "Group has to be either a plot or number." );
             $this.removeClass('disabled');
             return false;
         }
+        
         if ( $('.new-query').length == 0 ) {
+            // Checks that there is at least one new query
             alert( "No queries found." );
             $this.removeClass('disabled');
             return false;
         } 
+        // End of validation for the new group's input values
 
+        // Looping through the input queries to retrieve and check them
         var queryError = false;
         $.each( $('.new-query'), function(key, value){ 
+            // Retrieving input group query's values into saveGroup
             saveGroup.group_queries[value.id] = {
                 query_title     : $.trim( $('.new-query#'+value.id).find('input#new-query-name').val() ),
                 query_colour    : $('.new-query#'+value.id).find('button.colourpicker').css('color'),
                 query_query_bz  : $('.new-query#'+value.id).find('input#new-query-bz').val(),
                 query_query_qb  : $('.new-query#'+value.id).find('textarea#new-query-qb').val()
             };
+            // End of retrieving input group query's values into saveGroup
 
-            // Validation for the group queries' input values
+            // Validation for the group query's input values
             if ( saveGroup.group_queries[value.id].query_title == '' ) {
                 alert( 'Query name cannot be empty.' );
-                $this.removeClass('disabled');
                 queryError = true;
             }
+            // End of validation for group query's input values
         });
+
+        // Return if there was failed checks while looping through queries
         if ( queryError ) {
+            $this.removeClass('disabled');
             return false;
         }
 
@@ -126,7 +128,6 @@
             data: saveGroup,
             success: function(response) {
                 if ( response == 'OK' ) {
-                    $this.addClass('previousSuccess');
                     $this.html('<i class="fa fa-check"></i> Success');
                     setTimeout(function() {
                         // Refresh page after 1.5 seconds
@@ -153,12 +154,6 @@
         var groupID = $(this).data('group-id');
         var thisGroup = coreData.query_groups[groupID];
 
-        // Cleaning up the modal from prior use
-        $('.modal#old-group').find('form div.old-query').remove();
-        $('.btn#delete-old-group').removeClass('disabled');
-        $('.btn#delete-old-group').html('<i class="fa fa-times"></i> Delete');
-        // End of cleaning up the modal from prior use
-
         // Setting the values inside the modal's form fields
         $('.modal#old-group').find('input#group-id').val( groupID );
         $('.modal#old-group').find('input#group-name').val( thisGroup.title );
@@ -183,16 +178,15 @@
         $('.btn#delete-old-group').attr( 'data-group-id', groupID );
         // End of setting values in the modal form
 
-            // ONLY TEMPORARY DISABLER
-                $('.modal#old-group').find('input').attr('disabled', true);
-                $('.modal#old-group').find('textarea').attr('disabled', true);
-            // END OF TEMPORARY DISABLER
+        // Disable all the fields here
+        $('.modal#old-group').find('input').attr('disabled', true);
+        $('.modal#old-group').find('textarea').attr('disabled', true);
 
-        // Fields are populated now.
-        // Bring out that modal.
+        // Fields are populated and disabled. Show modal.
         $('.modal#old-group').modal('toggle');
     });
     
+    // Proceed to execute and delete the group
     $('.btn#delete-old-group').click(function(){
         $this = $(this);
         $this.addClass('disabled');
@@ -226,7 +220,6 @@
 *********************************/
     // Brings up the modal with the rules boilerplate
     $('.btn#get-rule-boilerplate').click(function(){
-        
         var groupID = $(this).data('group-id');
         
         // Setting up the rule boilerplate modal
@@ -241,12 +234,20 @@
 /*************************************
     ES RETRIEVAL
 *************************************/
+    // Called after ESQueryRunner.js has finished importing scripts
+    // Loop through every group, and for each query in the group
+    //      Execute the Qb query against ElasticSearch one at a time
+    //      With every returned data set, format for compatibility with Rickshaw
+    //      Then attempt to plot and log the number on view for that group
+    //      Note: The attempt fails if group does not have all data sets
+    //            The attempt will succeed on retrieval of the last data set.
     function startLoading() {
         $.each( coreData.query_groups, function( group_id, group_value ) {
             $.each( group_value.queries, function( query_id, query_value ) {
                 ESQueryRunner( 
                     $.parseJSON( query_value.qb_query ), 
                     function( response ){ // Executes after data is returned from ES.
+                        // Format the returned ElasticSearch data for Rickshaw compatibility
                         var tempStore = new Array();
                         $.each( response.cube, function( key, value ) {
                             // Put the data we have in an array for plotting {date, count}
@@ -254,12 +255,36 @@
                             tempStore.push( { x: d , y: value } );
                         });
                         coreData.query_groups[group_id].queries[query_id]['es_data'] = tempStore;
-                        if ( coreData.query_groups[group_id].is_plot == 1 )    { 
-                            executePlot( group_id ); 
-                        }
-                        if ( coreData.query_groups[group_id].is_number == 1 )  { 
-                            executeNumber( group_id ); 
-                        }    
+                        // End of formatting the returned ElasticSearch data for Rickshaw compatibility
+
+                        // Searches for complete es_data through this group.
+                        var dataMissing = false;
+                        $.each( coreData.query_groups[group_id].queries, function( key, value ) {
+                            if( value.es_data === undefined ) { dataMissing = true; }
+                        });
+
+                        if ( dataMissing === false ) {
+                            // OK all data present in group. Let's roll!
+                            // Plot data, Log number, Apply rule, Remove loading image
+
+                            if ( coreData.query_groups[group_id].is_plot == 1 )    { 
+                                executePlot( group_id ); 
+                            }
+                            
+                            if ( coreData.query_groups[group_id].is_number == 1 )  { 
+                                executeNumber( group_id ); 
+                            }
+
+                            if ( coreData.query_groups[group_id].has_rule ) {
+                                applyStatus( group_id );
+                            }
+
+                            removeLoader( 'g' + group_id );
+
+                        } else {
+                            // Do nothing, probably still retrieving data
+                            console.log("Not all data is ready for "+group_value.title+".");
+                        }   
                     }
                 );
             });
@@ -274,100 +299,75 @@
     // If any one of the data sets are missing, we escape the function.
     // And wait for this to be called again when new data arrives.
     function executePlot( group_id ) {
-        // Searches through the group we are interested in for esData.
-        var dataMissing = false;
+        // View graphing documentation here
+        // https://github.com/shutterstock/rickshaw
+
+        // Building up an array for each line that goes into the plot
+        var rickshawData = new Array() ; 
+        var palette = new Rickshaw.Color.Palette(); 
         $.each( coreData.query_groups[group_id].queries, function( key, value ) {
-            if( value.es_data === undefined ) {
-                dataMissing = true;
+            
+            var plot_colour;
+            if ( value.colour ) {
+                plot_colour = value.colour;
+            } else {
+                plot_colour = palette.color();
             }
+
+            rickshawData.push({
+                name: value['title'],
+                data: value['es_data'],
+                color: plot_colour
+            });
         });
 
-        if ( dataMissing === false ) {
-            // OK all data present in group. Let's roll!
-                // View graphing documentation here
-                // https://github.com/shutterstock/rickshaw
-
-            // Building up an array for each line that goes into the plot
-            var rickshawData = new Array() ; 
-            var palette = new Rickshaw.Color.Palette(); 
-            $.each( coreData.query_groups[group_id].queries, function( key, value ) {
-                
-                var plot_colour;
-                if ( value.colour ) {
-                    plot_colour = value.colour;
-                } else {
-                    plot_colour = palette.color();
-                }
-
-                rickshawData.push({
-                    name: value['title'],
-                    data: value['es_data'],
-                    color: plot_colour
-                });
-            });
-
-            // Start the plot
-            var graph = new Rickshaw.Graph({
-                element: document.querySelector('.plot#g'+group_id),
-                width: $('.group#g' + group_id).width() * 0.80,
-                height: $('.group#g' + group_id).width() * 0.40,
-                renderer: 'line',
-                series: rickshawData
-            });
-           
-            var x_axis = new Rickshaw.Graph.Axis.Time( { graph: graph } );
-            var y_axis = new Rickshaw.Graph.Axis.Y({
-                graph: graph,
-                orientation: 'left',
-                tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
-                element: document.querySelector('.y-axis#g'+group_id)
-            });
-            
-            var hoverDetail = new Rickshaw.Graph.HoverDetail( { graph: graph } );
-            
-            removeLoader( 'g' + group_id );
-
-            if ( coreData.query_groups[group_id].has_rule ) {
-                applyStatus( group_id );
-            }
-
-            graph.render();
-            // End of graphing
-
-        } else {
-            // Do nothing
-            // We are probably still retrieving data
-            console.log("Not all data is ready for plotting Group "+group_id+".");
-        }
+        // Start the plot
+        var graph = new Rickshaw.Graph({
+            element: document.querySelector('.plot#g'+group_id),
+            width: $('.group#g' + group_id).width() * 0.80,
+            height: $('.group#g' + group_id).width() * 0.40,
+            renderer: 'line',
+            series: rickshawData
+        });
+       
+        var x_axis = new Rickshaw.Graph.Axis.Time( { graph: graph } );
+        var y_axis = new Rickshaw.Graph.Axis.Y({
+            graph: graph,
+            orientation: 'left',
+            tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
+            element: document.querySelector('.y-axis#g'+group_id)
+        });
+        
+        var hoverDetail = new Rickshaw.Graph.HoverDetail( { graph: graph } );
+        
+        graph.render();
+        // End of graphing
     }
 
     function executeNumber( group_id ) {
-        // Searches through the group we are interested in for esData.
-        var dataMissing = false;
         $.each( coreData.query_groups[group_id].queries, function( key, value ) {
-            if( value.es_data === undefined ) {
-                dataMissing = true;
-            }
+            var font_colour = '#000000';
+            if ( value.colour ) { font_colour = value.colour; }
+            $('.group-number #q'+key).html(
+                '<h2 style="color:'+font_colour+';">' + 
+                    value.es_data[value.es_data.length - 1].y + 
+                '</h2>' );
         });
+    }
 
-        if ( dataMissing === false ) {
-            $.each( coreData.query_groups[group_id].queries, function( key, value ) {
-                var font_colour = '#000000';
-                if ( value.colour ) { font_colour = value.colour; }
-                $('.group-number #q'+key).html('<h2 style="color:'+font_colour+';">' + value.es_data[value.es_data.length - 1].y + '</h2>');
-            });
-
-            removeLoader( 'g' + group_id );
-            
-            if ( coreData.query_groups[group_id].has_rule ) {
-                applyStatus( group_id );
-            }
-
-        } else {
-            // Do nothing
-            // We are probably still retrieving data
-            console.log("Not all data is ready for logging Group "+group_id+".");
+    function applyStatus( group_id ) {
+        var ruled = eval( 'rule_' + group_id + '()' );
+        var status_colour = ruled;
+        
+        if ( ruled == 'green' ) {
+            status_colour = 'lightgreen';
+        } else if ( ruled == 'yellow' ) {
+            status_colour = 'lightyellow';
+        } else if ( ruled == 'red' ) {
+            status_colour = 'lightpink';
         }
+
+        $('.group-title#g'+group_id).css('background', status_colour);
     }
 
 /*****************************
@@ -375,25 +375,6 @@
 *****************************/
     function removeLoader( group_key ) {
         $('.group-title#'+group_key+' img.load-status').remove();
-    }
-
-    function applyStatus( group_id ) {
-        var ruled = eval( 'rule_' + group_id + '()' );
-        var status_colour = '';
-        
-        if ( ruled == 'green' ) {
-            status_colour = 'lightgreen';
-
-        } else if ( ruled == 'yellow' ) {
-            status_colour = 'lightyellow';
-        
-        } else if ( ruled == 'red' ) {
-            status_colour = 'lightpink';
-        } else {
-            status_colour = ruled;
-        }
-
-        $('.group-title#g'+group_id).css('background', status_colour);
     }
 
     function templateNewGroup ( number ) {
@@ -473,6 +454,7 @@
         var i = 0;
         $.each( coreData.query_groups[group_id].queries, function( query_id, query ){
             variables += ''+
+            '        // Data for Query: ' + query.title + '\n' +
             '    var '+tempNames[i]+' = coreData.query_groups['+group_id+'].queries['+query_id+'].es_data;\n';
             i++;
         });
