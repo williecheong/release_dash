@@ -473,6 +473,7 @@
         var i = 0;
         $.each( coreData.query_groups[group_id].queries, function( query_id, query ){
             variables += ''+
+            '        // Data for Query: ' + query.title + '\n' +
             '    var '+tempNames[i]+' = coreData.query_groups['+group_id+'].queries['+query_id+'].es_data;\n';
             i++;
         });
