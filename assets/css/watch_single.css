@@ -2,6 +2,12 @@
    Author's custom styles
    ========================================================================== */
 
+    #about-rule-boilerplate {
+        display: none;
+        margin: 1%;
+        padding: 1%;
+    }   
+
     div.top-menu {
         float: right;
         display: none;

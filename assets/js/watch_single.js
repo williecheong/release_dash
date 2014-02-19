@@ -15,11 +15,14 @@
     $('.modal#old-group').modal({
         show : false
     });
+    $('.modal#rule-boilerplate').modal({
+        show : false
+    });
 
     // Toggles whatever element is inside "data-toggler"
     $('[data-mytoggler]').click(function(){
         var toToggle = $(this).data('mytoggler');
-        $( toToggle ).toggle('slow');
+        $( toToggle ).toggle('fast');
     });
 
 /*********************************
@@ -218,6 +221,23 @@
         });
     });
 
+/*********************************
+    GETTING THE RULES BOILERPLATE FOR GROUP
+*********************************/
+    // Brings up the modal with the rules boilerplate
+    $('.btn#get-rule-boilerplate').click(function(){
+        
+        var groupID = $(this).data('group-id');
+        
+        // Setting up the rule boilerplate modal
+        $('span#rule-group-title').html( coreData.query_groups[groupID].title );
+        $('.form-control-static#rule-file-name').html( '/assets/rules/rule_'+groupID+'.js' );
+        $('textarea#rule-script').html( templateRuleBoilerplate( groupID ) );
+        // End of setting up the rule boilerplate modal
+
+        $('.modal#rule-boilerplate').modal('toggle');
+    });
+
 /*************************************
     ES RETRIEVAL
 *************************************/
@@ -369,6 +389,8 @@
         
         } else if ( ruled == 'red' ) {
             status_colour = 'lightpink';
+        } else {
+            status_colour = ruled;
         }
 
         $('.group-title#g'+group_id).css('background', status_colour);
@@ -444,5 +466,54 @@
         return html;
     }
 
+    function templateRuleBoilerplate ( group_id ) {
+        var tempNames = ["alpha", "beta", "gamma", "delta", "epsilon", "zeta", "eta", "theta", "iota", "kappa", "lambda", "mu"];
 
+        var variables = '';
+        var i = 0;
+        $.each( coreData.query_groups[group_id].queries, function( query_id, query ){
+            variables += ''+
+            '    var '+tempNames[i]+' = coreData.query_groups['+group_id+'].queries['+query_id+'].es_data;\n';
+            i++;
+        });
+        
+        var html = ''+
+            '/**************************\n'+
+            'Do not change the function name, or Javascript errors will occur\n'+
+            '**************************/\n'+
+            'function rule_'+group_id+'() {\n'+
+            '    /**************************************\n'+
+            '    Defining the data available in this group\n'+
+            '    Rename the variables to better fit your context\n'+
+            '    Do not change the values in the variable\n'+
+            '    **************************************/\n'+
+            variables +
+            '\n'+
+            '    /**************************************\n'+
+            '    Write scripts to manipulate group data here.\n'+
+            '    **************************************/\n'+
+            '\n'+
+            '\n'+
+            '    /**************************************\n'+
+            '    Set the conditions that determine what to return\n'+
+            '    Recognized return values = [green", "yellow", "red"]\n'+
+            '    OR return any preferred custom colours in a valid CSS format\n'+
+            '    **************************************/\n'+
+            '    if ( false ) {\n'+
+            '        return "red";\n'+
+            '    } else if ( false ) { \n'+
+            '        return "yellow"\n'+
+            '    } else {\n'+
+            '        return "green";\n'+
+            '    } \n'+
+            '}\n'+
+            '\n'+
+            '/****************\n'+
+            'Optional: Custom helper functions to use above\n'+
+            'To prevent conflicts with other functions on this dashboard\n'+
+            'Please follow this naming convention - rule_'+group_id+'_whateverYouWant()\n'+
+            '****************/';
+
+        return html;
+    }
 
