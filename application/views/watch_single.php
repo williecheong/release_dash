@@ -22,8 +22,19 @@
                      <script src="/assets/vendor/rickshaw/rickshaw.js"></script>
                      <script src="/assets/vendor/spectrum/spectrum.js"></script>
                      <script>var coreData = '. json_encode($data) .'</script>
-                     <script src="/assets/js/watch_single.js"></script>'
+                     <script src="/assets/js/watch_single.js"></script>',
+
+        'rule_scripts' => ''
     );
+    
+    // Load the scripts for the rules that we want to apply.
+    //  Groups with rules are those that have a function defined in the DB.
+    foreach ( $data['query_groups'] as $group_id => $group ) { 
+        if ( $group['has_rule'] ) {
+            $include['rule_scripts'] .= 
+                '<script src="/assets/rules/rule_'.$group_id.'.js"></script>';
+        }
+    }
 ?>
 
 <?php 
@@ -33,110 +44,61 @@
 <div class="container">
     <div class="gridster">
         <ul class="grids">
-            <?php foreach ( $data['query_groups'] as $group_tag => $group ) { ?>
+            <?php foreach ( $data['query_groups'] as $group_id => $group ) { ?>
                 <?php if ( $group['is_plot'] == 1 && $group['is_default'] == 1 ) { ?>
-                <li class="group is-default" id="<?= $group_tag; ?>" data-row="1" data-col="1" data-sizex="3" data-sizey="2">
-                    <div class="top-menu">
-                        <?php foreach ( $group['queries'] as $query ) { ?>
-                        <?php if ( !empty($query['bz_query']) ) { ?>
-                        <a class="btn btn-xs pull-right" href="<?= $query['bz_query']; ?>" style="color:<?= $query['colour']; ?>;">
-                            <i class="fa fa-bug"></i>
-                        </a>
-                        <?php } ?>
-                        <?php } ?>
-                    </div><div class="group-graph" id="<?= $group_tag; ?>">
-                        <div class="y-axis" id="<?= $group_tag; ?>"></div>
-                        <div class="plot" id="<?= $group_tag; ?>"></div>
-                    </div>
-                    <div class="text-center group-title" id="<?= $group_tag; ?>">
-                        <img class="load-status" src="/assets/img/mozchomp.gif">
-                        <h4><?= $group['title']; ?></h4>
-                    </div>
-                </li>
+                    <?php 
+                        $this->load->view(
+                            '/templates/watch_single_grid', 
+                            array(  'group_id'  => $group_id,
+                                    'group'     => $group, 
+                                    'type'      => 'make_plot' 
+                                    ) 
+                                ); 
+                    ?>
                 <?php } // End if default group that is_plot ?>
             <?php } // End foreach query_group ?>
 
-            <?php foreach ( $data['query_groups'] as $group_tag => $group ) { ?>
+            <?php foreach ( $data['query_groups'] as $group_id => $group ) { ?>
                 <?php if ( $group['is_number'] == 1 && $group['is_default'] == 1 ) { ?>
-                <li class="group is-default" id="<?= $group_tag; ?>" data-row="1" data-col="1" data-sizex="<?= min(2, count($group['queries'])); ?>" data-sizey="1">
-                    <div class="top-menu">
-                        <?php foreach ( $group['queries'] as $query ) { ?>
-                        <?php if ( !empty($query['bz_query']) ) { ?>
-                        <a class="btn btn-xs pull-right" href="<?= $query['bz_query']; ?>" style="color:<?= $query['colour']; ?>;">
-                            <i class="fa fa-bug"></i>
-                        </a>
-                        <?php } ?>
-                        <?php } ?>
-                    </div>
-                    <div class="group-number text-center" id="<?= $group_tag; ?>">
-                        <?php foreach( $group['queries'] as $query_tag => $query ) { ?>
-                        <div class="text-center" id="<?= $query_tag; ?>" title="<?= $query['title'] ?>" style="width:<?= 90 / count($group['queries']); ?>%; display:inline-block;"></div>
-                        <?php } ?>
-                    </div>
-                    <div class="text-center group-title" id="<?= $group_tag; ?>">
-                        <img class="load-status" src="/assets/img/mozchomp.gif">
-                        <h4><?= $group['title']; ?></h4>
-                    </div>
-                </li>
+                    <?php 
+                        $this->load->view(
+                            '/templates/watch_single_grid', 
+                            array(  'group_id'  => $group_id,
+                                    'group'     => $group, 
+                                    'type'      => 'make_number' 
+                                    ) 
+                                ); 
+                    ?>
                 <?php } // End if default group that is_number ?>
             <?php } // End foreach query_group ?>
 
-            <?php foreach ( $data['query_groups'] as $group_tag => $group ) { ?>
+            <?php foreach ( $data['query_groups'] as $group_id => $group ) { ?>
                 <?php if ( $group['is_plot'] == 1 && $group['is_default'] == 0 ) { ?>
-                <li class="group" id="<?= $group_tag; ?>" data-row="1" data-col="1" data-sizex="3" data-sizey="2">
-                    <div class="top-menu">
-                        <button class="btn btn-xs pull-right" id="edit-old-group" data-group-tag="<?= $group_tag; ?>">
-                            <i class="fa fa-pencil"></i>
-                        </button>
-                        <?php foreach ( $group['queries'] as $query ) { ?>
-                        <?php if ( !empty($query['bz_query']) ) { ?>
-                        <a class="btn btn-xs pull-right" href="<?= $query['bz_query']; ?>" style="color:<?= $query['colour']; ?>;">
-                            <i class="fa fa-bug"></i>
-                        </a>
-                        <?php } ?>
-                        <?php } ?>
-                    </div>
-                    <div class="group-graph" id="<?= $group_tag; ?>">
-                        <div class="y-axis" id="<?= $group_tag; ?>"></div>
-                        <div class="plot" id="<?= $group_tag; ?>"></div>
-                    </div>
-                    <div class="text-center group-title" id="<?= $group_tag; ?>">
-                        <img class="load-status" src="/assets/img/mozchomp.gif">
-                        <h4><?= $group['title']; ?></h4>
-                    </div>
-                </li>
+                    <?php 
+                        $this->load->view(
+                            '/templates/watch_single_grid', 
+                            array(  'group_id'  => $group_id,
+                                    'group'     => $group, 
+                                    'type'      => 'make_plot' 
+                                    ) 
+                                ); 
+                    ?>
                 <?php } // End if non-default group that is_plot ?>
             <?php } // End foreach query_group ?>
 
-            <?php foreach ( $data['query_groups'] as $group_tag => $group ) { ?>
+            <?php foreach ( $data['query_groups'] as $group_id => $group ) { ?>
                 <?php if ( $group['is_number'] == 1 && $group['is_default'] == 0 ) { ?>
-                <li class="group" id="<?= $group_tag; ?>" data-row="1" data-col="1" data-sizex="<?= min(2, count($group['queries'])); ?>" data-sizey="1">
-                    <div class="top-menu">
-                        <button class="btn btn-xs pull-right" id="edit-old-group" data-group-tag="<?= $group_tag; ?>">
-                            <i class="fa fa-pencil"></i>
-                        </button>
-                        <?php foreach ( $group['queries'] as $query ) { ?>
-                        <?php if ( !empty($query['bz_query']) ) { ?>
-                        <a class="btn btn-xs pull-right" href="<?= $query['bz_query']; ?>" style="color:<?= $query['colour']; ?>;">
-                            <i class="fa fa-bug"></i>
-                        </a>
-                        <?php } ?>
-                        <?php } ?>
-                    </div>
-                    <div class="group-number text-center" id="<?= $group_tag; ?>">
-                        <?php foreach( $group['queries'] as $query_tag => $query ) { ?>
-                        <div class="text-center" id="<?= $query_tag; ?>" title="<?= $query['title'] ?>" style="width:<?= 90 / count($group['queries']); ?>%; display:inline-block;"></div>
-                        <?php } ?>
-                    </div>
-                    <div class="text-center group-title" id="<?= $group_tag; ?>">
-                        <img class="load-status" src="/assets/img/mozchomp.gif">
-                        <h4><?= $group['title']; ?></h4>
-                    </div>
-                </li>
+                    <?php 
+                        $this->load->view(
+                            '/templates/watch_single_grid', 
+                            array(  'group_id'  => $group_id,
+                                    'group'     => $group, 
+                                    'type'      => 'make_number' 
+                                    ) 
+                                ); 
+                    ?>
                 <?php } // End if non-default group that is_number ?>
             <?php } // End foreach query_group ?>
-
-
 
             <li class="non-group" data-row="1" data-col="1" data-sizex="1" data-sizey="1">
                 <div class="text-center group-title">
@@ -146,6 +108,7 @@
                 </div>
             </li>
         </ul>
+
     </div>
 </div><!-- /container -->
 
