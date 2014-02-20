@@ -27,7 +27,7 @@ class cycle extends CI_Model{
 
     function create( $data = array() ){
         $this->db->insert('cycle', $data);    
-        return;
+        return $this->db->insert_id();
     }
 
     function retrieve( $data = array() ){

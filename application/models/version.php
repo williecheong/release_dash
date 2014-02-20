@@ -85,7 +85,7 @@ class version extends CI_Model{
     // BEGIN BASIC CRUD FUNCTIONALITY
     function create( $data = array() ){
         $this->db->insert('version', $data);
-        return;
+        return $this->db->insert_id();
     }
 
     function retrieve( $data = array() ){

@@ -6,7 +6,7 @@ class product extends CI_Model{
 
     function create( $data = array() ){
         $this->db->insert('product', $data);
-        return;
+        return $this->db->insert_id();
     }
     
     function retrieve( $data = array() ){
