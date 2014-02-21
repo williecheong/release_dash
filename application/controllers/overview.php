@@ -20,10 +20,11 @@ class Overview extends CI_Controller {
             $data[$product->tag]['versions'] = array();
 
             //  Find versions that are currently active for this product
-            $versions = $this->version->get_actives_by_product( $product->id );
+            $versions = $this->version->get_active_by_product( $product->id );
             foreach ( $versions as $version ) {
                 // Store a pretty title for this version
                 $data[$product->tag]['versions'][$version->tag]['title'] = $version->title;
+                $data[$product->tag]['versions'][$version->tag]['channel'] = $version->channel_id;
             }
         }
       

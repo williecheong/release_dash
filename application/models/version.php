@@ -39,17 +39,30 @@ class version extends CI_Model{
     }
 
     // Requires a single parameter of product ID
+    // Optional to specify a cycle ID as the second parameter
+    // If none specified, current cycle will be detected and used
     // Function should return an array of 
     //    Currently active versions for each product
     //      4 version objects for Firefox
     //      4 version objects for Fennec
     //      2 version objects for B2G
-    function get_actives_by_product( $product_id = 0 ) {
+    function get_active_by_product( $product_id = 0, $cycle_id = 0 ) {
         // Check that a product_id is specified
         // Also check that a current cycle is present
         if ($product_id == 0) { return array(); }
-        $current_cycle = $this->cycle->get_current_cycle();
-        if ( empty($current_cycle) ) { return array(); }
+        
+        $current_cycle;
+        if ($cycle_id == 0) { 
+            $current_cycle = $this->cycle->get_current_cycle();
+            if ( empty($current_cycle) ) { return array(); }
+        } else {
+            $current_cycle = $this->cycle->retrieve( array('id' => $cycle_id) );
+                if ( empty($current_cycle) ) { 
+                    return array(); 
+                } else {
+                    $current_cycle = $current_cycle[0];
+                }
+        }
 
         // Get all channels for this product_id
         $channels = $this->channel->retrieve( 
@@ -75,12 +88,13 @@ class version extends CI_Model{
         // Pulling the active versions from the DB based on above conditions
         // Also join with version table because other version data is wanted
         $this->db->from('version_channel_cycle');
-        $this->db->join('version', 'version.id = version_channel_cycle.version_id');
+        $this->db->join('version', 'version_channel_cycle.version_id = version.id');
         $this->db->where( $conditions );
         $query = $this->db->get();
 
         return $query->result();
     }
+    
 
     // BEGIN BASIC CRUD FUNCTIONALITY
     function create( $data = array() ){

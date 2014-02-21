@@ -20,14 +20,16 @@ CREATE TABLE `channel` (
     `tag` varchar(255) not null,
     `title` varchar(255) not null,
     `product_id` int(11) not null,
+    `next_channel` int(11) not null default '0',
+    `is_first` tinyint(4) not null default '0',
     UNIQUE (`product_id`, `tag`),
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 CREATE TABLE `cycle` (
     `id` int(11) not null auto_increment,
-    `start` timestamp not null,   
-    `end` timestamp not null,
+    `start` datetime not null,   
+    `end` datetime not null,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
@@ -62,70 +64,63 @@ CREATE TABLE `query` (
 
 
 
-INSERT INTO `product` (`tag`, `title`) VALUES 
-('firefox', 'Firefox for Desktop'),
-('fennec', 'Firefox for Android'),
-('b2g', 'Firefox OS');
+INSERT INTO `product` (`id`, `tag`, `title`) VALUES 
+('1', 'firefox', 'Firefox'),
+('2', 'fennec', 'Firefox for Android'),
+('3', 'b2g', 'Firefox OS');
 
-INSERT INTO `version` (`tag`, `title`, `product_id`) VALUES
-('25',   'Firefox 25',               '1'),
-('26',   'Firefox 26',               '1'),
-('27',   'Firefox 27',               '1'),
-('28',   'Firefox 28',               '1'),
-('29',   'Firefox 29',               '1'),
-('30',   'Firefox 30',               '1'),
-('25',   'Firefox for Android 25',   '2'),
-('26',   'Firefox for Android 26',   '2'),
-('27',   'Firefox for Android 27',   '2'),
-('28',   'Firefox for Android 28',   '2'),
-('29',   'Firefox for Android 29',   '2'),
-('30',   'Firefox for Android 30',   '2'),
-('1_2',  'Firefox OS 1.2',            '3'),
-('1_3',  'Firefox OS 1.3',            '3'),
-('1_4',  'Firefox OS 1.4',            '3');
+INSERT INTO `version` (`id`, `tag`, `title`, `product_id`) VALUES
+('1',  '25',   'Firefox 25',                '1'),
+('2',  '26',   'Firefox 26',                '1'),
+('3',  '27',   'Firefox 27',                '1'),
+('4',  '28',   'Firefox 28',                '1'),
+('5',  '29',   'Firefox 29',                '1'),
+('6',  '25',   'Firefox for Android 25',    '2'),
+('7',  '26',   'Firefox for Android 26',    '2'),
+('8',  '27',   'Firefox for Android 27',    '2'),
+('9',  '28',   'Firefox for Android 28',    '2'),
+('10', '29',   'Firefox for Android 29',    '2'),
+('11', '1_2',  'Firefox OS 1.2',            '3'),
+('12', '1_3',  'Firefox OS 1.3',            '3');
 
-INSERT INTO `channel` (`tag`, `title`, `product_id`) VALUES
-('central',         'Central',          '1'),
-('aurora',          'Aurora',           '1'),
-('beta',            'Beta',             '1'),
-('release',         'Release',          '1'),
-('central',         'Central',          '2'),
-('aurora',          'Aurora',           '2'),
-('beta',            'Beta',             '2'),
-('release',         'Release',          '2'),
-('development',     'Development',      '3'),
-('stabilization',   'Stabilization',    '3');
+INSERT INTO `channel` (`id`, `tag`, `title`, `product_id`, `next_channel`, `is_first`) VALUES
+('1',  'central',         'Central',          '1', '2' , '1'),
+('2',  'aurora',          'Aurora',           '1', '3' , '0'),
+('3',  'beta',            'Beta',             '1', '4' , '0'),
+('4',  'release',         'Release',          '1', '0' , '0'),
+('5',  'central',         'Central',          '2', '6' , '1'),
+('6',  'aurora',          'Aurora',           '2', '7' , '0'),
+('7',  'beta',            'Beta',             '2', '8' , '0'),
+('8',  'release',         'Release',          '2', '0' , '0'),
+('9',  'development',     'Development',      '3', '10', '1'),
+('10', 'stabilization',   'Stabilization',    '3', '0' , '0');
 
-INSERT INTO `cycle` (`start`, `end`) VALUES
-('2013-06-25 00:00:00', '2013-08-06 00:00:00'),
-('2013-08-06 00:00:00', '2013-09-17 00:00:00'),
-('2013-09-17 00:00:00', '2013-10-29 00:00:00'),
-('2013-10-29 00:00:00', '2013-12-10 00:00:00'),
-('2013-12-10 00:00:00', '2014-02-04 00:00:00'),
-('2014-02-04 00:00:00', '2014-03-18 00:00:00');
+INSERT INTO `cycle` (`id`, `start`, `end`) VALUES
+('1', '2013-06-25 00:00:00', '2013-08-06 00:00:00'),
+('2', '2013-08-06 00:00:00', '2013-09-17 00:00:00'),
+('3', '2013-09-17 00:00:00', '2013-10-29 00:00:00'),
+('4', '2013-10-29 00:00:00', '2013-12-10 00:00:00'),
+('5', '2013-12-10 00:00:00', '2014-02-04 00:00:00');
 
 INSERT INTO `version_channel_cycle` (`version_id`, `channel_id`, `cycle_id`) VALUES
-('1', '1', '1'), ('1', '2', '2'), ('1', '3', '3'), ('1', '4', '4'),
-('2', '1', '2'), ('2', '2', '3'), ('2', '3', '4'), ('2', '4', '5'),
-('3', '1', '3'), ('3', '2', '4'), ('3', '3', '5'), ('3', '4', '6'),
-('4', '1', '4'), ('4', '2', '5'), ('4', '3', '6'),
-('5', '1', '5'), ('5', '2', '6'),
-('6', '1', '6'),
-('7', '5', '1'), ('7', '6', '2'), ('7', '7', '3'), ('7', '8', '4'),
-('8', '5', '2'), ('8', '6', '3'), ('8', '7', '4'), ('8', '8', '5'),
-('9', '5', '3'), ('9', '6', '4'), ('9', '7', '5'), ('9', '8', '6'),
-('10','5', '4'), ('10','6', '5'), ('10','7', '6'),
-('11','5', '5'), ('11','6', '6'),
-('12','5', '6'),
-('13','9', '2'), ('13','9', '3'), ('13','10','4'), ('13','10','5'),
-('14','9', '4'), ('14','9', '5'), ('14','10','6'),
-('15','9', '6');
+('1', '1', '1'), ('1', '2', '2'), ('1', '3', '3'), ('1', '4', '4'), 
+('2', '1', '2'), ('2', '2', '3'), ('2', '3', '4'), ('2', '4', '5'), 
+('3', '1', '3'), ('3', '2', '4'), ('3', '3', '5'), 
+('4', '1', '4'), ('4', '2', '5'), 
+('5', '1', '5'), 
+('6', '5', '1'), ('6', '6', '2'), ('6', '7', '3'), ('6', '8', '4'),
+('7', '5', '2'), ('7', '6', '3'), ('7', '7', '4'), ('7', '8', '5'),
+('8', '5', '3'), ('8', '6', '4'), ('8', '7', '5'), 
+('9', '5', '4'), ('9','6', '5'), 
+('10','5', '5'), 
+('11','9', '2'), ('11','9', '3'), ('11','10','4'), ('11','10','5'),
+('12','9', '4'), ('12','9', '5');
 
 
-INSERT INTO `group` (`title`, `entity`, `entity_id`, `is_plot`, `is_number`) VALUES
-('Tracked vs Fixed', 'product', '1', '1', '0'),
-('Unresolved', 'product', '1', '1', '0'),
-('Bugs Fixed on MC', 'product', '1', '0', '1');
+INSERT INTO `group` (`id`, `title`, `entity`, `entity_id`, `is_plot`, `is_number`) VALUES
+('1', 'Tracked vs Fixed', 'product', '1', '1', '0'),
+('2', 'Unresolved', 'product', '1', '1', '0'),
+('3', 'Bugs Fixed on MC', 'product', '1', '0', '1');
 
 INSERT INTO `query` (`title`, `group_id`, `colour`, `query_qb`, `query_bz`) VALUES
 ('# Bugs tracking <version_title>', '1', 'rgb(194, 127, 127)', 
