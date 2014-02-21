@@ -17,7 +17,7 @@ class cycle extends CI_Model{
             // Simply return that empty array for now
             $source = base_url('/admin/update_cycle');
             $content = file_get_contents( $source );
-            if ( $content == 'Cycle updated successfully.' ) {
+            if ( $content == 'Cycle created successfully' ) {
                 return $this->get_current_cycle();
             } else {
                 return $this->get_latest_cycle();

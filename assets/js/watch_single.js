@@ -9,7 +9,7 @@
 
     // Initializing qtip for better tooltips
     $('[title!=""]').qtip({
-        position: { my: 'top right' }
+        position: { my: 'top right', at: 'bottom right' }
     });
 
     // Initializing duckster gridster

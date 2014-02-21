@@ -22,8 +22,7 @@ class Admin extends CI_Controller {
         $source = "https://wiki.mozilla.org/Template:CURRENT_CYCLE";
         $content = file_get_contents( $source );
         if( $content === false ) {
-            $data = array( 'message' => 'Failed to access: '.$source );
-            $this->load->view('update_cycle', $data);
+            echo 'Failed to access: '.$source;
             return;
         }
 
@@ -39,77 +38,87 @@ class Admin extends CI_Controller {
 
         // Try and retrieve this cycle from the DB
         // If it exists, there is no new cycle to insert
-        $check_cycle = $this->cycle->retrieve( array( 'start' => $start,
-                                                      'end'   => $end    ) );
-        if ( count($check_cycle) > 0 ) {
-            echo 'Cycle already exists (ID = '.$check_cycle[0]->id.').';
+        $same_cycle = $this->cycle->retrieve( array( 'start' => $start,
+                                                      'end'  => $end    ));
+        if ( count($same_cycle) > 0 ) {
+            echo 'Cycle ID = '.$same_cycle[0]->id;
             return;
         }
 
         // Corner case:
         // In event where ship date is delayed:
-        $check_cycle = $this->cycle->retrieve( array( 'start'    => $start,
-                                                      'end !='   => $end    ) );
-        if ( count($check_cycle) > 0 ) {
-            $this->cycle->update( array( 'id' => $check_cycle[0]->id ), 
-                                  array( 'end'=> $end )                 );
-            echo 'Changes in current cycle successfully updated.';
+        $delayed_cycle = $this->cycle->retrieve( array( 'start'    => $start,
+                                                        'end !='   => $end  ));
+        if ( count($delayed_cycle) > 0 ) {
+            $this->cycle->update( array( 'id' => $delayed_cycle[0]->id ), 
+                                  array( 'end'=> $end  ));
+            echo 'Delays in current cycle successfully updated';
             return;
         }
-
-        // This new cycle is not captured in DB. Capture it
-        $cycle_id = $this->cycle->create( array( 'start' => $start,
-                                                 'end'   => $end    ) );
         
-        // New cycle now exists. 
         // Find the previous cycle. The ID is needed
-        // Using the version_channel_cycle that were active in the previous cycle.
-        $previous_cycle = $this->cycle->retrieve( array( 'end' => $start ) );
+        // Also capture newly extracted cycle in the DB.
+        $previous_cycle = $this->cycle->get_latest_cycle();
+        $new_cycle_id = $this->cycle->create( array( 'start' => $start,
+                                                     'end'   => $end  ));
+
+        $previous_maps = $this->administrative->retrieve_map( array('cycle_id'=>$previous_cycle->id) );
 
         // Start looping through all products
         $products = $this->product->retrieve();
         foreach ( $products as $product ) {
-            //  Find versions that are previously active for this product
-            $versions = $this->version->get_active_by_product( $product->id, $previous_cycle[0]->id );
-            
+            // Find previously active versions for this product, loop through
+            // If version is B2G, check for cycle periods and bump/extend as needed.
+            $versions = $this->version->get_active_by_product( $product->id, $previous_cycle->id );
             foreach ( $versions as $version ) {
                 if ( $product->id == 3 ) { 
-                    // Check to see if this version already has 2 mappings on this channel
+                    // Check if B2G version already has 2 mappings on this channel
                     $check_mappings = $this->administrative->retrieve_map( 
                                                                 array( 'version_id' => $version->id,
                                                                        'channel_id' => $version->channel_id ));
                     if ( count($check_mappings) > 1 ) {
-                        // End of cycle for B2G, bump 
-                        $this->_bump_channel( $product, $version, $cycle_id ); 
+                        // End of cycle for B2G, do bump 
+                        $this->_bump_channel_by_version( $version, $new_cycle_id, $product ); 
                     } else {
-                        // Mid-cycle, extend this version on this channel for another cycle
-                        $map_id = $this->administrative->create_map( $version->id, $version->channel_id, $cycle_id );
+                        // Mid-cycle for B2G
+                        // Map this version on this channel for another cycle
+                        $map_id = $this->administrative->create_map( $version->id, $version->channel_id, $new_cycle_id );
                     }
                 } else {    
-                    // Regular firefox/fennec
-                    $this->_bump_channel( $product, $version, $cycle_id ); 
+                    // Regular firefox/fennec, just bump as usual
+                    $this->_bump_channel_by_version( $version, $new_cycle_id, $product ); 
                 }
             }
         }
 
-        echo 'Cycle updated successfully.';
+        echo 'Cycle created successfully';
         return;
     }
 
-    private function _bump_channel( $product, $version, $cycle_id ) {
+    // Bumps a version up to it's next channel for the new cycle
+    // Creates and maps latest version if this version was in first channel
+    // Note: Version is deprecated by not mapping it to a new (current) cycle
+    // Clarification: 
+    //  Nothing is done if specified version is on the last channel
+    //  Simple map is done if version is on an in between channel like Aurora and Beta
+    //  Both bump this version AND create latest version if this version is on first channel
+    private function _bump_channel_by_version( $version, $new_cycle_id, $product ) {
         // Get the channel details
         $channel = $this->channel->retrieve( array( 'id' => $version->channel_id ) );
         $channel = $channel[0];
 
         if ( $channel->next_channel != 0 ) {
-            // Bump this version into the next channel for current cycle
-            $map_id = $this->administrative->create_map( $version->id, $channel->next_channel, $cycle_id );
+            // This is not a channel that leads into version deprecation
+            // Bump this version into the next channel for this new (current) cycle
+            $map_id = $this->administrative->create_map( $version->id, $channel->next_channel, $new_cycle_id );
         } 
 
         if ( $channel->is_first != 0 ) { 
+            // This is a channel that is the first in product line.
+            // It will not be expected to have any existing versions entering.
             // A new version needs to board train on this channel. Create and map.
-            $new_version_id = $this->administrative->make_new_version_for_product( $product, $version );
-            $map_id = $this->administrative->create_map( $new_version_id, $channel->id, $cycle_id );
+            $new_version_id = $this->administrative->make_new_version_for_product( $version, $product );
+            $map_id = $this->administrative->create_map( $new_version_id, $channel->id, $new_cycle_id );
         }
 
         return true;   

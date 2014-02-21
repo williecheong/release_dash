@@ -9,20 +9,13 @@
 
     // Initializing qtip for better tooltips
     $('[title!=""]').qtip({
-        position: { my: 'top right' }
+        position: { my: 'top right', at: 'bottom right' }
     });
 
 /*************************************
     REDIRECT TO VERSION PAGE
 *************************************/
-    $('.version').click( function() {        
-        // Identify chosen product and version
-        product = $(this).closest('.versions').attr('id');
-        version = $(this).attr('id');
-
-        // Execute the redirection
-        window.location.href = "/for/" + product + "/" + version;
-    });
+    // Done directly on views via <a> tags 
 
 /************************
     VERY IMPORTANT FUNCTIONS
