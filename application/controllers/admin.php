@@ -8,13 +8,13 @@ class Admin extends CI_Controller {
         $this->load->model('administrative');
     }
 
-    public function index() {
-        $this->load->view('templates/404_not_found');
-    }
-
     public function login() {
         echo 'Coming soon';
         return;
+    }
+
+    public function easy_qb() {
+        $this->load->view('easy_qb');
     }
 
     public function update_cycle() {
