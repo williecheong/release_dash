@@ -15,9 +15,9 @@ class product extends CI_Model{
         return $query->result();
     }
     
-    function update( $data = array() ){
-        $this->db->where($data);
-        $this->db->update('product', $data);
+    function update( $criteria = array(), $new_data = array() ){
+        $this->db->where($criteria);
+        $this->db->update('product', $new_data);
     }
     
     function delete( $data = array() ){
