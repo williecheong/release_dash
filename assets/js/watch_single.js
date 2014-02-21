@@ -7,6 +7,11 @@
         $( toToggle ).toggle('fast');
     });
 
+    // Initializing qtip for better tooltips
+    $('[title!=""]').qtip({
+        position: { my: 'top right' }
+    });
+
     // Initializing duckster gridster
     var gridsterWidth = $('.gridster').width();
     $(".gridster ul").gridster({
@@ -14,7 +19,7 @@
         widget_base_dimensions: [ gridsterWidth*0.104, gridsterWidth*0.104 ]
     });
 
-    // Initializes the modals
+    // Initializes the bootstrap modals
     $('.modal#new-group').modal({
         show : false 
     });

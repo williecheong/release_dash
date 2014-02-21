@@ -7,6 +7,11 @@
         $( toToggle ).toggle('slow');
     });
 
+    // Initializing qtip for better tooltips
+    $('[title!=""]').qtip({
+        position: { my: 'top right' }
+    });
+
 /*************************************
     REDIRECT TO VERSION PAGE
 *************************************/
