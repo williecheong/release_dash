@@ -14,7 +14,7 @@
 | path to your installation.
 |
 */
-$config['base_url']	= 'release-dash.dev';
+$config['base_url']	= 'http://release-dash.dev';
 
 /*
 |--------------------------------------------------------------------------

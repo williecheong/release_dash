@@ -1,20 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-if ( ! function_exists('taggify')) {
-    // Use this for modifying any read-friendly text
-    // Into a string that is friendly towards URLs and JSON keys
-    function taggify( $input_string = '' ) {
-        // Check for missing parameters
-        if ( $input_string == '' ) { return $input_string; }
-        
-        $input_string = preg_replace( '/[^a-zA-Z0-9]+/', '-', $input_string );
-        $input_string = trim( $input_string, '-' );
-        $input_string = strtolower( $input_string );
-                
-        return $input_string;
-    }   
-}
-
 /***************************************
     FIND AND REPLACE TYPE OF FUNCTIONS
 ****************************************/

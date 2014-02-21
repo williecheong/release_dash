@@ -4,8 +4,7 @@ class Lost extends CI_Controller {
 
     function __construct() {
         parent::__construct();
-        // Load some helpers for convenience
-        $this->load->helper('date');
+        // Autoloaded Config, Helpers, Models 
     }
 
     public function index() {
