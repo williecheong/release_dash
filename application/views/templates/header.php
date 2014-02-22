@@ -51,7 +51,7 @@
                     <div class="navbar-collapse collapse">
                         <form class="navbar-form navbar-right">
                             <button class="btn btn-danger" id="user-logout">
-                                <i class="fa fa-user"></i> Logout
+                                <i class="fa fa-sign-out fa-lg"></i> <?= $this->session->userdata('email'); ?>
                             </button>
                         </form>
                     </div><!--/.navbar-collapse -->

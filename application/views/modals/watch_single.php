@@ -73,7 +73,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-danger" id="delete-old-group" data-group-id="">
-                    <i class="fa fa-remove"></i> Delete
+                    <i class="fa fa-times"></i> Delete
                 </button>
             </div>
         </div>
