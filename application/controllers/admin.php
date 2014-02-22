@@ -9,7 +9,7 @@ class Admin extends CI_Controller {
     }
 
     public function login() {
-        echo 'Coming soon';
+        $this->load->view('login');
         return;
     }
 

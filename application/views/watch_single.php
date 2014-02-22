@@ -10,13 +10,12 @@
     //    As usual, CSS to the header, JS to the footer.
     $include = array( 
         'version'  => $data['title'],
-
-        'top'    => '
+        'top'      => '
             <link rel="stylesheet" href="/assets/vendor/ducksboard-gridster/jquery.gridster.min.css">
             <link rel="stylesheet" href="/assets/vendor/spectrum/spectrum.css">
             <link rel="stylesheet" href="/assets/css/watch_single.css">',
         
-        'bottom' => '
+        'bottom'   => '
             <script src="/assets/vendor/Qb/html/js/imports/import.js" type="application/javascript;version=1.7"></script>
             <script src="/assets/vendor/Qb/html/js/ESQueryRunner.js" type="application/javascript;version=1.7"></script>
             <script src="/assets/vendor/ducksboard-gridster/jquery.gridster.min.js"></script>

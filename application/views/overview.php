@@ -9,9 +9,9 @@
     //    Then send it to the respective views for appending to the DOM
     //    As usual, CSS to the header, JS to the footer.
     $include = array( 
-        'top' => '<link rel="stylesheet" href="/assets/css/overview.css">',
-        'bottom' => '<script src="/assets/js/overview.js"></script>
-                     <script>var coreData = '. json_encode($data) .'</script>'
+        'top'       => '<link rel="stylesheet" href="/assets/css/overview.css">',
+        'bottom'    => '<script src="/assets/js/overview.js"></script>
+                        <script>var coreData = '. json_encode($data) .'</script>'
     );
 ?>
 

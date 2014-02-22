@@ -1,16 +1,6 @@
 /*********************************
     JUST SETTING UP THE PAGE HERE
 *********************************/
-    // Toggles whatever element is inside "data-toggler"
-    $('[data-mytoggler]').click(function(){
-        var toToggle = $(this).data('mytoggler');
-        $( toToggle ).toggle('fast');
-    });
-
-    // Initializing qtip for better tooltips
-    $('[title!=""]').qtip({
-        position: { my: 'top right', at: 'bottom right' }
-    });
 
     // Initializing duckster gridster
     var gridsterWidth = $('.gridster').width();
