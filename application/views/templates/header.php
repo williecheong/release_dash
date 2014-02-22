@@ -49,11 +49,11 @@
                 </div>
                 <?php if ( $this->session->userdata('email') ) { ?>
                     <div class="navbar-collapse collapse">
-                        <form class="navbar-form navbar-right">
+                        <div class="navbar-form navbar-right">
                             <button class="btn btn-danger" id="user-logout">
                                 <i class="fa fa-sign-out fa-lg"></i> <?= $this->session->userdata('email'); ?>
                             </button>
-                        </form>
+                        </div>
                     </div><!--/.navbar-collapse -->
                 <?php } ?>
             </div>
