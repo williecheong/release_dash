@@ -17,7 +17,7 @@
         <div class="col-lg-12 text-center">
             <?php if ( $this->session->userdata('email') ) { ?>
                 <button class="btn btn-danger btn-lg" id="user-logout">
-                    <i class="fa fa-user fa-lg"></i> Logout of Administration
+                    <i class="fa fa-user fa-lg"></i> Logout of administration
                 </button>
             <?php } else { ?>
                 <button class="btn btn-primary btn-lg" id="start-persona">

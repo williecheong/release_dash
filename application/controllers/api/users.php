@@ -16,6 +16,14 @@ class Users extends REST_Controller {
         if ( isset($_POST['assertion']) ) {
             $this->authentication->login($_POST['assertion']);
         }
+
+        if ( $this->session->userdata('email') ) {
+            $is_admin = $this->administrative->check_admin_rights( $this->session->userdata('email') );
+            if ( !$is_admin ) {
+                $this->authentication->logout();
+            }
+        }
+
     }
 
     public function logout_post() {

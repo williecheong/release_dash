@@ -100,14 +100,15 @@
                     ?>
                 <?php } // End if non-default group that is_number ?>
             <?php } // End foreach query_group ?>
-
-            <li class="non-group" data-row="1" data-col="1" data-sizex="1" data-sizey="1">
-                <div class="text-center group-title">
-                    <button type="button" class="btn btn-success" id="add-new-group">
-                        <i class="fa fa-plus"></i>
-                    </button>
-                </div>
-            </li>
+            <?php if ( $this->session->userdata('email') ) { ?>
+                <li class="non-group" data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+                    <div class="text-center group-title">
+                        <button type="button" class="btn btn-success" id="add-new-group">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                    </div>
+                </li>
+            <?php } ?>
         </ul>
 
     </div>
