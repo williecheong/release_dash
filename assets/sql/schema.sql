@@ -1,3 +1,9 @@
+CREATE TABLE `administrator` (
+    `id` int(11) not null auto_increment,
+    `email` varchar(255) not null,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+
 CREATE TABLE `product` (
     `id` int(11) not null auto_increment,
     `tag` varchar(255) not null,   
@@ -63,6 +69,12 @@ CREATE TABLE `query` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 
+INSERT INTO `administrator` (`id`, `email`) VALUES 
+('1', 'wcheong@mozilla.com'     ),
+('2', 'bbajaj@mozilla.com'      ),
+('3', 'lsblakk@mozilla.com'     ),
+('4', 'praghunath@mozilla.com'  ),
+('5', 'sledru@mozilla.com'      );
 
 INSERT INTO `product` (`id`, `tag`, `title`) VALUES 
 ('1', 'firefox', 'Firefox'),

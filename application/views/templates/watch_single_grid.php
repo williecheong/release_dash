@@ -1,6 +1,6 @@
 <li class="group<?= ($group['is_default'] == 1) ? ' is-default' : ''; ?>" id="g<?= $group_id; ?>" data-row="1" data-col="1" data-sizex="<?= ($type == 'make_plot')? 3 : min(2, count($group['queries'])); ?>" data-sizey="<?= ($type == 'make_plot')? 2 : 1; ?>">
     <div class="top-menu">
-        <?php if ( $group['is_default'] == 0 ) { ?>
+        <?php if ( $group['is_default'] == 0  && $this->session->userdata('email') ) { ?>
             <button class="btn btn-xs pull-right" id="edit-old-group" title="Edit" data-group-id="<?= $group_id; ?>">
                 <i class="fa fa-pencil fa-lg"></i>
             </button>

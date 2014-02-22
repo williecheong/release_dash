@@ -10,13 +10,12 @@
     //    As usual, CSS to the header, JS to the footer.
     $include = array( 
         'version'  => $data['title'],
-
-        'top'    => '
+        'top'      => '
             <link rel="stylesheet" href="/assets/vendor/ducksboard-gridster/jquery.gridster.min.css">
             <link rel="stylesheet" href="/assets/vendor/spectrum/spectrum.css">
             <link rel="stylesheet" href="/assets/css/watch_single.css">',
         
-        'bottom' => '
+        'bottom'   => '
             <script src="/assets/vendor/Qb/html/js/imports/import.js" type="application/javascript;version=1.7"></script>
             <script src="/assets/vendor/Qb/html/js/ESQueryRunner.js" type="application/javascript;version=1.7"></script>
             <script src="/assets/vendor/ducksboard-gridster/jquery.gridster.min.js"></script>
@@ -101,14 +100,15 @@
                     ?>
                 <?php } // End if non-default group that is_number ?>
             <?php } // End foreach query_group ?>
-
-            <li class="non-group" data-row="1" data-col="1" data-sizex="1" data-sizey="1">
-                <div class="text-center group-title">
-                    <button type="button" class="btn btn-success" id="add-new-group">
-                        <i class="fa fa-plus"></i>
-                    </button>
-                </div>
-            </li>
+            <?php if ( $this->session->userdata('email') ) { ?>
+                <li class="non-group" data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+                    <div class="text-center group-title">
+                        <button type="button" class="btn btn-success" id="add-new-group">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                    </div>
+                </li>
+            <?php } ?>
         </ul>
 
     </div>

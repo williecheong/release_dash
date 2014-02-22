@@ -4,17 +4,16 @@ class Admin extends CI_Controller {
 
     function __construct() {
         parent::__construct();
-        // Autoloaded Config, Helpers, Models 
-        $this->load->model('administrative');
+        // Autoloaded Config, Helpers, Models
     }
 
     public function index() {
-        $this->load->view('templates/404_not_found');
+        $this->load->view('login');
+        return;
     }
 
-    public function login() {
-        echo 'Coming soon';
-        return;
+    public function easy_qb() {
+        $this->load->view('easy_qb');
     }
 
     public function update_cycle() {

@@ -2,6 +2,18 @@
 
 class administrative extends CI_Model{
 
+    function check_admin_rights( $email = '' ) {
+        $this->db->where('email', $email);
+        $query = $this->db->get('administrator');
+        $query_result = $query->result();
+
+        if ( empty($query_result) ) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     // Requires two parameters for product and the latest version
     // Automatically generates a new version for this product in the DB
     // Returns the ID of the new version that was created.

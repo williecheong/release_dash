@@ -27,7 +27,7 @@
         <link rel="stylesheet" href="/assets/vendor/rickshaw/rickshaw.min.css">
         <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
         <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/qtip2/2.2.0/basic/jquery.qtip.min.css">
-        <?= $top; ?>
+        <?= ( isset( $top) ? $top : '' ); ?>
         <script src="/assets/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script> 
     </head>
     
@@ -38,8 +38,23 @@
         <div class="navbar navbar-inverse navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
+                    <?php if ( $this->session->userdata('email') ) { ?>
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                    <?php } ?>
                     <a class="navbar-brand" href="/">Release Readiness Dashboard</a>
                 </div>
-                
+                <?php if ( $this->session->userdata('email') ) { ?>
+                    <div class="navbar-collapse collapse">
+                        <div class="navbar-form navbar-right">
+                            <button class="btn btn-danger" id="user-logout">
+                                <i class="fa fa-sign-out fa-lg"></i> <?= $this->session->userdata('email'); ?>
+                            </button>
+                        </div>
+                    </div><!--/.navbar-collapse -->
+                <?php } ?>
             </div>
         </div>
