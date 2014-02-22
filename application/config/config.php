@@ -14,7 +14,7 @@
 | path to your installation.
 |
 */
-$config['base_url']	= 'release-dash.dev';
+$config['base_url']	= 'http://release-dash.dev';
 
 /*
 |--------------------------------------------------------------------------
@@ -224,7 +224,7 @@ $config['cache_path'] = '';
 | MUST set an encryption key.  See the user guide for info.
 |
 */
-$config['encryption_key'] = '';
+$config['encryption_key'] = '46PwAF58bS5nrMGGN3zr79oED5E06H1L';
 
 /*
 |--------------------------------------------------------------------------
