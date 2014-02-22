@@ -23,7 +23,6 @@ class Users extends REST_Controller {
                 $this->authentication->logout();
             }
         }
-
     }
 
     public function logout_post() {
