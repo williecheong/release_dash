@@ -15,11 +15,42 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-lg-6">
-            Make form here
+        <div class="col-lg-6 query-builder">
+            <div role="form">
+                <div class="form-group query-inputs">
+                    <button type="button" class="btn btn-default btn-xs pull-right" id="add-query-input">
+                        <i class="fa fa-plus"></i>
+                    </button> 
+                    <label>Query Inputs</label>
+                </div>
+                <div class="form-group">
+                    <label>Query Range (Leave blank for soft dates)</label>
+                    <div class="row query-dates">
+                        <div class="col-xs-6">
+                            <input type="text" class="form-control datepicker" placeholder="Start Date">
+                        </div>
+                        <div class="col-xs-6">
+                            <input type="text" class="form-control datepicker" placeholder="End Date">
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-primary pull-right" id="query-compile">
+                    <i class="fa fa-magic"></i> Qb query
+                </button>
+                <div class="radio">    
+                    <label class="radio-inline">
+                        <input type="radio" name="query-range" id="public_cluster" checked=""> Public Cluster
+                    </label>
+                </div>
+                <div class="radio">
+                    <label class="radio-inline">
+                        <input type="radio" name="query-range" id="private_cluster"> Private Cluster
+                    </label>
+                </div>
+            </div>
         </div>
-        <div class="col-lg-6">
-            Make results here
+        <div class="col-lg-6 query-output">
+            <textarea class="form-control" rows="25" placeholder="Output"></textarea>
         </div>
     </div>
 </div><!-- /container -->

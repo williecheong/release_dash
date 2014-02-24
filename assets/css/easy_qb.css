@@ -1,0 +1,19 @@
+/* ==========================================================================
+    Author's custom styles
+    ========================================================================== */
+
+    div.row.query-input {
+        margin-bottom: 10px;
+    }
+
+    .row .query-builder {
+        margin-top: 2%;
+    }
+
+    .row .query-output {
+        margin-top: 2%;
+    }
+
+    textarea {
+        resize: vertical;
+    }

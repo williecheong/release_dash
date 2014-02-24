@@ -28,7 +28,7 @@
 
         <div class="row text-center versions" id="<?= $product_tag; ?>">
             <?php foreach ($product['versions'] as $version_tag => $version) { ?>
-                <div class="col-lg-<?= floor( 12 / count($product['versions']) ); ?> version" id="<?= $version_tag ?>">
+                <div class="col-sm-<?= floor( 12 / count($product['versions']) ); ?> version" id="<?= $version_tag ?>">
                     <a href="/for/<?= $product_tag; ?>/<?= $version_tag; ?>">    
                         <h2>
                             <?= $version['title']; ?>
