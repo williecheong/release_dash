@@ -18,7 +18,7 @@ $('.btn#add-query-input').click(function(){
 });
 
 $('.btn#query-compile').click(function(){
-    alert('Beep beep\nQb query magic.');
+    $('textarea.query-output').append('Beep beep. Qb query magic.\n');
 });
 
 function templateQueryInput( number ) {

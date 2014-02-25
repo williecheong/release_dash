@@ -15,7 +15,7 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-lg-6 query-builder">
+        <div class="col-lg-6 left-side">
             <div role="form">
                 <div class="form-group query-inputs">
                     <button type="button" class="btn btn-default btn-xs pull-right" id="add-query-input">
@@ -49,8 +49,8 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-6 query-output">
-            <textarea class="form-control" rows="25" placeholder="Output"></textarea>
+        <div class="col-lg-6 right-side">
+            <textarea class="form-control query-output" rows="15" placeholder="Output"></textarea>
         </div>
     </div>
 </div><!-- /container -->

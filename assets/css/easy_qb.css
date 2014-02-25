@@ -6,11 +6,11 @@
         margin-bottom: 10px;
     }
 
-    .row .query-builder {
+    .row .left-side {
         margin-top: 2%;
     }
 
-    .row .query-output {
+    .row .right-side {
         margin-top: 2%;
     }
 
