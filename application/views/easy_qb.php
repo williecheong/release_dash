@@ -4,7 +4,7 @@
     //    Then send it to the respective views for appending to the DOM
     //    As usual, CSS to the header, JS to the footer.
     $include = array( 
-        'top' => '<link rel="stylesheet" href="/assets/css/easy_qb.css">',
+        'top'    => '<link rel="stylesheet" href="/assets/css/easy_qb.css">',
         'bottom' => '<script src="/assets/js/easy_qb.js"></script>'
     );
 ?>

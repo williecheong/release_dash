@@ -1,7 +1,7 @@
 <?php // if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 require(APPPATH.'/libraries/REST_Controller.php');
 
-class Users extends REST_Controller {
+class Persona extends REST_Controller {
     
     function __construct() {
         parent::__construct();
@@ -9,7 +9,7 @@ class Users extends REST_Controller {
     }
 
     public function index_get() {
-        redirect('/admin/login');
+        redirect('/admin');
     }
 
     public function login_post() {
@@ -18,11 +18,16 @@ class Users extends REST_Controller {
         }
 
         if ( $this->session->userdata('email') ) {
-            $is_admin = $this->administrative->check_admin_rights( $this->session->userdata('email') );
-            if ( !$is_admin ) {
+            $admins = $this->administrator->retrieve(array('email' => $this->session->userdata('email')));
+            if ( count($admins) < 1 ) {
                 $this->authentication->logout();
+                echo "Not administrator";
+            } else {
+                echo "OK";
             }
         }
+
+        return;
     }
 
     public function logout_post() {

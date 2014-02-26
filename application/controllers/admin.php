@@ -8,7 +8,22 @@ class Admin extends CI_Controller {
     }
 
     public function index() {
-        $this->load->view('login');
+        if ( $this->session->userdata('email') ) {
+            $data = array( 'tables' => array(
+                    'administrator'           => $this->administrator->retrieve(),
+                    'product'                 => $this->product->retrieve(),
+                    'version'                 => $this->version->retrieve(),
+                    'channel'                 => $this->channel->retrieve(),
+                    'cycle'                   => $this->cycle->retrieve(),
+                    'group'                   => $this->group->retrieve(),
+                    'query'                   => $this->query->retrieve(),
+                    'version_channel_cycle'   => $this->version_channel_cycle->retrieve()  ));
+
+            $this->load->view('admin_panel', $data);
+        
+        } else {
+            $this->load->view('admin_login');
+        }   
         return;
     }
 
@@ -61,8 +76,6 @@ class Admin extends CI_Controller {
         $new_cycle_id = $this->cycle->create( array( 'start' => $start,
                                                      'end'   => $end  ));
 
-        $previous_maps = $this->administrative->retrieve_map( array('cycle_id'=>$previous_cycle->id) );
-
         // Start looping through all products
         $products = $this->product->retrieve();
         foreach ( $products as $product ) {
@@ -72,16 +85,17 @@ class Admin extends CI_Controller {
             foreach ( $versions as $version ) {
                 if ( $product->id == 3 ) { 
                     // Check if B2G version already has 2 mappings on this channel
-                    $check_mappings = $this->administrative->retrieve_map( 
-                                                                array( 'version_id' => $version->id,
-                                                                       'channel_id' => $version->channel_id ));
+                    $check_mappings = $this->version_channel_cycle->retrieve( array( 'version_id' => $version->id,
+                                                                                         'channel_id' => $version->channel_id ));
                     if ( count($check_mappings) > 1 ) {
                         // End of cycle for B2G, do bump 
                         $this->_bump_channel_by_version( $version, $new_cycle_id, $product ); 
                     } else {
                         // Mid-cycle for B2G
                         // Map this version on this channel for another cycle
-                        $map_id = $this->administrative->create_map( $version->id, $version->channel_id, $new_cycle_id );
+                        $map_id = $this->version_channel_cycle->create( array(  'version_id' => $version->id, 
+                                                                                'channel_id' => $version->channel_id, 
+                                                                                'cycle_id'   => $new_cycle_id  ));
                     }
                 } else {    
                     // Regular firefox/fennec, just bump as usual
@@ -109,15 +123,19 @@ class Admin extends CI_Controller {
         if ( $channel->next_channel != 0 ) {
             // This is not a channel that leads into version deprecation
             // Bump this version into the next channel for this new (current) cycle
-            $map_id = $this->administrative->create_map( $version->id, $channel->next_channel, $new_cycle_id );
+            $map_id = $this->version_channel_cycle->create( array( 'version_id' => $version->id, 
+                                                                   'channel_id' => $channel->next_channel, 
+                                                                   'cycle_id'   => $new_cycle_id  ));
         } 
 
         if ( $channel->is_first != 0 ) { 
             // This is a channel that is the first in product line.
             // It will not be expected to have any existing versions entering.
             // A new version needs to board train on this channel. Create and map.
-            $new_version_id = $this->administrative->make_new_version_for_product( $version, $product );
-            $map_id = $this->administrative->create_map( $new_version_id, $channel->id, $new_cycle_id );
+            $new_version_id = $this->version->make_new_for_product( $version, $product );
+            $map_id = $this->version_channel_cycle->create( array( 'version_id' => $new_version_id, 
+                                                                   'channel_id' => $channel->id, 
+                                                                   'cycle_id'   => $new_cycle_id  ));
         }
 
         return true;   
