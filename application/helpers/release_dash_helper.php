@@ -1,6 +1,8 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 if ( ! function_exists('admin_easy_qb_cmp') ) {
+    // Function to support another function
+    // Used only for uasort() in /admin/easy_qb
     function admin_easy_qb_cmp($a, $b) {
         $a['description'] = strtolower( $a['description'] ) ;
         $b['description'] = strtolower( $b['description'] ) ;
