@@ -28,7 +28,17 @@ class Admin extends CI_Controller {
     }
 
     public function easy_qb() {
-        $this->load->view('easy_qb');
+        $source = "https://api-dev.bugzilla.mozilla.org/latest/configuration";
+        $content = file_get_contents($source);
+        $content = json_decode( $content, true );
+        $fields = $content['field'];
+
+        // Comparison function defined in helpers
+        uasort( $fields, 'admin_easy_qb_cmp' );
+
+        //$this->aasort($fields, 'description');
+
+        $this->load->view( 'easy_qb', array('fields'=>$fields) );
     }
 
     public function update_cycle() {

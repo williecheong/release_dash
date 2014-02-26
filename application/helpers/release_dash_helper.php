@@ -1,5 +1,17 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+if ( ! function_exists('admin_easy_qb_cmp') ) {
+    function admin_easy_qb_cmp($a, $b) {
+        $a['description'] = strtolower( $a['description'] ) ;
+        $b['description'] = strtolower( $b['description'] ) ;
+
+        if ($a['description'] == $b['description']) {
+            return 0;
+        }
+        return ($a['description'] < $b['description']) ? -1 : 1;
+    }
+}
+
 /***************************************
     FIND AND REPLACE TYPE OF FUNCTIONS
 ****************************************/

@@ -59,3 +59,34 @@
     $this->load->view('templates/footer', $include); 
 ?>
 
+<script>
+    function templateQueryInput( number ) {
+    var html = '<div class="row query-input" id="query-input-'+number+'">'+
+'                    <div class="col-md-4">'+
+'                        <select class="form-control">'+
+'                            <option value="">---</option>'+
+<?php foreach( $fields as $key => $field ) { ?>
+'                            <option value="<?= $key ?>"><?= $field["description"]; ?></option>'+
+<?php } ?>
+'                        </select>'+
+'                    </div>'+
+'                    <div class="col-md-4">'+
+'                        <select class="form-control">'+
+'                            <option value="=">is equal to</option>'+
+'                            <option value="!=">is not equal to</option>'+
+'                        </select>'+
+'                    </div>'+
+'                    <div class="col-lg-4">'+
+'                            <div class="input-group">'+
+'                                <input type="text" class="form-control" placeholder="field value">'+
+'                                <span class="input-group-btn">'+
+'                                    <button type="button" class="btn btn-danger" id="remove-query-input">'+
+'                                        <i class="fa fa-times"></i>'+
+'                                    </button>'+
+'                                </span>'+
+'                            </div>'+
+'                        </div>'+
+'                </div>';
+    return html;
+}
+</script>
