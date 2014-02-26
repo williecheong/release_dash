@@ -38,7 +38,7 @@
                     <?php foreach ($table as $row) { ?> 
                         <tr>
                         <?php foreach ( $row as $value ) { ?>
-                            <th><?= $value; ?></th>
+                            <th><?= htmlspecialchars( $value ); ?></th>
                         <?php } ?>            
                         </tr>
                     <?php } ?>
