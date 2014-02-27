@@ -16,7 +16,12 @@ $('.btn#parse-bz-url').click(function(){
     // First is field name, second is actual value
     var bzURL = $('input#bz-url').val();
     var tempBzQueries = bzURL.split('?');
-    tempBzQueries = tempBzQueries[1].split('&');
+    if ( tempBzQueries[1] ) {
+        tempBzQueries = tempBzQueries[1].split('&');
+    } else {
+        console.log('Not a valid URL');
+        return;
+    }
 
     var bzQueries = {};
 
