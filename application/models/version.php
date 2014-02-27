@@ -2,6 +2,40 @@
 
 class version extends CI_Model{
 
+    // Requires two parameters for product and the latest version
+    // Automatically generates a new version for this product in the DB
+    // Returns the ID of the new version that was created.
+    function make_new_for_product( $version = array(), $product = array() ) {
+        // Set the tag and part of the title
+        $new_version_tag = '';        
+        $new_version_number = '';
+        if ( $version->product_id == 3 ) {
+            // B2G alert
+            $break_tag = explode('_', $version->tag);
+            $break_tag[1]++;
+            $new_version_tag = implode('_', $break_tag);
+            $new_version_number = implode('.', $break_tag);
+        } else {
+            $new_version_tag = $version->tag + 1;
+            $new_version_number = $version->tag + 1;
+        }
+
+        if ( empty($product) ) {
+            $product = $this->product->retrieve( array('id'=>$version->product_id) );
+            $product = $product[0];
+        }
+
+        $new_version_title = $product->title . " " . $new_version_number;
+
+        $data = array( 'tag'    => $new_version_tag,
+                       'title'  => $new_version_title,
+                       'product_id' => $product->id     );
+
+        $new_version_id = $this->version->create( $data );
+
+        return $new_version_id;
+    }
+    
     // Returns the SQL timestamp of a version's next shipday
     // Version ID must be specified as the only input parameter
     function get_shipday( $version_id = 0 ) { 

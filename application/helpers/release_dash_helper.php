@@ -1,5 +1,33 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+
+if ( ! function_exists('file_get_contents_via_curl') ) {    
+    function file_get_contents_via_curl($url) {
+        $ch = curl_init();
+        $timeout = 10; // set to zero for no timeout
+        curl_setopt ($ch, CURLOPT_URL, $url);
+        curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+        $file_contents = curl_exec($ch);
+        curl_close($ch);
+        return $file_contents;
+    }
+}
+
+if ( ! function_exists('admin_easy_qb_cmp') ) {
+    // Function to support another function
+    // Used only for uasort() in /admin/easy_qb
+    function admin_easy_qb_cmp($a, $b) {
+        $a['description'] = strtolower( $a['description'] ) ;
+        $b['description'] = strtolower( $b['description'] ) ;
+
+        if ($a['description'] == $b['description']) {
+            return 0;
+        }
+        return ($a['description'] < $b['description']) ? -1 : 1;
+    }
+}
+
 /***************************************
     FIND AND REPLACE TYPE OF FUNCTIONS
 ****************************************/

@@ -1,17 +1,17 @@
 /* ==========================================================================
-   Author's custom styles
-   ========================================================================== */
+    Author's custom styles
+    ========================================================================== */
 
-    .versions {
+    div.versions {
         display: none;
     }
 
-    .version {
+    div.version {
         padding: 5px;
         border: dotted;
     }
 
-    .product {
+    div.product {
         margin-top: 20px;
         padding: 10px;
         font-size: x-large;

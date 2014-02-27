@@ -19,12 +19,18 @@
                 onlogin: function (assertion) {
                     $.ajax({
                         type: 'POST',
-                        url: '/api/users/login',
+                        url: '/api/persona/login',
                         data: { assertion: assertion },
-                        success: function(res, status, xhr) {
-                            document.location.href="/";
+                        success: function(response, status, xhr) {
+                            if ( response == 'OK' ){
+                                window.location.reload();
+                            } else {
+                                console.log(response);
+                                alert(response);
+                            }
                         },
-                        error: function(res, status, xhr) {
+                        error: function(response, status, xhr) {
+                            console.log(response);
                             alert('Login failed');
                         }
                     });
@@ -33,11 +39,12 @@
                 onlogout: function () {
                     $.ajax({
                         type: 'POST',
-                        url: '/api/users/logout',
-                        success: function(res, status, xhr) {
+                        url: '/api/persona/logout',
+                        success: function(response, status, xhr) {
                             window.location.reload();
                         },
-                        error: function(res, status, xhr) {
+                        error: function(response, status, xhr) {
+                            console.log(response);
                             alert('Logout failed');
                         }
                     });

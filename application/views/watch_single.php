@@ -104,7 +104,7 @@
                 <li class="non-group" data-row="1" data-col="1" data-sizex="1" data-sizey="1">
                     <div class="text-center group-title">
                         <button type="button" class="btn btn-success" id="add-new-group">
-                            <i class="fa fa-plus"></i>
+                            <i class="fa fa-bar-chart-o fa-lg"></i>
                         </button>
                     </div>
                 </li>

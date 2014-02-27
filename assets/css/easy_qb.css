@@ -1,0 +1,23 @@
+/* ==========================================================================
+    Author's custom styles
+    ========================================================================== */
+
+    div.bz-url-box {
+        margin-bottom: 5px;
+    }
+
+    div.query-input {
+        margin-bottom: 5px;
+    }
+
+    .row .left-side {
+        margin-top: 2%;
+    }
+
+    .row .right-side {
+        margin-top: 2%;
+    }
+
+    textarea {
+        resize: vertical;
+    }

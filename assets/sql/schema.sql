@@ -1,6 +1,7 @@
 CREATE TABLE `administrator` (
     `id` int(11) not null auto_increment,
     `email` varchar(255) not null,
+    `last_updated` timestamp default current_timestamp on update current_timestamp,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
@@ -8,6 +9,7 @@ CREATE TABLE `product` (
     `id` int(11) not null auto_increment,
     `tag` varchar(255) not null,   
     `title` varchar(255) not null,
+    `last_updated` timestamp default current_timestamp on update current_timestamp,
     UNIQUE (`tag`),
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
@@ -17,6 +19,7 @@ CREATE TABLE `version` (
     `tag` varchar(255) not null,
     `title` varchar(255) not null,
     `product_id` int(11) not null,
+    `last_updated` timestamp default current_timestamp on update current_timestamp,
     UNIQUE (`product_id`, `tag`),
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
@@ -28,6 +31,7 @@ CREATE TABLE `channel` (
     `product_id` int(11) not null,
     `next_channel` int(11) not null default '0',
     `is_first` tinyint(4) not null default '0',
+    `last_updated` timestamp default current_timestamp on update current_timestamp,
     UNIQUE (`product_id`, `tag`),
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
@@ -36,6 +40,7 @@ CREATE TABLE `cycle` (
     `id` int(11) not null auto_increment,
     `start` datetime not null,   
     `end` datetime not null,
+    `last_updated` timestamp default current_timestamp on update current_timestamp,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
@@ -44,6 +49,7 @@ CREATE TABLE `version_channel_cycle` (
     `version_id` int(11) not null,
     `channel_id` int(11) not null,
     `cycle_id` int(11) not null,
+    `last_updated` timestamp default current_timestamp on update current_timestamp,
     UNIQUE (`version_id`, `channel_id`, `cycle_id`),
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
@@ -55,6 +61,7 @@ CREATE TABLE `group` (
     `entity_id` int(11) not null,
     `is_plot` tinyint(4) not null default '0',
     `is_number` tinyint(4) not null default '0',
+    `last_updated` timestamp default current_timestamp on update current_timestamp,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
@@ -65,6 +72,7 @@ CREATE TABLE `query` (
     `query_qb` text,
     `query_bz` text,
     `colour` varchar(255),
+    `last_updated` timestamp default current_timestamp on update current_timestamp,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
