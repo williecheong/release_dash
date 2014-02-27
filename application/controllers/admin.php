@@ -31,7 +31,8 @@ class Admin extends CI_Controller {
         $source = "https://api-dev.bugzilla.mozilla.org/latest/configuration";
         $content = file_get_contents_via_curl($source);
         $content = json_decode( $content, true );
-        $fields = $content['field'];
+        
+        $fields = ( !is_null($content['field']) ) ? $content['field'] : array() ;
 
         // Comparison function defined in helpers
         uasort( $fields, 'admin_easy_qb_cmp' );
