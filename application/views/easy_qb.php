@@ -22,6 +22,14 @@
                         <i class="fa fa-plus"></i>
                     </button> 
                     <label>Query Inputs</label>
+                    <div class="input-group bz-url-box">
+                        <input type="text" class="form-control" id="bz-url" placeholder="Enter unshortened Bugzilla URL here">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button" id="parse-bz-url">
+                                <i class="fa fa-bug"></i> Parse
+                            </button>
+                        </span>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label>Query Range (Leave blank for soft dates)</label>
@@ -60,33 +68,35 @@
 ?>
 
 <script>
+    var bzFields = [ <?php foreach ( $fields as $key => $field ) { echo '"'.$key.'", '; } ?> ];
+
     function templateQueryInput( number ) {
-    var html = '<div class="row query-input" id="query-input-'+number+'">'+
-'                    <div class="col-md-4">'+
-'                        <select class="form-control">'+
-'                            <option value="">---</option>'+
+        var html = '<div class="row query-input" id="query-input-'+number+'">'+
+    '                    <div class="col-md-4">'+
+    '                        <select class="form-control" id="query-field">'+
+    '                            <option value="">---</option>'+
 <?php foreach( $fields as $key => $field ) { ?>
-'                            <option value="<?= $key ?>"><?= $field["description"]; ?></option>'+
+    '                            <option value="<?= $key ?>"><?= $field["description"]; ?></option>'+
 <?php } ?>
-'                        </select>'+
-'                    </div>'+
-'                    <div class="col-md-4">'+
-'                        <select class="form-control">'+
-'                            <option value="=">is equal to</option>'+
-'                            <option value="!=">is not equal to</option>'+
-'                        </select>'+
-'                    </div>'+
-'                    <div class="col-lg-4">'+
-'                            <div class="input-group">'+
-'                                <input type="text" class="form-control" placeholder="field value">'+
-'                                <span class="input-group-btn">'+
-'                                    <button type="button" class="btn btn-danger" id="remove-query-input">'+
-'                                        <i class="fa fa-times"></i>'+
-'                                    </button>'+
-'                                </span>'+
-'                            </div>'+
-'                        </div>'+
-'                </div>';
-    return html;
-}
+    '                        </select>'+
+    '                    </div>'+
+    '                    <div class="col-md-4">'+
+    '                        <select class="form-control" id="query-operator">'+
+    '                            <option value="=">is equal to</option>'+
+    '                            <option value="!=">is not equal to</option>'+
+    '                        </select>'+
+    '                    </div>'+
+    '                    <div class="col-lg-4">'+
+    '                            <div class="input-group">'+
+    '                                <input type="text" class="form-control" id="query-value" placeholder="field value">'+
+    '                                <span class="input-group-btn">'+
+    '                                    <button type="button" class="btn btn-danger" id="remove-query-input">'+
+    '                                        <i class="fa fa-times"></i>'+
+    '                                    </button>'+
+    '                                </span>'+
+    '                            </div>'+
+    '                        </div>'+
+    '                </div>';
+        return html;
+    }
 </script>

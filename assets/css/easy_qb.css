@@ -2,8 +2,12 @@
     Author's custom styles
     ========================================================================== */
 
-    div.row.query-input {
-        margin-bottom: 10px;
+    div.bz-url-box {
+        margin-bottom: 5px;
+    }
+
+    div.query-input {
+        margin-bottom: 5px;
     }
 
     .row .left-side {
