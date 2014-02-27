@@ -21,6 +21,8 @@
 
 if ( $_SERVER['SERVER_ADDR'] == '127.0.0.1' ) {
     define('ENVIRONMENT', 'development');
+} else if ( $_SERVER['SERVER_ADDR'] == '173.236.228.231' ) {
+	define('ENVIRONMENT', 'staging');
 } else {
     define('ENVIRONMENT', 'production');
 }

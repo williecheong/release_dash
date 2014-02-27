@@ -29,7 +29,7 @@ class Admin extends CI_Controller {
 
     public function easy_qb() {
         $source = "https://api-dev.bugzilla.mozilla.org/latest/configuration";
-        $content = file_get_contents($source);
+        $content = file_get_contents_via_curl($source);
         $content = json_decode( $content, true );
         $fields = $content['field'];
 
@@ -44,7 +44,7 @@ class Admin extends CI_Controller {
     public function update_cycle() {
         // Grab all of the HTML content from this source.
         $source = "https://wiki.mozilla.org/Template:CURRENT_CYCLE";
-        $content = file_get_contents( $source );
+        $content = file_get_contents_via_curl( $source );
         if( $content === false ) {
             echo 'Failed to access: '.$source;
             return;

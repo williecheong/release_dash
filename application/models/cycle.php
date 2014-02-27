@@ -16,7 +16,7 @@ class cycle extends CI_Model{
             // Empty array is retrieved when no cycle is found
             // Simply return that empty array for now
             $source = base_url('/admin/update_cycle');
-            $content = file_get_contents( $source );
+            $content = file_get_contents_via_curl( $source );
             if ( $content == 'Cycle created successfully' ) {
                 return $this->get_current_cycle();
             } else {
