@@ -26,7 +26,7 @@ if ( $_SERVER['SERVER_ADDR'] == '127.0.0.1' ) {
 } else {
     define('ENVIRONMENT', 'production');
 }
-	
+	die('OK');
 /*
  *---------------------------------------------------------------
  * ERROR REPORTING
