@@ -42,12 +42,6 @@ $('.btn#parse-bz-url').click(function(){
         if ( $.inArray(qRight, bzFields) !== -1 ){
             var operatorKey  = qLeft.replace('f', 'o');
             var valueKey     = qLeft.replace('f', 'v');
-            
-            if ( bzQueries[operatorKey] == 'equals' ) {
-                bzQueries[operatorKey] = '=';
-            } else {
-                bzQueries[operatorKey] = '!=';
-            }
 
             queryInputs[i++] = [ qRight, bzQueries[operatorKey], bzQueries[valueKey] ] ;
         }

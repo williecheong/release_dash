@@ -74,7 +74,7 @@
         var html = '<div class="row query-input" id="query-input-'+number+'">'+
     '                    <div class="col-md-4">'+
     '                        <select class="form-control" id="query-field">'+
-    '                            <option value="">---</option>'+
+    '                            <option value="noop">---</option>'+
 <?php foreach( $fields as $key => $field ) { ?>
     '                            <option value="<?= $key ?>"><?= $field["description"]; ?></option>'+
 <?php } ?>
@@ -82,8 +82,34 @@
     '                    </div>'+
     '                    <div class="col-md-4">'+
     '                        <select class="form-control" id="query-operator">'+
-    '                            <option value="=">is equal to</option>'+
-    '                            <option value="!=">is not equal to</option>'+
+    '                            <option value="noop">---</option>'+
+    '                            <option value="equals">is equal to</option>'+
+    '                            <option value="notequals">is not equal to</option>'+
+    '                            <option value="anyexact">is equal to any of the strings</option>'+
+    '                            <option value="substring">contains the string</option>'+
+    '                            <option value="casesubstring">contains the string (exact case)</option>'+
+    '                            <option value="notsubstring">does not contain the string</option>'+
+    '                            <option value="anywordssubstr">contains any of the strings</option>'+
+    '                            <option value="allwordssubstr">contains all of the strings</option>'+
+    '                            <option value="nowordssubstr">contains none of the strings</option>'+
+    '                            <option value="regexp">matches regular expression</option>'+
+    '                            <option value="notregexp">does not match regular expression</option>'+
+    '                            <option value="lessthan">is less than</option>'+
+    '                            <option value="lessthaneq">is less than or equal to</option>'+
+    '                            <option value="greaterthan">is greater than</option>'+
+    '                            <option value="greaterthaneq">is greater than or equal to</option>'+
+    '                            <option value="anywords">contains any of the words</option>'+
+    '                            <option value="allwords">contains all of the words</option>'+
+    '                            <option value="nowords">contains none of the words</option>'+
+    '                            <option value="changedbefore">changed before</option>'+
+    '                            <option value="changedafter">changed after</option>'+
+    '                            <option value="changedfrom">changed from</option>'+
+    '                            <option value="changedto">changed to</option>'+
+    '                            <option value="changedby">changed by</option>'+
+    '                            <option value="matches">matches</option>'+
+    '                            <option value="notmatches">does not match</option>'+
+    '                            <option value="isempty">is empty</option>'+
+    '                            <option value="isnotempty">is not empty</option>'+
     '                        </select>'+
     '                    </div>'+
     '                    <div class="col-lg-4">'+
