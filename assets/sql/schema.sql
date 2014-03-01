@@ -138,24 +138,27 @@ INSERT INTO `version_channel_cycle` (`version_id`, `channel_id`, `cycle_id`) VAL
 
 
 INSERT INTO `group` (`id`, `title`, `entity`, `entity_id`, `is_plot`, `is_number`) VALUES
-('1', 'Tracked vs Fixed', 'product', '1', '1', '0'),
-('2', 'Unresolved', 'product', '1', '1', '0'),
-('3', 'Bugs Fixed on MC', 'product', '1', '0', '1');
+('1', 'Tracked vs Fixed',   'product', '1', '1', '0'),
+('2', 'Unresolved',         'product', '1', '1', '0'),
+('3', 'Crashers',           'product', '1', '1', '0'),
+('4', 'Regressions',        'product', '1', '1', '0');
 
 INSERT INTO `query` (`title`, `group_id`, `colour`, `query_qb`, `query_bz`) VALUES
 ('# Bugs tracking <version_title>', '1', 'rgb(194, 127, 127)', 
-    '{"from":"private_bugs","select":{"name":"num","value":"bug_id","aggregate":"count"},"esfilter":{"and":[{"term":{"cf_tracking_firefox<version_tag>":"+"}}]},"edges":[{"range":{"min":"modified_ts","max":"expires_on"},"domain":{"type":"date","min":<birthday>,"max":<timestamp>,"interval":"day"}}]}',
+    '{"from": "private_bugs","select": {"name": "num","value": "bug_id","aggregate": "count"},"esfilter": {"and": [{"term": {"cf_tracking_firefox<version_tag>": "+"}},{"missing":{"field": "bug_group"}}]},"edges": [{"range": {"min": "modified_ts","max": "expires_on"},"domain": {"type": "date","min": <birthday>,"max": <timestamp>,"interval": "day"}}]}',
     'https://bugzilla.mozilla.org/buglist.cgi?f1=cf_tracking_firefox<version_tag>&list_id=9418681&o1=equals&query_format=advanced&v1=%2B' ),
 ('# Fixed Bugs tracking <version_title>', '1', 'rgb(108, 10, 238)', 
-    '{"from":"private_bugs","select":{"name":"num","value":"bug_id","aggregate":"count"},"esfilter":{"and":[{"term":{"cf_tracking_firefox<version_tag>":"+"}},{"term":{"cf_status_firefox<version_tag>":"fixed"}}]},"edges":[{"range":{"min":"modified_ts","max":"expires_on"},"domain":{"type":"date","min":<birthday>,"max":<timestamp>,"interval":"day"}}]}',
+    '{"from": "private_bugs","select": {"name": "num","value": "bug_id","aggregate": "count"},"esfilter": {"and": [{"term": {"cf_tracking_firefox<version_tag>": "+"}},{"term": {"cf_status_firefox<version_tag>": "fixed"}},{"missing":{"field": "bug_group"}}]},"edges": [{"range": {"min": "modified_ts","max": "expires_on"},"domain": {"type": "date","min": <birthday>,"max": <timestamp>,"interval": "day"}}]}',
     'https://bugzilla.mozilla.org/buglist.cgi?f1=cf_tracking_firefox<version_tag>&list_id=9418686&o1=equals&o2=equals&query_format=advanced&f2=cf_status_firefox<version_tag>&v1=%2B&v2=fixed' ),
 ('# Unresolved Bugs tracking <version_title>', '2', 'rgb(51, 51, 51)', 
-    '{"from":"private_bugs","select":{"name":"num","value":"bug_id","aggregate":"count"},"esfilter":{"and":[{"term":{"cf_tracking_firefox29":"+"}},{"or":[{"missing":{"field":"cf_status_firefox<version_tag>"}},{"not":{"terms":{"cf_status_firefox<version_tag>":["wontfix","fixed","unaffected","verified","disabled","verified disabled"]}}}]}]},"edges":[{"range":{"min":"modified_ts","max":"expires_on"},"domain":{"type":"date","min":<birthday>,"max":<timestamp>,"interval":"day"}}]}',
+    '{"from": "private_bugs","select": {"name": "num","value": "bug_id","aggregate": "count"},"esfilter": {"and": [{"term": {"cf_tracking_firefox<version_tag>": "+"}},{"or": [{"missing":{"field": "cf_status_firefox<version_tag>"}},{"not": {"terms": {"cf_status_firefox<version_tag>": ["wontfix","fixed","unaffected","verified","disabled","verified disabled"]}}}]},{"missing":{"field": "bug_group"}}]},"edges": [{"range": {"min": "modified_ts","max": "expires_on"},"domain": {"type": "date","min": <birthday>,"max": <timestamp>,"interval": "day"}}]}',
     'https://bugzilla.mozilla.org/buglist.cgi?o5=notequals&v11=unaffected&j10=OR&o14=notequals&f13=OP&o2=equals&j16=OR&v5=wontfix&f12=CP&j4=OR&f14=cf_status_firefox<version_tag>&o17=notequals&o20=notequals&v2=%2B&f21=CP&known_name=Tracking<version_tag>%2B&f10=OP&f19=OP&f29=CP&f1=OP&f20=cf_status_firefox<version_tag>&j13=OR&f8=cf_status_firefox<version_tag>&f0=OP&j19=OR&o11=notequals&f18=CP&columnlist=bug_severity,priority,op_sys,assigned_to,bug_status,resolution,short_desc,changeddate,cf_tracking_firefox17,cf_tracking_firefox18,cf_status_firefox17,cf_status_firefox18&f15=CP&query_based_on=Tracking<version_tag>%2B&f9=CP&j7=OR&v20=verified%20disabled&f4=OP&query_format=advanced&j1=OR&v17=disabled&f3=CP&f2=cf_tracking_firefox<version_tag>&f11=cf_status_firefox<version_tag>&f5=cf_status_firefox<version_tag>&f17=cf_status_firefox<version_tag>&v8=fixed&v14=verified&f6=CP&f7=OP&o8=notequals&f16=OP&list_id=9407229' ),
-('# Bugs fixed on MC', '3', 'rgb(51, 51, 51)', 
-    '{"from":"private_bugs","select":{"name":"num","value":"bug_id","aggregate":"count"},"esfilter":{"and":[{"terms":{"bug_status":["resolved","verified","closed"]}},{"terms":{"product":["Core","Firefox","Firefox for Android","Toolkit"]}},{"terms":{"target_milestone":["mozilla<version_tag>","Firefox <version_tag>"]}}]},"edges":[{"range":{"min":"modified_ts","max":"expires_on"},"domain":{"type":"date","min":<birthday>,"max":<timestamp>,"interval":"day"}}]}',
-    'https://bugzilla.mozilla.org/buglist.cgi?bug_status=RESOLVED&bug_status=VERIFIED&bug_status=CLOSED&f1=target_milestone&f2=target_milestone&j_top=OR&list_id=6176390&o1=equals&o2=equals&product=Core&product=Firefox&product=Firefox%20for%20Android&product=Toolkit&query_format=advanced&v1=mozilla<version_tag>&v2=Firefox%20<version_tag>&order=bug_id&limit=0' );
-
+('# Crashers on <version_title>', '3', 'rgb(51, 51, 51)', 
+    '{"from": "private_bugs","select": {"name": "num","value": "bug_id","aggregate": "count"},"esfilter": {"and": [{"term": {"cf_tracking_firefox<version_tag>": "+"}},{"terms": {"keywords": ["crash","topcrash"]}},{"missing":{"field": "bug_group"}   }]},"edges": [{"range": {"min": "modified_ts","max": "expires_on"},"domain": {"type": "date","min": <birthday>,"max": <timestamp>,"interval": "day"}}]}',
+    'https://bugzilla.mozilla.org/buglist.cgi?v4=crash%2Ctopcrash&f1=cf_tracking_firefox<version_tag>&list_id=9577950&o1=equals&f4=keywords&query_format=advanced&f3=OP&o4=anywords&j3=OR&v1=%2B' ),
+('# Regressions on <version_title>', '4', 'rgb(51, 51, 51)', 
+    '{"from": "private_bugs","select": {"name": "num","value": "bug_id","aggregate": "count"},"esfilter": {"and": [{"term": {"cf_tracking_firefox<version_tag>": "+"}},{"terms": {"keywords": ["regression"]}},{"terms": {"bug_status": ["unconfirmed","new","assigned","reopened"]}},{"missing": {"field": "bug_group"}}]},"edges": [{"range": {"min": "modified_ts","max": "expires_on"},"domain": {"type": "date","min": <birthday>,"max": <timestamp>,"interval": "day"}}]}',
+    'https://bugzilla.mozilla.org/buglist.cgi?&keywords=regression&f1=cf_tracking_firefox<version_tag>&keywords_type=allwords&list_id=9578596&o1=equals&query_format=advanced&bug_status=UNCONFIRMED&bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED&v1=%2B' );
 
 
 

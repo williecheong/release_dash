@@ -5,8 +5,8 @@
     // Initializing duckster gridster
     var gridsterWidth = $('.gridster').width();
     $(".gridster ul").gridster({
-        widget_margins: [ gridsterWidth*0.01, gridsterWidth*0.01 ],
-        widget_base_dimensions: [ gridsterWidth*0.104, gridsterWidth*0.104 ]
+        widget_margins: [ gridsterWidth*0.009, gridsterWidth*0.009 ],
+        widget_base_dimensions: [ gridsterWidth*0.0925, gridsterWidth*0.0925 ]
     });
 
     // Initializes the bootstrap modals

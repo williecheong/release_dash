@@ -10,7 +10,7 @@
         </button>
         <?php foreach ( $group['queries'] as $query ) { ?>
             <?php if ( !empty($query['bz_query']) ) { ?>
-                <a class="btn btn-xs pull-right" href="<?= $query['bz_query']; ?>" title="<?= $query['title']; ?>" style="color:<?= $query['colour']; ?>;">
+                <a class="btn btn-xs pull-right" href="<?= $query['bz_query']; ?>" target="_blank" title="<?= $query['title']; ?>" style="color:<?= $query['colour']; ?>;">
                     <i class="fa fa-bug fa-lg"></i>
                 </a>
             <?php } ?>
