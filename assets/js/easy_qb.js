@@ -1,70 +1,67 @@
 
 $('input.datepicker').datepicker();
 
-var newQueryInputCounter = 0;
-$('.btn#add-query-input').click(function(){
-    makeNewQuery();
-});
-
 $('.btn#query-compile').click(function(){
-    $('textarea.query-output').append('Beep beep. Qb query magic.\n');
-});
+    $this = $(this);
+    $this.addClass('disabled');
 
-$('.btn#parse-bz-url').click(function(){
-    // Get the bzURL then make an array of inputs
-    // Each input is an array of 2 values 
-    // First is field name, second is actual value
-    var bzURL = $('input#bz-url').val();
-    var tempBzQueries = bzURL.split('?');
-    if ( tempBzQueries[1] ) {
-        tempBzQueries = tempBzQueries[1].split('&');
-    } else {
-        console.log('Not a valid URL');
+    bzURL = $('input#bz-url').val();
+    var bzURL = bzURL.split('?');
+    if ( !bzURL[1] ) {
+        alert('No bugzilla query found.');
         return;
     }
 
-    var bzQueries = {};
+    var bzQueryURL = 'https://bugzilla.mozilla.org/query.cgi?' + bzURL[1];
 
-    $.each( tempBzQueries, function(key, value) {
-        tempBzQueries[key] = value.split('=');
-        bzQueries[ tempBzQueries[key][0] ] = tempBzQueries[key][1];
-    });
+    $.ajax({
+            url: '/api/misc/exthtml',
+            data: { source : bzQueryURL },
+            type: 'POST',
+            success: function( response ) {
+                var start = '<birthday>';
+                if ( $('input#query-start').val() ) {
+                    start = $('input#query-start').val();
+                }
 
-    var i = 0;
-    var queryInputs = {}; 
-    $.each( bzQueries, function(qLeft, qRight) {
-        // First check for the standard field equal value BZquery.
-        if ( $.inArray(qLeft, bzFields) !== -1 ) {
-            queryInputs[i++] = [ qLeft, '=', qRight ] ;
-        }
+                var end = '<timestamp>';
+                if ( $('input#query-end').val() ) {
+                    end = $('input#query-end').val();
+                }
 
-        // Next do the compounded one where BZquery is split into multiple queries
-        if ( $.inArray(qRight, bzFields) !== -1 ){
-            var operatorKey  = qLeft.replace('f', 'o');
-            var valueKey     = qLeft.replace('f', 'v');
+                var cluster = 'private_bugs';
+                if ( $('input#public_cluster:checked').length == 1 ) {
+                    cluster = 'public_bugs';
+                }
 
-            queryInputs[i++] = [ qRight, bzQueries[operatorKey], bzQueries[valueKey] ] ;
-        }
-    });
-
-    $.each( queryInputs, function(key, queryInput){
-        var thisQueryInput = newQueryInputCounter;
-        makeNewQuery();
-        
-        $('div#query-input-'+thisQueryInput).find('select#query-field option[value="'+queryInput[0]+'"]').attr("selected",true);
-        $('div#query-input-'+thisQueryInput).find('select#query-operator option[value="'+queryInput[1]+'"]').attr("selected",true);
-        $('div#query-input-'+thisQueryInput).find('input#query-value').val( unescape(queryInput[2]) );
-    });
+                var qbQuery = bzSearchToQb( response, start, end, cluster );
+                
+                $this.removeClass('disabled');
+                showResult(qbQuery);
+            }, 
+            error: function(response) {
+                alert('Fail: Bugzilla could not be reached.');
+                $this.removeClass('disabled');
+                console.log(response);
+            }
+        });
 });
 
 /*****************************
     MAKE LIFE AWESOME FUNCTIONS
 ******************************/
 
-function makeNewQuery(){
-    $('div.query-inputs').append( templateQueryInput( newQueryInputCounter++ ) );
-    $('.btn#remove-query-input').click(function(){
-        $(this).closest('div.row.query-input').remove();
-    });
+function showResult( text ){
+    $('textarea.query-output').css( 'background', '#E5FFDD' );
+    $('textarea.query-output').text( text );
+    setTimeout(function() {
+        $('textarea.query-output').css( 'background', '' );
+    }, 1500);
 }
 
+// Outputs a Qb query in JSON
+// Based on BZ search HTML 
+// With pre-filled params
+function bzSearchToQb( html, start, end, cluster ){
+    return start + ' ' + end + ' ' + cluster + ' ' + html;
+}
