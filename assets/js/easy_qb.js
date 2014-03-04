@@ -63,5 +63,46 @@ function showResult( text ){
 // Based on BZ search HTML 
 // With pre-filled params
 function bzSearchToQb( html, start, end, cluster ){
-    return start + ' ' + end + ' ' + cluster + ' ' + html;
+    var qbQuery = {};
+
+    qbQuery.from    = cluster;
+    
+    qbQuery.select  = {
+            "name": "num",
+            "value": "bug_id",
+            "aggregate": "count"
+        };
+
+    // Replace password fields with text fields in the HTML
+    // Prevents false security errors from appearing in console
+    html = html.replace('type="password"', 'type="text"');
+    qbQuery.esfilter = parseBzSearch( html );
+
+    qbQuery.edges = [{
+            "range": {
+                "min": "modified_ts",
+                "max": "expires_on"
+            },
+            "domain": {
+                "type": "date",
+                "min": start,
+                "max": end,
+                "interval": "day"
+            }
+        }];
+
+    return JSON.stringify( qbQuery, null, '\t' ).replace(/"</g, '<').replace(/>"/g, ">");
+}
+
+// Mostly uses RegEx to extract Bugzilla search params from HTML
+function parseBzSearch( html ){
+    var esfilterObj = {};
+
+    esfilterObj.and = [];
+
+    var data = $('option[value="assigned_to"]', html).html();
+    console.log(data);
+
+
+    return esfilterObj;
 }
