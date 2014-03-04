@@ -76,7 +76,8 @@ function bzSearchToQb( html, start, end, cluster ){
     // Replace password fields with text fields in the HTML
     // Prevents false security errors from appearing in console
     html = html.replace('type="password"', 'type="text"');
-    qbQuery.esfilter = parseBzSearch( html );
+    $extract = $('form#queryform', html);
+    qbQuery.esfilter = parseBzSearch( $extract );
 
     qbQuery.edges = [{
             "range": {
@@ -95,14 +96,94 @@ function bzSearchToQb( html, start, end, cluster ){
 }
 
 // Mostly uses RegEx to extract Bugzilla search params from HTML
-function parseBzSearch( html ){
+function parseBzSearch( $subject ){
     var esfilterObj = {};
-
     esfilterObj.and = [];
 
-    var data = $('option[value="assigned_to"]', html).html();
-    console.log(data);
+    var tempVal = '';
 
+    Top most summary input (needs regex filter)
+    tempVal = $subject.find('div#summary_field input#short_desc').val() ;
+    if ( tempVal ){
+        var tempOpr = $subject.find('div#summary_field select[name="short_desc_type"]').val();
+        var terms = fovQb( 'short_desc', tempOpr, tempVal );
+        esfilterObj.and.push( terms );
+    }
+
+    // Parses the two rows of multi-select grids
+    var search_field_grid = [ 
+        'classification', 
+        'product', 
+        'component', 
+        'bug_status', 
+        'resolution', 
+        'version', 
+        'target_milestone', 
+        'bug_severity', 
+        'priority', 
+        'rep_platform', 
+        'op_sys' 
+    ];
+    $.each( search_field_grid, function( key, gridName ){
+        tempVal = $subject.find('div#container_'+ gridName +' select#'+ gridName +' option:selected').map(function(){return $(this).val();}).get() ;  
+        if ( tempVal.length > 0 ){
+            var terms = {};
+            terms[gridName] = tempVal;
+            esfilterObj.and.push( { "terms" : terms } );
+        }
+    });
+
+    // Parses the six rows directly below "Detailed Bug Information"
+    var search_field_row = [ 'longdesc', 'bug_file_loc', 'status_whiteboard', 'keywords', 'bug_id', 'votes' ];
+    $.each( search_field_row, function( key, rowName ){
+        tempVal = $subject.find('div.search_field_row').find('input#'+rowName).val() ;  
+        if ( tempVal.length > 0 ){
+            var tempOpr = '';
+            if ( rowName == 'votes' ){
+                tempOpr = $subject.find('div.search_field_row').find('input[name="votes_type"]').val();
+            } else {
+                tempOpr = $subject.find('div.search_field_row').find('select[name="'+rowName+'_type"] option:selected').val();
+            }
+
+            var terms = fovQb( rowName, tempOpr, tempVal );
+            esfilterObj.and.push( terms );
+        }
+    });
+
+    // Parses the email search fields
+    var search_email_fields = [ 1, 2, 3 ];
+    var roles = [ 'assigned_to', 'reporter', 'qa_contact', 'cc', 'longdesc' ];
+    $.each( search_email_fields, function( key, col ){
+        tempVal = $subject.find('div.search_email_fields').find('input#email'+col).val() ;
+        if ( tempVal.length > 0 ){
+            var subObj = {};
+            subObj.or = [];
+
+            var tempOpr = $subject.find('div.search_email_fields').find('select[name="email_type'+col+'"] option:selected').val();
+
+            $.each( roles, function( key, role ){
+                var isChecked = $subject.find('div.search_email_fields').find('input#email'+role+col).length;
+                if ( isChecked == 1 ){
+
+                }
+            });
+
+            var terms = fovQb( field, tempOpr, tempVal );
+            esfilterObj.and.push( terms );
+        }
+    }); 
 
     return esfilterObj;
 }
+
+function fovQb( field, operator, value ){    
+    var outer = {}; 
+    var inner = {};
+
+    inner[field] = value;
+    outer[operator] = inner;
+
+    return {};
+}
+
+
