@@ -102,7 +102,7 @@ function parseBzSearch( $subject ){
 
     var tempVal = '';
 
-    Top most summary input (needs regex filter)
+    //Top most summary input (needs regex filter)
     tempVal = $subject.find('div#summary_field input#short_desc').val() ;
     if ( tempVal ){
         var tempOpr = $subject.find('div#summary_field select[name="short_desc_type"]').val();
@@ -160,16 +160,14 @@ function parseBzSearch( $subject ){
             subObj.or = [];
 
             var tempOpr = $subject.find('div.search_email_fields').find('select[name="email_type'+col+'"] option:selected').val();
-
             $.each( roles, function( key, role ){
-                var isChecked = $subject.find('div.search_email_fields').find('input#email'+role+col).length;
-                if ( isChecked == 1 ){
-
+                var isChecked = $subject.find('div.search_email_fields').find('input#email'+role+col+':checked').length;
+                if ( isChecked > 0 ){
+                    subObj.or.push( fovQb(role, tempOpr, tempVal) );
                 }
             });
 
-            var terms = fovQb( field, tempOpr, tempVal );
-            esfilterObj.and.push( terms );
+            esfilterObj.and.push( subObj );
         }
     }); 
 
@@ -183,7 +181,7 @@ function fovQb( field, operator, value ){
     inner[field] = value;
     outer[operator] = inner;
 
-    return {};
+    return outer;
 }
 
 

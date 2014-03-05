@@ -27,7 +27,7 @@ if ( ! function_exists('replace_version_attr') ) {
         if ( $input_string == '' || $version == '' ) { return $input_string; }
         
         // Replace soft <version_tag> with the actual tag of specified version
-        $input_string = str_replace("<version_tag>", $version->tag, $input_string);
+        $input_string = str_replace("<version_tag>", str_replace('_', '.', $version->tag), $input_string);
         // Replace soft <version_title> with the actual title of specified version
         $input_string = str_replace("<version_title>", $version->title, $input_string);
         
