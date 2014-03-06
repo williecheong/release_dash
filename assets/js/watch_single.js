@@ -324,15 +324,20 @@
             renderer: 'line',
             series: rickshawData
         });
-       
-        var x_axis = new Rickshaw.Graph.Axis.Time( { graph: graph } );
-        var y_axis = new Rickshaw.Graph.Axis.Y({
-            graph: graph,
-            orientation: 'left',
-            tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
-            element: document.querySelector('.y-axis#g'+group_id)
+
+        var time = new Rickshaw.Fixtures.Time().unit('month');
+        var x_axis = new Rickshaw.Graph.Axis.Time({ 
+            graph       : graph, 
+            timeUnit    : time 
         });
-        
+
+        var y_axis = new Rickshaw.Graph.Axis.Y({
+            graph       : graph,
+            orientation : 'left',
+            tickFormat  : Rickshaw.Fixtures.Number.formatKMBT,
+            element     : document.querySelector('.y-axis#g'+group_id)
+        });
+
         var hoverDetail = new Rickshaw.Graph.HoverDetail( { graph: graph } );
         
         graph.render();

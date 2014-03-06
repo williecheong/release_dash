@@ -41,6 +41,8 @@ class Watch extends CI_Controller {
         $data = array();
         $data['id'] = $version->id;
         $data['title'] = $version->title;
+        $data['product'] = array(   'id'      => $product->id,
+                                    'versions'=> $this->version->retrieve(array('product_id'=>$product->id))  );
         $data['query_groups'] = array();
 
         /********************************************

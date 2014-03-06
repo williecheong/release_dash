@@ -237,7 +237,6 @@ function parseBzSearch( $subject ){
     });
     customParams = customParams.replace(/,+$/, "");
     customParams += "]}";
-console.log( customParams );
     
     try {
         esfilterObj.and.push( JSON.parse(customParams) );    
