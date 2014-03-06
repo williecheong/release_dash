@@ -1,0 +1,195 @@
+<div id="custom_search_filter_section" class="bz_search_section custom_search_query">
+    <div class="any_all_select">
+         <select name="j_top" id="j_top" onchange="fix_query_string(this)">
+             <option value="AND">Match ALL of the following:</option>
+             <option value="OR">Match ANY of the following:</option>
+         </select>
+         <a id="custom_search_advanced_controller" href="javascript:TUI_toggle_class('custom_search_advanced')">
+            Hide Advanced Features
+         </a>
+    </div>
+
+    <div class="custom_search_condition">
+        <span id="custom_search_not_container_1" class="custom_search_not_container custom_search_advanced" title="Search for the opposite of the criteria here">
+            <input id="n1" class="custom_search_form_field" name="n1" value="1" onclick="custom_search_not_changed(1)" type="checkbox">
+            <label for="n1">Not</label>
+        </span>
+        
+        <select name="f1" title="Field" id="f1" onchange="fix_query_string(this)" class="custom_search_form_field">
+            <option value="noop">---</option>
+            <option value="votes">Votes</option>
+        </select>
+        
+        <select name="o1" title="Search type" class="custom_search_form_field">
+            <option value="noop">---</option>
+            <option value="isnotempty">is not empty</option>
+        </select>
+        
+        <input name="v1" title="Value" class="custom_search_form_field" onchange="fix_query_string(this)" value="+">
+    </div>
+
+    <div class="custom_search_condition">   
+        <span id="custom_search_not_container_3" class="custom_search_not_container" title="Search for the opposite of the criteria here">
+            <input id="n3" class="custom_search_form_field" name="n3" value="1" onclick="custom_search_not_changed(3)" type="checkbox">
+            <label for="n3">Not</label>
+        </span>
+        <input name="f3" id="f3" value="OP" type="hidden">
+        (
+    </div>
+
+    <div class="custom_search_condition" style="margin-left: 2em">
+        <div class="any_all_select">
+            <select name="j3" id="j3" onchange="fix_query_string(this)">
+                <option value="AND">Match ALL of the following:</option>
+                <option value="OR" selected="selected">Match ANY of the following:</option>
+            </select>
+        </div>
+
+        <span id="custom_search_not_container_4" class="custom_search_not_container custom_search_advanced" title="Search for the opposite of the criteria here">
+            <input id="n4" class="custom_search_form_field" name="n4" value="1" onclick="custom_search_not_changed(4)" type="checkbox">
+            <label for="n4">Not</label>
+        </span>
+
+        <select name="f4" title="Field" id="f4" onchange="fix_query_string(this)" class="custom_search_form_field">
+            <option value="noop">---</option>
+            <option value="votes">Votes</option>
+        </select>
+
+        <select name="o4" title="Search type" class="custom_search_form_field">
+            <option value="noop">---</option>
+            <option value="isnotempty">is not empty</option>
+        </select>
+
+        <input name="v4" title="Value" class="custom_search_form_field" onchange="fix_query_string(this)" value="crash,topcrash">
+    </div>
+
+    <div class="custom_search_condition" style="margin-left: 2em" id="null">
+        <span id="custom_search_not_container_5" class="custom_search_not_container custom_search_advanced" title="Search for the opposite of the criteria here">
+            <input id="n5" class="custom_search_form_field" name="n5" value="1" onclick="custom_search_not_changed(5)" type="checkbox">
+            <label for="n5">Not</label>
+        </span>
+
+        <select name="f5" title="Field" id="f5" onchange="fix_query_string(this)" class="custom_search_form_field">
+            <option value="noop" selected="selected">---</option>
+            <option value="votes">Votes</option>
+        </select>
+
+        <select name="o5" title="Search type" class="custom_search_form_field">
+            <option value="noop">---</option>
+            <option value="isnotempty">is not empty</option>
+        </select>
+
+        <input name="v5" title="Value" class="custom_search_form_field" onchange="fix_query_string(this)" value="">
+    </div>
+    
+    <div class="custom_search_condition" style="margin-left: 2em" id="null">
+        <span id="custom_search_not_container_5" class="custom_search_not_container custom_search_advanced" title="Search for the opposite of the criteria here">
+            <input id="n6" class="custom_search_form_field" name="n6" value="1" onclick="custom_search_not_changed(5)" type="checkbox">
+            <label for="n6">Not</label>
+        </span>
+
+        <select name="f6" title="Field" id="f6" onchange="fix_query_string(this)" class="custom_search_form_field">
+            <option value="noop" selected="selected">---</option>
+            <option value="votes">Votes</option>
+        </select>
+
+        <select id="o6" name="o6" title="Search type" class="custom_search_form_field">
+            <option value="noop">---</option>
+            <option value="isnotempty">is not empty</option>
+        </select>
+
+        <input id="v6" name="v6" title="Value" class="custom_search_form_field" onchange="fix_query_string(this)" value="">
+    </div>
+
+    <div class="custom_search_condition" style="margin-left: 2em" id="null">
+        <span id="custom_search_not_container_5" class="custom_search_not_container custom_search_advanced" title="Search for the opposite of the criteria here">
+            <input id="n7" class="custom_search_form_field" name="n7" value="1" onclick="custom_search_not_changed(5)" type="checkbox">
+            <label for="n7">Not</label>
+        </span>
+
+        (
+        <input name="f7" id="f7" value="OP" type="hidden">
+    </div>
+
+    <div class="custom_search_condition" style="margin-left: 4em;" id="null">
+        <div class="any_all_select">
+            <select name="j7" id="j7" onchange="fix_query_string(this)">
+                <option value="AND">Match ALL of the following:</option>
+                <option value="OR">Match ANY of the following:</option>
+            </select>
+        </div>
+        
+        <span id="custom_search_not_container_5" class="custom_search_not_container custom_search_advanced" title="Search for the opposite of the criteria here">
+            <input id="n8" class="custom_search_form_field" name="n8" value="1" onclick="custom_search_not_changed(5)" type="checkbox">
+            <label for="n8">Not</label>
+        </span>
+        
+        <select name="f8" title="Field" id="f8" onchange="fix_query_string(this)" class="custom_search_form_field">
+            <option value="noop" selected="selected">---</option>
+            <option value="votes">Votes</option>
+        </select>
+        
+        <select id="o8" name="o8" title="Search type" class="custom_search_form_field">
+            <option value="noop">---</option>
+            <option value="isnotempty">is not empty</option>
+        </select>
+        
+        <input id="v8" name="v8" title="Value" class="custom_search_form_field" onchange="fix_query_string(this)" value="">
+    </div>
+
+    <div class="custom_search_condition" style="margin-left: 2em;" id="null">
+        )
+        <input name="f9" id="f9" value="CP" type="hidden">
+    </div>
+
+    <div class="custom_search_condition" style="margin-left: 2em;" id="null">
+        <span id="custom_search_not_container_5" class="custom_search_not_container custom_search_advanced" title="Search for the opposite of the criteria here">
+            <input id="n10" class="custom_search_form_field" name="n10" value="1" onclick="custom_search_not_changed(5)" type="checkbox">
+            <label for="n10">Not</label>
+        </span>
+
+        <select name="f10" title="Field" id="f10" onchange="fix_query_string(this)" class="custom_search_form_field">
+            <option value="noop" selected="selected">---</option>
+            <option value="votes">Votes</option>
+        </select>
+
+        <select id="o10" name="o10" title="Search type" class="custom_search_form_field">
+            <option value="noop">---</option>
+            <option value="isempty">is empty</option>
+            <option value="isnotempty">is not empty</option>
+        </select>
+        
+        <input id="v10" name="v10" title="Value" class="custom_search_form_field" onchange="fix_query_string(this)" value="">
+    </div>
+
+    <div class="custom_search_condition" style="margin-left: 0em;" id="null">
+        )
+        <input name="f11" id="f11" value="CP" type="hidden">
+    </div>
+
+    <div class="custom_search_condition" style="margin-left: 0em;" id="custom_search_last_row">
+        <button style="" id="op_button" type="button" class="custom_search_advanced" title="Start a new group of criteria, including this row" onclick="custom_search_open_paren()">(</button>
+        <span id="custom_search_not_container_5" class="custom_search_not_container custom_search_advanced" title="Search for the opposite of the criteria here">
+            <input id="n12" class="custom_search_form_field" name="n12" value="1" onclick="custom_search_not_changed(5)" type="checkbox">
+            <label for="n12">Not</label>
+        </span>
+
+        <select name="f12" title="Field" id="f12" onchange="fix_query_string(this)" class="custom_search_form_field">
+            <option value="noop" selected="selected">---</option>
+            <option value="votes">Votes</option>
+        </select>
+
+        <select id="o12" name="o12" title="Search type" class="custom_search_form_field">
+            <option value="noop">---</option>
+            <option value="isnotempty">is not empty</option>
+        </select>
+        
+        <input id="v12" name="v12" title="Value" class="custom_search_form_field" onchange="fix_query_string(this)" value="">
+        
+        <button class="custom_search_add_button" type="button" id="add_button" title="Add a new row" onclick="custom_search_new_row()">+</button>
+        <span class="bz_default_hidden" id="cp_container">
+            <button id="cp_button" type="button" title="End this group of criteria" onclick="custom_search_close_paren()">)</button>
+        </span>
+    </div>
+</div>
+

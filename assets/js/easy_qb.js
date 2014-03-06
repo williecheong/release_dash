@@ -9,6 +9,7 @@ $('.btn#query-compile').click(function(){
     var bzURL = bzURL.split('?');
     if ( !bzURL[1] ) {
         alert('No bugzilla query found.');
+        $this.removeClass('disabled');
         return;
     }
 
@@ -128,6 +129,12 @@ function parseBzSearch( $subject ){
         tempVal = $subject.find('div#container_'+ gridName +' select#'+ gridName +' option:selected').map(function(){return $(this).val();}).get() ;  
         if ( tempVal.length > 0 ){
             var terms = {};
+            if ( gridName == 'bug_status' ) {
+                // bug_status works on lower case only
+                $.each( tempVal, function( key, value ){
+                    tempVal[key] = value.toLowerCase();
+                });
+            }
             terms[gridName] = tempVal;
             esfilterObj.and.push( { "terms" : terms } );
         }
@@ -171,8 +178,76 @@ function parseBzSearch( $subject ){
         }
     }); 
 
+    // Parses the Search by change history fields
+    
+
+    // Parses the custom search section
+    var customParams = '';
+    var $customSearch = $subject.find('div#custom_search_filter_section');
+    var clause = getCustomClause( $customSearch, 'j_top' );
+    customParams += '{"'+clause+'":[';
+    
+    var hasNegatives = [];
+    $customSearch.find('div.custom_search_condition').each(function( key ){
+        var isOpened = $(this).find('input[type="hidden"][value="OP"]').length;
+        var isClosed = $(this).find('input[type="hidden"][value="CP"]').length;
+        
+        if ( isOpened == 1 ) {
+            var isNot = $(this).find('input.custom_search_form_field[type="checkbox"]:checked').length;
+            if ( isNot == 0 ) {
+                customParams += '{ not : ' ;
+                hasNegatives.push( true );
+            } else {
+                hasNegatives.push( false );
+            }
+        
+        } else if ( isClosed == 1 ) {
+            customParams += ']}';
+
+            var hasNegative = hasNegatives.pop();
+            if ( hasNegative ) {
+                customParams += '}';
+            }
+
+            customParams += ', '
+
+        } else {
+            hasClause = $(this).find('input[name^="j"]:checked').length ;
+            if ( hasClause > 0 ) {
+                var clauseName = $(this).find('input[name^="j"]').attr('name');
+                clause = getCustomClause( $(this), clauseName ) ;
+                customParams += '{ "'+clause+'" : [ ';
+            }
+            
+            var tempFld = $(this).find('select[name^="f"] option:selected').val();
+            if ( typeof tempFld != 'undefined' && tempFld != 'noop' ) {
+                var tempOpr = $(this).find('select[name^="o"] option:selected').val();
+                var tempVal = $(this).find('input[name^="v"]').val();
+
+                var isNot = $(this).find('input[name^="n"]:checked').length;
+                var subObj = fovQb(tempFld, tempOpr, tempVal) ;
+                if ( isNot > 0 ) {
+                    var subObj = { "not" : subObj } ;
+                }
+
+                customParams += JSON.stringify( subObj );
+                customParams += ",";
+            }
+        }
+    });
+    customParams = customParams.replace(/,+$/, "");
+    customParams += "]}";
+console.log( customParams );
+    
+    try {
+        esfilterObj.and.push( JSON.parse(customParams) );    
+    } catch (e) {
+        console.log(e);
+    }
+    
     return esfilterObj;
 }
+
 
 function fovQb( field, operator, value ){    
     var outer = {}; 
@@ -184,4 +259,19 @@ function fovQb( field, operator, value ){
     return outer;
 }
 
-
+function getCustomClause( $subject, identifier ){
+    var $clause = $subject.find('div.any_all_select select#'+identifier+' option:selected');
+    var clauseValue = '';
+    
+    if ( $clause.length == 0 ) {
+        clauseValue = 'and';
+    } else {
+        if ( $clause.val().toLowerCase() != 'or' ){ // Watch out for "and_g"
+            clauseValue = 'and';
+        } else {
+            clauseValue = 'or';
+        }
+    }
+    
+    return clauseValue;
+}
