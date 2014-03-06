@@ -179,7 +179,43 @@ function parseBzSearch( $subject ){
     }); 
 
     // Parses the Search by change history fields
-    
+    chFlds = $subject.find('select[name="chfield"] option:selected').map(function(){return $(this).val();}).get() ;  
+    if ( chFlds.length > 0 ){
+        var chObj = {};
+        chObj.and = [];
+
+        var start = $subject.find('input[name="chfieldfrom"]').val();
+        start = makeESDates( start );
+        startObj = {};
+        startObj["range"] = { "expires_on" : {"gte":start} };
+        chObj.and.push( startObj );
+        
+        var end   = $subject.find('input[name="chfieldto"]').val();
+        end   = makeESDates( end );
+        endObj = {};
+        endObj["range"] = { "modified_ts" : {"lte":end} }
+        chObj.and.push( endObj );
+
+        tempVal   = $subject.find('input[name="chfieldvalue"]').val();
+        var nestedObj = { 
+                            "nested": {
+                                 "path": "changes",
+                                 "query": {
+                                    "filtered":{
+                                        "query":{ "match_all":{} },
+                                        "filter":{
+                                            "and":[
+                                                {"terms": {"changes.field_name" : chFlds  } },
+                                                {"term" : {"changes.new_value"  : tempVal } }
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        };
+        chObj.and.push( nestedObj );
+        esfilterObj.and.push( chObj );
+    }
 
     // Parses the custom search section
     var customParams = '';
@@ -188,20 +224,27 @@ function parseBzSearch( $subject ){
     customParams += '{"'+clause+'":[';
     
     var hasNegatives = [];
+    var openedBrackets = 1;
     $customSearch.find('div.custom_search_condition').each(function( key ){
         var isOpened = $(this).find('input[type="hidden"][value="OP"]').length;
         var isClosed = $(this).find('input[type="hidden"][value="CP"]').length;
         
-        if ( isOpened == 1 ) {
+        if ( isOpened > 0 ) {
+            if ( customParams.trim().charAt(customParams.length - 1) != '[' ) {
+                customParams += ',';
+            }
+
             var isNot = $(this).find('input.custom_search_form_field[type="checkbox"]:checked').length;
-            if ( isNot == 0 ) {
-                customParams += '{ not : ' ;
+            if ( isNot > 0 ) {
+                customParams += '{"not":' ;
                 hasNegatives.push( true );
             } else {
                 hasNegatives.push( false );
             }
+
+            openedBrackets++;
         
-        } else if ( isClosed == 1 ) {
+        } else if ( isClosed > 0 ) {
             customParams += ']}';
 
             var hasNegative = hasNegatives.pop();
@@ -209,14 +252,14 @@ function parseBzSearch( $subject ){
                 customParams += '}';
             }
 
-            customParams += ', '
+            openedBrackets--;
 
         } else {
-            hasClause = $(this).find('input[name^="j"]:checked').length ;
+            hasClause = $(this).find('div.any_all_select select[name^="j"]').length ;
             if ( hasClause > 0 ) {
-                var clauseName = $(this).find('input[name^="j"]').attr('name');
+                var clauseName = $(this).find('select[name^="j"]').attr('name');
                 clause = getCustomClause( $(this), clauseName ) ;
-                customParams += '{ "'+clause+'" : [ ';
+                customParams += '{"'+clause+'":[';
             }
             
             var tempFld = $(this).find('select[name^="f"] option:selected').val();
@@ -230,17 +273,31 @@ function parseBzSearch( $subject ){
                     var subObj = { "not" : subObj } ;
                 }
 
+                if ( customParams.trim().charAt(customParams.length - 1) != '[' ) {
+                    customParams += ',';
+                }
                 customParams += JSON.stringify( subObj );
-                customParams += ",";
             }
         }
     });
-    customParams = customParams.replace(/,+$/, "");
-    customParams += "]}";
     
+    while ( openedBrackets > 0 ){
+        customParams += "]}";
+        
+        if ( hasNegatives.length > 0 ) {    
+            hasNegative = hasNegatives.pop();
+            if ( hasNegative ) {
+                customParams += '}';
+            }
+        }
+        openedBrackets--;
+    }
+
     try {
-        esfilterObj.and.push( JSON.parse(customParams) );    
+        esfilterObj.and.push( $.parseJSON(customParams) );    
     } catch (e) {
+        alert( "Failed: Could not parse custom fields" );
+        console.log(customParams);
         console.log(e);
     }
     
@@ -256,6 +313,10 @@ function fovQb( field, operator, value ){
     outer[operator] = inner;
 
     return outer;
+}
+
+function makeESDates( date ) {
+    return date;
 }
 
 function getCustomClause( $subject, identifier ){
