@@ -59,10 +59,11 @@ function showResult( text ){
         $('textarea.query-output').css( 'background', '' );
     }, 1500);
 }
-
-// Outputs a Qb query in JSON
-// Based on BZ search HTML 
-// With pre-filled params
+/******************
+    Outputs a Qb query in JSON
+    Based on BZ search HTML 
+    With pre-filled params
+******************/
 function bzSearchToQb( html, start, end, cluster ){
     var qbQuery = {};
 
@@ -96,215 +97,255 @@ function bzSearchToQb( html, start, end, cluster ){
     return JSON.stringify( qbQuery, null, '\t' ).replace(/"</g, '<').replace(/>"/g, ">");
 }
 
-// Mostly uses RegEx to extract Bugzilla search params from HTML
+/****************** 
+    Applies jQuery to extract Bugzilla search params from HTML
+******************/
 function parseBzSearch( $subject ){
     var esfilterObj = {};
     esfilterObj.and = [];
-
     var tempVal = '';
 
-    //Top most summary input (needs regex filter)
-    tempVal = $subject.find('div#summary_field input#short_desc').val() ;
-    if ( tempVal ){
-        var tempOpr = $subject.find('div#summary_field select[name="short_desc_type"]').val();
-        var terms = fovQb( 'short_desc', tempOpr, tempVal );
-        esfilterObj.and.push( terms );
-    }
-
-    // Parses the two rows of multi-select grids
-    var search_field_grid = [ 
-        'classification', 
-        'product', 
-        'component', 
-        'bug_status', 
-        'resolution', 
-        'version', 
-        'target_milestone', 
-        'bug_severity', 
-        'priority', 
-        'rep_platform', 
-        'op_sys' 
-    ];
-    $.each( search_field_grid, function( key, gridName ){
-        tempVal = $subject.find('div#container_'+ gridName +' select#'+ gridName +' option:selected').map(function(){return $(this).val();}).get() ;  
-        if ( tempVal.length > 0 ){
-            var terms = {};
-            if ( gridName == 'bug_status' ) {
-                // bug_status works on lower case only
-                $.each( tempVal, function( key, value ){
-                    tempVal[key] = value.toLowerCase();
-                });
-            }
-            terms[gridName] = tempVal;
-            esfilterObj.and.push( { "terms" : terms } );
-        }
-    });
-
-    // Parses the six rows directly below "Detailed Bug Information"
-    var search_field_row = [ 'longdesc', 'bug_file_loc', 'status_whiteboard', 'keywords', 'bug_id', 'votes' ];
-    $.each( search_field_row, function( key, rowName ){
-        tempVal = $subject.find('div.search_field_row').find('input#'+rowName).val() ;  
-        if ( tempVal.length > 0 ){
-            var tempOpr = '';
-            if ( rowName == 'votes' ){
-                tempOpr = $subject.find('div.search_field_row').find('input[name="votes_type"]').val();
-            } else {
-                tempOpr = $subject.find('div.search_field_row').find('select[name="'+rowName+'_type"] option:selected').val();
-            }
-
-            var terms = fovQb( rowName, tempOpr, tempVal );
+    /******************
+        Parses top most summary input (needs regex filter)
+    ******************/
+        tempVal = $subject.find('div#summary_field input#short_desc').val() ;
+        if ( tempVal ){
+            var tempOpr = $subject.find('div#summary_field select[name="short_desc_type"]').val();
+            var terms = fovQb( 'short_desc', tempOpr, tempVal );
             esfilterObj.and.push( terms );
         }
-    });
+    /******************
+        End of parsing top most summary input (needs regex filter)
+    ******************/
 
-    // Parses the email search fields
-    var search_email_fields = [ 1, 2, 3 ];
-    var roles = [ 'assigned_to', 'reporter', 'qa_contact', 'cc', 'longdesc' ];
-    $.each( search_email_fields, function( key, col ){
-        tempVal = $subject.find('div.search_email_fields').find('input#email'+col).val() ;
-        if ( tempVal.length > 0 ){
-            var subObj = {};
-            subObj.or = [];
 
-            var tempOpr = $subject.find('div.search_email_fields').find('select[name="email_type'+col+'"] option:selected').val();
-            $.each( roles, function( key, role ){
-                var isChecked = $subject.find('div.search_email_fields').find('input#email'+role+col+':checked').length;
-                if ( isChecked > 0 ){
-                    subObj.or.push( fovQb(role, tempOpr, tempVal) );
+    /****************** 
+        Parses the two rows of multi-select grids
+    ******************/
+        var search_field_grid = [ 
+            'classification', 
+            'product', 
+            'component', 
+            'bug_status', 
+            'resolution', 
+            'version', 
+            'target_milestone', 
+            'bug_severity', 
+            'priority', 
+            'rep_platform', 
+            'op_sys' 
+        ];
+        $.each( search_field_grid, function( key, gridName ){
+            tempVal = $subject.find('div#container_'+ gridName +' select#'+ gridName +' option:selected').map(function(){return $(this).val();}).get() ;  
+            if ( tempVal.length > 0 ){
+                var terms = {};
+                if ( gridName == 'bug_status' ) {
+                    // bug_status works on lower case only
+                    $.each( tempVal, function( key, value ){
+                        tempVal[key] = value.toLowerCase();
+                    });
                 }
-            });
+                terms[gridName] = tempVal;
+                esfilterObj.and.push( { "terms" : terms } );
+            }
+        });
+    /****************** 
+        End of parsing the two rows of multi-select grids
+    ******************/
 
-            esfilterObj.and.push( subObj );
-        }
-    }); 
 
-    // Parses the Search by change history fields
-    chFlds = $subject.find('select[name="chfield"] option:selected').map(function(){return $(this).val();}).get() ;  
-    if ( chFlds.length > 0 ){
-        var chObj = {};
-        chObj.and = [];
+    /******************
+        Parses the six rows directly below "Detailed Bug Information"
+    ******************/
+        var search_field_row = [ 'longdesc', 'bug_file_loc', 'status_whiteboard', 'keywords', 'bug_id', 'votes' ];
+        $.each( search_field_row, function( key, rowName ){
+            tempVal = $subject.find('div.search_field_row').find('input#'+rowName).val() ;  
+            if ( tempVal.length > 0 ){
+                var tempOpr = '';
+                if ( rowName == 'votes' ){
+                    tempOpr = $subject.find('div.search_field_row').find('input[name="votes_type"]').val();
+                } else {
+                    tempOpr = $subject.find('div.search_field_row').find('select[name="'+rowName+'_type"] option:selected').val();
+                }
 
-        var start = $subject.find('input[name="chfieldfrom"]').val();
-        start = makeESDates( start );
-        startObj = {};
-        startObj["range"] = { "expires_on" : {"gte":start} };
-        chObj.and.push( startObj );
-        
-        var end   = $subject.find('input[name="chfieldto"]').val();
-        end   = makeESDates( end );
-        endObj = {};
-        endObj["range"] = { "modified_ts" : {"lte":end} }
-        chObj.and.push( endObj );
+                var terms = fovQb( rowName, tempOpr, tempVal );
+                esfilterObj.and.push( terms );
+            }
+        });
+    /******************
+        End of parsing the six rows directly below "Detailed Bug Information"
+    ******************/
 
-        tempVal   = $subject.find('input[name="chfieldvalue"]').val();
-        var nestedObj = { 
-                            "nested": {
-                                 "path": "changes",
-                                 "query": {
-                                    "filtered":{
-                                        "query":{ "match_all":{} },
-                                        "filter":{
-                                            "and":[
-                                                {"terms": {"changes.field_name" : chFlds  } },
-                                                {"term" : {"changes.new_value"  : tempVal } }
-                                            ]
+
+    /*********************
+        Parses the email search fields
+    *********************/
+        var search_email_fields = [ 1, 2, 3 ];
+        var roles = [ 'assigned_to', 'reporter', 'qa_contact', 'cc', 'longdesc' ];
+        $.each( search_email_fields, function( key, col ){
+            tempVal = $subject.find('div.search_email_fields').find('input#email'+col).val() ;
+            if ( tempVal.length > 0 ){
+                var subObj = {};
+                subObj.or = [];
+
+                var tempOpr = $subject.find('div.search_email_fields').find('select[name="email_type'+col+'"] option:selected').val();
+                $.each( roles, function( key, role ){
+                    var isChecked = $subject.find('div.search_email_fields').find('input#email'+role+col+':checked').length;
+                    if ( isChecked > 0 ){
+                        subObj.or.push( fovQb(role, tempOpr, tempVal) );
+                    }
+                });
+
+                esfilterObj.and.push( subObj );
+            }
+        });
+    /*********************
+        End of parsing the email search fields
+    *********************/
+
+
+    /*********************
+        Parses the change history fields
+    *********************/
+        chFlds = $subject.find('select[name="chfield"] option:selected').map(function(){return $(this).val();}).get() ;  
+        if ( chFlds.length > 0 ) {
+            var chObj = {};
+            chObj.and = [];
+
+            var start = $subject.find('input[name="chfieldfrom"]').val();
+            start = makeESDates( start );
+            startObj = {};
+            startObj["range"] = { "expires_on" : {"gte":start} };
+            chObj.and.push( startObj );
+            
+            var end   = $subject.find('input[name="chfieldto"]').val();
+            end   = makeESDates( end );
+            endObj = {};
+            endObj["range"] = { "modified_ts" : {"lte":end} }
+            chObj.and.push( endObj );
+
+            tempVal   = $subject.find('input[name="chfieldvalue"]').val();
+            var nestedObj = { 
+                                "nested": {
+                                     "path": "changes",
+                                     "query": {
+                                        "filtered":{
+                                            "query":{ "match_all":{} },
+                                            "filter":{
+                                                "and":[
+                                                    {"terms": {"changes.field_name" : chFlds  } },
+                                                    {"term" : {"changes.new_value"  : tempVal } }
+                                                ]
+                                            }
                                         }
                                     }
                                 }
-                            }
-                        };
-        chObj.and.push( nestedObj );
-        esfilterObj.and.push( chObj );
-    }
+                            };
+            chObj.and.push( nestedObj );
+            esfilterObj.and.push( chObj );
+        }
+    /*********************
+        End of parsing the change history fields
+    *********************/
 
-    // Parses the custom search section
-    var customParams = '';
-    var $customSearch = $subject.find('div#custom_search_filter_section');
-    var clause = getCustomClause( $customSearch, 'j_top' );
-    customParams += '{"'+clause+'":[';
-    
-    var hasNegatives = [];
-    var openedBrackets = 1;
-    $customSearch.find('div.custom_search_condition').each(function( key ){
-        var isOpened = $(this).find('input[type="hidden"][value="OP"]').length;
-        var isClosed = $(this).find('input[type="hidden"][value="CP"]').length;
+
+    /*********************
+        Parses the custom search section
+    *********************/
+        var customParams = '';
+        var $customSearch = $subject.find('div#custom_search_filter_section');
+        var clause = getCustomClause( $customSearch, 'j_top' );
+        customParams += '{"'+clause+'":[';
         
-        if ( isOpened > 0 ) {
-            if ( customParams.trim().charAt(customParams.length - 1) != '[' ) {
-                customParams += ',';
-            }
-
-            var isNot = $(this).find('input.custom_search_form_field[type="checkbox"]:checked').length;
-            if ( isNot > 0 ) {
-                customParams += '{"not":' ;
-                hasNegatives.push( true );
-            } else {
-                hasNegatives.push( false );
-            }
-
-            openedBrackets++;
-        
-        } else if ( isClosed > 0 ) {
-            customParams += ']}';
-
-            var hasNegative = hasNegatives.pop();
-            if ( hasNegative ) {
-                customParams += '}';
-            }
-
-            openedBrackets--;
-
-        } else {
-            hasClause = $(this).find('div.any_all_select select[name^="j"]').length ;
-            if ( hasClause > 0 ) {
-                var clauseName = $(this).find('select[name^="j"]').attr('name');
-                clause = getCustomClause( $(this), clauseName ) ;
-                customParams += '{"'+clause+'":[';
-            }
+        var hasNegatives = [];
+        var openedBrackets = 1;
+        $customSearch.find('div.custom_search_condition').each(function( key ){
+            var isOpened = $(this).find('input[type="hidden"][value="OP"]').length;
+            var isClosed = $(this).find('input[type="hidden"][value="CP"]').length;
             
-            var tempFld = $(this).find('select[name^="f"] option:selected').val();
-            if ( typeof tempFld != 'undefined' && tempFld != 'noop' ) {
-                var tempOpr = $(this).find('select[name^="o"] option:selected').val();
-                var tempVal = $(this).find('input[name^="v"]').val();
-
-                var isNot = $(this).find('input[name^="n"]:checked').length;
-                var subObj = fovQb(tempFld, tempOpr, tempVal) ;
-                if ( isNot > 0 ) {
-                    var subObj = { "not" : subObj } ;
-                }
-
+            if ( isOpened > 0 ) {
                 if ( customParams.trim().charAt(customParams.length - 1) != '[' ) {
                     customParams += ',';
                 }
-                customParams += JSON.stringify( subObj );
-            }
-        }
-    });
-    
-    while ( openedBrackets > 0 ){
-        customParams += "]}";
-        
-        if ( hasNegatives.length > 0 ) {    
-            hasNegative = hasNegatives.pop();
-            if ( hasNegative ) {
-                customParams += '}';
-            }
-        }
-        openedBrackets--;
-    }
 
-    try {
-        esfilterObj.and.push( $.parseJSON(customParams) );    
-    } catch (e) {
-        alert( "Failed: Could not parse custom fields" );
-        console.log(customParams);
-        console.log(e);
-    }
-    
+                var isNot = $(this).find('input.custom_search_form_field[type="checkbox"]:checked').length;
+                if ( isNot > 0 ) {
+                    customParams += '{"not":' ;
+                    hasNegatives.push( true );
+                } else {
+                    hasNegatives.push( false );
+                }
+
+                openedBrackets++;
+            
+            } else if ( isClosed > 0 ) {
+                customParams += ']}';
+
+                var hasNegative = hasNegatives.pop();
+                if ( hasNegative ) {
+                    customParams += '}';
+                }
+
+                openedBrackets--;
+
+            } else {
+                hasClause = $(this).find('div.any_all_select select[name^="j"]').length ;
+                if ( hasClause > 0 ) {
+                    var clauseName = $(this).find('select[name^="j"]').attr('name');
+                    clause = getCustomClause( $(this), clauseName ) ;
+                    customParams += '{"'+clause+'":[';
+                }
+                
+                var tempFld = $(this).find('select[name^="f"] option:selected').val();
+                if ( typeof tempFld != 'undefined' && tempFld != 'noop' ) {
+                    var tempOpr = $(this).find('select[name^="o"] option:selected').val();
+                    var tempVal = $(this).find('input[name^="v"]').val();
+
+                    var isNot = $(this).find('input[name^="n"]:checked').length;
+                    var subObj = fovQb(tempFld, tempOpr, tempVal) ;
+                    if ( isNot > 0 ) {
+                        var subObj = { "not" : subObj } ;
+                    }
+
+                    if ( customParams.trim().charAt(customParams.length - 1) != '[' ) {
+                        customParams += ',';
+                    }
+                    customParams += JSON.stringify( subObj );
+                }
+            }
+        });
+        
+        while ( openedBrackets > 0 ){
+            customParams += "]}";
+            
+            if ( hasNegatives.length > 0 ) {    
+                hasNegative = hasNegatives.pop();
+                if ( hasNegative ) {
+                    customParams += '}';
+                }
+            }
+            openedBrackets--;
+        }
+
+        try {
+            esfilterObj.and.push( $.parseJSON(customParams) );    
+        } catch (e) {
+            alert( "Failed: Could not parse custom fields" );
+            console.log(customParams);
+            console.log(e);
+        }
+    /*********************
+        End of parsing the custom search section
+    *********************/
+
     return esfilterObj;
 }
 
-
+/*****************
+    Takes in a field, operator and value as strings
+    Converts them to an appropriate ES compatible filter object
+    Reference: http://www.elasticsearch.org/guide/en/elasticsearch/reference/0.90/query-dsl-filters.html
+*****************/
 function fovQb( field, operator, value ){    
     var outer = {}; 
     var inner = {};
@@ -315,10 +356,34 @@ function fovQb( field, operator, value ){
     return outer;
 }
 
+
+/*****************
+    Receives a date input extracted from Bugzilla
+    Parses and converts to ES compatible 
+    I.e. Milliseconds since epoch.
+*****************/
 function makeESDates( date ) {
-    return date;
+    var dateValue = 0;
+    var dateObj = new Date();
+
+    if ( date == 'Now' ) {
+        dateValue = dateObj.now();
+    } else {
+        date = date.split('-');
+        var year    = parseInt( date[0] ) - 1900;
+        var month   = parseInt( date[1] );
+        var day     = parseInt( date[2] );
+        dateValue = dateObj.UTC( year, month, day, 0, 0, 0 );
+    }
+
+    return parseInt( dateValue );
 }
 
+
+/*****************
+    Extract selections from dropdown fields
+    Where users are asked to choose whether to apply all or any (and / or)
+*****************/
 function getCustomClause( $subject, identifier ){
     var $clause = $subject.find('div.any_all_select select#'+identifier+' option:selected');
     var clauseValue = '';
