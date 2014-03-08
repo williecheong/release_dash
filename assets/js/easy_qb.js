@@ -369,10 +369,10 @@
                 x "nowordssubstr"     => contains none of the strings
                 x "regexp"            => matches regular expression
                 x "notregexp"         => does not match regular expression
-                  "lessthan"          => is less than
-                  "lessthaneq"        => is less than or equal to
-                  "greaterthan"       => is greater than
-                  "greaterthaneq"     => is greater than or equal to
+                x "lessthan"          => is less than
+                x "lessthaneq"        => is less than or equal to
+                x "greaterthan"       => is greater than
+                x "greaterthaneq"     => is greater than or equal to
                 x "anywords"          => contains any of the words
                 x "allwords"          => contains all of the words
                 x "nowords"           => contains none of the words
@@ -442,6 +442,20 @@
                 if ( operator == 'notregexp' || operator == 'notmatches' ) {
                     outer = { "not" : outer };
                 }
+
+            } else if ( operator == 'greaterthan' || operator == 'greaterthaneq' || operator == 'lessthan' || operator == 'lessthaneq' ) {
+                if ( operator == 'greaterthan' ) {
+                    operator = 'gt';
+                } else if ( operator == 'greaterthaneq' ) {
+                    operator = 'gte';
+                } else if ( operator == 'lessthan' ) {
+                    operator = 'lt';
+                } else if ( operator == 'lessthaneq' ) {
+                    operator = 'lte';
+                } 
+                inner[operator] = value;
+                outer[field] = inner;
+                outer = { "range" : outer };
 
             } else if ( operator == 'isempty' || operator == 'isnotempty' ) {
                 inner["field"] = field ;
