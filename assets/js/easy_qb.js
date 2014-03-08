@@ -197,7 +197,7 @@
                         var subObj = {};
                         subObj.or = [];
 
-                        var tempOpr = $subject.find('div.search_email_fields').find('select[name="email_type'+col+'"] option:selected').val();
+                        var tempOpr = $subject.find('div.search_email_fields').find('select[name="emailtype'+col+'"] option:selected').val();
                         $.each( roles, function( key, role ){
                             var isChecked = $subject.find('div.search_email_fields').find('input#email'+role+col+':checked').length;
                             if ( isChecked > 0 ){
@@ -356,12 +356,105 @@
         Reference: http://www.elasticsearch.org/guide/en/elasticsearch/reference/0.90/query-dsl-filters.html
     *****************/
         function fovQb( field, operator, value ){    
+            /*********************
+            // Possible values for operator
+                x "equals"            => is equal to
+                x "notequals"         => is not equal to
+                x "anyexact"          => is equal to any of the strings
+                x "substring"         => contains the string
+                x "casesubstring"     => contains the string (exact case)
+                x "notsubstring"      => does not contain the string
+                x "anywordssubstr"    => contains any of the strings
+                x "allwordssubstr"    => contains all of the strings
+                x "nowordssubstr"     => contains none of the strings
+                x "regexp"            => matches regular expression
+                x "notregexp"         => does not match regular expression
+                  "lessthan"          => is less than
+                  "lessthaneq"        => is less than or equal to
+                  "greaterthan"       => is greater than
+                  "greaterthaneq"     => is greater than or equal to
+                x "anywords"          => contains any of the words
+                x "allwords"          => contains all of the words
+                x "nowords"           => contains none of the words
+                 "changedbefore"     => changed before
+                 "changedafter"      => changed after
+                 "changedfrom"       => changed from
+                 "changedto"         => changed to
+                 "changedby"         => changed by
+                x "matches"           => matches
+                x "notmatches"        => does not match
+                x "isempty"           => is empty
+                x "isnotempty"        => is not empty
+            // End of possible values for operator
+            *********************/
             var outer = {}; 
             var inner = {};
 
-            inner[field] = value;
-            outer[operator] = inner;
+            if ( operator == 'equals' || operator == 'notequals' ) {
+                inner[field] = value;
+                outer["term"] = inner;
+                if ( operator == 'notequals' ) {
+                    outer = { "not" : outer };
+                }
 
+            } else if ( operator == 'anyexact' ) {
+                value = value.replace(/ /g, '');
+                value = value.split(',');
+
+                inner[field] = value;
+                outer["terms"] = inner;
+                outer = { "not" : outer };
+
+            } else if ( operator == 'substring' || operator == 'casesubstring' || operator == 'notsubstring' ) {
+                if ( operator == 'casesubstring' ) {
+                    inner[field] = '(' + value + ')+';
+                } else {
+                    inner[field] = '/(' + value + ')+/i';
+                }
+
+                outer['regexp'] = inner;
+                if ( operator == 'notsubstring' ) {
+                    outer = { "not" : outer };
+                }
+
+            } else if ( operator == 'anywordssubstr' || operator == 'allwordssubstr' || operator == 'nowordssubstr' || operator == 'anywords' || operator == 'allwords' || operator == 'nowords' ) {
+                value = value.replace(/ /g, '');
+                value = value.split(',');
+
+                var clause = 'and';
+                if ( operator == 'anywordssubstr' || operator == 'anywords' ) {
+                    clause = 'or';
+                }
+                outer[clause] = [];
+
+                $.each( value, function(key, arrayValue){
+                    inner[field] = '/(' + arrayValue + ')+/i';
+                    outer[clause].push( {"regex" : inner} );
+                });
+
+                if ( operator == 'nowordssubstr' || operator == 'nowords' ) {
+                    outer = { "not" : outer };
+                }
+
+            } else if ( operator == 'regexp' || operator == 'matches' || operator == 'notregexp' || operator == 'notmatches' ) {
+                inner[field] = value;
+                outer["regexp"] = inner;
+                if ( operator == 'notregexp' || operator == 'notmatches' ) {
+                    outer = { "not" : outer };
+                }
+
+            } else if ( operator == 'isempty' || operator == 'isnotempty' ) {
+                inner["field"] = field ;
+                outer["missing"] = inner;
+                if ( operator == 'isnotempty' ) {
+                    outer = { "not" : outer };
+                }
+            } else {
+                // This should never happen
+                inner[field] = value;
+                outer[operator] = inner;
+            }
+            
             return outer;
         }
 
@@ -369,20 +462,20 @@
     /*****************
         Receives a date input extracted from Bugzilla
         Parses and converts to ES compatible 
-        I.e. Milliseconds since epoch.
+        I.e. Milliseconds since epoch
+        Reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date
     *****************/
         function makeESDates( date ) {
             var dateValue = 0;
-            var dateObj = new Date();
 
             if ( date == 'Now' ) {
-                dateValue = dateObj.now();
+                dateValue = Date.now();
             } else {
                 date = date.split('-');
-                var year    = parseInt( date[0] ) - 1900;
-                var month   = parseInt( date[1] );
+                var year    = parseInt( date[0] );
+                var month   = parseInt( date[1] ) - 1;
                 var day     = parseInt( date[2] );
-                dateValue = dateObj.UTC( year, month, day, 0, 0, 0 );
+                dateValue = Date.UTC( year, month, day, 0, 0, 0 );
             }
 
             return parseInt( dateValue );
