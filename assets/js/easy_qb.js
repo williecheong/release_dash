@@ -230,7 +230,7 @@
                     var end   = $subject.find('input[name="chfieldto"]').val();
                     end   = makeESDates( end );
                     endObj = {};
-                    endObj["range"] = { "modified_ts" : {"lte":end} }
+                    endObj["range"] = { "modified_ts" : {"lte":end} };
                     chObj.and.push( endObj );
 
                     tempVal   = $subject.find('input[name="chfieldvalue"]').val();
@@ -376,11 +376,11 @@
                 x "anywords"          => contains any of the words
                 x "allwords"          => contains all of the words
                 x "nowords"           => contains none of the words
-                 "changedbefore"     => changed before
-                 "changedafter"      => changed after
-                 "changedfrom"       => changed from
-                 "changedto"         => changed to
-                 "changedby"         => changed by
+                x "changedbefore"     => changed before
+                x "changedafter"      => changed after
+                x "changedfrom"       => changed from
+                x "changedto"         => changed to
+                  "changedby"         => changed by
                 x "matches"           => matches
                 x "notmatches"        => does not match
                 x "isempty"           => is empty
@@ -456,6 +456,37 @@
                 inner[operator] = value;
                 outer[field] = inner;
                 outer = { "range" : outer };
+
+            } else if ( operator == 'changedbefore' || operator == 'changedafter' ) {
+                value = makeESDates( value );
+                if ( operator == 'changedafter' ) {
+                    inner = { "expires_on" : {"gte":value} };
+                } else {
+                    inner = { "modified_ts" : {"lte":value} };
+                }
+                outer["range"] = inner;
+            } else if ( operator == 'changedto' || operator == 'changedfrom' ) {
+                inner = { "term" : {"changes.new_value":value} };
+                if ( operator == 'changedfrom' ) {
+                    inner = { "term" : {"changes.old_value":value} };
+                }
+
+                outer = { 
+                            "nested": {
+                                 "path": "changes",
+                                 "query": {
+                                    "filtered":{
+                                        "query":{ "match_all":{} },
+                                        "filter":{
+                                            "and":[
+                                                {"term": {"changes.field_name" : field  } },
+                                                inner
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        };
 
             } else if ( operator == 'isempty' || operator == 'isnotempty' ) {
                 inner["field"] = field ;
