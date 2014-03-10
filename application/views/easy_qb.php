@@ -50,7 +50,7 @@
 
                  <div class="well well-sm">
                     <button class="btn btn-xs btn-default" style="width:100%;" data-mytoggler="#easyqb-instructions">
-                        References
+                        References for Soft Tags
                     </button>
                     <div id="easyqb-instructions" style="display:none;">
                        <dl class="dl-horizontal">
