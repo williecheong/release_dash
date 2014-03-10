@@ -47,6 +47,25 @@
                         <input type="radio" name="query-cluster" id="public_cluster"> Public Cluster
                     </label>
                 </div>
+
+                 <div class="well well-sm">
+                    <button class="btn btn-xs btn-default" style="width:100%;" data-mytoggler="#easyqb-instructions">
+                        References
+                    </button>
+                    <div id="easyqb-instructions" style="display:none;">
+                       <dl class="dl-horizontal">
+                            <dt>&lt;birthday&gt;</dt>
+                            <dd>Dynamically converted to version's birthday</dd>
+                            <dt>&lt;timestamp&gt;</dt>
+                            <dd>Dynamically converted to version's next shipday</dd>
+                            <dt>&lt;version_tag&gt;</dt>
+                            <dd>Used for Qb queries in default groups. Dynamically converted to version number e.g. 30.</dd>
+                            <dt>&lt;version_title&gt;</dt>
+                            <dd>Used for default group titles. Dynamically converted to a read-friendly version title e.g. Firefox 30.</dd>
+                            
+                        </dl>
+                    </div>
+                </div>    
             </div>
         </div>
         <div class="col-md-6 right-side">
