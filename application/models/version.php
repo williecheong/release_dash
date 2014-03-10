@@ -16,8 +16,19 @@ class version extends CI_Model{
             $new_version_tag = implode('_', $break_tag);
             $new_version_number = implode('.', $break_tag);
         } else {
-            $new_version_tag = $version->tag + 1;
-            $new_version_number = $version->tag + 1;
+            $source = 'https://wiki.mozilla.org/Template:CENTRAL_VERSION';
+            $content = file_get_contents_via_curl( $source );
+            if( $content === false ) {
+                // Failed to retrieve external version tag
+                // Manually calculate for nightly version number
+                $new_version_tag = $version->tag + 1;
+                $new_version_number = $version->tag + 1;
+            } else {
+                // Extract externally retrieved version tag
+                preg_match("/<p>(.*?)<\/p>/s", $content, $match);
+                $new_version_tag = trim( $match[1] );    
+                $new_version_number = trim( $match[1] );
+            }
         }
 
         if ( empty($product) ) {
