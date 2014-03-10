@@ -76,14 +76,12 @@
 
     .plot {
         position: relative;
-        left: 9%;
     }
 
     .y-axis {
         position: absolute;
         top: 0;
         bottom: 0;
-        width: 9%;
     }
 
     .rickshaw_legend .label {

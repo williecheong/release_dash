@@ -319,7 +319,7 @@
         // Start the plot
         var graph = new Rickshaw.Graph({
             element: document.querySelector('.plot#g'+group_id),
-            width: $('.group#g' + group_id).width() * 0.80,
+            width: $('.group#g' + group_id).width() * 0.90,
             height: $('.group#g' + group_id).width() * 0.40,
             renderer: 'line',
             series: rickshawData
@@ -333,7 +333,7 @@
 
         var y_axis = new Rickshaw.Graph.Axis.Y({
             graph       : graph,
-            orientation : 'left',
+            orientation : 'right',
             tickFormat  : Rickshaw.Fixtures.Number.formatKMBT,
             element     : document.querySelector('.y-axis#g'+group_id)
         });
