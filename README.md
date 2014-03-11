@@ -32,8 +32,11 @@ Change logs, progress updates and latest developments on [this spreadsheet](http
 #### Groups of Queries
 - Every single group may contain one or more queries.
 - Found on version pages to represent individual release readiness metrics.
--- **Default groups** apply across all versions of a product. `<version_tag>` and `<version_title>` must be used for the fields product-wide compatibility.
--- **Custom groups** apply only on a single version of a product. While soft-tagging `<version_tag>` and `<version_title>` are optional, it is recommended that `<birthday>` and `<timestamp>` be used at all times.
+    - **Default groups** apply across all versions of a product. 
+    - `<version_tag>` and `<version_title>` are neccessary for fields to adapt to version pages.
+    - **Custom groups** only apply to a single version of a product. 
+    - `<version_tag>` and `<version_title>` soft tags are optional. 
+    - `<birthday>` and `<timestamp>` are recommended to be used at all times.
 - Accessed through `http://release-dash.../for/[product_tag]/[version_tag]`
 - External Dependencies: [ElasticSearch private cluster](), [ElasticSearch public cluster]()
 
