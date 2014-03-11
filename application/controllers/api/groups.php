@@ -41,6 +41,8 @@ class Groups extends REST_Controller {
                     $new_reference = array(
                         'title'     => isset($query['query_title']) ? $query['query_title'].' ref. <version_title>'    : '' ,
                         'group_id'  => isset($group_id)             ? $group_id                : '' ,
+                        'query_qb'  => '' ,
+                        'query_bz'  => '' ,
                         'colour'    => isset($query['ref_colour'])  ? $query['ref_colour']     : '' ,
                         'references'=> $query_version  );
 
