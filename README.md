@@ -29,27 +29,42 @@ Change logs, progress updates and latest developments on [this spreadsheet](http
 - Manually execute through `http://release-dash.../admin/update_cycle`
 - External dependencies: [CURRENT_CYCLE](https://wiki.mozilla.org/Template:CURRENT_CYCLE), [CENTRAL_VERSION](https://wiki.mozilla.org/Template:CENTRAL_VERSION)
 
-#### Groups
-- Found on version pages to represent individual release readiness metrics.
-- Accessed through `http://release-dash.../for/[product_tag]/[version_tag]`
-- Every group is visualized on the dashboard as a plot, a current value, or both.
-- Each plot line or current value in a group corresponds to a query in that group.
-- *Custom groups* only apply to a single version of a product.
-- *Default groups* apply across all versions of a product. 
-- External dependencies: [Elasticsearch private cluster](https://github.com/klahnakoski/qb), [Elasticsearch public cluster](https://github.com/klahnakoski/qb)
-
-#### Queries
-- Bugzilla URLs can be specified to allow direct BZ access from the dashboard. 
-- `<version_tag>` must be used in a Bugzilla URL if the query belongs to a *default group*.
-- For queries in custom groups, the use of `<version_tag>` and `<version_title>` is optional.
-- For queries in default groups, `<version_tag>` and `<version_title>` are neccessary to adapt to version pages.
-- For all queries, `<birthday>` and `<timestamp>` are recommended for specifying time ranges in Qb queries. 
-- Queries may reference historic data. i.e. run same query on an older version.
-- External dependencies: [Elasticsearch private cluster](https://github.com/klahnakoski/qb), [Elasticsearch public cluster](https://github.com/klahnakoski/qb)
+#### Groups of Queries
+- **Groups**:
+    - Found on version pages to represent individual release readiness metrics.
+    - Accessed through `http://release-dash.../for/[product_tag]/[version_tag]`
+    - Every group is visualized on the dashboard as a plot, a current value, or both.
+    - Each plot line or current value in a group corresponds to a query in that group.
+    - *Custom groups* only apply to a single version of a product.
+    - *Default groups* apply across all versions of a product.     
+- **Queries**:
+    - Bugzilla URLs can be specified to allow direct BZ access from the dashboard. 
+    - `<version_tag>` must be used in a Bugzilla URL if the query belongs to a *default group*.
+    - For queries in custom groups, the use of `<version_tag>` and `<version_title>` is optional.
+    - For queries in default groups, `<version_tag>` and `<version_title>` are neccessary to adapt to version pages.
+    - For all queries, `<birthday>` and `<timestamp>` are recommended for specifying time ranges in Qb queries. 
+    - Queries may reference historic data. i.e. run same query on an older version.
+- **External dependencies**: 
+    - [Elasticsearch private cluster](https://github.com/klahnakoski/qb)
+    - [Elasticsearch public cluster](https://github.com/klahnakoski/qb)
 
 #### Administration
+- Access to login panel through `http://release-dash.../admin`
+- Login through Persona using an email address found on the white-list.
+- Logging in grants administration privileges to `INSERT` and `DELETE` groups.
+- Note: Logging in does **not** enable any user-specific views. 
 
 #### Rules
+- To add a rule for this group:
+    1. Create a Javascript file as specified in the above "Directory".
+    2. Copy the code in "Template" into the newly created Javascript file.
+    3. Proceed to script rules. There are inline comments to help guide you.
+    4. Ensure the JS file name is correct. Otherwise the rule will not be applied.
+    5. If you have production deployment rights, good for you.
+    6. Otherwise, submit a pull request to GitHub.
+- To modify/delete a rule on this group:
+    1. Simply edit/remove the corresponding file from /assets/rules.
+    2. Note: There can always be only one rule for each group.
 
 #### Qb Queries
 
