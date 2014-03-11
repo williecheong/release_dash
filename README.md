@@ -4,8 +4,8 @@ More awesome *(and possibly unstable)* new features on [the staging site](http:/
 Change logs, progress updates and latest developments on [this spreadsheet](https://docs.google.com/spreadsheet/ccc?key=0ApNDjYXWm5JndDFwLWVlM1BPR3dBdjE1ZVdfWlBwR1E&usp=sharing).
 
 #### Requirements
-Standard Web Stack - Apache, MySQL, PHP 5.3 and above<br>
-For deployment on local machine, try LAMP, [MAMP](http://www.mamp.info/en/downloads/) or [WAMP](http://www.wampserver.com/en/). 
+- Standard Web Stack: Apache, MySQL, PHP 5.3 and above
+- For deployment on local machine, try LAMP, [MAMP](http://www.mamp.info/en/downloads/) or [WAMP](http://www.wampserver.com/en/). 
 
 #### Configuration
 - Define *production*, *staging* and *development* environments in `/index.php`
@@ -19,7 +19,7 @@ For deployment on local machine, try LAMP, [MAMP](http://www.mamp.info/en/downlo
 2. Set up a new MySQL database service on the machine
 3. Define database credentials as specified in Configuration above
 4. Load the database schema and initial data from `/assets/sql/schema.sql`
-5. The RRDashboard is now live.
+5. Done: RRDashboard is now live.
 
 
 ## Features
