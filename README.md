@@ -35,9 +35,9 @@ Change logs, progress updates and latest developments on [this spreadsheet](http
 - Every group contains one or more queries; visualized as a plot, a current value, or both.
 - *Default groups* apply across all versions of a product. `<version_tag>` and `<version_title>` are neccessary for fields in *default groups* to adapt to version pages.
 - *Custom groups* only apply to a single version of a product. `<version_tag>` and `<version_title>` are optional for custom groups. 
-- `<birthday>` and `<timestamp>` are recommended for specifying time ranges in Qb queries at all times. 
-- Bugzilla URLs for queries can be specified to allow direct Bugzilla access from the dashboard. `<version_tag>` may also be used here if query belongs to a *default group*.
-- Queries may also have a reference to a previous version i.e. same query on an older version.
+- `<birthday>` and `<timestamp>` are recommended for specifying time ranges in Qb queries. 
+- Bugzilla URLs for queries can be specified to allow direct Bugzilla access from the dashboard. `<version_tag>` may also be used here if the query belongs to a *default group*.
+- Queries may also have a reference. i.e. run same query on an older version.
 - External dependencies: [Elasticsearch private cluster](https://github.com/klahnakoski/qb), [Elasticsearch public cluster](https://github.com/klahnakoski/qb)
 
 #### Administration
