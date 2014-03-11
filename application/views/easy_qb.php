@@ -62,7 +62,6 @@
                             <dd>Used for Qb queries in default groups. Dynamically converted to version number e.g. 30.</dd>
                             <dt>&lt;version_title&gt;</dt>
                             <dd>Used for default group titles. Dynamically converted to a read-friendly version title e.g. Firefox 30.</dd>
-                            
                         </dl>
                     </div>
                 </div>    

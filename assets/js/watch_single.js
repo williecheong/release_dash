@@ -95,11 +95,14 @@
         var queryError = false;
         $.each( $('.new-query'), function(key, value){ 
             // Retrieving input group query's values into saveGroup
+            var tempColor = rgb2hex( $('.new-query#'+value.id).find('button.colourpicker').css('color') );
             saveGroup.group_queries[value.id] = {
                 query_title     : $.trim( $('.new-query#'+value.id).find('input#new-query-name').val() ),
-                query_colour    : $('.new-query#'+value.id).find('button.colourpicker').css('color'),
+                query_colour    : tempColor,
                 query_query_bz  : $('.new-query#'+value.id).find('input#new-query-bz').val(),
-                query_query_qb  : $('.new-query#'+value.id).find('textarea#new-query-qb').val()
+                query_query_qb  : $('.new-query#'+value.id).find('textarea#new-query-qb').val(),
+                ref_version     : $('.new-query#'+value.id).find('select#new-query-reference option:selected').val(),
+                ref_colour       : shadeColor(tempColor, 45)
             };
             // End of retrieving input group query's values into saveGroup
 
@@ -107,6 +110,10 @@
             if ( saveGroup.group_queries[value.id].query_title == '' ) {
                 alert( 'Query name cannot be empty.' );
                 queryError = true;
+            }
+
+            if ( typeof saveGroup.group_queries[value.id].ref_version == 'undefined' ) {
+                saveGroup.group_queries[value.id].query_query_references = 'none';
             }
             // End of validation for group query's input values
         });
@@ -300,8 +307,7 @@
         // Building up an array for each line that goes into the plot
         var rickshawData = new Array() ; 
         var palette = new Rickshaw.Color.Palette(); 
-        $.each( coreData.query_groups[group_id].queries, function( key, value ) {
-            
+        $.each( coreData.query_groups[group_id].queries, function( key, value ) { 
             var plot_colour;
             if ( value.colour ) {
                 plot_colour = value.colour;
@@ -309,9 +315,18 @@
                 plot_colour = palette.color();
             }
 
+            var plot_data = value['es_data'];
+            if (value.is_reference) {
+                plot_data = [];
+                // Reference plot only, use corresponding dates from main plot
+                $.each( coreData.query_groups[group_id].queries[value.ref_query].es_data , function( esIndex, esValue ){
+                    plot_data[esIndex] = { x: esValue.x , y: value['es_data'][esIndex].y } ;
+                });
+            }
+
             rickshawData.push({
                 name: value['title'],
-                data: value['es_data'],
+                data: plot_data,
                 color: plot_colour
             });
         });
@@ -347,10 +362,25 @@
     function executeNumber( group_id ) {
         $.each( coreData.query_groups[group_id].queries, function( key, value ) {
             var font_colour = '#000000';
-            if ( value.colour ) { font_colour = value.colour; }
+            if ( value.colour ) { 
+                font_colour = value.colour; 
+            }
+
+            var current = new Date().getTime() / 1000 ;
+            var logNumber = value.es_data[value.es_data.length - 1].y;
+            if (value.is_reference) {
+                // Reference number only, use corresponding dates from main plot
+                var i = 0;
+                // Finding the index of the data set that corresponds to current time
+                while( coreData.query_groups[group_id].queries[value.ref_query].es_data[i + 1].x < current ){
+                    i++;
+                }
+                logNumber = value.es_data[i].y;
+            }
+
             $('.group-number #q'+key).html(
                 '<h2 style="color:'+font_colour+';">' + 
-                    value.es_data[value.es_data.length - 1].y + 
+                    logNumber + 
                 '</h2>' );
         });
     }
@@ -378,6 +408,13 @@
     }
 
     function templateNewGroup ( number ) {
+        var refOptions = '';
+        $.each( coreData.product.versions, function(key, version){
+            if ( parseInt(version.id) < parseInt(coreData.id) ) {
+                refOptions += '<option value="'+version.id+'">'+version.title+'</option>';
+            }
+        });
+
         var html = '<div class="new-query" id="q'+ number +'">'+
                         '<button type="button" class="btn btn-xs btn-default" id="remove-new-query">'+
                             '<i class="fa fa-times"></i>'+
@@ -394,6 +431,15 @@
                                         '<em id="colorpicker-log"></em>'+
                                     '</span>'+
                                 '</div>'+
+                            '</div>'+
+                        '</div>'+
+                        '<div class="form-group">'+
+                            '<label class="col-sm-3 control-label" for="new-query-reference">References</label>'+
+                            '<div class="col-sm-9 controls">'+
+                               '<select class="form-control" id="new-query-reference">'+
+                                    '<option value="none">None</option>'+
+                                    refOptions+
+                                '</select>'+
                             '</div>'+
                         '</div>'+
                         '<div class="form-group">'+

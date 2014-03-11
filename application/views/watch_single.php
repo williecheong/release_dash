@@ -46,7 +46,7 @@
     <div class="gridster">
         <ul class="grids">
             <?php foreach ( $data['query_groups'] as $group_id => $group ) { ?>
-                <?php if ( $group['is_plot'] == 1 && $group['is_default'] == 1 ) { ?>
+                <?php if ( $group['is_plot'] && $group['is_default'] ) { ?>
                     <?php 
                         $this->load->view(
                             '/templates/watch_single_grid', 
@@ -60,7 +60,7 @@
             <?php } // End foreach query_group ?>
 
             <?php foreach ( $data['query_groups'] as $group_id => $group ) { ?>
-                <?php if ( $group['is_number'] == 1 && $group['is_default'] == 1 ) { ?>
+                <?php if ( $group['is_number'] && $group['is_default'] ) { ?>
                     <?php 
                         $this->load->view(
                             '/templates/watch_single_grid', 
@@ -74,7 +74,7 @@
             <?php } // End foreach query_group ?>
 
             <?php foreach ( $data['query_groups'] as $group_id => $group ) { ?>
-                <?php if ( $group['is_plot'] == 1 && $group['is_default'] == 0 ) { ?>
+                <?php if ( $group['is_plot'] && !$group['is_default'] ) { ?>
                     <?php 
                         $this->load->view(
                             '/templates/watch_single_grid', 
@@ -88,7 +88,7 @@
             <?php } // End foreach query_group ?>
 
             <?php foreach ( $data['query_groups'] as $group_id => $group ) { ?>
-                <?php if ( $group['is_number'] == 1 && $group['is_default'] == 0 ) { ?>
+                <?php if ( $group['is_number'] && !$group['is_default'] ) { ?>
                     <?php 
                         $this->load->view(
                             '/templates/watch_single_grid', 

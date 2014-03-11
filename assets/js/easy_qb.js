@@ -514,7 +514,7 @@
             var dateValue = 0;
 
             if ( date == 'Now' ) {
-                dateValue = Date.now();
+                dateValue = new Date().getTime();
             } else {
                 date = date.split('-');
                 var year    = parseInt( date[0] );

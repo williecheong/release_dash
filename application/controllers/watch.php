@@ -53,7 +53,7 @@ class Watch extends CI_Controller {
             'entity_id' => $product->id );
         $groups_by_product = $this->group->retrieve( $by_product );
         $data = $this->_groups_to_data( $data, $version, $groups_by_product, true );
-       
+
         /********************************************
             Retrieving custom groups by version
         *********************************************/
@@ -74,15 +74,15 @@ class Watch extends CI_Controller {
             $group_title = replace_version_attr( $group->title, $version );
 
             $data['query_groups'][$group->id]['title'] = $group_title;
-            $data['query_groups'][$group->id]['is_plot']  = $group->is_plot;
-            $data['query_groups'][$group->id]['is_number'] = $group->is_number;
+            $data['query_groups'][$group->id]['is_plot']  = ($group->is_plot == '1') ? true : false ;
+            $data['query_groups'][$group->id]['is_number'] = ($group->is_number == '1') ? true : false ;
             $data['query_groups'][$group->id]['has_rule'] = file_exists( FCPATH.'assets/rules/rule_'.$group->id.'.js' );
             $data['query_groups'][$group->id]['queries'] = array();    
 
             if ( $is_default ) {
-                $data['query_groups'][$group->id]['is_default'] = '1';
+                $data['query_groups'][$group->id]['is_default'] = true;
             } else {
-                $data['query_groups'][$group->id]['is_default'] = '0';    
+                $data['query_groups'][$group->id]['is_default'] = false;    
             }
             
             // Retrieve the stored Qb queries in this group.
@@ -90,23 +90,57 @@ class Watch extends CI_Controller {
             $queries = $this->query->retrieve( $by_group );
 
             foreach ( $queries as $query ) {
-                $query_title = replace_version_attr( $query->title, $version );
-                $query_bugzilla = replace_version_attr( $query->query_bz, $version );
+                if ( is_null($query->references) || empty($query->references) ){
+                    $query_title = replace_version_attr( $query->title, $version );
+                    $query_bugzilla = replace_version_attr( $query->query_bz, $version );
 
-                // Replace soft timestamps with current timestamp and birthday
-                $transformed_query = $query->query_qb;
-                $transformed_query = replace_version_attr( $transformed_query, $version );
-                    
-                    $birthday = $this->version->get_birthday( $version->id );
-                $transformed_query = replace_birthday( $transformed_query, $birthday );
-                    $shipday = $this->version->get_shipday( $version->id );
-                $transformed_query = replace_timestamp( $transformed_query, $shipday );
+                    // Replace soft timestamps with current timestamp and birthday
+                    $transformed_query = $query->query_qb;
+                    $transformed_query = replace_version_attr( $transformed_query, $version );
+                        
+                        $birthday = $this->version->get_birthday( $version->id );
+                    $transformed_query = replace_birthday( $transformed_query, $birthday );
+                        $shipday = $this->version->get_shipday( $version->id );
+                    $transformed_query = replace_timestamp( $transformed_query, $shipday );
 
-                //  Append the Qb queries and other meta-data into $data
-                $data['query_groups'][$group->id]['queries'][$query->id]['title']       = $query_title;
-                $data['query_groups'][$group->id]['queries'][$query->id]['colour']      = $query->colour;
-                $data['query_groups'][$group->id]['queries'][$query->id]['qb_query']    = $transformed_query;
-                $data['query_groups'][$group->id]['queries'][$query->id]['bz_query']    = $query_bugzilla;
+                    //  Append the Qb queries and other meta-data into $data
+                    $data['query_groups'][$group->id]['queries'][$query->id]['title']       = $query_title;
+                    $data['query_groups'][$group->id]['queries'][$query->id]['colour']      = $query->colour;
+                    $data['query_groups'][$group->id]['queries'][$query->id]['qb_query']    = $transformed_query;
+                    $data['query_groups'][$group->id]['queries'][$query->id]['bz_query']    = $query_bugzilla;
+                    $data['query_groups'][$group->id]['queries'][$query->id]['is_reference']= false;
+
+                } else {
+                    $references = explode(',', $query->references) ;
+                    $parent_id  = $references[0];
+                    $ref_version_id = $references[1];
+
+                    $parent_query = $this->query->retrieve( array('id' => $parent_id) );
+                    $parent_query = $parent_query[0];
+
+                    $ref_version = $this->version->retrieve( array('id' => $ref_version_id) );
+                    $ref_version = $ref_version[0];
+
+                    $query_title = replace_version_attr( $query->title, $ref_version );
+                    $query_bugzilla = '';
+
+                    // Replace soft timestamps with current timestamp and birthday
+                    $transformed_query = $parent_query->query_qb;
+                    $transformed_query = replace_version_attr( $transformed_query, $ref_version );
+                        
+                        $birthday = $this->version->get_birthday( $ref_version->id );
+                    $transformed_query = replace_birthday( $transformed_query, $birthday );
+                        $shipday = $this->version->get_shipday( $ref_version->id );
+                    $transformed_query = replace_timestamp( $transformed_query, $shipday );
+
+                    //  Append the Qb queries and other meta-data into $data
+                    $data['query_groups'][$group->id]['queries'][$query->id]['title']       = $query_title;
+                    $data['query_groups'][$group->id]['queries'][$query->id]['colour']      = $query->colour;
+                    $data['query_groups'][$group->id]['queries'][$query->id]['qb_query']    = $transformed_query;
+                    $data['query_groups'][$group->id]['queries'][$query->id]['bz_query']    = $query_bugzilla;
+                    $data['query_groups'][$group->id]['queries'][$query->id]['is_reference']= true;                    
+                    $data['query_groups'][$group->id]['queries'][$query->id]['ref_query']   = $parent_id;
+                }
             }
         }
 

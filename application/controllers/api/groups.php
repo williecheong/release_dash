@@ -34,6 +34,19 @@ class Groups extends REST_Controller {
                     'colour'    => isset($query['query_colour'])   ? $query['query_colour']   : ''  );
             
             $query_id = $this->query->create( $new_query );
+
+            if ( isset($query['ref_version']) ) {
+                if ( $query['ref_version'] != 'none' ) {
+                    $query_version = $query_id . ',' . $query['ref_version'];
+                    $new_reference = array(
+                        'title'     => isset($query['query_title']) ? $query['query_title'].' ref. <version_title>'    : '' ,
+                        'group_id'  => isset($group_id)             ? $group_id                : '' ,
+                        'colour'    => isset($query['ref_colour'])  ? $query['ref_colour']     : '' ,
+                        'references'=> $query_version  );
+
+                    $ref_id = $this->query->create( $new_reference );
+                }
+            }
         }
 
         echo 'OK';

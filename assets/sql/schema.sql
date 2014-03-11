@@ -71,6 +71,7 @@ CREATE TABLE `query` (
     `group_id` int(11) not null,
     `query_qb` text,
     `query_bz` text,
+    `references` varchar(255),
     `colour` varchar(255),
     `last_updated` timestamp default current_timestamp on update current_timestamp,
     PRIMARY KEY (`id`)
