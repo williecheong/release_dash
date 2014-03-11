@@ -33,8 +33,7 @@ Change logs, progress updates and latest developments on [this spreadsheet](http
 - Found on version pages to represent individual release readiness metrics.
 - Accessed through `http://release-dash.../for/[product_tag]/[version_tag]`
 - Every group contains one or more queries; visualized as a plot, a current value, or both.
-- *Default groups* apply across all versions of a product. 
-- `<version_tag>` and `<version_title>` are neccessary for fields in *default groups* to adapt to version pages.
+- *Default groups* apply across all versions of a product. `<version_tag>` and `<version_title>` are neccessary for fields in *default groups* to adapt to version pages.
 - *Custom groups* only apply to a single version of a product. 
 - `<version_tag>` and `<version_title>` are optional for custom groups. 
 - `<birthday>` and `<timestamp>` are recommended for specifying time ranges in Qb queries. 
