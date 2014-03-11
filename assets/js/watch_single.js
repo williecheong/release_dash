@@ -156,6 +156,9 @@
         var groupID = $(this).data('group-id');
         var thisGroup = coreData.query_groups[groupID];
 
+        // Clean up modal from prior viewing of existing groups
+        $('.modal#old-group').find('div.old-query').remove();
+
         // Setting the values inside the modal's form fields
         $('.modal#old-group').find('input#group-id').val( groupID );
         $('.modal#old-group').find('input#group-name').val( thisGroup.title );
@@ -173,8 +176,14 @@
         }
         
         $.each( thisGroup.queries, function( key, value ){
-            // Append the html for each query
-            $('.modal#old-group').find('form').append( templateOldGroup( key, value ) );
+            if ( value.is_reference ){
+                setTimeout(function(){
+                    $('.modal#old-group').find('div.old-query#q'+value.ref_query).find('select#old-query-reference option[value="'+value.ref_version+'"]').prop("selected", true);
+                }, 100);
+            } else {
+                // Append the html for each query
+                $('.modal#old-group').find('form').append( templateOldGroup( key, value ) );
+            }
         });
 
         $('.btn#delete-old-group').attr( 'data-group-id', groupID );
@@ -182,6 +191,7 @@
 
         // Disable all the fields here
         $('.modal#old-group').find('input').attr('disabled', true);
+        $('.modal#old-group').find('select').attr('disabled', true);
         $('.modal#old-group').find('textarea').attr('disabled', true);
 
         // Fields are populated and disabled. Show modal.
@@ -459,6 +469,13 @@
     }
 
     function templateOldGroup ( query_id, query ) {
+        var refOptions = '';
+        $.each( coreData.product.versions, function(key, version){
+            if ( parseInt(version.id) < parseInt(coreData.id) ) {
+                refOptions += '<option value="'+version.id+'">'+version.title+'</option>';
+            }
+        });
+
         var html = '<div class="old-query" id="q'+ query_id +'">'+
                         '<div class="form-group">'+
                             '<input type="hidden" class="form-control" id="query-id">'+
@@ -475,6 +492,15 @@
                                         '<em id="colorpicker-log"></em>'+
                                     '</span>'+
                                 '</div>'+
+                            '</div>'+
+                        '</div>'+
+                        '<div class="form-group">'+
+                            '<label class="col-sm-3 control-label" for="old-query-reference">References</label>'+
+                            '<div class="col-sm-9 controls">'+
+                               '<select class="form-control" id="old-query-reference">'+
+                                    '<option value="none">None</option>'+
+                                    refOptions+
+                                '</select>'+
                             '</div>'+
                         '</div>'+
                         '<div class="form-group">'+

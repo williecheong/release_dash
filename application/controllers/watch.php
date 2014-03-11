@@ -140,6 +140,8 @@ class Watch extends CI_Controller {
                     $data['query_groups'][$group->id]['queries'][$query->id]['bz_query']    = $query_bugzilla;
                     $data['query_groups'][$group->id]['queries'][$query->id]['is_reference']= true;                    
                     $data['query_groups'][$group->id]['queries'][$query->id]['ref_query']   = $parent_id;
+                    $data['query_groups'][$group->id]['queries'][$query->id]['ref_version']   = $ref_version_id;
+                       
                 }
             }
         }
