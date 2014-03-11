@@ -38,12 +38,17 @@ Change logs, progress updates and latest developments on [this spreadsheet](http
     - *Custom groups* only apply to a single version of a product.
     - *Default groups* apply across all versions of a product.     
 - **Queries**:
+    - Queries may reference historic data. i.e. run same query on older version.
     - Bugzilla URLs can be specified to allow direct BZ access from the dashboard. 
-    - `<version_tag>` must be used in a Bugzilla URL if the query belongs to a *default group*.
-    - For queries in custom groups, the use of `<version_tag>` and `<version_title>` is optional.
-    - For queries in default groups, `<version_tag>` and `<version_title>` are neccessary to adapt to version pages.
-    - For all queries, `<birthday>` and `<timestamp>` are recommended for specifying time ranges in Qb queries. 
-    - Queries may reference historic data. i.e. run same query on an older version.
+    - Soft tags must be used in a Bugzilla URL if the query belongs to a *default group*.
+    - For queries in default groups, soft tags are neccessary to adapt to version pages.
+    - For queries in custom groups, the use of soft tags are optional.
+    - Soft tags are recommended for specifying time ranges in Qb queries.
+    - Soft tags reference:
+        - `<version_tag>` : The version number. e.g. 29, 1.4
+        - `<version_title>` : The version's readable name. e.g. Firefox 29 
+        - `<birthday>` : The date when the version first entered Central (ms since epoch)
+        - `<timestamp>` : The date when the version will ship into the next channel (ms since epoch)
 - External dependencies: 
     - [Elasticsearch private cluster](https://github.com/klahnakoski/qb)
     - [Elasticsearch public cluster](https://github.com/klahnakoski/qb)
