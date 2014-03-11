@@ -44,7 +44,7 @@ Change logs, progress updates and latest developments on [this spreadsheet](http
     - For queries in default groups, `<version_tag>` and `<version_title>` are neccessary to adapt to version pages.
     - For all queries, `<birthday>` and `<timestamp>` are recommended for specifying time ranges in Qb queries. 
     - Queries may reference historic data. i.e. run same query on an older version.
-- **External dependencies**: 
+- External dependencies: 
     - [Elasticsearch private cluster](https://github.com/klahnakoski/qb)
     - [Elasticsearch public cluster](https://github.com/klahnakoski/qb)
 
@@ -52,21 +52,19 @@ Change logs, progress updates and latest developments on [this spreadsheet](http
 - Access to login panel through `http://release-dash.../admin`
 - Login through Persona using an email address found on the white-list.
 - Logging in grants administration privileges to `INSERT` and `DELETE` groups.
-- Note: Logging in does **not** enable any user-specific views. 
+- Clarification: Logging in does **not** enable any user-specific views. 
+- External dependencies: [Persona service](https://developer.mozilla.org/en-US/Persona)
 
 #### Rules
-- To add a rule for this group:
-    1. Create a Javascript file as specified in the above "Directory".
-    2. Copy the code in "Template" into the newly created Javascript file.
-    3. Proceed to script rules. There are inline comments to help guide you.
-    4. Ensure the JS file name is correct. Otherwise the rule will not be applied.
-    5. If you have production deployment rights, good for you.
-    6. Otherwise, submit a pull request to GitHub.
-- To modify/delete a rule on this group:
-    1. Simply edit/remove the corresponding file from /assets/rules.
-    2. Note: There can always be only one rule for each group.
+- Each rule is written in Javascript and applies uniquely to a group.
+- A function that is called after loading all queries in a group.
+- Returns status color `green`, `yellow` or `red` for display.
+- Click the tachometer icon on any group for instructions.
 
 #### Qb Queries
+- Access to Qb query builder on `http://release-dash.../admin/easy_qb`
+- Paste a Bugzilla URL search query into the field and get it in Qb format
+- External dependencies: [Bugzilla search](https://bugzilla.mozilla.org/query.cgi)
 
 
 ## Testing
@@ -83,6 +81,7 @@ Reach out to [Willie Cheong](http://williecheong.com) for undocumented problems.
 - [CodeIgniter](http://ellislab.com/codeigniter): Server side PHP framework
 - [CI RestServer](https://github.com/philsturgeon/codeigniter-restserver): Support for REST APIs on CodeIgniter
 - [Qb](https://github.com/klahnakoski/qb): Qb queries on Bugzilla's ElasticSearch clusters
+- [Persona](https://developer.mozilla.org/en-US/Persona): Email authentication service
 - [D3-Rickshaw](http://code.shutterstock.com/rickshaw/): Javascript-based graphing tool
 - [Twitter Bootstrap](http://getbootstrap.com/getting-started/): Beautiful user interfaces
 - [Spectrum](http://bgrins.github.io/spectrum/): Beautiful colourpicker widget
