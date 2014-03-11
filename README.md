@@ -45,10 +45,10 @@ Change logs, progress updates and latest developments on [this spreadsheet](http
     - For queries in custom groups, the use of soft tags are optional.
     - Soft tags are recommended for specifying time ranges in Qb queries.
     - Soft tags reference:
-        - `<version_tag>` : The version number. e.g. 29, 1.4
+        - `<birthday>` :  Date when the version first entered Central (ms since epoch)
+        - `<timestamp>` : Date when the version will ship into the next channel (ms since epoch)
         - `<version_title>` : The version's readable name. e.g. Firefox 29 
-        - `<birthday>` : The date when the version first entered Central (ms since epoch)
-        - `<timestamp>` : The date when the version will ship into the next channel (ms since epoch)
+        - `<version_tag>` : The version number. e.g. 29, 1.4
 - External dependencies: 
     - [Elasticsearch private cluster](https://github.com/klahnakoski/qb)
     - [Elasticsearch public cluster](https://github.com/klahnakoski/qb)
