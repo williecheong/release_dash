@@ -25,8 +25,8 @@ Change logs, progress updates and latest developments on [this spreadsheet](http
 ## Features
 #### Running with the Train
 - Checks for new cycle and updates mappings if current cycle not in database.
-- Manually accessible through `http://release-dash.../admin/update_cycle`.
 - Automatically executed when landing page or version pages are accessed.
+- Manually execute through `http://release-dash.../admin/update_cycle`
 - External Dependencies: [Wiki-CURRENT_CYCLE](https://wiki.mozilla.org/Template:CURRENT_CYCLE), [Wiki-CENTRAL_VERSION](https://wiki.mozilla.org/Template:CENTRAL_VERSION)
 
 #### Groups of Queries
