@@ -30,15 +30,19 @@ Change logs, progress updates and latest developments on [this spreadsheet](http
 - External Dependencies: [CURRENT_CYCLE](https://wiki.mozilla.org/Template:CURRENT_CYCLE), [CENTRAL_VERSION](https://wiki.mozilla.org/Template:CENTRAL_VERSION)
 
 #### Groups of Queries
-- Every single group may contain one or more queries.
 - Found on version pages to represent individual release readiness metrics.
-    - **Default groups** apply across all versions of a product. 
+- Every group may contain one or more queries.
+- *Default groups* apply across all versions of a product. 
     - `<version_tag>` and `<version_title>` are neccessary for fields to adapt to version pages.
-    - **Custom groups** only apply to a single version of a product. 
-    - `<version_tag>` and `<version_title>` soft tags are optional. 
-    - `<birthday>` and `<timestamp>` are recommended to be used at all times.
+- *Custom groups* only apply to a single version of a product. 
+    - `<version_tag>` and `<version_title>` are optional for custom groups. 
+    - `<birthday>` and `<timestamp>` are recommended for Qb queries at all times.
+- Groups may be visualized on the dashboard as a plot, a current value, or both. 
+- Queries may be created to reference a previous version (same query on older version)
+- Bugzilla URLs for queries can be included to allow direct BZ access from the dashboard
+    - `<version_tag>` may also be used here if query belongs to a *Default group*
 - Accessed through `http://release-dash.../for/[product_tag]/[version_tag]`
-- External Dependencies: [ElasticSearch private cluster](), [ElasticSearch public cluster]()
+- External Dependencies: [Elasticsearch private cluster](https://github.com/klahnakoski/qb), [Elasticsearch public cluster](https://github.com/klahnakoski/qb)
 
 #### Administration
 
