@@ -61,7 +61,7 @@
         // Retrieving input group values into saveGroup
         var saveGroup = {};
         saveGroup = {
-            group_entity : "version",
+            group_entity : "product",
             group_entity_id : coreData['id'],
             group_title : $.trim( $('#new-group-name').val() ),
             group_is_plot : $('#new-group-is-plot:checked').length,
@@ -124,28 +124,28 @@
             return false;
         }
 
-        $.ajax({
-            url: '/api/groups',
-            type: 'POST',
-            data: saveGroup,
-            success: function(response) {
-                if ( response == 'OK' ) {
-                    $this.html('<i class="fa fa-check"></i> Success');
-                    setTimeout(function() {
-                        // Refresh page after 1.5 seconds
-                        $this.html('<i class="fa fa-refresh"></i> Refreshing');
-                        location.reload();
-                    }, 1500);
-                }
+        // $.ajax({
+        //     url: '/api/groups',
+        //     type: 'POST',
+        //     data: saveGroup,
+        //     success: function(response) {
+        //         if ( response == 'OK' ) {
+        //             $this.html('<i class="fa fa-check"></i> Success');
+        //             setTimeout(function() {
+        //                 // Refresh page after 1.5 seconds
+        //                 $this.html('<i class="fa fa-refresh"></i> Refreshing');
+        //                 location.reload();
+        //             }, 1500);
+        //         }
 
-                console.log(response);
-            }, 
-            error: function(response) {
-                alert('Fail: API could not be reached.');
-                $this.removeClass('disabled');
-                console.log(response);
-            }
-        });
+        //         console.log(response);
+        //     }, 
+        //     error: function(response) {
+        //         alert('Fail: API could not be reached.');
+        //         $this.removeClass('disabled');
+        //         console.log(response);
+        //     }
+        // });
     });
 
 /*****************************************
@@ -154,7 +154,7 @@
     // Brings up the modal for adding a new group
     $('.btn#edit-old-group').click(function(){
         var groupID = $(this).data('group-id');
-        var thisGroup = coreData.query_groups[groupID];
+        var thisGroup = coreData.groups[groupID];
 
         // Clean up modal from prior viewing of existing groups
         $('.modal#old-group').find('div.old-query').remove();
@@ -163,13 +163,13 @@
         $('.modal#old-group').find('input#group-id').val( groupID );
         $('.modal#old-group').find('input#group-name').val( thisGroup.title );
 
-        if ( thisGroup.is_plot == '1' ) {
+        if ( thisGroup.is_plot ) {
             $('.modal#old-group').find('input#group-is-plot').prop( "checked", true );
         } else {
             $('.modal#old-group').find('input#group-is-plot').prop( "checked", false );
         }
 
-        if ( thisGroup.is_number == '1' ) {
+        if ( thisGroup.is_number ) {
             $('.modal#old-group').find('input#group-is-number').prop( "checked", true );
         } else {
             $('.modal#old-group').find('input#group-is-number').prop( "checked", false );
@@ -186,7 +186,7 @@
             }
         });
 
-        $('.btn#delete-old-group').attr( 'data-group-id', groupID );
+        $('.btn#delete-old-group').data( 'group-id', groupID );
         // End of setting values in the modal form
 
         // Disable all the fields here
@@ -235,7 +235,7 @@
         var groupID = $(this).data('group-id');
         
         // Setting up the rule boilerplate modal
-        $('span#rule-group-title').html( coreData.query_groups[groupID].title );
+        $('span#rule-group-title').html( coreData.groups[groupID].title );
         $('.form-control-static#rule-file-name').html( '/assets/rules/rule_'+groupID+'.js' );
         $('textarea#rule-script').html( templateRuleBoilerplate( groupID ) );
         // End of setting up the rule boilerplate modal
@@ -254,7 +254,7 @@
     //      Note: The attempt fails if group does not have all data sets
     //            The attempt will succeed on retrieval of the last data set.
     function startLoading() {
-        $.each( coreData.query_groups, function( group_id, group_value ) {
+        $.each( coreData.groups, function( group_id, group_value ) {
             $.each( group_value.queries, function( query_id, query_value ) {
                 ESQueryRunner( 
                     $.parseJSON( query_value.qb_query ), 
@@ -266,12 +266,12 @@
                             var d = response.edges[0]['domain'].partitions[key].value.getTime() / 1000;
                             tempStore.push( { x: d , y: value } );
                         });
-                        coreData.query_groups[group_id].queries[query_id]['es_data'] = tempStore;
+                        coreData.groups[group_id].queries[query_id]['es_data'] = tempStore;
                         // End of formatting the returned ElasticSearch data for Rickshaw compatibility
 
                         // Searches for complete es_data through this group.
                         var dataMissing = false;
-                        $.each( coreData.query_groups[group_id].queries, function( key, value ) {
+                        $.each( coreData.groups[group_id].queries, function( key, value ) {
                             if( value.es_data === undefined ) { dataMissing = true; }
                         });
 
@@ -279,15 +279,15 @@
                             // OK all data present in group. Let's roll!
                             // Plot data, Log number, Apply rule, Remove loading image
 
-                            if ( coreData.query_groups[group_id].is_plot == 1 )    { 
+                            if ( coreData.groups[group_id].is_plot )    { 
                                 executePlot( group_id ); 
                             }
                             
-                            if ( coreData.query_groups[group_id].is_number == 1 )  { 
+                            if ( coreData.groups[group_id].is_number )  { 
                                 executeNumber( group_id ); 
                             }
 
-                            if ( coreData.query_groups[group_id].has_rule ) {
+                            if ( coreData.groups[group_id].has_rule ) {
                                 applyStatus( group_id );
                             }
 
@@ -317,7 +317,7 @@
         // Building up an array for each line that goes into the plot
         var rickshawData = new Array() ; 
         var palette = new Rickshaw.Color.Palette(); 
-        $.each( coreData.query_groups[group_id].queries, function( key, value ) { 
+        $.each( coreData.groups[group_id].queries, function( key, value ) { 
             var plot_colour;
             if ( value.colour ) {
                 plot_colour = value.colour;
@@ -329,7 +329,7 @@
             if (value.is_reference) {
                 plot_data = [];
                 // Reference plot only, use corresponding dates from main plot
-                $.each( coreData.query_groups[group_id].queries[value.ref_query].es_data , function( esIndex, esValue ){
+                $.each( coreData.groups[group_id].queries[value.ref_query].es_data , function( esIndex, esValue ){
                     plot_data[esIndex] = { x: esValue.x , y: value['es_data'][esIndex].y } ;
                 });
             }
@@ -370,7 +370,7 @@
     }
 
     function executeNumber( group_id ) {
-        $.each( coreData.query_groups[group_id].queries, function( key, value ) {
+        $.each( coreData.groups[group_id].queries, function( key, value ) {
             var font_colour = '#000000';
             if ( value.colour ) { 
                 font_colour = value.colour; 
@@ -382,7 +382,7 @@
                 // Reference number only, use corresponding dates from main plot
                 var i = 0;
                 // Finding the index of the data set that corresponds to current time
-                while( coreData.query_groups[group_id].queries[value.ref_query].es_data[i + 1].x < current ){
+                while( coreData.groups[group_id].queries[value.ref_query].es_data[i + 1].x < current ){
                     i++;
                 }
                 logNumber = value.es_data[i].y;
@@ -524,10 +524,10 @@
 
         var variables = '';
         var i = 0;
-        $.each( coreData.query_groups[group_id].queries, function( query_id, query ){
+        $.each( coreData.groups[group_id].queries, function( query_id, query ){
             variables += ''+
             '        // Data for Query: ' + query.title + '\n' +
-            '    var '+tempNames[i]+' = coreData.query_groups['+group_id+'].queries['+query_id+'].es_data;\n';
+            '    var '+tempNames[i]+' = coreData.groups['+group_id+'].queries['+query_id+'].es_data;\n';
             i++;
         });
         

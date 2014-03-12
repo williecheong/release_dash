@@ -27,6 +27,7 @@
         <link rel="stylesheet" href="/assets/vendor/rickshaw/rickshaw.min.css">
         <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
         <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/qtip2/2.2.0/basic/jquery.qtip.min.css">
+        <link rel="stylesheet" href="/assets/vendor/spectrum/spectrum.css">
         <?= ( isset( $top) ? $top : '' ); ?>
         <script src="/assets/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script> 
     </head>

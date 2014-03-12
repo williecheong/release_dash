@@ -62,15 +62,6 @@
         bottom: 40%;
     }
 
-    li.action {
-        position: relative;
-    }
-
-    .action#add-new-group{
-        position: absolute;
-        text-align: center;   
-    }
-
 /***********************/
 /* GRAPHING PROPERTIES */
 

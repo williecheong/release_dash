@@ -12,7 +12,6 @@
         'version'  => $data['title'],
         'top'      => '
             <link rel="stylesheet" href="/assets/vendor/ducksboard-gridster/jquery.gridster.min.css">
-            <link rel="stylesheet" href="/assets/vendor/spectrum/spectrum.css">
             <link rel="stylesheet" href="/assets/css/watch_single.css">',
         
         'bottom'   => '
@@ -22,7 +21,6 @@
             <script src="/assets/vendor/rickshaw/vendor/d3.min.js"></script>
             <script src="/assets/vendor/rickshaw/vendor/d3.layout.min.js"></script>
             <script src="/assets/vendor/rickshaw/rickshaw.js"></script>
-            <script src="/assets/vendor/spectrum/spectrum.js"></script>
             <script>var coreData = '. json_encode($data) .'</script>
             <script src="/assets/js/watch_single.js"></script>',
 
@@ -30,7 +28,7 @@
     );
     
     // Load the scripts for the rules that we want to apply.
-    foreach ( $data['query_groups'] as $group_id => $group ) { 
+    foreach ( $data['groups'] as $group_id => $group ) { 
         if ( $group['has_rule'] ) {
             $include['rule_scripts'] .= 
                 '<script src="/assets/rules/rule_'.$group_id.'.js"></script>';
@@ -45,7 +43,7 @@
 <div class="container">
     <div class="gridster">
         <ul class="grids">
-            <?php foreach ( $data['query_groups'] as $group_id => $group ) { ?>
+            <?php foreach ( $data['groups'] as $group_id => $group ) { ?>
                 <?php if ( $group['is_plot'] && $group['is_default'] ) { ?>
                     <?php 
                         $this->load->view(
@@ -59,7 +57,7 @@
                 <?php } // End if default group that is_plot ?>
             <?php } // End foreach query_group ?>
 
-            <?php foreach ( $data['query_groups'] as $group_id => $group ) { ?>
+            <?php foreach ( $data['groups'] as $group_id => $group ) { ?>
                 <?php if ( $group['is_number'] && $group['is_default'] ) { ?>
                     <?php 
                         $this->load->view(
@@ -73,7 +71,7 @@
                 <?php } // End if default group that is_number ?>
             <?php } // End foreach query_group ?>
 
-            <?php foreach ( $data['query_groups'] as $group_id => $group ) { ?>
+            <?php foreach ( $data['groups'] as $group_id => $group ) { ?>
                 <?php if ( $group['is_plot'] && !$group['is_default'] ) { ?>
                     <?php 
                         $this->load->view(
@@ -87,7 +85,7 @@
                 <?php } // End if non-default group that is_plot ?>
             <?php } // End foreach query_group ?>
 
-            <?php foreach ( $data['query_groups'] as $group_id => $group ) { ?>
+            <?php foreach ( $data['groups'] as $group_id => $group ) { ?>
                 <?php if ( $group['is_number'] && !$group['is_default'] ) { ?>
                     <?php 
                         $this->load->view(

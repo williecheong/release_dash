@@ -2,6 +2,16 @@
     Author's custom styles
     ========================================================================== */
 
+    form div.new-query, form div.old-query {
+        margin: 0.2%;
+        padding: 1%;
+        border: 1px lightgray dashed;
+    }
+     
+    textarea {
+        resize: vertical;
+    }
+
     div.versions {
         display: none;
     }
@@ -18,42 +28,6 @@
         border: double;
     }
 
-/***********************/
-/* GRAPHING PROPERTIES */
-
-    .graph#main-plot {
-        position: relative;
-        left: 40px;
-    }
-
-    .graph#y-axis {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        width: 40px;
-    }
-
-    .rickshaw_legend .label {
-        white-space: normal;
-    }
-
-/* END OF GRAPHING PROPERTIES */
-/******************************/
-
-
-/*
-.channel#release, .channel#convergence {
-    background-color: #3ADF00;
-}
-
-.channel#beta, .channel#aurora, .channel#central {
-    background-color: #FF8000;
-}
-
-.channel#nightly {
-    background-color: #B40404;
-}
-*/
 
 /**********************************/
 /* CUSTOM MOZILLIAN NAVBAR STYLES */

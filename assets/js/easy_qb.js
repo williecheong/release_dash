@@ -285,6 +285,13 @@
                             hasNegatives.push( false );
                         }
 
+                        var hasClause = $(this).find('div.any_all_select select[name^="j"]').length ;
+                        if ( hasClause > 0 ) {
+                            var clauseName = $(this).find('select[name^="j"]').attr('name');
+                            clause = getCustomClause( $(this), clauseName ) ;
+                            customParams += '{"'+clause+'":[';
+                        }
+                        
                         openedBrackets++;
                     
                     } else if ( isClosed > 0 ) {
@@ -298,7 +305,7 @@
                         openedBrackets--;
 
                     } else {
-                        hasClause = $(this).find('div.any_all_select select[name^="j"]').length ;
+                        var hasClause = $(this).find('div.any_all_select select[name^="j"]').length ;
                         if ( hasClause > 0 ) {
                             var clauseName = $(this).find('select[name^="j"]').attr('name');
                             clause = getCustomClause( $(this), clauseName ) ;

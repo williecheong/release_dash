@@ -16,8 +16,11 @@ class Overview extends CI_Controller {
         $products = $this->product->retrieve();
         foreach ( $products as $product ) {
             // Store a pretty title for this product
+            $data[$product->tag]['id']    = $product->id;
             $data[$product->tag]['title'] = $product->title;
+            $data[$product->tag]['versions_all'] = $this->version->retrieve( array('product_id' => $product->id) );
             $data[$product->tag]['versions'] = array();
+            $data[$product->tag]['groups'] = array();
 
             //  Find versions that are currently active for this product
             $versions = $this->version->get_active_by_product( $product->id );
@@ -25,6 +28,40 @@ class Overview extends CI_Controller {
                 // Store a pretty title for this version
                 $data[$product->tag]['versions'][$version->tag]['title'] = $version->title;
                 $data[$product->tag]['versions'][$version->tag]['channel'] = $version->channel_id;
+            }
+
+            // Find default groups belonging to this product
+            $groups = $this->group->retrieve( array( 'entity' => 'product',
+                                                     'entity_id'   => $product->id ) );
+            foreach( $groups as $group ) {
+                $data[$product->tag]['groups'][$group->id]['title'] = $group->title;
+                $data[$product->tag]['groups'][$group->id]['is_plot']  = ($group->is_plot == '1') ? true : false ;
+                $data[$product->tag]['groups'][$group->id]['is_number'] = ($group->is_number == '1') ? true : false ;
+                $data[$product->tag]['groups'][$group->id]['is_default'] = true;
+                $data[$product->tag]['groups'][$group->id]['queries'] = array();
+
+
+                // Retrieve the stored Qb queries in this group.
+                $by_group = array( 'group_id' => $group->id );
+                $queries = $this->query->retrieve( $by_group );
+
+                foreach ( $queries as $query ) {
+                    if ( is_null($query->references) || empty($query->references) ){
+                        //  Append the Qb queries and other meta-data into $data
+                        $data[$product->tag]['groups'][$group->id]['queries'][$query->id]['title']       = $query->title;
+                        $data[$product->tag]['groups'][$group->id]['queries'][$query->id]['colour']      = $query->colour;
+                        $data[$product->tag]['groups'][$group->id]['queries'][$query->id]['qb_query']    = $query->query_qb;
+                        $data[$product->tag]['groups'][$group->id]['queries'][$query->id]['bz_query']    = $query->query_bz;
+                        
+                    } else {
+                        $reference = explode(',', $query->references);
+                        $parent_id = $reference[0];
+                        $ref_version_id = $reference[1];
+
+                        $data[$product->tag]['groups'][$group->id]['queries'][$parent_id]['reference'] = $ref_version_id;
+                           
+                    }
+                }
             }
         }
       

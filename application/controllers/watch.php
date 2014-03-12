@@ -43,7 +43,7 @@ class Watch extends CI_Controller {
         $data['title'] = $version->title;
         $data['product'] = array(   'id'      => $product->id,
                                     'versions'=> $this->version->retrieve(array('product_id'=>$product->id))  );
-        $data['query_groups'] = array();
+        $data['groups'] = array();
 
         /********************************************
             Retrieving default groups by product
@@ -73,16 +73,16 @@ class Watch extends CI_Controller {
         foreach ( $groups as $group ) {
             $group_title = replace_version_attr( $group->title, $version );
 
-            $data['query_groups'][$group->id]['title'] = $group_title;
-            $data['query_groups'][$group->id]['is_plot']  = ($group->is_plot == '1') ? true : false ;
-            $data['query_groups'][$group->id]['is_number'] = ($group->is_number == '1') ? true : false ;
-            $data['query_groups'][$group->id]['has_rule'] = file_exists( FCPATH.'assets/rules/rule_'.$group->id.'.js' );
-            $data['query_groups'][$group->id]['queries'] = array();    
+            $data['groups'][$group->id]['title'] = $group_title;
+            $data['groups'][$group->id]['is_plot']  = ($group->is_plot == '1') ? true : false ;
+            $data['groups'][$group->id]['is_number'] = ($group->is_number == '1') ? true : false ;
+            $data['groups'][$group->id]['has_rule'] = file_exists( FCPATH.'assets/rules/rule_'.$group->id.'.js' );
+            $data['groups'][$group->id]['queries'] = array();    
 
             if ( $is_default ) {
-                $data['query_groups'][$group->id]['is_default'] = true;
+                $data['groups'][$group->id]['is_default'] = true;
             } else {
-                $data['query_groups'][$group->id]['is_default'] = false;    
+                $data['groups'][$group->id]['is_default'] = false;    
             }
             
             // Retrieve the stored Qb queries in this group.
@@ -104,11 +104,11 @@ class Watch extends CI_Controller {
                     $transformed_query = replace_timestamp( $transformed_query, $shipday );
 
                     //  Append the Qb queries and other meta-data into $data
-                    $data['query_groups'][$group->id]['queries'][$query->id]['title']       = $query_title;
-                    $data['query_groups'][$group->id]['queries'][$query->id]['colour']      = $query->colour;
-                    $data['query_groups'][$group->id]['queries'][$query->id]['qb_query']    = $transformed_query;
-                    $data['query_groups'][$group->id]['queries'][$query->id]['bz_query']    = $query_bugzilla;
-                    $data['query_groups'][$group->id]['queries'][$query->id]['is_reference']= false;
+                    $data['groups'][$group->id]['queries'][$query->id]['title']       = $query_title;
+                    $data['groups'][$group->id]['queries'][$query->id]['colour']      = $query->colour;
+                    $data['groups'][$group->id]['queries'][$query->id]['qb_query']    = $transformed_query;
+                    $data['groups'][$group->id]['queries'][$query->id]['bz_query']    = $query_bugzilla;
+                    $data['groups'][$group->id]['queries'][$query->id]['is_reference']= false;
 
                 } else {
                     $references = explode(',', $query->references) ;
@@ -134,13 +134,13 @@ class Watch extends CI_Controller {
                     $transformed_query = replace_timestamp( $transformed_query, $shipday );
 
                     //  Append the Qb queries and other meta-data into $data
-                    $data['query_groups'][$group->id]['queries'][$query->id]['title']       = $query_title;
-                    $data['query_groups'][$group->id]['queries'][$query->id]['colour']      = $query->colour;
-                    $data['query_groups'][$group->id]['queries'][$query->id]['qb_query']    = $transformed_query;
-                    $data['query_groups'][$group->id]['queries'][$query->id]['bz_query']    = $query_bugzilla;
-                    $data['query_groups'][$group->id]['queries'][$query->id]['is_reference']= true;                    
-                    $data['query_groups'][$group->id]['queries'][$query->id]['ref_query']   = $parent_id;
-                    $data['query_groups'][$group->id]['queries'][$query->id]['ref_version']   = $ref_version_id;
+                    $data['groups'][$group->id]['queries'][$query->id]['title']       = $query_title;
+                    $data['groups'][$group->id]['queries'][$query->id]['colour']      = $query->colour;
+                    $data['groups'][$group->id]['queries'][$query->id]['qb_query']    = $transformed_query;
+                    $data['groups'][$group->id]['queries'][$query->id]['bz_query']    = $query_bugzilla;
+                    $data['groups'][$group->id]['queries'][$query->id]['is_reference']= true;                    
+                    $data['groups'][$group->id]['queries'][$query->id]['ref_query']   = $parent_id;
+                    $data['groups'][$group->id]['queries'][$query->id]['ref_version']   = $ref_version_id;
                        
                 }
             }

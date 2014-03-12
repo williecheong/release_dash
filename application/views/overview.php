@@ -22,8 +22,31 @@
 
 <div class="container">
     <?php foreach ($data as $product_tag => $product) { ?>
-        <div class="row text-center product" id="<?= $product_tag; ?>" data-mytoggler=".versions#<?= $product_tag; ?>">
-            <div class="col-lg-12"><?= $product['title']; ?></div>
+        <div class="row text-center product" id="<?= $product_tag; ?>">
+            <div class="col-lg-12">
+                <?php if ( $this->session->userdata('email') ) { ?>
+                    <div class="btn-group pull-right">
+                        <button type="button" class="btn btn-default" id="add-new-group" title="Add a default group">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                Groups <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu text-left pull-right">
+                                <?php foreach( $product['groups'] as $group_id => $group ) { ?>
+                                    <li id="edit-old-group" data-group-id="<?= $group_id; ?>">
+                                        <a><?= $group['title']; ?></a>
+                                    </li>
+                                <?php } ?>
+                            </ul>
+                        </div>
+                    </div>
+                <?php } ?>
+                <span style="cursor:pointer;" data-mytoggler=".versions#<?= $product_tag; ?>">
+                    <?= $product['title']; ?>
+                </span>
+            </div>
         </div>
 
         <div class="row text-center versions" id="<?= $product_tag; ?>">
@@ -41,7 +64,9 @@
 </div><!-- /container -->
 
 <?php 
-    //$this->load->view('modals/overview'); 
+    if ( $this->session->userdata('email') ) {
+        $this->load->view('modals/overview'); 
+    }
     $this->load->view('templates/footer', $include); 
 ?>
 

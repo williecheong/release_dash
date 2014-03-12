@@ -8,9 +8,9 @@ function rule_1() {
     Do not change the values in the variable
     **************************************/
         // Data for Query: # Bugs tracking Firefox 28
-    var alpha = coreData.query_groups[1].queries[1].es_data;
+    var alpha = coreData.groups[1].queries[1].es_data;
         // Data for Query: # Fixed Bugs tracking Firefox 28
-    var beta = coreData.query_groups[1].queries[2].es_data;
+    var beta = coreData.groups[1].queries[2].es_data;
 
     /**************************************
     Write scripts to manipulate group data here.
