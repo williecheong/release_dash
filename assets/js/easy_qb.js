@@ -387,10 +387,11 @@
                 x "isnotempty"        => is not empty
             // End of possible values for operator
             *********************/
-            var outer = {}; 
-            var inner = {};
+            var outer = {};
 
             if ( operator == 'equals' || operator == 'notequals' ) {
+                var inner = {};
+
                 inner[field] = value;
                 outer["term"] = inner;
                 if ( operator == 'notequals' ) {
@@ -398,7 +399,11 @@
                 }
 
             } else if ( operator == 'anyexact' ) {
+                var inner = {};
+                
                 value = value.replace(/ /g, '');
+                value = value.replace(/(,)+/g, ',');
+                value = value.replace(/(^,)|(,$)/g, '');
                 value = value.split(',');
 
                 inner[field] = value;
@@ -406,10 +411,13 @@
                 outer = { "not" : outer };
 
             } else if ( operator == 'substring' || operator == 'casesubstring' || operator == 'notsubstring' ) {
+                var inner = {};
+                
                 if ( operator == 'casesubstring' ) {
                     inner[field] = '(' + value + ')+';
                 } else {
-                    inner[field] = '/(' + value + ')+/i';
+                    // Unable to use regex case insensitive => /.../i 
+                    inner[field] = '(' + value + ')+';
                 }
 
                 outer['regexp'] = inner;
@@ -419,6 +427,8 @@
 
             } else if ( operator == 'anywordssubstr' || operator == 'allwordssubstr' || operator == 'nowordssubstr' || operator == 'anywords' || operator == 'allwords' || operator == 'nowords' ) {
                 value = value.replace(/ /g, '');
+                value = value.replace(/(,)+/g, ',');
+                value = value.replace(/(^,)|(,$)/g, '');
                 value = value.split(',');
 
                 var clause = 'and';
@@ -428,8 +438,10 @@
                 outer[clause] = [];
 
                 $.each( value, function(key, arrayValue){
-                    inner[field] = '/(' + arrayValue + ')+/i';
-                    outer[clause].push( {"regex" : inner} );
+                    var inner = {};
+                    // Unable to use regex case insensitive => /.../i 
+                    inner[field] = '(' + arrayValue + ')+';
+                    outer[clause].push( {"regexp" : inner} );
                 });
 
                 if ( operator == 'nowordssubstr' || operator == 'nowords' ) {
@@ -437,6 +449,8 @@
                 }
 
             } else if ( operator == 'regexp' || operator == 'matches' || operator == 'notregexp' || operator == 'notmatches' ) {
+                var inner = {};
+                
                 inner[field] = value;
                 outer["regexp"] = inner;
                 if ( operator == 'notregexp' || operator == 'notmatches' ) {
@@ -444,6 +458,8 @@
                 }
 
             } else if ( operator == 'greaterthan' || operator == 'greaterthaneq' || operator == 'lessthan' || operator == 'lessthaneq' ) {
+                var inner = {};
+                
                 if ( operator == 'greaterthan' ) {
                     operator = 'gt';
                 } else if ( operator == 'greaterthaneq' ) {
@@ -458,6 +474,8 @@
                 outer = { "range" : outer };
 
             } else if ( operator == 'changedbefore' || operator == 'changedafter' ) {
+                var inner = {};
+                
                 value = makeESDates( value );
                 if ( operator == 'changedafter' ) {
                     inner = { "expires_on" : {"gte":value} };
@@ -466,6 +484,8 @@
                 }
                 outer["range"] = inner;
             } else if ( operator == 'changedto' || operator == 'changedfrom' ) {
+                var inner = {};
+                
                 inner = { "term" : {"changes.new_value":value} };
                 if ( operator == 'changedfrom' ) {
                     inner = { "term" : {"changes.old_value":value} };
@@ -489,12 +509,16 @@
                         };
 
             } else if ( operator == 'isempty' || operator == 'isnotempty' ) {
+                var inner = {};
+                
                 inner["field"] = field ;
                 outer["missing"] = inner;
                 if ( operator == 'isnotempty' ) {
                     outer = { "not" : outer };
                 }
             } else {
+                var inner = {};
+                
                 // This should never happen
                 inner[field] = value;
                 outer[operator] = inner;
