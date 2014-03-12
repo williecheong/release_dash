@@ -84,9 +84,9 @@ Change logs, progress updates and latest developments on [this spreadsheet](http
         - is greater than or equal to
         - is empty
         - is not empty
-    - The following fields are case insensitive on Bugzilla
+    - The following fields are *case insensitive on Bugzilla*
     - But Elasticsearch is unable to ignore casing in its searches
-    - Searches with these comparisons will match only when the case is the same as stored value
+    - Searches with these comparisons will match *only when case is the same*
         - contains the string
         - does not contain the string
         - contains any of the strings
