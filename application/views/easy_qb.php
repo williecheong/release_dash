@@ -68,7 +68,7 @@
             </div>
         </div>
         <div class="col-md-6 right-side">
-            <textarea class="form-control query-output" rows="15" placeholder="Output"></textarea>
+            <textarea class="form-control query-output" rows="25" placeholder="Output"></textarea>
         </div>
     </div>
 </div><!-- /container -->

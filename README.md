@@ -1,26 +1,7 @@
-## Release Readiness Dashboard
+# Release Readiness Dashboard
 Dashboards for tracking [Release Statuses of Mozillian Awesomeness](https://release-dash.paas.allizom.org).<br>
 More awesome *(and possibly unstable)* new features on [the staging site](http://release-dash.williecheong.com).<br>
 Change logs, progress updates and latest developments on [this spreadsheet](https://docs.google.com/spreadsheet/ccc?key=0ApNDjYXWm5JndDFwLWVlM1BPR3dBdjE1ZVdfWlBwR1E&usp=sharing).
-
-#### Requirements
-- Standard Web Stack: Apache, MySQL, PHP 5.3 and above
-- For deployment on local machine, try LAMP, [MAMP](http://www.mamp.info/en/downloads/) or [WAMP](http://www.wampserver.com/en/). 
-
-#### Configuration
-- Define *production*, *staging* and *development* environments in `/index.php`
-- Database credentials for *development* in `/application/config/database.php`
-- Landing page (base_url) for *development* in `/application/config/config.php`
-- Configuration for other environments in `/application/config/[environment]/______.php`
-- If neccessary, modify white-listed dashboard administrators in `/assets/sql/schema.sql`
-
-#### Deployment
-1. Clone the repository into the web directory
-2. Set up a new MySQL database service on the machine
-3. Define database credentials as specified in Configuration above
-4. Load the database schema and initial data from `/assets/sql/schema.sql`
-5. Done: RRDashboard is now live.
-
 
 ## Features
 #### Running with the Train
@@ -105,7 +86,27 @@ Change logs, progress updates and latest developments on [this spreadsheet](http
         - changed by
         - matches
         - does not match
-        
+
+
+## Deployment        
+#### Requirements
+- Standard Web Stack: Apache, MySQL, PHP 5.3 and above
+- For deployment on local machine, try LAMP, [MAMP](http://www.mamp.info/en/downloads/) or [WAMP](http://www.wampserver.com/en/). 
+
+#### Configuration
+- Define *production*, *staging* and *development* environments in `/index.php`
+- Database credentials for *development* in `/application/config/database.php`
+- Landing page (base_url) for *development* in `/application/config/config.php`
+- Configuration for other environments in `/application/config/[environment]/______.php`
+- If neccessary, modify white-listed dashboard administrators in `/assets/sql/schema.sql`
+
+#### Instructions
+1. Clone the repository into the web directory
+2. Set up a new MySQL database service on the machine
+3. Define database credentials as specified in Configuration above
+4. Load the database schema and initial data from `/assets/sql/schema.sql`
+5. Done: RRDashboard is now live.
+
 
 ## Testing
 To be continued
