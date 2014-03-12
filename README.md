@@ -70,7 +70,42 @@ Change logs, progress updates and latest developments on [this spreadsheet](http
 - Access to Qb query builder on `http://release-dash.../admin/easy_qb`
 - Paste a Bugzilla URL search query into the field and get it in Qb format
 - External dependencies: [Bugzilla search](https://bugzilla.mozilla.org/query.cgi)
-
+- Considerations when using the Bugzilla Advanced Search interface:
+    - Try to decompose compound searches like "?,+" into separate queries
+    - Delimit terms with commas if compound search cannot be decomposed
+    - Comparison fields that work well:
+        - is equal to
+        - is not equal to
+        - is equal to any of the strings
+        - contains the string (exact case)
+        - is less than
+        - is less than or equal to
+        - is greater than
+        - is greater than or equal to
+        - is empty
+        - is not empty
+    - The following fields are case insensitive on Bugzilla
+    - But Elasticsearch is unable to ignore casing in its searches
+    - Searches with these comparisons will match only when the case is the same as stored value
+        - contains the string
+        - does not contain the string
+        - contains any of the strings
+        - contains all of the strings
+        - contains none of the strings
+        - contains any of the words
+        - contains all of the words
+        - contains none of the words
+    - Untested comparison fields (best to avoid):
+        - matches regular expression
+        - does not match regular expression
+        - changed before
+        - changed after
+        - changed from
+        - changed to
+        - changed by
+        - matches
+        - does not match
+        
 
 ## Testing
 To be continued
