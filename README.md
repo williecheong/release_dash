@@ -71,7 +71,7 @@ Change logs, progress updates and latest developments on [this spreadsheet](http
 - Paste a Bugzilla URL search query into the field and get it in Qb format
 - External dependencies: [Bugzilla search](https://bugzilla.mozilla.org/query.cgi)
 - Considerations when using the Bugzilla Advanced Search interface:
-    - Try to decompose compound searches like "?,+" into separate queries
+    - Try to decompose compound searches like "?,+" into separate searches
     - Delimit terms with commas if compound search cannot be decomposed
     - Comparison fields that work well:
         - is equal to
