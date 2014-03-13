@@ -1,6 +1,12 @@
 /* ==========================================================================
-   Author's custom styles
-   ========================================================================== */
+    Author's custom styles
+    ========================================================================== */
+
+    #about-rule-boilerplate {
+        display: none;
+        margin: 1%;
+        padding: 1%;
+    }   
 
     div.top-menu {
         float: right;
@@ -45,6 +51,9 @@
         position: absolute;
         width: 100%;
         bottom: 0px;
+        overflow: auto;
+        overflow-y: hidden;
+        white-space: nowrap;
     }
 
     .non-group .group-title {
@@ -53,28 +62,17 @@
         bottom: 40%;
     }
 
-    li.action {
-        position: relative;
-    }
-
-    .action#add-new-group{
-        position: absolute;
-        text-align: center;   
-    }
-
 /***********************/
 /* GRAPHING PROPERTIES */
 
     .plot {
         position: relative;
-        left: 9%;
     }
 
     .y-axis {
         position: absolute;
         top: 0;
         bottom: 0;
-        width: 9%;
     }
 
     .rickshaw_legend .label {

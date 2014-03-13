@@ -8,7 +8,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <link rel="shortcut icon" href="/assets/favicon.ico" type="image/x-icon">
-        <link rel="icon" href="/assets/favicon.ico" type="image/x-icon">
+        <link rel="icon" href="/assets/img/<?= ENVIRONMENT; ?>.ico" type="image/x-icon">
         <title>Release Readiness Dashboard<?= (isset($version) ? " :: ".$version : ""); ?></title>
         <meta name="description" content="A dashboard for monitoring the readiness of new releases for Mozilla products.">
         <meta name="viewport" content="width=device-width">
@@ -26,7 +26,9 @@
 
         <link rel="stylesheet" href="/assets/vendor/rickshaw/rickshaw.min.css">
         <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
-        <?= $top; ?>
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/qtip2/2.2.0/basic/jquery.qtip.min.css">
+        <link rel="stylesheet" href="/assets/vendor/spectrum/spectrum.css">
+        <?= ( isset( $top) ? $top : '' ); ?>
         <script src="/assets/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script> 
     </head>
     
@@ -37,8 +39,30 @@
         <div class="navbar navbar-inverse navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="/">Release Readiness Dashboard</a>
+                    <?php if ( $this->session->userdata('email') ) { ?>
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                    <?php } ?>
+                    <a class="navbar-brand" href="/">
+                        Release Readiness Dashboard
+                    </a>
+                    <?php if ( isset($version) ) { ?>
+                        <span class="lead" style="color:#999;position:absolute;margin-top:5px;">
+                            <?= $version; ?>
+                        </span>
+                    <?php } ?>
                 </div>
-                
+                <?php if ( $this->session->userdata('email') ) { ?>
+                    <div class="navbar-collapse collapse">
+                        <div class="navbar-form navbar-right">
+                            <button class="btn btn-danger" id="user-logout">
+                                <i class="fa fa-sign-out fa-lg"></i> <?= $this->session->userdata('email'); ?>
+                            </button>
+                        </div>
+                    </div><!--/.navbar-collapse -->
+                <?php } ?>
             </div>
         </div>

@@ -4,95 +4,80 @@ class Watch extends CI_Controller {
 
     function __construct() {
         parent::__construct();
-        
-        // Load configs
-        $this->load->database();
-
-        // Load models for playing with local data 
-        $this->load->model('product');
-        $this->load->model('channel');
-        $this->load->model('version');
-        $this->load->model('group');
-        $this->load->model('query');
-        $this->load->model('cycle');
-        //$this->load->model('comment');
-
-        // Load some helpers for convenience
-        $this->load->helper('url');
-        $this->load->helper('date');
-        $this->load->helper('release_dash');
+        // Autoloaded Config, Helpers, Models 
     }
     
     public function single( $product_tag = '', $version_tag = '' ) {
+        // Current cycle data is not really needed here.
+        // Simply jumpstarts automatic check for latest cycles if needed
+        $current_cycle = $this->cycle->get_current_cycle();
+            
         // Validate Product and Version 
         // Return lost page if either are not found in the DB
         // If all is well, we have 2 objects for product and version
-        $product = $this->product->retrieve( array( 'tag' => $product_tag ) );
-        if ( empty($product) ) {
-            $this->load->view('templates/404_not_found');
-            return; 
-        } else {
-            $product = $product[0];    
-        }
+            $product = $this->product->retrieve( array( 'tag' => $product_tag ) );
+            if ( empty($product) ) {
+                $this->load->view('templates/404_not_found');
+                return; 
+            } else {
+                $product = $product[0];    
+            }
 
-        $by_version_tag = array( 
-                'tag' => $version_tag, 
-                'product_id' => $product->id );
-        $version = $this->version->retrieve( $by_version_tag );
-        if ( empty($version) ) {
-            $this->load->view('templates/404_not_found'); 
-            return;
-        } else {
-            $version = $version[0];
-        }
-        // OK. Product and version found.
+            $by_version_tag = array( 
+                    'tag' => $version_tag, 
+                    'product_id' => $product->id );
+            $version = $this->version->retrieve( $by_version_tag );
+            if ( empty($version) ) {
+                $this->load->view('templates/404_not_found'); 
+                return;
+            } else {
+                $version = $version[0];
+            }
+        // End of validation. 
         // $product and $version are available now
 
-        // Initializing a main data variable before we begin
+        // Initializing a data variable that becomes coreData JSON
         $data = array();
         $data['id'] = $version->id;
         $data['title'] = $version->title;
-        $data['query_groups'] = array();
+        $data['product'] = array(   'id'      => $product->id,
+                                    'versions'=> $this->version->retrieve(array('product_id'=>$product->id))  );
+        $data['groups'] = array();
 
-        /********************************************
-            Retrieving groups and queries by product
-        *********************************************/
+        // Retrieving default groups by product
         $by_product = array( 
             'entity'    => 'product',
             'entity_id' => $product->id );
         $groups_by_product = $this->group->retrieve( $by_product );
         $data = $this->_groups_to_data( $data, $version, $groups_by_product, true );
-       
 
-        /********************************************
-            Retrieving groups and queries by version
-        *********************************************/
+        // Retrieving custom groups by version
         $by_version = array( 
             'entity'    => 'version',
             'entity_id' => $version->id );
         $groups_by_version = $this->group->retrieve( $by_version );
         $data = $this->_groups_to_data( $data, $version, $groups_by_version );
-        
 
         $this->load->view('watch_single', array('data' => $data) );   
-
     }
 
+    // Receives an existing data array
+    // Appends version + group data before returning that data array
+    // Takes care of both default groups and custom groups, specify in fourth parameter
     private function _groups_to_data( $data = array(), $version = array(), $groups = array(), $is_default = false ) {
         foreach ( $groups as $group ) {
-            $group_tag = replace_version_attr( $group->tag, $version );
             $group_title = replace_version_attr( $group->title, $version );
 
-            $data['query_groups'][$group_tag]['title'] = $group_title;
-            $data['query_groups'][$group_tag]['group_id']  = $group->id;
-            $data['query_groups'][$group_tag]['is_plot']  = $group->is_plot;
-            $data['query_groups'][$group_tag]['is_number'] = $group->is_number;
-            $data['query_groups'][$group_tag]['queries'] = array();    
+            $data['groups'][$group->id]['title'] = $group_title;
+            $data['groups'][$group->id]['is_plot']  = ($group->is_plot == '1') ? true : false ;
+            $data['groups'][$group->id]['is_number'] = ($group->is_number == '1') ? true : false ;
+            $data['groups'][$group->id]['has_rule'] = file_exists( FCPATH.'assets/rules/rule_'.$group->id.'.js' );
+            $data['groups'][$group->id]['queries'] = array();    
 
             if ( $is_default ) {
-                $data['query_groups'][$group_tag]['is_default'] = '1';
+                $data['groups'][$group->id]['is_default'] = true;
             } else {
-                $data['query_groups'][$group_tag]['is_default'] = '0';    
+                $data['groups'][$group->id]['is_default'] = false;    
             }
             
             // Retrieve the stored Qb queries in this group.
@@ -100,26 +85,65 @@ class Watch extends CI_Controller {
             $queries = $this->query->retrieve( $by_group );
 
             foreach ( $queries as $query ) {
-                $query_tag = replace_version_attr( $query->tag, $version );
-                $query_title = replace_version_attr( $query->title, $version );
-                $query_bugzilla = replace_version_attr( $query->query_bz, $version );
+                if ( is_null($query->references) || empty($query->references) ){
+                    // This query is a standard non-reference one
+                    // Append the Qb query and other meta-data into $data
+                    $query_title = replace_version_attr( $query->title, $version );
+                    $query_bugzilla = replace_version_attr( $query->query_bz, $version );
 
-                // Replace soft timestamps with current timestamp and birthday
-                $transformed_query = $query->query_qb;
+                    // Replace soft timestamps with current timestamp and birthday
+                    $transformed_query = $query->query_qb;
+                    $transformed_query = replace_version_attr( $transformed_query, $version );
+                        
+                        $birthday = $this->version->get_birthday( $version->id );
+                    $transformed_query = replace_birthday( $transformed_query, $birthday );
+                        $shipday = $this->version->get_shipday( $version->id );
+                    $transformed_query = replace_timestamp( $transformed_query, $shipday );
 
-                $transformed_query = replace_version_attr( $transformed_query, $version );
-                    $birthday = $this->version->get_birthday( $version->id );
-                $transformed_query = replace_birthday( $transformed_query, $birthday );
-                    $shipday = $this->version->get_shipday( $version->id );
-                $transformed_query = replace_timestamp( $transformed_query, $shipday );
+                    //  Append the Qb queries and other meta-data into $data
+                    $data['groups'][$group->id]['queries'][$query->id]['title']       = $query_title;
+                    $data['groups'][$group->id]['queries'][$query->id]['colour']      = $query->colour;
+                    $data['groups'][$group->id]['queries'][$query->id]['qb_query']    = $transformed_query;
+                    $data['groups'][$group->id]['queries'][$query->id]['bz_query']    = $query_bugzilla;
+                    $data['groups'][$group->id]['queries'][$query->id]['is_reference']= false;
 
+                } else {
+                    // This query is a reference one. It references a parent query.
+                    // Retrieve the parent query to inherit the Qb query (soft tagged)
+                    // Soft tags on the inherited Qb replaced by referenced version's data
+                    // Append the reference query as an individual query on the group object in $data
+                    $references = explode(',', $query->references) ;
+                    $parent_id  = $references[0];
+                    $ref_version_id = $references[1];
 
-                //  Append the Qb queries and other meta-data into $data
-                $data['query_groups'][$group_tag]['queries'][$query_tag]['title']       = $query_title;
-                $data['query_groups'][$group_tag]['queries'][$query_tag]['query_id']    = $query->id;
-                $data['query_groups'][$group_tag]['queries'][$query_tag]['colour']      = $query->colour;
-                $data['query_groups'][$group_tag]['queries'][$query_tag]['qb_query']    = $transformed_query;
-                $data['query_groups'][$group_tag]['queries'][$query_tag]['bz_query']    = $query_bugzilla;
+                    $parent_query = $this->query->retrieve( array('id' => $parent_id) );
+                    $parent_query = $parent_query[0];
+
+                    $ref_version = $this->version->retrieve( array('id' => $ref_version_id) );
+                    $ref_version = $ref_version[0];
+
+                    $query_title = replace_version_attr( $query->title, $ref_version );
+                    $query_bugzilla = '';
+
+                    // Replace soft timestamps with current timestamp and birthday
+                    $transformed_query = $parent_query->query_qb;
+                    $transformed_query = replace_version_attr( $transformed_query, $ref_version );
+                        
+                        $birthday = $this->version->get_birthday( $ref_version->id );
+                    $transformed_query = replace_birthday( $transformed_query, $birthday );
+                        $shipday = $this->version->get_shipday( $ref_version->id );
+                    $transformed_query = replace_timestamp( $transformed_query, $shipday );
+
+                    //  Append the Qb queries and other meta-data into $data
+                    $data['groups'][$group->id]['queries'][$query->id]['title']       = $query_title;
+                    $data['groups'][$group->id]['queries'][$query->id]['colour']      = $query->colour;
+                    $data['groups'][$group->id]['queries'][$query->id]['qb_query']    = $transformed_query;
+                    $data['groups'][$group->id]['queries'][$query->id]['bz_query']    = $query_bugzilla;
+                    $data['groups'][$group->id]['queries'][$query->id]['is_reference']= true;                    
+                    $data['groups'][$group->id]['queries'][$query->id]['ref_query']   = $parent_id;
+                    $data['groups'][$group->id]['queries'][$query->id]['ref_version']   = $ref_version_id;
+                       
+                }
             }
         }
 

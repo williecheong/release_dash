@@ -1,0 +1,32 @@
+/* ==========================================================================
+    Author's custom styles
+    ========================================================================== */
+
+    div.db-table-titles {
+        margin-top: 1%;
+        margin-bottom: 1%;
+        padding-bottom: 1%;
+    }
+
+    button.db-table-title {
+        text-align: center;
+        overflow: scroll;
+        overflow-y: hidden;
+        white-space: nowrap;
+    }
+
+    div.db-table {
+        display: none;
+    }    
+
+    table tbody tr th {
+        font-size: small;
+        font-weight: normal;
+        word-wrap: break-word !important;
+    }
+
+    textarea {
+        resize: vertical;
+    }
+
+

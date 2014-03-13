@@ -12,7 +12,7 @@
  * This can be set to anything, but default usage is:
  *
  *     development
- *     testing
+ *     staging
  *     production
  *
  * NOTE: If you change these, also change the error_reporting() code below
@@ -21,17 +21,19 @@
 
 if ( $_SERVER['SERVER_ADDR'] == '127.0.0.1' ) {
     define('ENVIRONMENT', 'development');
+} else if ( $_SERVER['SERVER_ADDR'] == '173.236.228.231' ) {
+	define('ENVIRONMENT', 'staging');
 } else {
     define('ENVIRONMENT', 'production');
 }
-	
+
 /*
  *---------------------------------------------------------------
  * ERROR REPORTING
  *---------------------------------------------------------------
  *
  * Different environments will require different levels of error reporting.
- * By default development will show errors but testing and live will hide them.
+ * By default development will show errors but staging and live will hide them.
  */
 
 if (defined('ENVIRONMENT'))
@@ -42,7 +44,7 @@ if (defined('ENVIRONMENT'))
 			error_reporting(E_ALL);
 		break;
 	
-		case 'testing':
+		case 'staging':
 		case 'production':
 			error_reporting(E_ALL);
 		break;

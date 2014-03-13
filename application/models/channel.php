@@ -6,7 +6,7 @@ class channel extends CI_Model{
 
     function create( $data = array() ){
         $this->db->insert('channel', $data);    
-        return;
+        return $this->db->insert_id();
     }
 
     function retrieve( $data = array() ){
@@ -15,9 +15,9 @@ class channel extends CI_Model{
         return $query->result();
     }
     
-    function update( $data = array() ){
-        $this->db->where($data);
-        $this->db->update('channel', $data);
+    function update( $criteria = array(), $new_data = array() ){
+        $this->db->where($criteria);
+        $this->db->update('channel', $new_data);
     }
     
     function delete( $data = array() ){
