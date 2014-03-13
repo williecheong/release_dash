@@ -27,13 +27,12 @@ Change logs, progress updates and latest developments on [this spreadsheet](http
     - Soft tags are recommended for specifying time ranges in Qb queries.
     - Soft tags reference:
         - `<version_tag>` : The version number. e.g. 29, 1_4
-        - `<version_title>` : The version's readable name. e.g. Firefox 29 
-        
-        - `<version_tag:-[1-9]>` Prior version e.g. `<version_tag:-1>` = 28
-        - `<version_tag:+[1-9]>` Future version e.g. `<version_tag:+1>` = 30
-        
         - `<version_tag:.>` For B2G, replaces default `_` with `.`  
         - `<version_tag:->` For B2G, replaces default `_` with `-` 
+        - `<version_tag:-[1-9]>` Relatively prior version e.g. `<version_tag:-1>` = 28
+        - `<version_tag:+[1-9]>` Relatively future version e.g. `<version_tag:+1>` = 30
+        
+        - `<version_title>` : The version's readable name. e.g. Firefox 29 
         - `<version_title:.>` For B2G, replaces default `_` with `.`  
         - `<version_title:->` For B2G, replaces default `_` with `-` 
         
