@@ -36,9 +36,7 @@ Change logs, progress updates and latest developments on [this spreadsheet](http
         - `<version_title:->` For B2G, replaces default `_` with `-` 
         - `<birthday>` :  Date when the version first entered Central (ms since epoch)
         - `<timestamp>` : Date when the version will ship into the next channel (ms since epoch)
-
-        
-- External dependencies: 
+- External dependencies
     - [Elasticsearch private cluster](https://github.com/klahnakoski/qb)
     - [Elasticsearch public cluster](https://github.com/klahnakoski/qb)
 
