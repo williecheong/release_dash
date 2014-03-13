@@ -1,6 +1,8 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-
+// Use this instead of file_get_contents
+// For compatibility with hosting services
+// E.g. Dreamhost. Stackato?
 if ( ! function_exists('file_get_contents_via_curl') ) {    
     function file_get_contents_via_curl($url) {
         $ch = curl_init();
@@ -28,16 +30,17 @@ if ( ! function_exists('replace_version_attr') ) {
             return $input_string; 
         }
         
+        // Documentation for all soft tags:
+        // https://github.com/williecheong/release_dash#groups-of-queries
+        
         // Replace soft <version_tag> with the actual tag of specified version
             $input_string = str_replace('<version_tag>', $version->tag, $input_string);
             $input_string = str_replace('<version_title>', $version->title, $input_string);
-        
         // Relative tags to the subject version
             for ( $i = 0; $i < 10 ; $i++ ) { 
                 $input_string = str_replace('<version_tag-'.$i.'>', intval($version->tag) - $i, $input_string);
                 $input_string = str_replace('<version_tag+'.$i.'>', intval($version->tag) + $i, $input_string);   
             }
-        
         // Important replacers for B2G version decimals 
             $input_string = str_replace('<version_tag:_>', $version->tag, $input_string);
             $input_string = str_replace('<version_tag:.>', str_replace('_', '.', $version->tag), $input_string);
@@ -45,8 +48,6 @@ if ( ! function_exists('replace_version_attr') ) {
             $input_string = str_replace('<version_title:_>', $version->title, $input_string);
             $input_string = str_replace('<version_title:.>', str_replace('_', '.', $version->title), $input_string);
             $input_string = str_replace('<version_title:->', str_replace('_', '-', $version->title), $input_string);        
-        
-        // Replace soft <version_title> with the actual title of specified version
         
         return $input_string;
     }   

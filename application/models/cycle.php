@@ -10,16 +10,22 @@ class cycle extends CI_Model{
         // Then use the CRUD specified below to retrieve current cycle
         $current = date( 'Y-m-d H:i:s', time() );
         $conditions = "`start`<'".$current."' AND `end`>'".$current."'";
+        
+        // Empty array is retrieved when no cycle is found
         $cycle = $this->retrieve($conditions);
 
         if ( empty($cycle) ) {
-            // Empty array is retrieved when no cycle is found
-            // Simply return that empty array for now
+            // Try to get the new cycle
             $source = base_url('/admin/update_cycle');
             $content = file_get_contents_via_curl( $source );
             if ( $content == 'Cycle created successfully' ) {
+                // A new cycle was just created. Great!
+                // Calling this function again yields the new cycle
                 return $this->get_current_cycle();
             } else {
+                // A new cycle was not able to be created
+                // Perhaps the external page still isn't updated yet
+                // Fallback solution: Get latest cycle and use that instead 
                 return $this->get_latest_cycle();
             }
         } else {

@@ -16,6 +16,7 @@ class version extends CI_Model{
             $new_version_tag = implode('_', $break_tag);
             $new_version_number = implode('.', $break_tag);
         } else {
+            // Firefox / Fennec alert
             $source = 'https://wiki.mozilla.org/Template:CENTRAL_VERSION';
             $content = file_get_contents_via_curl( $source );
             if( $content === false ) {
@@ -31,17 +32,19 @@ class version extends CI_Model{
             }
         }
 
+        // Get the product if it was not specified
+        // We need the product title for creating the new version
         if ( empty($product) ) {
             $product = $this->product->retrieve( array('id'=>$version->product_id) );
             $product = $product[0];
         }
 
+        // Define the values for the new version to be created
         $new_version_title = $product->title . " " . $new_version_number;
-
         $data = array( 'tag'    => $new_version_tag,
                        'title'  => $new_version_title,
                        'product_id' => $product->id     );
-
+        // Proceed to create that new version in the database
         $new_version_id = $this->version->create( $data );
 
         return $new_version_id;
