@@ -34,8 +34,8 @@ if ( ! function_exists('replace_version_attr') ) {
         
         // Relative tags to the subject version
             for ( $i = 0; $i < 10 ; $i++ ) { 
-                $input_string = str_replace('<version_tag:-'.$i.'>', intval($version->tag) - $i, $input_string);
-                $input_string = str_replace('<version_tag:+'.$i.'>', intval($version->tag) + $i, $input_string);   
+                $input_string = str_replace('<version_tag-'.$i.'>', intval($version->tag) - $i, $input_string);
+                $input_string = str_replace('<version_tag+'.$i.'>', intval($version->tag) + $i, $input_string);   
             }
         
         // Important replacers for B2G version decimals 

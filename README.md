@@ -25,17 +25,15 @@ Change logs, progress updates and latest developments on [this spreadsheet](http
     - For queries in default groups, soft tags are neccessary to adapt to version pages.
     - For queries in custom groups, the use of soft tags are optional.
     - Soft tags are recommended for specifying time ranges in Qb queries.
-    - Soft tags reference:
+    - Soft tags references
         - `<version_tag>` : The version number. e.g. 29, 1_4
         - `<version_tag:.>` For B2G, replaces default `_` with `.`  
         - `<version_tag:->` For B2G, replaces default `_` with `-` 
-        - `<version_tag:-[1-9]>` Relatively prior version e.g. `<version_tag:-1>` = 28
-        - `<version_tag:+[1-9]>` Relatively future version e.g. `<version_tag:+1>` = 30
-        
+        - `<version_tag-[1-9]>` Relatively prior version e.g. `<version_tag-1>` = 28
+        - `<version_tag+[1-9]>` Relatively future version e.g. `<version_tag+1>` = 30
         - `<version_title>` : The version's readable name. e.g. Firefox 29 
         - `<version_title:.>` For B2G, replaces default `_` with `.`  
         - `<version_title:->` For B2G, replaces default `_` with `-` 
-        
         - `<birthday>` :  Date when the version first entered Central (ms since epoch)
         - `<timestamp>` : Date when the version will ship into the next channel (ms since epoch)
 
