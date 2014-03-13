@@ -22,9 +22,11 @@
 
 <div class="container">
     <?php foreach ($data as $product_tag => $product) { ?>
+        <?php /* Print the heading title for each product */ ?>
         <div class="row text-center product" id="<?= $product_tag; ?>">
             <div class="col-lg-12">
                 <?php if ( $this->session->userdata('email') ) { ?>
+                    <?php /* If user is logged in, show buttons for creating and viewing default groups */ ?>
                     <div class="btn-group pull-right">
                         <button type="button" class="btn btn-default" id="add-new-group" title="Add a default group">
                             <i class="fa fa-plus"></i>
@@ -43,12 +45,14 @@
                         </div>
                     </div>
                 <?php } ?>
+                <?php /* Print the words for the product title. */ ?> 
+                <?php /* Clicking on this also toggles the active versions below. */ ?>
                 <span style="cursor:pointer;" data-mytoggler=".versions#<?= $product_tag; ?>">
                     <?= $product['title']; ?>
                 </span>
             </div>
         </div>
-
+        <?php /* Print the active versions below the version title */ ?>
         <div class="row text-center versions" id="<?= $product_tag; ?>">
             <?php foreach ($product['versions'] as $version_tag => $version) { ?>
                 <div class="col-sm-<?= floor( 12 / count($product['versions']) ); ?> version" id="<?= $version_tag ?>">

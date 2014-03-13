@@ -41,8 +41,14 @@
 ?>
 
 <div class="container">
+    <?php /* Because this view is all about the grids */ ?>
     <div class="gridster">
         <ul class="grids">
+            <?php /* Loop and filter four times to print in priority sequence */ ?>
+            <?php /*    1. Default plots  */ ?>
+            <?php /*    2. Default numbers  */ ?>
+            <?php /*    3. Custom plots  */ ?>
+            <?php /*    4. Custom numbers  */ ?>
             <?php foreach ( $data['groups'] as $group_id => $group ) { ?>
                 <?php if ( $group['is_plot'] && $group['is_default'] ) { ?>
                     <?php 
@@ -98,6 +104,8 @@
                     ?>
                 <?php } // End if non-default group that is_number ?>
             <?php } // End foreach query_group ?>
+
+            <?php /* If user is logged in, show the grid that prompts creating a new custom group */ ?>
             <?php if ( $this->session->userdata('email') ) { ?>
                 <li class="non-group" data-row="1" data-col="1" data-sizex="1" data-sizey="1">
                     <div class="text-center group-title">

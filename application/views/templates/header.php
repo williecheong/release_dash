@@ -46,7 +46,14 @@
                             <span class="icon-bar"></span>
                         </button>
                     <?php } ?>
-                    <a class="navbar-brand" href="/">Release Readiness Dashboard</a>
+                    <a class="navbar-brand" href="/">
+                        Release Readiness Dashboard
+                    </a>
+                    <?php if ( isset($version) ) { ?>
+                        <span class="lead" style="color:#999;position:absolute;margin-top:5px;">
+                            <?= $version; ?>
+                        </span>
+                    <?php } ?>
                 </div>
                 <?php if ( $this->session->userdata('email') ) { ?>
                     <div class="navbar-collapse collapse">

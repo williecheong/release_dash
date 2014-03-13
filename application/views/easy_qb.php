@@ -17,10 +17,12 @@
     <div class="row">
         <div class="col-md-4 left-side">
             <div role="form">
+                <?php /* The user input field for the Bugzilla URL to parse */ ?>
                 <div class="form-group">
                     <label for="bz-url">Bugzilla URL Parser</label>
                     <input type="text" class="form-control" id="bz-url" placeholder="Enter unshortened Bugzilla URL">
                 </div>
+                <?php /* The user input fields for start and end dates of the output Qb */ ?>
                 <div class="form-group">
                     <label>Query Range (Leave blank for soft dates)</label>
                     <div class="row query-dates">
@@ -32,11 +34,11 @@
                         </div>
                     </div>
                 </div>
-
+                <?php /* The button for compiling the Qb query based on specified params */ ?>
                 <button type="button" class="btn btn-primary pull-right" id="query-compile">
                     <i class="fa fa-magic"></i> Qb query
                 </button>
-                
+                <?php /* The radio buttons for specifying whether Qb will pull from private or public cluster */ ?>
                 <div class="radio">    
                     <label class="radio-inline">
                         <input type="radio" name="query-cluster" id="private_cluster" checked=""> Private Cluster
@@ -47,8 +49,8 @@
                         <input type="radio" name="query-cluster" id="public_cluster"> Public Cluster
                     </label>
                 </div>
-
-                 <div class="well well-sm">
+                <?php /* The button that links externally to github for references on soft tags */ ?>
+                <div class="well well-sm">
                     <a class="btn btn-xs btn-default" href="https://github.com/williecheong/release_dash#groups-of-queries" style="width:100%;">
                         References for Soft Tags
                     </a>
