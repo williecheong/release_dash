@@ -15,26 +15,25 @@ class Watch extends CI_Controller {
         // Validate Product and Version 
         // Return lost page if either are not found in the DB
         // If all is well, we have 2 objects for product and version
-        $product = $this->product->retrieve( array( 'tag' => $product_tag ) );
-        if ( empty($product) ) {
-            $this->load->view('templates/404_not_found');
-            return; 
-        } else {
-            $product = $product[0];    
-        }
+            $product = $this->product->retrieve( array( 'tag' => $product_tag ) );
+            if ( empty($product) ) {
+                $this->load->view('templates/404_not_found');
+                return; 
+            } else {
+                $product = $product[0];    
+            }
 
-        $by_version_tag = array( 
-                'tag' => $version_tag, 
-                'product_id' => $product->id );
-        $version = $this->version->retrieve( $by_version_tag );
-        if ( empty($version) ) {
-            $this->load->view('templates/404_not_found'); 
-            return;
-        } else {
-            $version = $version[0];
-        }
+            $by_version_tag = array( 
+                    'tag' => $version_tag, 
+                    'product_id' => $product->id );
+            $version = $this->version->retrieve( $by_version_tag );
+            if ( empty($version) ) {
+                $this->load->view('templates/404_not_found'); 
+                return;
+            } else {
+                $version = $version[0];
+            }
         // End of validation. 
-        // Product and version found.
         // $product and $version are available now
 
         // Initializing a data variable that becomes coreData JSON
@@ -45,18 +44,14 @@ class Watch extends CI_Controller {
                                     'versions'=> $this->version->retrieve(array('product_id'=>$product->id))  );
         $data['groups'] = array();
 
-        /********************************************
-            Retrieving default groups by product
-        *********************************************/
+        // Retrieving default groups by product
         $by_product = array( 
             'entity'    => 'product',
             'entity_id' => $product->id );
         $groups_by_product = $this->group->retrieve( $by_product );
         $data = $this->_groups_to_data( $data, $version, $groups_by_product, true );
 
-        /********************************************
-            Retrieving custom groups by version
-        *********************************************/
+        // Retrieving custom groups by version
         $by_version = array( 
             'entity'    => 'version',
             'entity_id' => $version->id );
@@ -91,6 +86,8 @@ class Watch extends CI_Controller {
 
             foreach ( $queries as $query ) {
                 if ( is_null($query->references) || empty($query->references) ){
+                    // This query is a standard non-reference one
+                    // Append the Qb query and other meta-data into $data
                     $query_title = replace_version_attr( $query->title, $version );
                     $query_bugzilla = replace_version_attr( $query->query_bz, $version );
 
@@ -111,6 +108,10 @@ class Watch extends CI_Controller {
                     $data['groups'][$group->id]['queries'][$query->id]['is_reference']= false;
 
                 } else {
+                    // This query is a reference one. It references a parent query.
+                    // Retrieve the parent query to inherit the Qb query (soft tagged)
+                    // Soft tags on the inherited Qb replaced by referenced version's data
+                    // Append the reference query as an individual query on the group object in $data
                     $references = explode(',', $query->references) ;
                     $parent_id  = $references[0];
                     $ref_version_id = $references[1];

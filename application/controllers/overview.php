@@ -40,31 +40,31 @@ class Overview extends CI_Controller {
                 $data[$product->tag]['groups'][$group->id]['is_default'] = true;
                 $data[$product->tag]['groups'][$group->id]['queries'] = array();
 
-
                 // Retrieve the stored Qb queries in this group.
                 $by_group = array( 'group_id' => $group->id );
                 $queries = $this->query->retrieve( $by_group );
 
                 foreach ( $queries as $query ) {
                     if ( is_null($query->references) || empty($query->references) ){
-                        //  Append the Qb queries and other meta-data into $data
-                        $data[$product->tag]['groups'][$group->id]['queries'][$query->id]['title']       = $query->title;
-                        $data[$product->tag]['groups'][$group->id]['queries'][$query->id]['colour']      = $query->colour;
-                        $data[$product->tag]['groups'][$group->id]['queries'][$query->id]['qb_query']    = $query->query_qb;
-                        $data[$product->tag]['groups'][$group->id]['queries'][$query->id]['bz_query']    = $query->query_bz;
+                        // This query is a standard non-reference one
+                        // Append the Qb query and other meta-data into $data
+                        $data[$product->tag]['groups'][$group->id]['queries'][$query->id]['title']    = $query->title;
+                        $data[$product->tag]['groups'][$group->id]['queries'][$query->id]['colour']   = $query->colour;
+                        $data[$product->tag]['groups'][$group->id]['queries'][$query->id]['qb_query'] = $query->query_qb;
+                        $data[$product->tag]['groups'][$group->id]['queries'][$query->id]['bz_query'] = $query->query_bz;
                         
                     } else {
+                        // This query is a reference one. It references a parent query.
+                        // Append referenced version's ID as a property to parent query's object in $data
                         $reference = explode(',', $query->references);
                         $parent_id = $reference[0];
                         $ref_version_id = $reference[1];
-
                         $data[$product->tag]['groups'][$group->id]['queries'][$parent_id]['reference'] = $ref_version_id;
                            
                     }
                 }
             }
         }
-      
         // Send the resulting data array into the view
         $this->load->view('overview', array('data' => $data) );
 	}

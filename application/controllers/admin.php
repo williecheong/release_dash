@@ -7,6 +7,8 @@ class Admin extends CI_Controller {
         // Autoloaded Config, Helpers, Models
     }
 
+    // Invites user to login
+    // If already logged in, dump database
     public function index() {
         if ( $this->session->userdata('email') ) {
             $data = array( 'tables' => array(
@@ -27,10 +29,23 @@ class Admin extends CI_Controller {
         return;
     }
 
+    // Make a Qb query easily
     public function easy_qb() {
         $this->load->view( 'easy_qb' );
     }
 
+    // Does nothing when new cycle is not found on external WIKI
+    // Updates the end date if a cycle is found with same start date 
+    //      Use case: Cycle extension / Delayed shipday
+    // Creates a new row in `cycle` table if a new one is found
+    //      This is the standard use case
+    //      Captures B2G's extended 2 cycle iterations
+    //      Creates new nightly versions for Firefox / Fennec
+    //      Maps corresponding versions to next channel for the new cycle
+    // Automatically runs when current cycle not found in
+    //      $this->cycle->get_current_cycle()
+    // Can also be manually run by accessing
+    //      http://release-dash.../admin/update_cycle
     public function update_cycle() {
         // Grab all of the HTML content from this source.
         $source = "https://wiki.mozilla.org/Template:CURRENT_CYCLE";
