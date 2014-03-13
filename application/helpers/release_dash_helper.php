@@ -24,12 +24,29 @@ if ( ! function_exists('replace_version_attr') ) {
     // A second parameter containing the target version object must be specified
     function replace_version_attr( $input_string = '', $version = '' ) {
         // Check for missing parameters
-        if ( $input_string == '' || $version == '' ) { return $input_string; }
+        if ( $input_string == '' || $version == '' ) { 
+            return $input_string; 
+        }
         
         // Replace soft <version_tag> with the actual tag of specified version
-        $input_string = str_replace("<version_tag>", str_replace('_', '.', $version->tag), $input_string);
+            $input_string = str_replace('<version_tag>', $version->tag, $input_string);
+            $input_string = str_replace('<version_title>', $version->title, $input_string);
+        
+        // Relative tags to the subject version
+            for ( $i = 0; $i < 10 ; $i++ ) { 
+                $input_string = str_replace('<version_tag:-'.$i.'>', intval($version->tag) - $i, $input_string);
+                $input_string = str_replace('<version_tag:+'.$i.'>', intval($version->tag) + $i, $input_string);   
+            }
+        
+        // Important replacers for B2G version decimals 
+            $input_string = str_replace('<version_tag:_>', $version->tag, $input_string);
+            $input_string = str_replace('<version_tag:.>', str_replace('_', '.', $version->tag), $input_string);
+            $input_string = str_replace('<version_tag:->', str_replace('_', '-', $version->tag), $input_string);
+            $input_string = str_replace('<version_title:_>', $version->title, $input_string);
+            $input_string = str_replace('<version_title:.>', str_replace('_', '.', $version->title), $input_string);
+            $input_string = str_replace('<version_title:->', str_replace('_', '-', $version->title), $input_string);        
+        
         // Replace soft <version_title> with the actual title of specified version
-        $input_string = str_replace("<version_title>", $version->title, $input_string);
         
         return $input_string;
     }   

@@ -376,15 +376,11 @@
                 font_colour = value.colour; 
             }
 
-            var current = new Date().getTime() / 1000 ;
             var logNumber = value.es_data[value.es_data.length - 1].y;
             if (value.is_reference) {
                 // Reference number only, use corresponding dates from main plot
-                var i = 0;
                 // Finding the index of the data set that corresponds to current time
-                while( coreData.groups[group_id].queries[value.ref_query].es_data[i + 1].x < current ){
-                    i++;
-                }
+                var i = todayIndex( coreData.groups[group_id].queries[value.ref_query].es_data );
                 logNumber = value.es_data[i].y;
             }
 
@@ -402,9 +398,9 @@
         if ( ruled == 'green' ) {
             status_colour = 'lightgreen';
         } else if ( ruled == 'yellow' ) {
-            status_colour = 'lightyellow';
+            status_colour = 'orange';
         } else if ( ruled == 'red' ) {
-            status_colour = 'lightpink';
+            status_colour = 'red';
         }
 
         $('.group-title#g'+group_id).css('background', status_colour);
@@ -415,6 +411,26 @@
 *****************************/
     function removeLoader( group_key ) {
         $('.group-title#'+group_key+' img.load-status').remove();
+    }
+
+    function todayIndex( rickshawArray ) {
+        var i = 0; 
+
+        var temp = rickshawArray[i] ;
+        var current = new Date().getTime() / 1000 ;
+        
+        while( temp.x < current ){
+            i++;
+            if ( rickshawArray[i] ) {
+                temp = rickshawArray[i];
+
+            } else {
+                // At the end of alpha
+                break;
+            }
+        }
+        
+        return i - 1;
     }
 
     function templateNewGroup ( number ) {
