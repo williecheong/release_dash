@@ -61,7 +61,7 @@
         // Retrieving input group values into saveGroup
         var saveGroup = {};
         saveGroup = {
-            group_entity : "product",
+            group_entity : "version",
             group_entity_id : coreData['id'],
             group_title : $.trim( $('#new-group-name').val() ),
             group_is_plot : $('#new-group-is-plot:checked').length,
@@ -124,28 +124,28 @@
             return false;
         }
 
-        // $.ajax({
-        //     url: '/api/groups',
-        //     type: 'POST',
-        //     data: saveGroup,
-        //     success: function(response) {
-        //         if ( response == 'OK' ) {
-        //             $this.html('<i class="fa fa-check"></i> Success');
-        //             setTimeout(function() {
-        //                 // Refresh page after 1.5 seconds
-        //                 $this.html('<i class="fa fa-refresh"></i> Refreshing');
-        //                 location.reload();
-        //             }, 1500);
-        //         }
+        $.ajax({
+            url: '/api/groups',
+            type: 'POST',
+            data: saveGroup,
+            success: function(response) {
+                if ( response == 'OK' ) {
+                    $this.html('<i class="fa fa-check"></i> Success');
+                    setTimeout(function() {
+                        // Refresh page after 1.5 seconds
+                        $this.html('<i class="fa fa-refresh"></i> Refreshing');
+                        location.reload();
+                    }, 1500);
+                }
 
-        //         console.log(response);
-        //     }, 
-        //     error: function(response) {
-        //         alert('Fail: API could not be reached.');
-        //         $this.removeClass('disabled');
-        //         console.log(response);
-        //     }
-        // });
+                console.log(response);
+            }, 
+            error: function(response) {
+                alert('Fail: API could not be reached.');
+                $this.removeClass('disabled');
+                console.log(response);
+            }
+        });
     });
 
 /*****************************************

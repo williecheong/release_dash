@@ -1,3 +1,4 @@
+// Toggle handlers for showing and hiding the right tables when buttons are clicked
 $('.btn.db-table-title').click(function(){
         
     if ( $(this).hasClass('active') ) {

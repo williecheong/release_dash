@@ -9,6 +9,7 @@
         position: { my: 'top right', at: 'bottom right' }
     });
 
+    // Persona logout
     $('.btn#user-logout').click(function(){
         navigator.id.logout()
     });
