@@ -14,7 +14,11 @@
         <script src="//login.persona.org/include.js"></script>
         <script src="/assets/js/main.js"></script>
         <script>
-            // Setup for Persona
+            <?php /*********************** 
+                Setup for Persona
+                Referenced from: 
+                    https://github.com/EllisLab/CodeIgniter/wiki/Persona-Login
+            ***********************/ ?>
             navigator.id.watch({
                 loggedInUser: <?= $this->session->userdata('email') ? '"'.$this->session->userdata('email').'"' : 'null' ; ?>,
                 onlogin: function (assertion) {

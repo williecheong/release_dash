@@ -1,5 +1,10 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+/*********************** 
+    Referenced from: 
+    https://github.com/EllisLab/CodeIgniter/wiki/Persona-Login
+***********************/
+
 class Authentication {
 
     private $CI;

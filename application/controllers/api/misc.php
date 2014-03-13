@@ -8,6 +8,7 @@ class Misc extends REST_Controller {
         // Autoloaded Config, Helpers, Models 
     }
 
+    // Used to retrieve the external HTML via AJAX request
     public function exthtml_post() {
         if ( isset($_POST['source']) ) {
             $source = $_POST['source'];

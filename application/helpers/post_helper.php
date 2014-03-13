@@ -1,5 +1,10 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+/*********************** 
+    Referenced from: 
+    https://github.com/EllisLab/CodeIgniter/wiki/Persona-Login
+***********************/
+
 if (!function_exists('post_request')) {
     function post_request($url, $data, $optional_headers = null) {
         $params = array('http' => array(

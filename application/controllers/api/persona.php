@@ -12,6 +12,8 @@ class Persona extends REST_Controller {
         redirect('/admin');
     }
 
+    // Referenced from:
+    //  https://github.com/EllisLab/CodeIgniter/wiki/Persona-Login
     public function login_post() {
         if ( isset($_POST['assertion']) ) {
             $this->authentication->login($_POST['assertion']);
@@ -30,6 +32,8 @@ class Persona extends REST_Controller {
         return;
     }
 
+    // Referenced from:
+    //  https://github.com/EllisLab/CodeIgniter/wiki/Persona-Login
     public function logout_post() {
         $this->authentication->logout();
     }
