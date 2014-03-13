@@ -15,7 +15,7 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-md-6 left-side">
+        <div class="col-md-4 left-side">
             <div role="form">
                 <div class="form-group">
                     <label for="bz-url">Bugzilla URL Parser</label>
@@ -49,25 +49,13 @@
                 </div>
 
                  <div class="well well-sm">
-                    <button class="btn btn-xs btn-default" style="width:100%;" data-mytoggler="#easyqb-instructions">
+                    <a class="btn btn-xs btn-default" href="https://github.com/williecheong/release_dash#groups-of-queries" style="width:100%;">
                         References for Soft Tags
-                    </button>
-                    <div id="easyqb-instructions" style="display:none;">
-                       <dl class="dl-horizontal">
-                            <dt>&lt;birthday&gt;</dt>
-                            <dd>Dynamically converted to version's birthday</dd>
-                            <dt>&lt;timestamp&gt;</dt>
-                            <dd>Dynamically converted to version's next shipday</dd>
-                            <dt>&lt;version_tag&gt;</dt>
-                            <dd>Used for Qb queries in default groups. Dynamically converted to version number e.g. 30.</dd>
-                            <dt>&lt;version_title&gt;</dt>
-                            <dd>Used for default group titles. Dynamically converted to a read-friendly version title e.g. Firefox 30.</dd>
-                        </dl>
-                    </div>
+                    </a>
                 </div>    
             </div>
         </div>
-        <div class="col-md-6 right-side">
+        <div class="col-md-8 right-side">
             <textarea class="form-control query-output" rows="25" placeholder="Output"></textarea>
         </div>
     </div>
