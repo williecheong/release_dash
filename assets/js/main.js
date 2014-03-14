@@ -14,6 +14,19 @@
         navigator.id.logout()
     });
 
+    function validateJSON(input){
+        try {
+            var testStr = input;
+            testStr = testStr.replace(/</g, '"<');
+            testStr = testStr.replace(/>/g, '>"');
+            testStr = $.parseJSON( testStr );
+        } catch (e) {
+            console.log(e);
+            return false;
+        }
+        return true;
+    }
+
     /*******************
         Adapted from: 
         http://stackoverflow.com/questions/5560248/programmatically-lighten-or-darken-a-hex-color-or-rgb-and-blend-colors

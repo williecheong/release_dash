@@ -115,6 +115,12 @@
             if ( typeof saveGroup.group_queries[value.id].ref_version == 'undefined' ) {
                 saveGroup.group_queries[value.id].query_query_references = 'none';
             }
+
+            var isJSON = validateJSON( saveGroup.group_queries[value.id].query_query_qb );
+            if ( !isJSON ) {
+                alert("Qb query must be JSON");
+                queryError = true;
+            }
             // End of validation for group query's input values
         });
 
