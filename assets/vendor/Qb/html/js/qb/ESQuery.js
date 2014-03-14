@@ -31,8 +31,8 @@ ESQuery.DEBUG=false;
 ////////////////////////////////////////////////////////////////////////////////
 ESQuery.INDEXES={
 	"bugs":{"host":"http://elasticsearch7.metrics.scl3.mozilla.com:9200", "path":"/bugs/bug_version"},
-	"public_bugs":{"host":"http://elasticsearch1.bugs.scl3.mozilla.com:9200", "path":"/public_bugs/bug_version"},
-	"public_bugs_backend":{"host":"http://elasticsearch1.bugs.scl3.mozilla.com:9200", "path":"/public_bugs/bug_version"},
+	"public_bugs":{"host":"http://esfrontline.bugzilla.mozilla.org:80", "path":"/public_bugs/bug_version"},
+	"public_bugs_backend":{"host":"http://elasticsearch-zlb.bugs.scl3.mozilla.com:9200", "path":"/public_bugs/bug_version"},
 	"public_bugs_proxy":{"host":"http://klahnakoski-es.corp.tor1.mozilla.com:9201", "path":"/public_bugs/bug_version"},
 	"private_bugs":{"host":"http://elasticsearch-private.bugs.scl3.mozilla.com:9200", "path":"/private_bugs/bug_version"},
 	"private_comments":{"host":"http://elasticsearch-private.bugs.scl3.mozilla.com:9200", "path":"/private_comments/bug_comment"},
