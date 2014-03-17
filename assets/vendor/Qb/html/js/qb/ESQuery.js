@@ -168,7 +168,7 @@ ESQuery.loadColumns=function*(query){
 				URL=nvl(query.url, indexInfo.alternate.host + indexPath) + "/_mapping";
 				path = parse.URL(URL).pathname.split("/").rightBut(1);
 				pathLength = path.length - 1;  //ASSUME /indexname.../_mapping
-				
+				console.log( 'Executing fallback to ' + indexInfo.alternate.host + indexPath );
 				try{
 					var schema = yield(Rest.get({
 						"url":URL,
