@@ -69,6 +69,8 @@ ESQuery.INDEXES={
 //	"raw_telemetry":{"host":"http://localhost:9200", "path":"/raw_telemetry/data"}
 };
 
+// Fallback to public cluster if private fails
+ESQuery.INDEXES.private_bugs.alternate = ESQuery.INDEXES.public_bugs;
 
 ESQuery.getColumns=function(indexName){
 	var index=ESQuery.INDEXES[indexName];
@@ -159,14 +161,26 @@ ESQuery.loadColumns=function*(query){
 			try{
 				var schema = yield(Rest.get({
 					"url":URL,
-					"doNotKill":true        //WILL NEED THE SCHEMA EVENTUALLY
+					"doNotKill":false        //WILL NEED THE SCHEMA EVENTUALLY
 				}));
 			} catch(e){
-				if (e.contains(Thread.Interrupted)){
-					Log.warning("Tried to kill, but ignoring");
-					yield (Thread.suspend());
-				}//endif
-				Log.error("problem with call to load columns", e);
+				indexPath = indexInfo.alternate.path;
+				URL=nvl(query.url, indexInfo.alternate.host + indexPath) + "/_mapping";
+				path = parse.URL(URL).pathname.split("/").rightBut(1);
+				pathLength = path.length - 1;  //ASSUME /indexname.../_mapping
+				
+				try{
+					var schema = yield(Rest.get({
+						"url":URL,
+						"doNotKill":false        //WILL NEED THE SCHEMA EVENTUALLY
+					}));
+				} catch(e){
+					if (e.contains(Thread.Interrupted)){
+						Log.warning("Tried to kill, but ignoring");
+						yield (Thread.suspend());
+					}//endif
+					Log.error("problem with call to load columns", e);
+				}
 			}//try
 
 			if (pathLength == 1){  //EG http://host/_mapping

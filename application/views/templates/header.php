@@ -50,7 +50,7 @@
                         Release Readiness Dashboard
                     </a>
                     <?php if ( isset($version) ) { ?>
-                        <span class="lead" style="color:#999;position:absolute;margin-top:5px;">
+                        <span class="navbar-brand lead">
                             <?= $version; ?>
                         </span>
                     <?php } ?>
