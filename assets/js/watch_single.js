@@ -340,6 +340,11 @@
                         plot_data[esIndex] = { x: esValue.x , y: value['es_data'][esIndex].y } ;    
                     }                    
                 });
+            } else {
+                var today = todayIndex( plot_data );
+                for (var i = today + 1; i < plot_data.length; i++) {
+                    plot_data[i].y = undefined;
+                };
             }
 
             rickshawData.push({

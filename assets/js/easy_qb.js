@@ -32,14 +32,14 @@
             success: function( response ) {
                 // Assign the specified start date 
                 // Use the soft tag if none was specified
-                var start = '<birthday>';
+                var start = '@birthday';
                 if ( $('input#query-start').val() ) {
                     start = $('input#query-start').val();
                 }
 
                 // Assign the specified end date 
                 // Use the soft tag if none was specified
-                var end = '<timestamp>';
+                var end = '@timestamp';
                 if ( $('input#query-end').val() ) {
                     end = $('input#query-end').val();
                 }
@@ -118,7 +118,7 @@
                     }
                 }];
 
-            return JSON.stringify( qbQuery, null, '\t' ).replace(/"</g, '<').replace(/>"/g, ">");
+            return JSON.stringify( qbQuery, null, '\t' ).replace(/"@birthday"/g, '@birthday').replace(/"@timestamp"/g, "@timestamp");
         }
 
     /****************** 
