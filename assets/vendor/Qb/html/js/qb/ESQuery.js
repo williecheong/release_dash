@@ -31,8 +31,8 @@ ESQuery.DEBUG=false;
 ////////////////////////////////////////////////////////////////////////////////
 ESQuery.INDEXES={
 	"bugs":{"host":"http://elasticsearch7.metrics.scl3.mozilla.com:9200", "path":"/bugs/bug_version"},
-	"public_bugs":{"host":"http://elasticsearch1.bugs.scl3.mozilla.com:9200", "path":"/public_bugs/bug_version"},
-	"public_bugs_backend":{"host":"http://elasticsearch1.bugs.scl3.mozilla.com:9200", "path":"/public_bugs/bug_version"},
+	"public_bugs":{"host":"http://esfrontline.bugzilla.mozilla.org:80", "path":"/public_bugs/bug_version"},
+	"public_bugs_backend":{"host":"http://elasticsearch-zlb.bugs.scl3.mozilla.com:9200", "path":"/public_bugs/bug_version"},
 	"public_bugs_proxy":{"host":"http://klahnakoski-es.corp.tor1.mozilla.com:9201", "path":"/public_bugs/bug_version"},
 	"private_bugs":{"host":"http://elasticsearch-private.bugs.scl3.mozilla.com:9200", "path":"/private_bugs/bug_version"},
 	"private_comments":{"host":"http://elasticsearch-private.bugs.scl3.mozilla.com:9200", "path":"/private_comments/bug_comment"},
@@ -69,6 +69,8 @@ ESQuery.INDEXES={
 //	"raw_telemetry":{"host":"http://localhost:9200", "path":"/raw_telemetry/data"}
 };
 
+// Fallback to public cluster if private fails
+ESQuery.INDEXES.private_bugs.alternate = ESQuery.INDEXES.public_bugs;
 
 ESQuery.getColumns=function(indexName){
 	var index=ESQuery.INDEXES[indexName];
@@ -159,14 +161,26 @@ ESQuery.loadColumns=function*(query){
 			try{
 				var schema = yield(Rest.get({
 					"url":URL,
-					"doNotKill":true        //WILL NEED THE SCHEMA EVENTUALLY
+					"doNotKill":false        //WILL NEED THE SCHEMA EVENTUALLY
 				}));
 			} catch(e){
-				if (e.contains(Thread.Interrupted)){
-					Log.warning("Tried to kill, but ignoring");
-					yield (Thread.suspend());
-				}//endif
-				Log.error("problem with call to load columns", e);
+				indexPath = indexInfo.alternate.path;
+				URL=nvl(query.url, indexInfo.alternate.host + indexPath) + "/_mapping";
+				path = parse.URL(URL).pathname.split("/").rightBut(1);
+				pathLength = path.length - 1;  //ASSUME /indexname.../_mapping
+				console.log( 'Executing fallback to ' + indexInfo.alternate.host + indexPath );
+				try{
+					var schema = yield(Rest.get({
+						"url":URL,
+						"doNotKill":false        //WILL NEED THE SCHEMA EVENTUALLY
+					}));
+				} catch(e){
+					if (e.contains(Thread.Interrupted)){
+						Log.warning("Tried to kill, but ignoring");
+						yield (Thread.suspend());
+					}//endif
+					Log.error("problem with call to load columns", e);
+				}
 			}//try
 
 			if (pathLength == 1){  //EG http://host/_mapping

@@ -3,6 +3,12 @@ Do not change the function name, or Javascript errors will occur
 **************************/
 function rule_4() {
     /**************************************
+    Defining standard variables available 
+    **************************************/
+        //Gets the channel tag e.g. release, beta, aurora, etc 
+    var channel = coreData.channel.tag;
+
+    /**************************************
     Defining the data available in this group
     Rename the variables to better fit your context
     Do not change the values in the variable
@@ -28,7 +34,7 @@ function rule_4() {
     Recognized return values = [green", "yellow", "red"]
     OR return any preferred custom colours in a valid CSS format
     **************************************/
-    if ( shipday - current < oneday  && regressionCount != 0 ) {
+    if ( shipday - current < oneday && regressionCount != 0 && channel == 'beta' ) {
         // We have regressions and less than 1 day to ship
         return "red" ;
     
