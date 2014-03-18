@@ -7,11 +7,7 @@ class Watch extends CI_Controller {
         // Autoloaded Config, Helpers, Models 
     }
     
-    public function single( $product_tag = '', $version_tag = '' ) {
-        // Current cycle data is not really needed here.
-        // Simply jumpstarts automatic check for latest cycles if needed
-        $current_cycle = $this->cycle->get_current_cycle();
-            
+    public function single( $product_tag = '', $version_tag = '' ) {    
         // Validate Product and Version 
         // Return lost page if either are not found in the DB
         // If all is well, we have 2 objects for product and version
@@ -42,6 +38,7 @@ class Watch extends CI_Controller {
         $data['title'] = $version->title;
         $data['product'] = array(   'id'      => $product->id,
                                     'versions'=> $this->version->retrieve(array('product_id'=>$product->id))  );
+        $data['channel'] = $this->channel->for_version( $version->id );
         $data['groups'] = array();
 
         // Retrieving default groups by product

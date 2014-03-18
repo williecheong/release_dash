@@ -410,6 +410,8 @@
         }
 
         $('.group-title#g'+group_id).css('background', status_colour);
+
+        coreData.groups[group_id].status = status_colour;
     }
 
 /*****************************
@@ -558,6 +560,12 @@
             'Do not change the function name, or Javascript errors will occur\n'+
             '**************************/\n'+
             'function rule_'+group_id+'() {\n'+
+            '    /**************************************\n'+
+            '    Defining standard variables available \n'+
+            '    **************************************/\n'+
+            '        //Gets the channel tag e.g. release, beta, aurora, etc \n'+
+            '    var channel = coreData.channel.tag;\n'+
+            '\n'+
             '    /**************************************\n'+
             '    Defining the data available in this group\n'+
             '    Rename the variables to better fit your context\n'+
