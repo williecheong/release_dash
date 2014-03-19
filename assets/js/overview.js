@@ -30,7 +30,6 @@
         new_query_unique_counter++;
         var thisNum = new_query_unique_counter;
         var product_tag = $('.modal#new-group').find('.btn#save-new-group').data('product_tag');
-        console.log(product_tag);
         $('.modal#new-group').find('form').append( templateNewGroup( thisNum, product_tag ));
 
         // Initializing remove button for this new item
@@ -97,9 +96,7 @@
                 query_title     : $.trim( $('.new-query#'+value.id).find('input#new-query-name').val() ),
                 query_colour    : tempColor,
                 query_query_bz  : $('.new-query#'+value.id).find('input#new-query-bz').val(),
-                query_query_qb  : $('.new-query#'+value.id).find('textarea#new-query-qb').val(),
-                ref_version     : $('.new-query#'+value.id).find('select#new-query-reference option:selected').val(),
-                ref_colour       : shadeColor(tempColor, 45)
+                query_query_qb  : $('.new-query#'+value.id).find('textarea#new-query-qb').val()
             };
             // End of retrieving input group query's values into saveGroup
 
@@ -107,10 +104,6 @@
             if ( saveGroup.group_queries[value.id].query_title == '' ) {
                 alert( 'Query name cannot be empty.' );
                 queryError = true;
-            }
-
-            if ( typeof saveGroup.group_queries[value.id].ref_version == 'undefined' ) {
-                saveGroup.group_queries[value.id].query_query_references = 'none';
             }
 
             var isJSON = validateJSON( saveGroup.group_queries[value.id].query_query_qb );
@@ -182,9 +175,6 @@
         $.each( thisGroup.queries, function( query_id, query ){
             // Append the html for each query
             $('.modal#old-group').find('form').append( templateOldGroup( query_id, query, productTag ) );
-            if ( query.reference ){
-                $('.modal#old-group').find('div.old-query#q'+query_id).find('select#old-query-reference option[value="'+query.reference+'"]').prop("selected", true);
-            }
         });
 
         $('.btn#delete-old-group').data('group-id', groupID);
@@ -236,11 +226,6 @@
     MAKE LIFE AWESOME FUNCTIONS
 *****************************/
     function templateNewGroup ( number, product_tag ) {
-        var refOptions = '';
-        $.each( coreData[product_tag].versions_all, function(key, version){
-            refOptions += '<option value="'+version.id+'">'+version.title+'</option>';
-        });
-
         var html = '<div class="new-query" id="q'+ number +'">'+
                         '<button type="button" class="btn btn-xs btn-default" id="remove-new-query">'+
                             '<i class="fa fa-times"></i>'+
@@ -260,15 +245,6 @@
                             '</div>'+
                         '</div>'+
                         '<div class="form-group">'+
-                            '<label class="col-sm-3 control-label" for="new-query-reference">References</label>'+
-                            '<div class="col-sm-9 controls">'+
-                               '<select class="form-control" id="new-query-reference">'+
-                                    '<option value="none">None</option>'+
-                                    refOptions+
-                                '</select>'+
-                            '</div>'+
-                        '</div>'+
-                        '<div class="form-group">'+
                             '<label class="col-sm-3 control-label" for="new-query-bz">Bugzilla URL</label>'+
                             '<div class="col-sm-9">'+
                                 '<input class="form-control" id="new-query-bz" placeholder="URL that links to this query in Bugzilla.">'+
@@ -285,11 +261,6 @@
     }
 
     function templateOldGroup ( query_id, query, product_tag ) {
-        var refOptions = '';
-        $.each( coreData[product_tag].versions_all, function(key, version){
-            refOptions += '<option value="'+version.id+'">'+version.title+'</option>';
-        });
-
         var html = '<div class="old-query" id="q'+ query_id +'">'+
                         '<div class="form-group">'+
                             '<input type="hidden" class="form-control" id="query-id">'+
@@ -306,15 +277,6 @@
                                         '<em id="colorpicker-log"></em>'+
                                     '</span>'+
                                 '</div>'+
-                            '</div>'+
-                        '</div>'+
-                        '<div class="form-group">'+
-                            '<label class="col-sm-3 control-label" for="old-query-reference">References</label>'+
-                            '<div class="col-sm-9 controls">'+
-                               '<select class="form-control" id="old-query-reference">'+
-                                    '<option value="none">None</option>'+
-                                    refOptions+
-                                '</select>'+
                             '</div>'+
                         '</div>'+
                         '<div class="form-group">'+
