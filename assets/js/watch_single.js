@@ -434,7 +434,7 @@
                 }
             } // else group has no rule, skip
         });
-        console.log(dataMissing);
+        console.log(isComplete);
     }
 
 /*****************************
