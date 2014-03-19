@@ -275,7 +275,7 @@
                         coreData.groups[group_id].queries[query_id]['es_data'] = tempStore;
                         // End of formatting the returned ElasticSearch data for Rickshaw compatibility
 
-                        // Searches for complete es_data through this group.
+                        // Checks for complete es_data through this group.
                         var dataMissing = false;
                         $.each( coreData.groups[group_id].queries, function( key, value ) {
                             if( value.es_data === undefined ) { dataMissing = true; }
@@ -315,7 +315,6 @@
     // Note that this does not generate a plot everytime it is called
     // All queries inside the version are checked for retrieved elasticsearch data
     // If any one of the data sets are missing, we escape the function.
-    // And wait for this to be called again when new data arrives.
     function executePlot( group_id ) {
         // View graphing documentation here
         // https://github.com/shutterstock/rickshaw
@@ -434,6 +433,7 @@
                 }
             } // else group has no rule, skip
         });
+        // to be continued
         console.log(isComplete);
     }
 
