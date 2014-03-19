@@ -163,7 +163,7 @@
                     tempVal = $subject.find('div#container_'+ gridName +' select#'+ gridName +' option:selected').map(function(){return $(this).val();}).get() ;  
                     if ( tempVal.length > 0 ){
                         var terms = {};
-                        if ( gridName == 'bug_status' ) {
+                        if ( gridName == 'bug_status' || gridName == 'resolution' ) {
                             // bug_status works on lower case only
                             $.each( tempVal, function( key, value ){
                                 tempVal[key] = value.toLowerCase();

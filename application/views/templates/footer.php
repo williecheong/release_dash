@@ -24,7 +24,7 @@
                 onlogin: function (assertion) {
                     $.ajax({
                         type: 'POST',
-                        url: '/api/persona/login',
+                        url: '/api/misc/login',
                         data: { assertion: assertion },
                         success: function(response, status, xhr) {
                             if ( response == 'OK' ){
@@ -44,7 +44,7 @@
                 onlogout: function () {
                     $.ajax({
                         type: 'POST',
-                        url: '/api/persona/logout',
+                        url: '/api/misc/logout',
                         success: function(response, status, xhr) {
                             window.location.reload();
                         },

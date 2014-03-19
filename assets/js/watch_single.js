@@ -342,7 +342,7 @@
                 });
             } else {
                 var today = todayIndex( plot_data );
-                for (var i = today + 1; i < plot_data.length; i++) {
+                for (var i = today + 2; i < plot_data.length; i++) {
                     plot_data[i].y = undefined;
                 };
             }
