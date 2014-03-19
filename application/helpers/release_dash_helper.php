@@ -64,7 +64,7 @@ if ( ! function_exists('replace_birthday') ) {
         if ( $input_string == '' || $birthday == '' ) { return $input_string; }
         
         $birthday = strtotime($birthday) * 1000;
-        $input_string = str_replace("<birthday>", $birthday, $input_string);
+        $input_string = str_replace("@birthday", $birthday, $input_string);
     
         return $input_string;
     }   
@@ -79,11 +79,11 @@ if ( ! function_exists('replace_timestamp') ) {
         if ( $timestamp !== '' ) {
             // Use the specified custom timestamp
             $timestamp = strtotime($timestamp) * 1000;
-            $input_string = str_replace("<timestamp>", $timestamp, $input_string);
+            $input_string = str_replace("@timestamp", $timestamp, $input_string);
         } else {
             // No timestamp specified, use current timestamp
             $current_epoch = time() * 1000;
-            $input_string = str_replace("<timestamp>", $current_epoch, $input_string);
+            $input_string = str_replace("@timestamp", $current_epoch, $input_string);
         }
         
         return $input_string;

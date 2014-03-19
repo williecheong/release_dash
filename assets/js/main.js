@@ -17,8 +17,8 @@
     function validateJSON(input){
         try {
             var testStr = input;
-            testStr = testStr.replace(/</g, '"<');
-            testStr = testStr.replace(/>/g, '>"');
+            testStr = testStr.replace(/@birthday/g, '"@birthday"');
+            testStr = testStr.replace(/@timestamp/g, '"@timestamp"');
             testStr = $.parseJSON( testStr );
         } catch (e) {
             console.log(e);

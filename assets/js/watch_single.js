@@ -336,8 +336,15 @@
                 plot_data = [];
                 // Reference plot only, use corresponding dates from main plot
                 $.each( coreData.groups[group_id].queries[value.ref_query].es_data , function( esIndex, esValue ){
-                    plot_data[esIndex] = { x: esValue.x , y: value['es_data'][esIndex].y } ;
+                    if ( value['es_data'][esIndex] ){
+                        plot_data[esIndex] = { x: esValue.x , y: value['es_data'][esIndex].y } ;    
+                    }                    
                 });
+            } else {
+                var today = todayIndex( plot_data );
+                for (var i = today + 2; i < plot_data.length; i++) {
+                    plot_data[i].y = undefined;
+                };
             }
 
             rickshawData.push({
@@ -387,7 +394,9 @@
                 // Reference number only, use corresponding dates from main plot
                 // Finding the index of the data set that corresponds to current time
                 var i = todayIndex( coreData.groups[group_id].queries[value.ref_query].es_data );
-                logNumber = value.es_data[i].y;
+                if ( value.es_data[i] ) {                   
+                    logNumber = value.es_data[i].y;
+                }
             }
 
             $('.group-number #q'+key).html(

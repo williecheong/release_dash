@@ -24,10 +24,15 @@
     <?php foreach ($data as $product_tag => $product) { ?>
         <?php /* Print the heading title for each product */ ?>
         <div class="row text-center product" id="<?= $product_tag; ?>">
-            <div class="col-lg-12">
+            <?php /* Clicking on this also toggles the active versions below. */ ?>
+            <div class="col-xs-offset-4 col-xs-4" style="cursor:pointer;" data-mytoggler=".versions#<?= $product_tag; ?>">
+                <?php /* Print the words for the product title. */ ?> 
+                <?= $product['title']; ?>
+            </div>
+            <div class="col-xs-4 text-right">
                 <?php if ( $this->session->userdata('email') ) { ?>
                     <?php /* If user is logged in, show buttons for creating and viewing default groups */ ?>
-                    <div class="btn-group pull-right">
+                    <div class="btn-group">
                         <button type="button" class="btn btn-default" id="add-new-group" title="Add a default group">
                             <i class="fa fa-plus"></i>
                         </button>
@@ -45,11 +50,6 @@
                         </div>
                     </div>
                 <?php } ?>
-                <?php /* Print the words for the product title. */ ?> 
-                <?php /* Clicking on this also toggles the active versions below. */ ?>
-                <span style="cursor:pointer;" data-mytoggler=".versions#<?= $product_tag; ?>">
-                    <?= $product['title']; ?>
-                </span>
             </div>
         </div>
         <?php /* Print the active versions below the version title */ ?>

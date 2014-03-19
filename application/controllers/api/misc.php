@@ -16,4 +16,30 @@ class Misc extends REST_Controller {
         }
         return;
     }
+
+    // Referenced from:
+    //  https://github.com/EllisLab/CodeIgniter/wiki/Persona-Login
+    public function login_post() {
+        if ( isset($_POST['assertion']) ) {
+            $this->authentication->login($_POST['assertion']);
+        }
+
+        if ( $this->session->userdata('email') ) {
+            $admins = $this->administrator->retrieve(array('email' => $this->session->userdata('email')));
+            if ( count($admins) < 1 ) {
+                $this->authentication->logout();
+                echo "Not administrator";
+            } else {
+                echo "OK";
+            }
+        }
+
+        return;
+    }
+
+    // Referenced from:
+    //  https://github.com/EllisLab/CodeIgniter/wiki/Persona-Login
+    public function logout_post() {
+        $this->authentication->logout();
+    }
 }

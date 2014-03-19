@@ -2269,7 +2269,12 @@ Rickshaw.Graph.HoverDetail = Rickshaw.Class.create({
 			'mousemove',
 			function(e) {
 				this.visible = true;
-				this.update(e);
+				try{
+                    this.update(e);    
+                } catch(error) {
+                    // Do nothing. Missing y value is fine.
+                }
+                
 			}.bind(this),
 			false
 		);
