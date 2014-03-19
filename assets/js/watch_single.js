@@ -410,6 +410,9 @@
         var ruled = eval( 'rule_' + group_id + '()' );
         var status_colour = ruled;
         
+        coreData.groups[group_id].status = ruled;
+        aggregateScores();
+
         if ( ruled == 'green' ) {
             status_colour = 'lightgreen';
         } else if ( ruled == 'yellow' ) {
@@ -419,8 +422,19 @@
         }
 
         $('.group-title#g'+group_id).css('background', status_colour);
+    }
 
-        coreData.groups[group_id].status = status_colour;
+    function aggregateScores(){
+        var isComplete = true;
+        $.each( coreData.groups, function( group_id, group ){
+            if ( group.has_rule ){
+                if ( group.status == undefined ){
+                    // group has rule but no status yet - incomplete.
+                    isComplete = false;
+                }
+            } // else group has no rule, skip
+        });
+        console.log(dataMissing);
     }
 
 /*****************************
