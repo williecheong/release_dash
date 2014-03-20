@@ -50,7 +50,7 @@
                         Release Readiness Dashboard
                     </a>
                     <?php if ( isset($version) ) { ?>
-                        <span class="navbar-brand lead">
+                        <span class="navbar-brand lead rrscore">
                             <?= $version; ?>
                         </span>
                     <?php } ?>

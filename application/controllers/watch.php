@@ -122,7 +122,7 @@ class Watch extends CI_Controller {
                     $query_title = replace_version_attr( $query->title, $ref_version );
                     $query_bugzilla = '';
 
-                    // Replace soft timestamps with current timestamp and birthday
+                    // Replace soft timestamps with referenced versions' birthday and last shipday
                     $transformed_query = $parent_query->query_qb;
                     $transformed_query = replace_version_attr( $transformed_query, $ref_version );
                         

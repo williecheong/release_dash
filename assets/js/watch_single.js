@@ -275,7 +275,7 @@
                         coreData.groups[group_id].queries[query_id]['es_data'] = tempStore;
                         // End of formatting the returned ElasticSearch data for Rickshaw compatibility
 
-                        // Searches for complete es_data through this group.
+                        // Checks for complete es_data through this group.
                         var dataMissing = false;
                         $.each( coreData.groups[group_id].queries, function( key, value ) {
                             if( value.es_data === undefined ) { dataMissing = true; }
@@ -285,20 +285,27 @@
                             // OK all data present in group. Let's roll!
                             // Plot data, Log number, Apply rule, Remove loading image
 
+                            // If this group is a plot, plot it in the box
                             if ( coreData.groups[group_id].is_plot )    { 
                                 executePlot( group_id ); 
                             }
                             
+                            // If this group is a number, log it in the box
                             if ( coreData.groups[group_id].is_number )  { 
                                 executeNumber( group_id ); 
                             }
 
+                            // If this group has a rule, apply it
                             if ( coreData.groups[group_id].has_rule ) {
                                 applyStatus( group_id );
                             }
 
+                            // Remove the Bugzilla chomping GIF icon
                             removeLoader( 'g' + group_id );
 
+                            // Attempt to aggregate the score 
+                            // Only actually runs when all groups with rules are complete
+                            aggregateScores();
                         } else {
                             // Do nothing, probably still retrieving data
                             console.log("Not all data is ready for "+group_value.title+".");
@@ -315,7 +322,6 @@
     // Note that this does not generate a plot everytime it is called
     // All queries inside the version are checked for retrieved elasticsearch data
     // If any one of the data sets are missing, we escape the function.
-    // And wait for this to be called again when new data arrives.
     function executePlot( group_id ) {
         // View graphing documentation here
         // https://github.com/shutterstock/rickshaw
@@ -420,12 +426,83 @@
 
         $('.group-title#g'+group_id).css('background', status_colour);
 
-        coreData.groups[group_id].status = status_colour;
+        coreData.groups[group_id].status = ruled;
+    }
+
+    var aggregatedBefore = false;
+    function aggregateScores(){
+        if ( !aggregatedBefore ) {
+            var isComplete = true;
+            $.each( coreData.groups, function( group_id, group ){
+                if ( group.has_rule ){
+                    if ( group.status == undefined ){
+                        // group has rule but no status yet - incomplete.
+                        isComplete = false;
+                    }
+                } // else group has no rule, skip
+            });
+            
+            if ( isComplete ) {
+                aggregatedBefore = true;
+
+                // Extract groups with rules into smaller variable that is easier to work with
+                var ruledGroups = {};
+                $.each( coreData.groups, function( group_id, group ){
+                    if ( group.has_rule ){
+                        ruledGroups[group_id] = group ;
+                    }
+                });
+
+                var greenCount  = 0;
+                var yellowCount = 0;
+                var redCount    = 0;
+                $.each( ruledGroups, function( group_id, group ){
+                    if ( group.status == 'green' ){
+                        greenCount++;
+                    } else if ( group.status == 'yellow' ){
+                        yellowCount++;
+                    } else if ( group.status == 'red' ){
+                        redCount++
+                    }
+                });
+
+                if ( greenCount > yellowCount && greenCount > redCount ){
+                    applyAggregate('lightgreen');
+
+                } else if ( yellowCount > redCount ) {
+                    applyAggregate('orange');
+                
+                } else {
+                    applyAggregate('red');
+                }
+            } // Not all rules have been executed yet. Do nothing
+        }
     }
 
 /*****************************
     MAKE LIFE AWESOME FUNCTIONS
 *****************************/
+
+    function applyAggregate( score ) {
+        $('.rrscore').css('color', score);
+
+        $.ajax({
+            url: '/api/scores',
+            type: 'POST',
+            data: {
+                version_id    : coreData['id'],
+                version_score : score
+            },
+            success: function(response) {
+                console.log(response);
+            }, 
+            error: function(response) {
+                alert('Fail: API could not be reached.');
+                console.log(response);
+            }
+        });
+    }
+
     function removeLoader( group_key ) {
         $('.group-title#'+group_key+' img.load-status').remove();
     }
