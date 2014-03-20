@@ -34,8 +34,8 @@ Change logs, progress updates and latest developments on [this spreadsheet](http
         - `<version_title>` : The version's readable name. e.g. Firefox 29 
         - `<version_title:.>` For B2G, replaces default `_` with `.`  
         - `<version_title:->` For B2G, replaces default `_` with `-` 
-        - `<birthday>` :  Date when the version first entered Central (ms since epoch)
-        - `<timestamp>` : Date when the version will ship into the next channel (ms since epoch)
+        - `@birthday` :  Date when the version first entered Central (ms since epoch)
+        - `@timestamp` : Date when the version will ship into the next channel (ms since epoch)
 - External dependencies
     - [Elasticsearch private cluster](https://github.com/klahnakoski/qb)
     - [Elasticsearch public cluster](https://github.com/klahnakoski/qb)
@@ -71,9 +71,7 @@ Change logs, progress updates and latest developments on [this spreadsheet](http
         - is greater than or equal to
         - is empty
         - is not empty
-    - The following fields are *case insensitive on Bugzilla*
-    - But Elasticsearch is unable to ignore casing in its searches
-    - Searches with these comparisons will match *only when case is the same*
+    - The following fields are case insensitive on Bugzilla, but Elasticsearch is unable to ignore casing in its searches. As a result, these comparisons will work only with alpha-numeric searches and match when case is the same as stored in the cluster.
         - contains the string
         - does not contain the string
         - contains any of the strings
