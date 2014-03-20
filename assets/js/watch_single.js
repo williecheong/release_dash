@@ -285,20 +285,27 @@
                             // OK all data present in group. Let's roll!
                             // Plot data, Log number, Apply rule, Remove loading image
 
+                            // If this group is a plot, plot it in the box
                             if ( coreData.groups[group_id].is_plot )    { 
                                 executePlot( group_id ); 
                             }
                             
+                            // If this group is a number, log it in the box
                             if ( coreData.groups[group_id].is_number )  { 
                                 executeNumber( group_id ); 
                             }
 
+                            // If this group has a rule, apply it
                             if ( coreData.groups[group_id].has_rule ) {
                                 applyStatus( group_id );
                             }
 
+                            // Remove the Bugzilla chomping GIF icon
                             removeLoader( 'g' + group_id );
 
+                            // Attempt to aggregate the score 
+                            // Only actually runs when all groups with rules are complete
+                            aggregateScores();
                         } else {
                             // Do nothing, probably still retrieving data
                             console.log("Not all data is ready for "+group_value.title+".");
@@ -409,9 +416,6 @@
         var ruled = eval( 'rule_' + group_id + '()' );
         var status_colour = ruled;
         
-        coreData.groups[group_id].status = ruled;
-        aggregateScores();
-
         if ( ruled == 'green' ) {
             status_colour = 'lightgreen';
         } else if ( ruled == 'yellow' ) {
@@ -421,25 +425,84 @@
         }
 
         $('.group-title#g'+group_id).css('background', status_colour);
+
+        coreData.groups[group_id].status = ruled;
     }
 
+    var aggregatedBefore = false;
     function aggregateScores(){
-        var isComplete = true;
-        $.each( coreData.groups, function( group_id, group ){
-            if ( group.has_rule ){
-                if ( group.status == undefined ){
-                    // group has rule but no status yet - incomplete.
-                    isComplete = false;
+        if ( !aggregatedBefore ) {
+            var isComplete = true;
+            $.each( coreData.groups, function( group_id, group ){
+                if ( group.has_rule ){
+                    if ( group.status == undefined ){
+                        // group has rule but no status yet - incomplete.
+                        isComplete = false;
+                    }
+                } // else group has no rule, skip
+            });
+            
+            if ( isComplete ) {
+                aggregatedBefore = true;
+
+                // Extract groups with rules into smaller variable that is easier to work with
+                var ruledGroups = {};
+                $.each( coreData.groups, function( group_id, group ){
+                    if ( group.has_rule ){
+                        ruledGroups[group_id] = group ;
+                    }
+                });
+
+                var greenCount  = 0;
+                var yellowCount = 0;
+                var redCount    = 0;
+                $.each( ruledGroups, function( group_id, group ){
+                    if ( group.status == 'green' ){
+                        greenCount++;
+                    } else if ( group.status == 'yellow' ){
+                        yellowCount++;
+                    } else if ( group.status == 'red' ){
+                        redCount++
+                    }
+                });
+
+                if ( greenCount > yellowCount && greenCount > redCount ){
+                    applyAggregate('lightgreen');
+
+                } else if ( yellowCount > redCount ) {
+                    applyAggregate('orange');
+                
+                } else {
+                    applyAggregate('red');
                 }
-            } // else group has no rule, skip
-        });
-        // to be continued
-        console.log(isComplete);
+            } // Not all rules have been executed yet. Do nothing
+        }
     }
 
 /*****************************
     MAKE LIFE AWESOME FUNCTIONS
 *****************************/
+
+    function applyAggregate( score ) {
+        $('.rrscore').css('color', score);
+
+        $.ajax({
+            url: '/api/scores',
+            type: 'POST',
+            data: {
+                version_id    : coreData['id'],
+                version_score : score
+            },
+            success: function(response) {
+                console.log(response);
+            }, 
+            error: function(response) {
+                alert('Fail: API could not be reached.');
+                console.log(response);
+            }
+        });
+    }
+
     function removeLoader( group_key ) {
         $('.group-title#'+group_key+' img.load-status').remove();
     }

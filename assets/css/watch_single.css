@@ -2,6 +2,10 @@
     Author's custom styles
     ========================================================================== */
 
+    .rrscore { 
+        cursor: default;
+    }
+
     #about-rule-boilerplate {
         display: none;
         margin: 1%;
