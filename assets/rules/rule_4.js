@@ -34,7 +34,8 @@ function rule_4() {
     Recognized return values = [green", "yellow", "red"]
     OR return any preferred custom colours in a valid CSS format
     **************************************/
-    if ( shipday - current < oneday && regressionCount != 0 && channel == 'beta' ) {
+    if ( (shipday - current < oneday && regressionCount != 0 && channel == 'beta') 
+        || ( regressionCount != 0 && channel == 'release') ) {
         // We have regressions and less than 1 day to ship
         return "red" ;
     

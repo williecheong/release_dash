@@ -34,7 +34,8 @@ function rule_2() {
     Recognized return values = [green", "yellow", "red"]
     OR return any preferred custom colours in a valid CSS format
     **************************************/
-    if ( shipday - current < oneday && bugCount != 0 && channel == 'beta' ) {
+    if ( (shipday - current < oneday && bugCount != 0 && channel == 'beta') 
+        || ( bugCount != 0 && channel == 'release') ) {
         // We have bugs and less than 1 day to ship
         return "red" ;
     

@@ -39,6 +39,14 @@ importScript([
 	"/assets/vendor/Qb/html/js/aLibrary.js",
 	"/assets/vendor/Qb/html/js/qb/ESQuery.js"
 ], function(){
-	startLoading();   
+	try {
+		startLoading();	
+	} catch(e) {
+		console.log('startLoading() not defined yet. Retrying in 5 seconds...');
+		setTimeout(function() {
+			startLoading();
+		}, 5000);
+	}
+	   
 	return "done";
 });
