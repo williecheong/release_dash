@@ -62,7 +62,13 @@
                         </h2>
                     </a>
                     <em class="small pull-right">
-                        Updated: <?= $version['last_updated']; ?>
+                        <?php
+                            $last_updated = 'Never';
+                            if ( $version['last_updated'] != 'never' ) {
+                                $last_updated = date('M j, g:ia' ,strtotime($version['last_updated']));
+                            } 
+                        ?>
+                        Updated: <?= $last_updated ?>
                     </em>
                 </div>
             <?php } //End foreach version ?>
