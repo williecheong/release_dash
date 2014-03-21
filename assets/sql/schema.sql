@@ -186,23 +186,29 @@ INSERT INTO `query` (`id`, `title`, `group_id`, `colour`, `references`, `query_q
     '{"from": "public_bugs","select": {"name": "num","value": "bug_id","aggregate": "count"},"esfilter": {"and": [{"term": {"cf_blocking_b2g": "<version_tag:.>?"}},{"terms": {"bug_status": ["unconfirmed","new","assigned","reopened","resolved","verified","closed"]}}]},"edges": [{"range": {"min": "modified_ts","max": "expires_on"},"domain": {"type": "date","min": @birthday,"max": @timestamp,"interval": "day"}}]}',
     'https://bugzilla.mozilla.org/buglist.cgi?j_top=OR&f1=cf_blocking_b2g&o1=equals&query_format=advanced&bug_status=UNCONFIRMED&bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED&bug_status=RESOLVED&bug_status=VERIFIED&bug_status=CLOSED&v1=<version_tag:.>%3F&list_id=9613973' ),
 
-('7', '# Blockers on <version_title:.>',                 '6', 'rgb(51, 51, 51)', '',
+('7', '# Blockers on <version_title:.>',                 '6', 'rgb(194, 127, 127)', '',
     '{"from": "public_bugs","select": {"name": "num","value": "bug_id","aggregate": "count"},"esfilter": {"and": [{"term": {"cf_blocking_b2g": "<version_tag:.>+"}},{"terms": {"bug_status": ["unconfirmed","new","assigned","reopened"]}}]},"edges": [{"range": {"min": "modified_ts","max": "expires_on"},"domain": {"type": "date","min": @birthday,"max": @timestamp,"interval": "day"}}]}',
     'https://bugzilla.mozilla.org/buglist.cgi?j_top=OR&f1=cf_blocking_b2g&o1=equals&query_format=advanced&bug_status=UNCONFIRMED&bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED&v1=<version_tag:.>%2B&list_id=9613974' ),
 
-('8', '# Blocking Regressions',                          '7', 'rgb(51, 51, 51)', '',
+
+('8', '# Blocking Regressions',                          '6', 'rgb(108, 10, 238)', '',
+    '{"from": "public_bugs","select": {"name": "num","value": "bug_id","aggregate": "count"},"esfilter": {"and": [{"terms": {"bug_status": ["new","assigned","reopened","resolved","verified","closed"]}},{"terms": {"resolution": ["fixed","wontfix"]}},{"or": [{"regexp": {"keywords": "(regression)+"}}]},{"or": [{"or": [{"term": {"cf_blocking_b2g": "<version_tag:.>+"}}]}]}]},"edges": [{"range": {"min": "modified_ts","max": "expires_on"},"domain": {"type": "date","min": @birthday,"max": @timestamp,"interval": "day"}}]}',
+    'https://bugzilla.mozilla.org/buglist.cgi?j_top=OR&keywords=regression%2C%20&keywords_type=anywords&f1=cf_blocking_b2g&columnlist=product%2Ccomponent%2Cassigned_to%2Cbug_status%2Cresolution%2Cshort_desc%2Cchangeddate%2Ckeywords%2Ccf_blocking_b2g&o1=anywordssubstr&resolution=FIXED&resolution=WONTFIX&query_format=advanced&bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED&bug_status=RESOLVED&bug_status=VERIFIED&bug_status=CLOSED&v1=<version_tag:.>%2B&list_id=9731018' ),
+
+
+('9', '# Blocking Regressions',                          '7', 'rgb(51, 51, 51)', '',
     '{"from": "public_bugs","select": {"name": "num","value": "bug_id","aggregate": "count"},"esfilter": {"and": [{"terms": {"bug_status": ["new","assigned","reopened","resolved","verified","closed"]}},{"terms": {"resolution": ["fixed","wontfix"]}},{"or": [{"regexp": {"keywords": "(regression)+"}}]},{"or": [{"or": [{"term": {"cf_blocking_b2g": "<version_tag:.>+"}}]}]}]},"edges": [{"range": {"min": "modified_ts","max": "expires_on"},"domain": {"type": "date","min": @birthday,"max": @timestamp,"interval": "day"}}]}',
     'https://bugzilla.mozilla.org/buglist.cgi?j_top=OR&keywords=regression%2C%20&keywords_type=anywords&f1=cf_blocking_b2g&columnlist=product%2Ccomponent%2Cassigned_to%2Cbug_status%2Cresolution%2Cshort_desc%2Cchangeddate%2Ckeywords%2Ccf_blocking_b2g&o1=anywordssubstr&resolution=FIXED&resolution=WONTFIX&query_format=advanced&bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED&bug_status=RESOLVED&bug_status=VERIFIED&bug_status=CLOSED&v1=1.4%2B&list_id=9731018' ),
 
-('9', '# Blocking Regressions ref. <version_title>',     '7', '#a6a6a6', '8,12',
+('10','# Blocking Regressions ref. <version_title>',     '7', '#a6a6a6', '9,12',
     '',
     '' ),
 
-('10','# Nominations for Blockers',                      '8', 'rgb(51, 51, 51)', '',
+('11','# Nominations for Blockers',                      '8', 'rgb(51, 51, 51)', '',
     '{"from": "public_bugs","select": {"name": "num","value": "bug_id","aggregate": "count"},"esfilter": {"and": [{"term": {"cf_blocking_b2g": "<version_tag:.>?"}}]},"edges": [{"range": {"min": "modified_ts","max": "expires_on"},"domain": {"type": "date","min": @birthday,"max": @timestamp,"interval": "day"}}]}',
     'https://bugzilla.mozilla.org/buglist.cgi?j_top=OR&f1=cf_blocking_b2g&o1=equals&query_format=advanced&bug_status=UNCONFIRMED&bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED&bug_status=RESOLVED&bug_status=VERIFIED&bug_status=CLOSED&v1=<version_tag:.>%3F&list_id=9613973' ),
 
-('11','# Nominations for Blockers ref. <version_title>', '8', '#a6a6a6', '10,12',
+('12','# Nominations for Blockers ref. <version_title>', '8', '#a6a6a6', '11,12',
     '',
     '' );
 
