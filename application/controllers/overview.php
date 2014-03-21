@@ -28,6 +28,16 @@ class Overview extends CI_Controller {
                 // Store a pretty title for this version
                 $data[$product->tag]['versions'][$version->tag]['title'] = $version->title;
                 $data[$product->tag]['versions'][$version->tag]['channel'] = $version->channel_id;
+
+                // Has a release readiness score been recorded before?
+                $score = $this->score->retrieve( array('version_id'=>$version->id) );
+                if (count($score) > 0){
+                    $data[$product->tag]['versions'][$version->tag]['score'] = $score[0]->score_colour;
+                    $data[$product->tag]['versions'][$version->tag]['last_updated'] = $score[0]->last_updated;
+                } else {
+                    $data[$product->tag]['versions'][$version->tag]['score'] = '';
+                    $data[$product->tag]['versions'][$version->tag]['last_updated'] = 'never';
+                }
             }
 
             // Find default groups belonging to this product
