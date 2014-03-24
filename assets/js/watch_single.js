@@ -22,6 +22,10 @@
         show : false
     });
 
+    // Contains all group specific options for aggregating release readiness score
+    //      Object index is set to use group_id
+    var aggregateOptions = {};
+
 /*********************************
     SAVING NEW GROUPS AND QUERIES
 *********************************/
@@ -643,32 +647,29 @@
         
         var html = ''+
             '/**************************\n'+
-            'Do not change the function name, or Javascript errors will occur\n'+
+            'Options to determine how this group will aggregate into release readiness score for this version\n'+
+            '**************************/\n'+
+            'aggregateOptions['+group_id+'] = {\n'+
+            '    "isInsignificant"  : false,   // if set to true, version score will not be affected by this group\n'+
+            '    "isShipwrecker"    : false    // if set to true, version is immediately red if this group is red\n'+     
+            '};\n'+
+            '\n'+
+            '/**************************\n'+
+            'Warning: Do not change the function name\n'+
             '**************************/\n'+
             'function rule_'+group_id+'() {\n'+
-            '    /**************************************\n'+
-            '    Defining standard variables available \n'+
-            '    **************************************/\n'+
-            '        //Gets the channel tag e.g. release, beta, aurora, etc \n'+
+            '    // Gets the channel tag e.g. release, beta, aurora, etc \n'+
             '    var channel = coreData.channel.tag;\n'+
             '\n'+
-            '    /**************************************\n'+
-            '    Defining the data available in this group\n'+
-            '    Rename the variables to better fit your context\n'+
-            '    Do not change the values in the variable\n'+
-            '    **************************************/\n'+
+            '    // Defining the data available in this group\n'+
+            '    // Rename the variables to better fit your context\n'+
             variables +
             '\n'+
-            '    /**************************************\n'+
-            '    Write scripts to manipulate group data here.\n'+
-            '    **************************************/\n'+
+            '    // Write scripts to manipulate group data here.\n'+
             '\n'+
-            '\n'+
-            '    /**************************************\n'+
-            '    Set the conditions that determine what to return\n'+
-            '    Recognized return values = [green", "yellow", "red"]\n'+
-            '    OR return any preferred custom colours in a valid CSS format\n'+
-            '    **************************************/\n'+
+            '    // Set the conditions that determine what to return\n'+
+            '    // Recognized return values = [green", "yellow", "red"]\n'+
+            '    // OR return any preferred custom colours in a valid CSS format\n'+
             '    if ( false ) {\n'+
             '        return "red";\n'+
             '    } else if ( false ) { \n'+
@@ -682,8 +683,9 @@
             'Optional: Custom helper functions to use above\n'+
             'To prevent conflicts with other functions on this dashboard\n'+
             'Please follow this naming convention - rule_'+group_id+'_whateverYouWant()\n'+
-            '****************/';
-
+            '****************/\n'+
+            '\n'+
+            '\n';
         return html;
     }
 
