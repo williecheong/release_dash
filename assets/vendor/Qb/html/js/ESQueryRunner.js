@@ -36,8 +36,8 @@ function ESQueryRunMany(queries, callback){
 
 
 importScript([
-	"/assets/vendor/Qb/html/js/aLibrary.js",
-	"/assets/vendor/Qb/html/js/qb/ESQuery.js"
+	"js/aLibrary.js",
+	"js/qb/ESQuery.js"
 ], function(){
 	try {
 		startLoading();	
@@ -47,6 +47,6 @@ importScript([
 			startLoading();
 		}, 5000);
 	}
-	   
+	
 	return "done";
 });
