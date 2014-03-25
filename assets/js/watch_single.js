@@ -266,7 +266,33 @@
     function startLoading() {
         $.each( coreData.groups, function( group_id, group_value ) {
             $.each( group_value.queries, function( query_id, query_value ) {
-                ESQueryRunner( 
+                if ( query_value.es_data !== '' ){
+                    coreData.groups[group_id].queries[query_id]['es_data'] = $.parseJSON( query_value.es_data );
+                    // Checks for complete es_data through this group.
+                    var dataInvalid = false;
+                    $.each( coreData.groups[group_id].queries, function( key, value ) {
+                        if( typeof value.es_data !== 'object' ) { dataInvalid = true; }
+                    });
+
+                    if ( dataInvalid === false ) {
+                        // If this group is a plot, plot it in the box
+                        if ( coreData.groups[group_id].is_plot ) { executePlot( group_id ); }
+                        
+                        // If this group is a number, log it in the box
+                        if ( coreData.groups[group_id].is_number ) { executeNumber( group_id ); }
+
+                        // If this group has a rule, apply it
+                        if ( coreData.groups[group_id].has_rule ) { applyStatus( group_id ); }
+
+                        // Remove the Bugzilla chomping GIF icon
+                        removeLoader( 'g' + group_id );
+
+                    } else {
+                        console.log("Not all data is ready for "+group_value.title+".");
+                    }
+
+                } else {
+                    ESQueryRunner( 
                     $.parseJSON( query_value.qb_query ), 
                     function( response ){ // Executes after data is returned from ES.
                         // Format the returned ElasticSearch data for Rickshaw compatibility
@@ -287,22 +313,14 @@
 
                         if ( dataMissing === false ) {
                             // OK all data present in group. Let's roll!
-                            // Plot data, Log number, Apply rule, Remove loading image
-
                             // If this group is a plot, plot it in the box
-                            if ( coreData.groups[group_id].is_plot )    { 
-                                executePlot( group_id ); 
-                            }
+                            if ( coreData.groups[group_id].is_plot ) { executePlot( group_id ); }
                             
                             // If this group is a number, log it in the box
-                            if ( coreData.groups[group_id].is_number )  { 
-                                executeNumber( group_id ); 
-                            }
+                            if ( coreData.groups[group_id].is_number ) { executeNumber( group_id ); }
 
                             // If this group has a rule, apply it
-                            if ( coreData.groups[group_id].has_rule ) {
-                                applyStatus( group_id );
-                            }
+                            if ( coreData.groups[group_id].has_rule ) { applyStatus( group_id ); }
 
                             // Remove the Bugzilla chomping GIF icon
                             removeLoader( 'g' + group_id );
@@ -314,8 +332,12 @@
                             // Do nothing, probably still retrieving data
                             console.log("Not all data is ready for "+group_value.title+".");
                         }   
+
+                        // Store this in the cache for future use!
+                        cacheESData( query_id, coreData.groups[group_id].queries[query_id]['es_data'] );
                     }
                 );
+                }
             });
         });
     }
@@ -323,9 +345,10 @@
 /************************
     EXECUTES PLOT AND NUMBER PRINTING
 ************************/
-    // Note that this does not generate a plot everytime it is called
-    // All queries inside the version are checked for retrieved elasticsearch data
-    // If any one of the data sets are missing, we escape the function.
+    function executeAll( group_id ) {
+        
+    }
+
     function executePlot( group_id ) {
         // View graphing documentation here
         // https://github.com/shutterstock/rickshaw
@@ -507,13 +530,32 @@
         });
     }
 
+    function cacheESData( query_id, es_data ) {
+        es_data = JSON.stringify( es_data );
+        $.ajax({
+            url: '/api/caches/es_data',
+            type: 'POST',
+            data: {
+                query_id      : query_id,
+                version_id    : coreData['id'],
+                query_es_data : es_data
+            },
+            success: function(response) {
+                console.log(response);
+            }, 
+            error: function(response) {
+                alert('Fail: API could not be reached.');
+                console.log(response);
+            }
+        });
+    }
+
     function removeLoader( group_key ) {
         $('.group-title#'+group_key+' img.load-status').remove();
     }
 
     function todayIndex( rickshawArray ) {
         var i = 0; 
-
         var temp = rickshawArray[i] ;
         var current = new Date().getTime() / 1000 ;
         

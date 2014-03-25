@@ -161,7 +161,7 @@ ESQuery.loadColumns=function*(query){
 			try{
 				var schema = yield(Rest.get({
 					"url":URL,
-					"doNotKill":false        //WILL NEED THE SCHEMA EVENTUALLY
+					"doNotKill":true        //WILL NEED THE SCHEMA EVENTUALLY
 				}));
 			} catch(e){
 				indexPath = indexInfo.alternate.path;
@@ -172,7 +172,7 @@ ESQuery.loadColumns=function*(query){
 				try{
 					var schema = yield(Rest.get({
 						"url":URL,
-						"doNotKill":false        //WILL NEED THE SCHEMA EVENTUALLY
+						"doNotKill":true        //WILL NEED THE SCHEMA EVENTUALLY
 					}));
 				} catch(e){
 					if (e.contains(Thread.Interrupted)){

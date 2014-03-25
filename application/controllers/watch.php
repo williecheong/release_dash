@@ -62,6 +62,11 @@ class Watch extends CI_Controller {
     // Appends version + group data before returning that data array
     // Takes care of both default groups and custom groups, specify in fourth parameter
     private function _groups_to_data( $data = array(), $version = array(), $groups = array(), $is_default = false ) {
+        $hard_refresh = 0;
+        if ( isset($_GET['refresh']) ) {
+            $hard_refresh = $_GET['refresh'];
+        }
+        
         foreach ( $groups as $group ) {
             $group_title = replace_version_attr( $group->title, $version );
 
@@ -103,6 +108,7 @@ class Watch extends CI_Controller {
                     $data['groups'][$group->id]['queries'][$query->id]['qb_query']    = $transformed_query;
                     $data['groups'][$group->id]['queries'][$query->id]['bz_query']    = $query_bugzilla;
                     $data['groups'][$group->id]['queries'][$query->id]['is_reference']= false;
+                    $data['groups'][$group->id]['queries'][$query->id]['es_data']     = ($hard_refresh == 1) ? '' : $this->cache_es_data->retrieve_valid_cache($query->id,$version->id);
 
                 } else {
                     // This query is a reference one. It references a parent query.
@@ -131,14 +137,15 @@ class Watch extends CI_Controller {
                         $shipday = $this->version->get_shipday( $ref_version->id );
                     $transformed_query = replace_timestamp( $transformed_query, $shipday );
 
-                    //  Append the Qb queries and other meta-data into $data
+                    // Append the Qb queries and other meta-data into $data
                     $data['groups'][$group->id]['queries'][$query->id]['title']       = $query_title;
                     $data['groups'][$group->id]['queries'][$query->id]['colour']      = $query->colour;
                     $data['groups'][$group->id]['queries'][$query->id]['qb_query']    = $transformed_query;
                     $data['groups'][$group->id]['queries'][$query->id]['bz_query']    = $query_bugzilla;
                     $data['groups'][$group->id]['queries'][$query->id]['is_reference']= true;                    
                     $data['groups'][$group->id]['queries'][$query->id]['ref_query']   = $parent_id;
-                    $data['groups'][$group->id]['queries'][$query->id]['ref_version']   = $ref_version_id;
+                    $data['groups'][$group->id]['queries'][$query->id]['ref_version'] = $ref_version_id;
+                    $data['groups'][$group->id]['queries'][$query->id]['es_data']     = ($hard_refresh == 1) ? '' : $this->cache_es_data->retrieve_valid_cache($query->id,$version->id);
                        
                 }
             }

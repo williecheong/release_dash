@@ -29,7 +29,7 @@ class Scores extends REST_Controller {
                 $new_score = array( 'version_id'    => $version_id,
                                     'score_colour'  => $score  );
                 $score_id = $this->score->create( $new_score );
-                echo 'OK - Score of '.$score.' insert for version '.$version_id.'.';
+                echo 'OK - Score of '.$score.' insert for version_id='.$version_id.'.';
             }
         } else {
             echo 'Missing version_id or score parameters.';
