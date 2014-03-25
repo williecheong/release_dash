@@ -54,8 +54,8 @@ class Watch extends CI_Controller {
             'entity_id' => $version->id );
         $groups_by_version = $this->group->retrieve( $by_version );
         $data = $this->_groups_to_data( $data, $version, $groups_by_version );
-
-        $this->load->view('watch_single', array('data' => $data) );   
+        
+        $this->blade->render('watch_single', array('data'=>$data));
     }
 
     // Receives an existing data array

@@ -76,6 +76,6 @@ class Overview extends CI_Controller {
             }
         }
         // Send the resulting data array into the view
-        $this->load->view('overview', array('data' => $data) );
-	}
+        $this->blade->render('overview', array('data'=>$data));
+    }
 }

@@ -21,7 +21,7 @@ class Admin extends CI_Controller {
                     'query'                   => $this->query->retrieve(),
                     'version_channel_cycle'   => $this->version_channel_cycle->retrieve()  ));
 
-            $this->load->view('admin_panel', $data);
+            $this->blade->render('admin_panel', $data);
         
         } else {
             $this->load->view('admin_login');
