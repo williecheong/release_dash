@@ -15,39 +15,41 @@
 
 <div class="container">
     <div class="text-center db-table-titles">
-    <?php foreach ( $tables as $table_name => $table ) { ?>
-        <?php /* Printing out the list of tables at the top of the page */ ?>
-        <button class="btn btn-default btn-lg db-table-title" title="<?= ucfirst($table_name); ?>" style="width: <?= 80/count($tables); ?>%;" data-db-table-toggler=".db-table#<?= $table_name; ?>">
-            <?= ucfirst($table_name); ?>
-        </button>
-    <?php } ?>
+        @foreach ( $tables as $table_name => $table )
+            {{-- Printing out the list of tables at the top of the page --}}
+            <button class="btn btn-default btn-lg db-table-title" title="{{ ucfirst($table_name) }}" style="width:{{80/count($tables)}}%;" data-db-table-toggler=".db-table#{{ $table_name }}">
+                {{ ucfirst($table_name) }}
+            </button>
+        @endforeach
     </div>
-    <?php foreach ( $tables as $table_name => $table ) { ?>
-        <?php /* Printing out a HTML table for every table we have. All hidden at first. Toggled by the above buttons. */ ?>
-        <div class="well well-sm table-responsive db-table" id="<?= $table_name; ?>">
+    @foreach ( $tables as $table_name => $table )
+        {{-- Printing out a HTML table for every table we have. All hidden at first. Toggled by the above buttons. --}}
+        <div class="well well-sm table-responsive db-table" id="{{$table_name}}">
                 <span class="lead">
-                    <?= ucfirst($table_name); ?>
+                    {{ucfirst($table_name)}}
                 </span>
                 <table class="table table-condensed table-hover">
                     <thead>
                         <tr>
-                        <?php foreach ( $table[0] as $property => $value ) { ?>
-                            <th><?= $property; ?></th>
-                        <?php } ?>
+                            @foreach ( $table[0] as $property => $value )
+                                <th>{{$property}}</th>
+                            @endforeach
                         </tr>
                     </thead>
                     <tbody>
-                    <?php foreach ($table as $row) { ?> 
-                        <tr>
-                        <?php foreach ( $row as $value ) { ?>
-                            <th><?= htmlspecialchars( $value ); ?></th>
-                        <?php } ?>            
-                        </tr>
-                    <?php } ?>
+                        @foreach ($table as $row)
+                            <tr>
+                                @foreach ( $row as $value )
+                                    <th>
+                                        {{ htmlspecialchars($value) }}
+                                    </th>
+                                @endforeach           
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
-    <?php } ?>
+    @endforeach
 </div><!-- /container -->
 
 <?php 

@@ -275,17 +275,7 @@
                     });
 
                     if ( dataInvalid === false ) {
-                        // If this group is a plot, plot it in the box
-                        if ( coreData.groups[group_id].is_plot ) { executePlot( group_id ); }
-                        
-                        // If this group is a number, log it in the box
-                        if ( coreData.groups[group_id].is_number ) { executeNumber( group_id ); }
-
-                        // If this group has a rule, apply it
-                        if ( coreData.groups[group_id].has_rule ) { applyStatus( group_id ); }
-
-                        // Remove the Bugzilla chomping GIF icon
-                        removeLoader( 'g' + group_id );
+                        executeAll( group_id );
 
                     } else {
                         console.log("Not all data is ready for "+group_value.title+".");
@@ -313,21 +303,7 @@
 
                         if ( dataMissing === false ) {
                             // OK all data present in group. Let's roll!
-                            // If this group is a plot, plot it in the box
-                            if ( coreData.groups[group_id].is_plot ) { executePlot( group_id ); }
-                            
-                            // If this group is a number, log it in the box
-                            if ( coreData.groups[group_id].is_number ) { executeNumber( group_id ); }
-
-                            // If this group has a rule, apply it
-                            if ( coreData.groups[group_id].has_rule ) { applyStatus( group_id ); }
-
-                            // Remove the Bugzilla chomping GIF icon
-                            removeLoader( 'g' + group_id );
-
-                            // Attempt to aggregate the score 
-                            // Only actually runs when all groups with rules are complete
-                            aggregateScores();
+                            executeAll( group_id );
                         } else {
                             // Do nothing, probably still retrieving data
                             console.log("Not all data is ready for "+group_value.title+".");
@@ -346,7 +322,21 @@
     EXECUTES PLOT AND NUMBER PRINTING
 ************************/
     function executeAll( group_id ) {
+        // If this group is a plot, plot it in the box
+        if ( coreData.groups[group_id].is_plot ) { executePlot( group_id ); }
         
+        // If this group is a number, log it in the box
+        if ( coreData.groups[group_id].is_number ) { executeNumber( group_id ); }
+
+        // If this group has a rule, apply it
+        if ( coreData.groups[group_id].has_rule ) { applyStatus( group_id ); }
+
+        // Remove the Bugzilla chomping GIF icon
+        removeLoader( 'g' + group_id );
+
+        // Attempt to aggregate the score 
+        // Only actually runs when all groups with rules are complete
+        aggregateScores();
     }
 
     function executePlot( group_id ) {

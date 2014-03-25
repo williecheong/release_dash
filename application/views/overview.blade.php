@@ -13,25 +13,24 @@
         'bottom'    => '<script src="/assets/js/overview.js"></script>
                         <script>var coreData = '. json_encode($data) .'</script>'
     );
-?>
-
-<?php 
+ 
     $this->load->view('templates/header', $include);
     $this->load->view('templates/bug_watch');
 ?>
 
 <div class="container">
-    <?php foreach ($data as $product_tag => $product) { ?>
-        <?php /* Print the heading title for each product */ ?>
-        <div class="row text-center product" id="<?= $product_tag; ?>">
-            <?php /* Clicking on this also toggles the active versions below. */ ?>
-            <div class="col-xs-offset-4 col-xs-4" style="cursor:pointer;" data-mytoggler=".versions#<?= $product_tag; ?>">
-                <?php /* Print the words for the product title. */ ?> 
-                <?= $product['title']; ?>
+    @foreach ($data as $product_tag => $product)
+        {{-- Print the heading title for each product --}}
+        <div class="row text-center product" id="{{$product_tag}}">
+            {{-- Clicking on this also toggles the active versions below. --}}
+            <div class="col-xs-offset-4 col-xs-4" style="cursor:pointer;" data-mytoggler=".versions#{{$product_tag}}">
+                {{-- Print the words for the product title. --}}
+                {{ $product['title'] }}
             </div>
+            
             <div class="col-xs-4 text-right">
-                <?php if ( $this->session->userdata('email') ) { ?>
-                    <?php /* If user is logged in, show buttons for creating and viewing default groups */ ?>
+                @if ( $this->session->userdata('email') )
+                    {{-- If user is logged in, show buttons for creating and viewing default groups --}}
                     <div class="btn-group">
                         <button type="button" class="btn btn-default" id="add-new-group" title="Add a default group">
                             <i class="fa fa-plus"></i>
@@ -41,24 +40,25 @@
                                 Groups <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu text-left pull-right">
-                                <?php foreach( $product['groups'] as $group_id => $group ) { ?>
-                                    <li id="edit-old-group" data-group-id="<?= $group_id; ?>">
-                                        <a><?= $group['title']; ?></a>
+                                @foreach( $product['groups'] as $group_id => $group )
+                                    <li id="edit-old-group" data-group-id="{{$group_id}}">
+                                        <a>{{ $group['title'] }}</a>
                                     </li>
-                                <?php } ?>
+                                @endforeach
                             </ul>
                         </div>
                     </div>
-                <?php } ?>
+                @endif
             </div>
         </div>
-        <?php /* Print the active versions below the version title */ ?>
-        <div class="row text-center versions" id="<?= $product_tag; ?>">
-            <?php foreach ($product['versions'] as $version_tag => $version) { ?>
-                <div class="col-sm-<?= floor( 12 / count($product['versions']) ); ?> version" id="<?= $version_tag ?>" style="background:<?= $version['score']; ?>;">
-                    <a href="/for/<?= $product_tag; ?>/<?= $version_tag; ?>">    
+
+        {{-- Print the active versions below the version title --}}
+        <div class="row text-center versions" id="{{$product_tag}}">
+            @foreach ($product['versions'] as $version_tag => $version)
+                <div class="col-sm-{{ floor(12/count($product['versions'])) }} version" id="{{$version_tag}}" style="background:{{$version['score']}};">
+                    <a href="/for/{{$product_tag}}/{{$version_tag}}">    
                         <h2>
-                            <?= $version['title']; ?>
+                            {{ $version['title'] }}
                         </h2>
                     </a>
                     <em class="small pull-right">
@@ -68,12 +68,12 @@
                                 $last_updated = date('M j, g:ia' ,strtotime($version['last_updated']));
                             } 
                         ?>
-                        Updated: <?= $last_updated ?>
+                        Updated: {{ $last_updated }}
                     </em>
                 </div>
-            <?php } //End foreach version ?>
+            @endforeach
         </div>
-    <?php } //End foreach product ?>
+    @endforeach
 </div><!-- /container -->
 
 <?php 
