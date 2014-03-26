@@ -32,10 +32,6 @@ jQuery(document).ready(function($) {
             show : false
         });
 
-        // Contains all group specific options for aggregating release readiness score
-        //      Object index is set to use group_id
-        var aggregateOptions = {};
-
     /*********************************
         SAVING NEW GROUPS AND QUERIES
     *********************************/
