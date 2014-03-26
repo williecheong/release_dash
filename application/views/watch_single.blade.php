@@ -22,6 +22,7 @@
             <script src="/assets/vendor/rickshaw/vendor/d3.layout.min.js"></script>
             <script src="/assets/vendor/rickshaw/rickshaw.js"></script>
             <script>var coreData = '. json_encode($data) .'</script>
+            <script src="/assets/js/watch_single_es.js"></script>
             <script src="/assets/js/watch_single.js"></script>',
 
         'rule_scripts' => ''
@@ -34,23 +35,21 @@
                 '<script src="/assets/rules/rule_'.$group_id.'.js"></script>';
         }
     }
-?>
 
-<?php 
     $this->load->view('templates/header', $include);
 ?>
 
 <div class="container">
-    <?php /* Because this view is all about the grids */ ?>
+    {{-- Because this view is all about the grids --}}
     <div class="gridster">
         <ul class="grids">
-            <?php /* Loop and filter four times to print in priority sequence */ ?>
-            <?php /*    1. Default plots  */ ?>
-            <?php /*    2. Default numbers  */ ?>
-            <?php /*    3. Custom plots  */ ?>
-            <?php /*    4. Custom numbers  */ ?>
-            <?php foreach ( $data['groups'] as $group_id => $group ) { ?>
-                <?php if ( $group['is_plot'] && $group['is_default'] ) { ?>
+            {{-- Loop and filter four times to print in priority sequence --}}
+            {{--    1. Default plots  --}}
+            {{--    2. Default numbers  --}}
+            {{--    3. Custom plots  --}}
+            {{--    4. Custom numbers  --}}
+            @foreach ( $data['groups'] as $group_id => $group )
+                @if ( $group['is_plot'] && $group['is_default'] )
                     <?php 
                         $this->load->view(
                             '/templates/watch_single_grid', 
@@ -60,11 +59,11 @@
                                     ) 
                                 ); 
                     ?>
-                <?php } // End if default group that is_plot ?>
-            <?php } // End foreach query_group ?>
+                @endif {{-- End if default group that is_plot --}}
+            @endforeach {{-- End foreach query_group --}}
 
-            <?php foreach ( $data['groups'] as $group_id => $group ) { ?>
-                <?php if ( $group['is_number'] && $group['is_default'] ) { ?>
+            @foreach ( $data['groups'] as $group_id => $group )
+                @if ( $group['is_number'] && $group['is_default'] ) 
                     <?php 
                         $this->load->view(
                             '/templates/watch_single_grid', 
@@ -74,11 +73,11 @@
                                     ) 
                                 ); 
                     ?>
-                <?php } // End if default group that is_number ?>
-            <?php } // End foreach query_group ?>
+                @endif {{-- End if default group that is_number --}}
+            @endforeach {{-- End foreach query_group --}}
 
-            <?php foreach ( $data['groups'] as $group_id => $group ) { ?>
-                <?php if ( $group['is_plot'] && !$group['is_default'] ) { ?>
+            @foreach ( $data['groups'] as $group_id => $group ) 
+                @if ( $group['is_plot'] && !$group['is_default'] ) 
                     <?php 
                         $this->load->view(
                             '/templates/watch_single_grid', 
@@ -88,11 +87,11 @@
                                     ) 
                                 ); 
                     ?>
-                <?php } // End if non-default group that is_plot ?>
-            <?php } // End foreach query_group ?>
+                @endif {{-- End if non-default group that is_plot --}}
+            @endforeach {{-- End foreach query_group --}}
 
-            <?php foreach ( $data['groups'] as $group_id => $group ) { ?>
-                <?php if ( $group['is_number'] && !$group['is_default'] ) { ?>
+            @foreach ( $data['groups'] as $group_id => $group )
+                @if ( $group['is_number'] && !$group['is_default'] )
                     <?php 
                         $this->load->view(
                             '/templates/watch_single_grid', 
@@ -102,11 +101,11 @@
                                     ) 
                                 ); 
                     ?>
-                <?php } // End if non-default group that is_number ?>
-            <?php } // End foreach query_group ?>
+                @endif {{-- End if non-default group that is_number --}}
+            @endforeach {{-- End foreach query_group --}}
 
-            <?php /* If user is logged in, show the grid that prompts creating a new custom group */ ?>
-            <?php if ( $this->session->userdata('email') ) { ?>
+            @if ( $this->session->userdata('email') )
+                {{-- Show the grid that prompts creating a new custom group --}}
                 <li class="non-group" data-row="1" data-col="1" data-sizex="1" data-sizey="1">
                     <div class="text-center group-title">
                         <button type="button" class="btn btn-success" id="add-new-group">
@@ -114,7 +113,7 @@
                         </button>
                     </div>
                 </li>
-            <?php } ?>
+            @endif
         </ul>
 
     </div>

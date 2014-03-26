@@ -47,6 +47,6 @@ importScript([
 			startLoading();
 		}, 5000);
 	}
-	   
+
 	return "done";
 });

@@ -32,6 +32,8 @@ class Misc extends REST_Controller {
             } else {
                 echo "OK";
             }
+        } else {
+            echo "No session was created.";            
         }
 
         return;

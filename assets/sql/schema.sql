@@ -85,6 +85,15 @@ CREATE TABLE `score` (
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
+CREATE TABLE `cache_es_data` (
+    `id` int(11) not null auto_increment,
+    `version_id` int(11) not null,
+    `query_id` int(11) not null,
+    `es_data` text,
+    `last_updated` timestamp default current_timestamp on update current_timestamp,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+
 INSERT INTO `administrator` (`id`, `email`) VALUES 
 ('1', 'wcheong@mozilla.com'     ),
 ('2', 'bbajaj@mozilla.com'      ),

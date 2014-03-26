@@ -30,17 +30,19 @@ ESQuery.DEBUG=false;
 // THESE ARE THE AVAILABLE ES INDEXES/TYPES
 ////////////////////////////////////////////////////////////////////////////////
 ESQuery.INDEXES={
-	"bugs":{"host":"http://elasticsearch7.metrics.scl3.mozilla.com:9200", "path":"/bugs/bug_version"},
+	"bugs":{"host":"http://elasticsearch-private.bugs.scl3.mozilla.com:9200", "path":"/private_bugs/bug_version"},
 	"public_bugs":{"host":"https://esfrontline.bugzilla.mozilla.org:443", "path":"/public_bugs/bug_version"},
-	"public_bugs_backend":{"host":"http://elasticsearch-zlb.bugs.scl3.mozilla.com:9200", "path":"/public_bugs/bug_version"},
+	"public_bugs_backend":{"host":"http://elasticsearch1.bugs.scl3.mozilla.com:9200", "path":"/public_bugs/bug_version"},
 	"public_bugs_proxy":{"host":"http://klahnakoski-es.corp.tor1.mozilla.com:9201", "path":"/public_bugs/bug_version"},
-	"private_bugs":{"host":"http://elasticsearch-private.bugs.scl3.mozilla.com:9200", "path":"/private_bugs/bug_version"},
-	"private_comments":{"host":"http://elasticsearch-private.bugs.scl3.mozilla.com:9200", "path":"/private_comments/bug_comment"},
+    "public_comments": {"host": "http://elasticsearch1.bugs.scl3.mozilla.com:9200", "path": "/public_comments/bug_comment"},
+    "private_bugs": {"host": "http://elasticsearch6.bugs.scl3.mozilla.com:9200", "path": "/private_bugs/bug_version"},
+	"private_comments":{"host":"http://elasticsearch4.bugs.scl3.mozilla.com:9200", "path":"/private_comments/bug_comment"},
 
 	"tor_bugs":{"host":"http://klahnakoski-es.corp.tor1.mozilla.com:9200", "path":"/bugs/bug_version"},
 	"tor_public_bugs":{"host":"http://klahnakoski-es.corp.tor1.mozilla.com:9200", "path":"/public_bugs/bug_version"},
 	"tor_private_bugs":{"host":"http://klahnakoski-es.corp.tor1.mozilla.com:9200", "path":"/private_bugs/bug_version"},
-	"bug_hierarchy":{"host":"http://klahnakoski-es.corp.tor1.mozilla.com:9200", "path":"/bug_hierarchy/bug_hierarchy"},
+
+	"bug_hierarchy":{"host":"http://elasticsearch-private.bugs.scl3.mozilla.com:9200", "path":"/bug_hierarchy/bug_hierarchy"},
 	//TODO: HAVE CODE SCAN SCHEMA FOR NESTED OPTIONS
 	"public_bugs.changes":{},
 	"public_bugs.attachments":{},
@@ -61,16 +63,16 @@ ESQuery.INDEXES={
 	"raw_telemetry":{"host":"http://klahnakoski-es.corp.tor1.mozilla.com:9200", "path":"/raw_telemetry/data"},
 
 	"talos":{"host":"http://klahnakoski-es.corp.tor1.mozilla.com:9200", "path":"/datazilla/results"},
-	"b2g_tests":{"host":"http://elasticsearch4.bugs.scl3.mozilla.com:9200", "path":"/b2g_tests/results"},
+    "b2g_tests_kyle":{"host":"http://klahnakoski-es.corp.tor1.mozilla.com:9200", "path":"/b2g_tests/results"},
+    "b2g_tests":{"host":"http://elasticsearch4.bugs.scl3.mozilla.com:9200", "path":"/b2g_tests/results"},
 
-	"perfy":{"host":"http://elasticsearch-private.bugs.scl3.mozilla.com:9200", "path":"/perfy/scores"},
+    "perfy": {"host": "http://elasticsearch-private.bugs.scl3.mozilla.com:9200", "path": "/perfy/scores"},
 	"local_perfy":{"host":"http://localhost:9200", "path":"/perfy/scores"}
 
-//	"raw_telemetry":{"host":"http://localhost:9200", "path":"/raw_telemetry/data"}
 };
 
-// Fallback to public cluster if private fails
-ESQuery.INDEXES.private_bugs.alternate = ESQuery.INDEXES.public_bugs;
+ESQuery.INDEXES.bugs.alternate = ESQuery.INDEXES.public_bugs;
+
 
 ESQuery.getColumns=function(indexName){
 	var index=ESQuery.INDEXES[indexName];
@@ -140,76 +142,64 @@ ESQuery.loadColumns=function*(query){
 	var indexName = null;
 	if (typeof(query) == 'string'){
 		indexName = query;
-	}else{
+	}else{//https://metrics.mozilla.com/bugzilla-analysis/es/images/Spreadsheet.png
 		indexName = query.from.split(".")[0];
 	}//endif
 
 	var indexInfo = ESQuery.INDEXES[indexName];
-	if (indexInfo.host===undefined) Log.error("must have host defined");
-	var indexPath=indexInfo.path;
-	if (indexName=="bugs" && !indexPath.endsWith("/bug_version")) indexPath+="/bug_version";
-	if (indexInfo.columns!==undefined)
-		yield(null);
 
 	//WE MANAGE ALL THE REQUESTS FOR THE SAME SCHEMA, DELAYING THEM IF THEY COME IN TOO FAST
 	if (indexInfo.fetcher === undefined) {
 		indexInfo.fetcher=Thread.run(function*(){
-			var URL=nvl(query.url, indexInfo.host + indexPath) + "/_mapping";
-			var path = parse.URL(URL).pathname.split("/").rightBut(1);
-			var pathLength = path.length - 1;  //ASSUME /indexname.../_mapping
+            currInfo=indexInfo;
+            var depth = 0;
+            var attempts=[];
+            var schemas=[];
+            var info=[];
 
-			try{
-				var schema = yield(Rest.get({
-					"url":URL,
-					"doNotKill":false        //WILL NEED THE SCHEMA EVENTUALLY
-				}));
-			} catch(e){
-				indexPath = indexInfo.alternate.path;
-				URL=nvl(query.url, indexInfo.alternate.host + indexPath) + "/_mapping";
-				path = parse.URL(URL).pathname.split("/").rightBut(1);
-				pathLength = path.length - 1;  //ASSUME /indexname.../_mapping
-				console.log( 'Executing fallback to ' + indexInfo.alternate.host + indexPath );
-				try{
-					var schema = yield(Rest.get({
-						"url":URL,
-						"doNotKill":false        //WILL NEED THE SCHEMA EVENTUALLY
-					}));
-				} catch(e){
-					if (e.contains(Thread.Interrupted)){
-						Log.warning("Tried to kill, but ignoring");
-						yield (Thread.suspend());
-					}//endif
-					Log.error("problem with call to load columns", e);
-				}
-			}//try
+            //TRY ALL HOSTS AND PATHS
+            while (currInfo!==undefined){
+                info[depth]=currInfo;
+                schemas[depth]=null;
+                (function(ii, d){
+                    attempts[d]=Thread.run(function*(){
+                        schemas[d]=yield (ESQuery.loadSchema(query, indexName, ii));
+                    });
+                })(currInfo, depth);
+                currInfo = currInfo.alternate;
+                depth++;
+            }//while
 
-			if (pathLength == 1){  //EG http://host/_mapping
-				//CHOOSE AN INDEX
-				prefix = URL.split("/")[3];
-				indicies = Object.keys(schema);
-				if (indicies.length == 1){
-					schema = schema[indicies[0]]
-				} else{
-					schema = mapAllKey(function(k, v){
-						if (k.startsWith(prefix)) return v;
-					})[0]
-				}//endif
-			}//endif
+            //FIND THE FIRST TO RESPOND
+            var schema = null;
+            while (schema==null){
+                var hope=false;
+                try{
+                    for(var s=0;s<schemas.length;s++){
+                        if (attempts[s].keepRunning || schemas[s]!=null){
+                            hope=true;
+                            yield (attempts[s].join(900));  //WE WILL ONLY WAIT FOR THE FIRST
+                        }//endif
+                    }//for
+                }catch(e){
+                    //DO NOTHING
+                }//try
+                if (!hope){
+                    yield (Exception("Can not locate any cluster"));
+                }//endif
 
-			if (pathLength <= 2){//EG http://host/indexname/typename/_mapping
-				var types = Object.keys(schema);
-				if (types.length == 1){
-					schema = schema[types[0]];
-				} else if (schema[indexPath.split("/")[2]] !== undefined){
-					schema = schema[indexPath.split("/")[2]];
-				} else{
-					schema = schema[types[0]];
-				}//endif
-			}//endif
+                for(var s=0;s<schemas.length;s++){
+                    if (schemas[s]!=null){
+                        currInfo = info[s];
+                        schema = schemas[s];
+                        break;
+                    }//endif
+                }//for
+            }//while
 
-			var properties = schema.properties
+            Map.copy(currInfo, indexInfo);
+			var properties = schema.properties;
 			indexInfo.columns = ESQuery.parseColumns(indexName, undefined, properties);
-
 			yield(null);
 		});
 	}//endif
@@ -217,6 +207,55 @@ ESQuery.loadColumns=function*(query){
 	yield (Thread.join(indexInfo.fetcher));
 	yield (null);
 };//method
+
+
+ESQuery.loadSchema=function*(query, indexName, indexInfo){
+    if (indexInfo.host===undefined) Log.error("must have host defined");
+   	var indexPath=indexInfo.path;
+   	if (indexName=="bugs" && !indexPath.endsWith("/bug_version")) indexPath+="/bug_version";
+   	if (indexInfo.columns!==undefined)
+   		yield(null);
+
+    var URL=nvl(query.url, indexInfo.host + indexPath) + "/_mapping";
+    var path = parse.URL(URL).pathname.split("/").rightBut(1);
+    var pathLength = path.length - 1;  //ASSUME /indexname.../_mapping
+
+    var schema = null;
+    try{
+        schema = yield(Rest.get({
+            "url":URL,
+            "doNotKill":true        //WILL NEED THE SCHEMA EVENTUALLY
+        }));
+    } catch(e){
+        Log.note("call to "+URL+" has failed");
+        yield (null)
+    }//try
+
+    if (pathLength == 1){  //EG http://host/_mapping
+        //CHOOSE AN INDEX
+        prefix = URL.split("/")[3];
+        indicies = Object.keys(schema);
+        if (indicies.length == 1){
+            schema = schema[indicies[0]]
+        } else{
+            schema = mapAllKey(function(k, v){
+                if (k.startsWith(prefix)) return v;
+            })[0]
+        }//endif
+    }//endif
+
+    if (pathLength <= 2){//EG http://host/indexname/typename/_mapping
+        var types = Object.keys(schema);
+        if (types.length == 1){
+            schema = schema[types[0]];
+        } else if (schema[indexPath.split("/")[2]] !== undefined){
+            schema = schema[indexPath.split("/")[2]];
+        } else{
+            schema = schema[types[0]];
+        }//endif
+    }//endif
+    yield (schema);
+};//function
 
 
 
@@ -364,12 +403,7 @@ ESQuery.prototype.compile = function(){
 
 	this.columns = Qb.compile(this.query, ESQuery.INDEXES[this.query.from.split(".")[0]].columns, true);
 
-
 	var esFacets;
-	if (this.columns[0].name=="Team"){
-		Log.note("");
-	}
-
 
 	//THESE SMOOTH EDGES REQUIRE ALL DATA (SETOP)
 	var extraSelect=[];
@@ -1260,7 +1294,9 @@ ESQuery.agg2es = {
 //PROCESS RESULTS FROM THE ES STATISTICAL FACETS
 ESQuery.prototype.statisticalResults = function(data){
 	var cube;
-	var agg=this.select.map(function(s){ return ESQuery.agg2es[s.aggregate];});
+    var agg = this.select.map(function (s) {
+        return ESQuery.agg2es[s.aggregate];
+    });
 	var agg0=agg[0];
 	var self=this;
 
@@ -1398,9 +1434,12 @@ ESQuery.prototype.compileSetOp=function(){
 
 
 	if (this.esMode=="fields"){
-		this.esQuery.size=200000;
+		this.esQuery.size=nvl(this.query.limit, 200000);
+        this.esQuery.sort = nvl(this.query.sort, []);
 		if (this.query.select.value!="_source"){
-			this.esQuery.fields=select.map(function(s){return s.value;});
+            this.esQuery.fields = select.map(function (s) {
+                return s.value;
+            });
 		}//endif
 	}else if (!isDeep && select.length==1 && MVEL.isKeyword(select[0].value)){
 		this.esQuery.facets.mvel={
@@ -1429,8 +1468,8 @@ ESQuery.prototype.fieldsResults=function(data){
 		for(var i = T.length; i--;){
 		    var record=T[i].fields
 			var new_rec={};
-			this.query.select.forall(function(s, i){
-				new_rec[s.name]=nvl(record[s.value], null);
+			this.query.select.forall(function(s, j){
+				new_rec[s.name]=nvl(record[s.value], T[i][s.value]);
 			});
 			o.push(new_rec)
 		}//for
@@ -1469,7 +1508,9 @@ ESQuery.prototype.mvelResults=function(data){
 	select=this.query.select;
 	if (select instanceof Array) return;
 	//SELECT AS NO ARRAY (AND NO EDGES) MEANS A SIMPLE ARRAY OF VALUES, NOT AN ARRAY OF OBJECTS
-	this.query.list=this.query.list.map(function(v, i){return v[select.name];});
+    this.query.list = this.query.list.map(function (v, i) {
+        return v[select.name];
+    });
 };//method
 
 

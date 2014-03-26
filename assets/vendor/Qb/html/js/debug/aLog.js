@@ -2,6 +2,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+
+importScript([
+    "../../lib/jquery.js",
+    "../../lib/jquery-ui/js/jquery-ui-1.10.2.custom.js",
+    "../../lib/jquery-ui/css/start/jquery-ui-1.10.2.custom.css"
+]);
 importScript("aException.js");
 
 

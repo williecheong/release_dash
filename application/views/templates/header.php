@@ -55,14 +55,21 @@
                         </span>
                     <?php } ?>
                 </div>
-                <?php if ( $this->session->userdata('email') ) { ?>
-                    <div class="navbar-collapse collapse">
-                        <div class="navbar-form navbar-right">
-                            <button class="btn btn-danger" id="user-logout">
-                                <i class="fa fa-sign-out fa-lg"></i> <?= $this->session->userdata('email'); ?>
-                            </button>
-                        </div>
-                    </div><!--/.navbar-collapse -->
+                <?php if ( $this->uri->segment(1) == 'for' || $this->session->userdata('email') ) { ?>
+                <div class="navbar-collapse collapse">
+                    <div class="navbar-form navbar-right">
+                    <?php if ( $this->uri->segment(1) == 'for' ) { ?>
+                        <a class="btn btn-default" href="/<?= uri_string(); ?>?refresh=1">
+                            <i class="fa fa-refresh"></i> Refresh
+                        </a>
+                    <?php } ?>
+                    <?php if ( $this->session->userdata('email') ) { ?>
+                        <button class="btn btn-danger" id="user-logout">
+                            <i class="fa fa-sign-out fa-lg"></i> <?= $this->session->userdata('email'); ?>
+                        </button>
+                    <?php } ?>
+                    </div>
+                </div><!--/.navbar-collapse -->
                 <?php } ?>
             </div>
         </div>

@@ -52,7 +52,7 @@ $autoload['packages'] = array();
 |	$autoload['libraries'] = array('database', 'session', 'xmlrpc');
 */
 
-$autoload['libraries'] = array('database', 'session', 'authentication');
+$autoload['libraries'] = array('database', 'session', 'authentication', 'blade');
 
 
 /*
@@ -109,7 +109,7 @@ $autoload['language'] = array();
 |
 */
 
-$autoload['model'] = array('product', 'channel', 'version', 'group', 'query', 'cycle', 'score', 'administrator', 'version_channel_cycle');
+$autoload['model'] = array('product', 'channel', 'version', 'group', 'query', 'cycle', 'score', 'administrator', 'cache_es_data', 'version_channel_cycle');
 
 
 /* End of file autoload.php */

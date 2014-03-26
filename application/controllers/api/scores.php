@@ -23,13 +23,13 @@ class Scores extends REST_Controller {
                 $this->score->update( array('version_id'    => $version_id),
                                       array('score_colour'  => $score,
                                             'last_updated'  => null)  );
-                echo 'OK - Score updated to '.$score.' for version '.$version_id.'.';
+                echo 'OK - Score updated to '.$score.' for version_id='.$version_id.'.';
             } else {
                 // Version does not have a score yet. Do insert
                 $new_score = array( 'version_id'    => $version_id,
                                     'score_colour'  => $score  );
                 $score_id = $this->score->create( $new_score );
-                echo 'OK - Score of '.$score.' insert for version '.$version_id.'.';
+                echo 'OK - Score of '.$score.' insert for version_id='.$version_id.'.';
             }
         } else {
             echo 'Missing version_id or score parameters.';
