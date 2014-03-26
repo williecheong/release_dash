@@ -39,7 +39,11 @@
         <div class="navbar navbar-inverse navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
-                    <?php if ( $this->session->userdata('email') ) { ?>
+                    <?php 
+                        // Boolean variable to determine whether or not a menu is needed
+                        $display_menu = ($this->uri->segment(1) == 'for' || $this->session->userdata('email')); 
+                    ?>
+                    <?php if ( $display_menu ) { ?>
                         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
@@ -55,21 +59,21 @@
                         </span>
                     <?php } ?>
                 </div>
-                <?php if ( $this->uri->segment(1) == 'for' || $this->session->userdata('email') ) { ?>
-                <div class="navbar-collapse collapse">
-                    <div class="navbar-form navbar-right">
-                    <?php if ( $this->uri->segment(1) == 'for' ) { ?>
-                        <a class="btn btn-default" href="/<?= uri_string(); ?>?refresh=1">
-                            <i class="fa fa-refresh"></i> Refresh
-                        </a>
-                    <?php } ?>
-                    <?php if ( $this->session->userdata('email') ) { ?>
-                        <button class="btn btn-danger" id="user-logout">
-                            <i class="fa fa-sign-out fa-lg"></i> <?= $this->session->userdata('email'); ?>
-                        </button>
-                    <?php } ?>
-                    </div>
-                </div><!--/.navbar-collapse -->
+                <?php if ( $display_menu ) { ?>
+                    <div class="navbar-collapse collapse">
+                        <div class="navbar-form navbar-right">
+                            <?php if ( $this->uri->segment(1) == 'for' ) { ?>
+                                <a class="btn btn-default" id="es-refresh" href="/<?= uri_string(); ?>?refresh=1">
+                                    <i class="fa fa-refresh"></i> Refresh
+                                </a>
+                            <?php } ?>
+                            <?php if ( $this->session->userdata('email') ) { ?>
+                                <button class="btn btn-danger" id="user-logout">
+                                    <i class="fa fa-sign-out fa-lg"></i> <?= $this->session->userdata('email'); ?>
+                                </button>
+                            <?php } ?>
+                        </div>
+                    </div><!--/.navbar-collapse -->
                 <?php } ?>
             </div>
         </div>
