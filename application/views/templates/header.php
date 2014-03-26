@@ -7,7 +7,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <link rel="shortcut icon" href="/assets/favicon.ico" type="image/x-icon">
+        <link rel="shortcut icon" href="/assets/img/<?= ENVIRONMENT; ?>.ico" type="image/x-icon">
         <link rel="icon" href="/assets/img/<?= ENVIRONMENT; ?>.ico" type="image/x-icon">
         <title>Release Readiness Dashboard<?= (isset($version) ? " :: ".$version : ""); ?></title>
         <meta name="description" content="A dashboard for monitoring the readiness of new releases for Mozilla products.">

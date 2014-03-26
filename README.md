@@ -124,6 +124,7 @@ Reach out to [Willie Cheong](http://williecheong.com) for undocumented problems.
 
 ## References
 - [CodeIgniter](http://ellislab.com/codeigniter): Server side PHP framework
+- [CI Blades](https://github.com/laperla/codeigniter-Blade): Laravel style blade templating on CodeIgniter
 - [CI RestServer](https://github.com/philsturgeon/codeigniter-restserver): Support for REST APIs on CodeIgniter
 - [Qb](https://github.com/klahnakoski/qb): Qb queries on Bugzilla's ElasticSearch clusters
 - [Persona](https://developer.mozilla.org/en-US/Persona): Email authentication service
