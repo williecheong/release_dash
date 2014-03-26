@@ -12,6 +12,9 @@
         $.each( coreData.groups, function( group_id, group_value ) {
             $.each( group_value.queries, function( query_id, query_value ) {
                 if ( query_value.es_data !== '' ) {
+                    // We have some es_data sent in from the server.
+                    // Use that instead of loading fresh data from ElasticSearch
+
                     coreData.groups[group_id].queries[query_id]['es_data'] = $.parseJSON( query_value.es_data );
                     // Checks for complete es_data through this group.
                     var dataInvalid = false;
@@ -27,6 +30,10 @@
                     }
 
                 } else {
+                    // The es_data field appears to be blank.
+                    // Server did not give us anything to load up
+                    // Go to the ElasticSearch cluster and pull fresh data
+
                     ESQueryRunner( 
                     $.parseJSON( query_value.qb_query ), 
                     function( response ){ // Executes after data is returned from ES.
@@ -49,6 +56,10 @@
                         if ( dataMissing === false ) {
                             // OK all data present in group. Let's roll!
                             executeAll( group_id );
+
+                            // Attempt to aggregate the score 
+                            // Only actually runs when all groups with rules are complete
+                            aggregateScores();
                         } else {
                             // Do nothing, probably still retrieving data
                             console.log("Not all data is ready for "+group_value.title+".");
@@ -78,10 +89,6 @@
 
         // Remove the Bugzilla chomping GIF icon
         removeLoader( 'g' + group_id );
-
-        // Attempt to aggregate the score 
-        // Only actually runs when all groups with rules are complete
-        aggregateScores();
     }
 
     function executePlot( group_id ) {
