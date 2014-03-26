@@ -25,6 +25,10 @@
                     if ( dataInvalid === false ) {
                         executeAll( group_id );
 
+                        //sets function parameter toSave = false
+                        var score = aggregateScores(false); 
+                        $('.rrscore').css('color', score);
+
                     } else {
                         console.log("Not all data is ready for "+group_value.title+".");
                     }
@@ -59,7 +63,9 @@
 
                             // Attempt to aggregate the score 
                             // Only actually runs when all groups with rules are complete
-                            aggregateScores();
+                            var score = aggregateScores();
+                            $('.rrscore').css('color', score);
+                            
                         } else {
                             // Do nothing, probably still retrieving data
                             console.log("Not all data is ready for "+group_value.title+".");
@@ -201,8 +207,13 @@
         coreData.groups[group_id].status = ruled;
     }
 
+    // Checks for whether or not all groups with rules have finished loading
+    // If all groups with rules are done, execute aggregation and return the score
+    // Accepts bool parameter (defaults to true) that specifies whether or not to save score 
     var aggregatedBefore = false;
-    function aggregateScores(){
+    function aggregateScores( toSave ){
+        if( typeof(toSave) === 'undefined' ) toSave = true;
+
         if ( !aggregatedBefore ) {
             var isComplete = true;
             $.each( coreData.groups, function( group_id, group ){
@@ -238,15 +249,23 @@
                     }
                 });
 
+                var score = '';
                 if ( greenCount > yellowCount && greenCount > redCount ){
-                    applyAggregate('lightgreen');
+                    score = 'lightgreen';
 
                 } else if ( yellowCount > redCount ) {
-                    applyAggregate('orange');
+                    score = 'orange';
                 
                 } else {
-                    applyAggregate('red');
+                    score = 'red';
                 }
+
+                // Did we specify that we didn't want to save when applying this score?
+                if ( toSave ) {
+                    saveAggregate(score)
+                }
+
+                return score;
             } // Not all rules have been executed yet. Do nothing
         }
     }
@@ -254,10 +273,8 @@
 /*****************************
     MAKE LIFE AWESOME FUNCTIONS
 *****************************/
-
-    function applyAggregate( score ) {
-        $('.rrscore').css('color', score);
-
+    
+    function saveAggregate( score ) { 
         $.ajax({
             url: '/api/scores',
             type: 'POST',
