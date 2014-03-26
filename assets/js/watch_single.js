@@ -5,11 +5,19 @@ jQuery(document).ready(function($) {
     *********************************/
         // Initializing duckster gridster
         var gridsterWidth = $('.gridster').width();
-        console.log(gridsterWidth);
-        $(".gridster ul").gridster({
-            widget_margins: [ gridsterWidth*0.009, gridsterWidth*0.009 ],
-            widget_base_dimensions: [ gridsterWidth*0.0925, gridsterWidth*0.0925 ]
-        });
+        if ( gridsterWidth  < 600 ){
+            // Mobile sized grids for single columns
+            $(".gridster ul").gridster({
+                widget_margins: [ gridsterWidth*0.027, gridsterWidth*0.027 ],
+                widget_base_dimensions: [ gridsterWidth*0.2775, gridsterWidth*0.2775 ]
+            });
+        } else {
+            // Desktop big screens for triple columns
+            $(".gridster ul").gridster({
+                widget_margins: [ gridsterWidth*0.009, gridsterWidth*0.009 ],
+                widget_base_dimensions: [ gridsterWidth*0.0925, gridsterWidth*0.0925 ]
+            });
+        }
 
         // Initializes the bootstrap modals
         $('.modal#new-group').modal({
