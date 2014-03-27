@@ -171,12 +171,12 @@
                     tempVal = $subject.find('div#container_'+ gridName +' select#'+ gridName +' option:selected').map(function(){return $(this).val();}).get() ;  
                     if ( tempVal.length > 0 ){
                         var terms = {};
-                        if ( gridName == 'bug_status' || gridName == 'resolution' ) {
-                            // bug_status works on lower case only
-                            $.each( tempVal, function( key, value ){
-                                tempVal[key] = value.toLowerCase();
-                            });
-                        }
+                        
+                        // search works on lower case only
+                        $.each( tempVal, function( key, value ){
+                            tempVal[key] = value.toLowerCase();
+                        });
+                        
                         terms[gridName] = tempVal;
                         esfilterObj.and.push( { "terms" : terms } );
                     }
@@ -367,7 +367,12 @@
                 }
 
                 try {
-                    esfilterObj.and.push( $.parseJSON(customParams) );    
+                    var customJson = JSON.parse(customParams);
+                    customJson = deleteEmpty( customJson );
+                    if ( customJson ) {
+                        esfilterObj.and.push( customJson );        
+                    }
+
                 } catch (e) {
                     alert( "Failed: Could not parse custom fields" );
                     console.log(customParams);
@@ -422,7 +427,7 @@
             if ( operator == 'equals' || operator == 'notequals' ) {
                 var inner = {};
 
-                inner[field] = value;
+                inner[field] = value.toLowerCase();
                 outer["term"] = inner;
                 if ( operator == 'notequals' ) {
                     outer = { "not" : outer };
@@ -434,6 +439,7 @@
                 value = value.replace(/ /g, '');
                 value = value.replace(/(,)+/g, ',');
                 value = value.replace(/(^,)|(,$)/g, '');
+                value = value.toLowerCase();
                 value = value.split(',');
 
                 inner[field] = value;
@@ -444,10 +450,10 @@
                 var inner = {};
                 
                 if ( operator == 'casesubstring' ) {
-                    inner[field] = '(' + value + ')+';
+                    inner[field] = '(' + value.toLowerCase() + ')+';
                 } else {
                     // Unable to use regex case insensitive => /.../i 
-                    inner[field] = '(' + value + ')+';
+                    inner[field] = '(' + value.toLowerCase() + ')+';
                 }
 
                 outer['regexp'] = inner;
@@ -459,6 +465,7 @@
                 value = value.replace(/ /g, '');
                 value = value.replace(/(,)+/g, ',');
                 value = value.replace(/(^,)|(,$)/g, '');
+                value = value.toLowerCase();
                 value = value.split(',');
 
                 var clause = 'and';
@@ -481,7 +488,7 @@
             } else if ( operator == 'regexp' || operator == 'matches' || operator == 'notregexp' || operator == 'notmatches' ) {
                 var inner = {};
                 
-                inner[field] = value;
+                inner[field] = value.toLowerCase();
                 outer["regexp"] = inner;
                 if ( operator == 'notregexp' || operator == 'notmatches' ) {
                     outer = { "not" : outer };
@@ -516,9 +523,9 @@
             } else if ( operator == 'changedto' || operator == 'changedfrom' ) {
                 var inner = {};
                 
-                inner = { "term" : {"changes.new_value":value} };
+                inner = { "term" : {"changes.new_value":value.toLowerCase()} };
                 if ( operator == 'changedfrom' ) {
-                    inner = { "term" : {"changes.old_value":value} };
+                    inner = { "term" : {"changes.old_value":value.toLowerCase()} };
                 }
 
                 outer = { 
@@ -550,13 +557,26 @@
                 var inner = {};
                 
                 // This should never happen
-                inner[field] = value;
+                inner[field] = value.toLowerCase();
                 outer[operator] = inner;
             }
             
             return outer;
         }
 
+
+    /*****************
+        Traverses through a json object and removes empty values and arrays
+        Reference: http://stackoverflow.com/questions/15451290/remove-element-from-json-object
+    *****************/    
+        function deleteEmpty(obj){
+            for(var k in obj)
+                if ( typeof obj[k] == "object" ) {
+                     deleteEmpty( obj[k] );
+                } else if ( obj[k].length == 0 ) {
+                   delete obj[k];
+            }
+        }
 
     /*****************
         Receives a date input extracted from Bugzilla
