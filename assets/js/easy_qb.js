@@ -369,7 +369,7 @@
                 try {
                     var customJson = JSON.parse(customParams);
                     customJson = deleteEmpty( customJson );
-                    if ( customJson ) {
+                    if ( !$.isEmptyObject(customJson) ) {
                         esfilterObj.and.push( customJson );        
                     }
 
@@ -569,13 +569,15 @@
         Traverses through a json object and removes empty values and arrays
         Reference: http://stackoverflow.com/questions/15451290/remove-element-from-json-object
     *****************/    
-        function deleteEmpty(obj){
-            for(var k in obj)
-                if ( typeof obj[k] == "object" ) {
-                     deleteEmpty( obj[k] );
-                } else if ( obj[k].length == 0 ) {
-                   delete obj[k];
-            }
+        function deleteEmpty( obj ){
+            $.each( obj, function(key, value){
+                if ( typeof value == "object" && value.length > 0 ) {
+                    deleteEmpty( value ); 
+                } else if ( value.length == 0 ) {
+                    delete obj[key];
+                }
+            });
+            return obj;
         }
 
     /*****************
