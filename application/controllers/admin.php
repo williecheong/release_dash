@@ -34,6 +34,39 @@ class Admin extends CI_Controller {
         $this->load->view( 'easy_qb' );
     }
 
+    // Updates the list of components in each product
+    public function update_components() {
+        // Grab all of the HTML content from this source.
+        $source = "https://api-dev.bugzilla.mozilla.org/latest/configuration";
+        $content = file_get_contents_via_curl( $source );
+        $config = json_decode($content, true);
+        
+        //  Find a list of all products
+        $products = $this->product->retrieve();
+        foreach ( $products as $product ) {
+            $components = array();
+            
+            // component names are stored in the BZ config array as keys
+            // loop and assign those keys as values in our component array
+            foreach( $config['product'][$product->title]['component'] as $component_name => $component ) {
+                $components[] = $component_name;
+            } 
+            // sort that components array by alphabetical order then join as CSV
+            asort($components);
+            $components = implode(',', $components);
+            
+            // put the components CSV into the database attached to the product row
+            $this->product->update( array('id'    => $product->id),
+                                    array('components'    => $components,
+                                          'last_updated'  => null)  );
+            
+            // Dump an indication on the screen on what has been updated
+            echo $product->title . ' components updated to: <br>';
+            echo $components . '<br><br>';
+        }
+        return;
+    }
+
     // Does nothing when new cycle is not found on external WIKI
     // Updates the end date if a cycle is found with same start date 
     //      Use case: Cycle extension / Delayed shipday

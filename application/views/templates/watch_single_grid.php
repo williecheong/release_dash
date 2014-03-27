@@ -2,14 +2,20 @@
 <li class="group<?= ($group['is_default'] ) ? ' is-default' : ''; ?>" id="g<?= $group_id; ?>" data-row="1" data-col="1" data-sizex="<?= ($type == 'make_plot')? 3 : min(2, count($group['queries'])); ?>" data-sizey="<?= ($type == 'make_plot')? 2 : 1; ?>">
     <?php /* Loads up the top menu and everything that should be in it */ ?>
     <div class="top-menu">
+        <?php /* Only administrators are allowed to see the group editing pencil */ ?>
         <?php if ( !$group['is_default']  && $this->session->userdata('email') ) { ?>
-            <?php /* Only administrators are allowed to see the group editing pencil */ ?>
-            <button class="btn btn-xs pull-right" id="edit-old-group" title="Edit" data-group-id="<?= $group_id; ?>">
+            <button class="btn btn-xs pull-right" id="edit-old-group" title="<i class='fa fa-pencil'></i> Edit group" data-group-id="<?= $group_id; ?>">
                 <i class="fa fa-pencil fa-lg"></i>
             </button>
         <?php } ?>
+        <?php /* Button that activates the modal for component breakdowns */ ?>
+        <?php if ( $group['enableComponents'] ) { ?>
+            <button class="btn btn-xs pull-right" id="get-component-breakdowns" title="<i class='fa fa-sitemap'></i> Components" data-group-id="<?= $group_id; ?>">
+                <i class="fa fa-sitemap fa-lg"></i>
+            </button>
+        <?php } ?>
         <?php /* Boilerplate for rules should be accessible to anyone who wishes to contribute a script */ ?>
-        <button class="btn btn-xs pull-right" id="get-rule-boilerplate" title="Rules" data-group-id="<?= $group_id; ?>">
+        <button class="btn btn-xs pull-right" id="get-rule-boilerplate" title="<i class='fa fa-tachometer'></i> Rules" data-group-id="<?= $group_id; ?>">
             <i class="fa fa-tachometer fa-lg"></i>
         </button>
         <?php foreach ( $group['queries'] as $query ) { ?>

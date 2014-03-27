@@ -9,6 +9,7 @@ CREATE TABLE `product` (
     `id` int(11) not null auto_increment,
     `tag` varchar(255) not null,   
     `title` varchar(255) not null,
+    `components` text,
     `last_updated` timestamp default current_timestamp on update current_timestamp,
     UNIQUE (`tag`),
     PRIMARY KEY (`id`)
@@ -101,10 +102,13 @@ INSERT INTO `administrator` (`id`, `email`) VALUES
 ('4', 'praghunath@mozilla.com'  ),
 ('5', 'sledru@mozilla.com'      );
 
-INSERT INTO `product` (`id`, `tag`, `title`) VALUES 
-('1', 'firefox', 'Firefox'),
-('2', 'fennec', 'Firefox for Android'),
-('3', 'b2g', 'Firefox OS');
+INSERT INTO `product` (`id`, `tag`, `title`, `components`) VALUES 
+('1', 'firefox', 'Firefox',
+    'Bookmarks & History,Build Config,Developer Tools,Developer Tools: 3D View,Developer Tools: App Manager,Developer Tools: Canvas Debugger,Developer Tools: Console,Developer Tools: Debugger,Developer Tools: Framework,Developer Tools: Graphic Commandline and Toolbar,Developer Tools: Inspector,Developer Tools: Memory,Developer Tools: Netmonitor,Developer Tools: Object Inspector,Developer Tools: Profiler,Developer Tools: Responsive Mode,Developer Tools: Scratchpad,Developer Tools: Source Editor,Developer Tools: Style Editor,Developer Tools: User Stories,Developer Tools: WebGL Shader Editor,Disability Access,Downloads Panel,Extension Compatibility,File Handling,General,Help Documentation,Installer,Keyboard Navigation,Location Bar,Menus,Microsummaries,Migration,PDF Viewer,Page Info Window,Panorama,Phishing Protection,Plugin Click-To-Activate Whitelist,Preferences,Private Browsing,RSS Discovery and Preview,Search,Security,Session Restore,Shell Integration,Shumway,SocialAPI,SocialAPI: Providers,Sync,Tabbed Browser,Theme,Toolbars and Customization,Untriaged,Web Apps,Webapp Runtime,WinQual Reports'),
+('2', 'fennec', 'Firefox for Android',
+    'Add-on Manager,Awesomescreen,Data Providers,Download Manager,General,Graphics, Panning and Zooming,JimDB,Keyboards and IME,Plugins,Readability,Reader Mode,Testing,Text Selection,Theme and Visual Design,Web Apps'),
+('3', 'b2g', 'Firefox OS', 
+    'AudioChannel,BetaTriage,Bluetooth,Emulator,FxA,Gaia,Gaia::Bluetooth File Transfer,Gaia::Browser,Gaia::Build,Gaia::Calendar,Gaia::Camera,Gaia::Clock,Gaia::Contacts,Gaia::Cost Control,Gaia::Dialer,Gaia::E-Mail,Gaia::Everything.me,Gaia::FMRadio,Gaia::First Time Experience,Gaia::Gallery,Gaia::GithubBot,Gaia::Homescreen,Gaia::Keyboard,Gaia::Loop,Gaia::Music,Gaia::Notes,Gaia::PDF Viewer,Gaia::PerformanceTest,Gaia::Ringtones,Gaia::SMS,Gaia::Search,Gaia::Settings,Gaia::System,Gaia::System::Browser Chrome,Gaia::System::Input Mgmt,Gaia::System::Lockscreen,Gaia::System::Window Mgmt,Gaia::TestAgent,Gaia::UI Tests,Gaia::Video,Gaia::Wallpaper,Gaia::Wappush,General,GonkIntegration,Hardware,NFC,Performance,RIL,RTSP,Runtime,Simulator,Vendcom,WMF,Wifi');
 
 INSERT INTO `version` (`id`, `tag`, `title`, `product_id`) VALUES
 ('1',  '25',   'Firefox 25',                '1'),

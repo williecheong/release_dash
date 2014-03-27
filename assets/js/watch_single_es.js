@@ -165,6 +165,15 @@
 
         var hoverDetail = new Rickshaw.Graph.HoverDetail( { graph: graph } );
         
+        /*
+        graph.onUpdate(function(){
+            $('.plot#g'+group_id+' svg').click(function(){
+                var dated = $('.rickshaw_graph#g'+group_id+' .detail .x_label').html();
+                alert(dated);
+            });
+        });
+        */
+
         graph.render();
         // End of graphing
     }

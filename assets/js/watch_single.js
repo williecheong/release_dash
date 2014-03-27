@@ -32,6 +32,10 @@ jQuery(document).ready(function($) {
             show : false
         });
 
+        $('.modal#component-breakdowns').modal({
+            show : false
+        });
+
     /*********************************
         SAVING NEW GROUPS AND QUERIES
     *********************************/
@@ -258,6 +262,25 @@ jQuery(document).ready(function($) {
 
             $('.modal#rule-boilerplate').modal('toggle');
         });
+
+    /*********************************
+        GETTING THE COMPONENT BREAKDOWN FOR GROUP
+    *********************************/
+        // Brings up the modal with the component breakdowns
+        $('.btn#get-component-breakdowns').click(function(){
+            var groupID = $(this).data('group-id');
+            
+            // Setting up the component breakdown modal
+            $('span#breakdown-group-title').html( coreData.groups[groupID].title );
+            $('.breakdown-graph .y-axis').html('');
+            $('.breakdown-graph .plot').html('');
+            // End of setting up the component breakdown modal
+
+            
+            
+            $('.modal#component-breakdowns').modal('toggle');
+        });
+
 
     /*****************************
         MAKE LIFE AWESOME FUNCTIONS

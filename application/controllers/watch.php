@@ -36,8 +36,9 @@ class Watch extends CI_Controller {
         $data = array();
         $data['id'] = $version->id;
         $data['title'] = $version->title;
-        $data['product'] = array(   'id'      => $product->id,
-                                    'versions'=> $this->version->retrieve(array('product_id'=>$product->id))  );
+        $data['product'] = array(   'id'         => $product->id,
+                                    'components' => $product->components,
+                                    'versions'   => $this->version->retrieve(array('product_id'=>$product->id))  );
         $data['channel'] = $this->channel->for_version( $version->id );
         $data['groups'] = array();
 
@@ -86,6 +87,7 @@ class Watch extends CI_Controller {
             $by_group = array( 'group_id' => $group->id );
             $queries = $this->query->retrieve( $by_group );
 
+            $count_main_queries = 0;
             foreach ( $queries as $query ) {
                 if ( is_null($query->references) || empty($query->references) ){
                     // This query is a standard non-reference one
@@ -109,6 +111,8 @@ class Watch extends CI_Controller {
                     $data['groups'][$group->id]['queries'][$query->id]['bz_query']    = $query_bugzilla;
                     $data['groups'][$group->id]['queries'][$query->id]['is_reference']= false;
                     $data['groups'][$group->id]['queries'][$query->id]['es_data']     = ($hard_refresh == 1) ? '' : $this->cache_es_data->retrieve_valid_cache($query->id,$version->id);
+
+                    $count_main_queries++;
 
                 } else {
                     // This query is a reference one. It references a parent query.
@@ -146,9 +150,12 @@ class Watch extends CI_Controller {
                     $data['groups'][$group->id]['queries'][$query->id]['ref_query']   = $parent_id;
                     $data['groups'][$group->id]['queries'][$query->id]['ref_version'] = $ref_version_id;
                     $data['groups'][$group->id]['queries'][$query->id]['es_data']     = ($hard_refresh == 1) ? '' : $this->cache_es_data->retrieve_valid_cache($query->id,$version->id);
-                       
                 }
             }
+            // Done looping and loading the queries into the group
+            // If group only has one query (excluding any references), enable component breakdown view
+            $data['groups'][$group->id]['enableComponents'] = ($count_main_queries == 1) ? true : false ;
+
         }
 
         return $data;
