@@ -60,7 +60,7 @@ Change logs, progress updates and latest developments on [this spreadsheet](http
 - Considerations when using the Bugzilla Advanced Search interface:
     - Try to decompose compound searches like "?,+" into separate searches
     - Delimit terms with commas `,` if compound search cannot be decomposed
-    - Comparison fields that work well:
+    - Comparison operands that will work well:
         - is equal to
         - is not equal to
         - is equal to any of the strings
@@ -71,7 +71,7 @@ Change logs, progress updates and latest developments on [this spreadsheet](http
         - is greater than or equal to
         - is empty
         - is not empty
-    - The following fields are case insensitive on Bugzilla, but Elasticsearch is unable to ignore casing in its searches. As a result, these comparisons will work only with alpha-numeric searches and match when case is the same as stored in the cluster.
+    - Comparison operands that should work:
         - contains the string
         - does not contain the string
         - contains any of the strings
@@ -80,7 +80,7 @@ Change logs, progress updates and latest developments on [this spreadsheet](http
         - contains any of the words
         - contains all of the words
         - contains none of the words
-    - Untested comparison fields (best to avoid):
+    - Untested comparison operands (best to avoid):
         - matches regular expression
         - does not match regular expression
         - changed before

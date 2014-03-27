@@ -1,6 +1,9 @@
 /*************************************
     ES RETRIEVAL
 *************************************/
+    // Contains all group specific options for aggregating release readiness score
+    var aggregateOptions = {};
+
     // Called after ESQueryRunner.js has finished importing scripts
     // Loop through every group, and for each query in the group
     //      Execute the Qb query against ElasticSearch one at a time
