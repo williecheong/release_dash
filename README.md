@@ -71,7 +71,9 @@ Change logs, progress updates and latest developments on [this spreadsheet](http
         - is greater than or equal to
         - is empty
         - is not empty
-    - Comparison operands that should work:
+    - Comparison operands that work with alpha-numeric strings:
+    - Note: Uses ES regex and are unfriendly towards special characters
+    - I.e. "?", "+", "-", "@", etc 
         - contains the string
         - does not contain the string
         - contains any of the strings

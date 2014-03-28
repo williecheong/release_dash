@@ -93,6 +93,8 @@
     PROVIDES INDICATION WHEN COMPLETED
 *************************************/
     function loadComponentData( group_id ){
+        var components = coreData['product'].components;
+
         // Temporarily missing
         setTimeout(function() {
             $('.breakdown-table').removeClass('not-ready').html('<span class="lead">READY</span>')
