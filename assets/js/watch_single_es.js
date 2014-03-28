@@ -163,7 +163,12 @@
             element     : document.querySelector('.y-axis#g'+group_id)
         });
 
-        var hoverDetail = new Rickshaw.Graph.HoverDetail( { graph: graph } );
+        var hoverDetail = new Rickshaw.Graph.HoverDetail({ 
+            graph: graph,
+            xFormatter: function(x){
+                return new Date( x * 1000 ).toDateString();
+            }
+        });
         
         /*
         graph.onUpdate(function(){

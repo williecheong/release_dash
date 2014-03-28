@@ -2023,7 +2023,7 @@ Rickshaw.Graph.HoverDetail = Rickshaw.Class.create({
 		};
 
 		this.yFormatter = args.yFormatter || function(y) {
-			return y === null ? y : y.toFixed(2);
+			return y === null ? y : y.toFixed();
 		};
 
 		var element = this.element = document.createElement('div');

@@ -1,7 +1,7 @@
 /* ==========================================================================
     Author's custom styles
     ========================================================================== */
-
+    
     .rrscore { 
         cursor: default;
     }
@@ -77,6 +77,14 @@
         position: absolute;
         top: 0;
         bottom: 0;
+    }
+
+    .breakdown-plot {
+        position: relative;
+    }
+
+    .breakdown-y-axis {
+        position: absolute;
     }
 
     .rickshaw_legend .label {
