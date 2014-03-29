@@ -148,32 +148,6 @@
                 </div>
                 
                 <div class="well well-sm breakdown-table">
-                    <table class="table table-hover table-condensed">
-                        <thead>
-                            <tr>
-                                <th>
-                                    Ranking
-                                </th>
-                                <th>
-                                    Component
-                                </th>
-                                <th>
-                                    Bug count
-                                </th>
-                                <th>
-                                    % of total
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Gaia::Settings</td>
-                                <td>61</td>
-                                <td>100%</td>
-                            </tr>
-                        </tbody>
-                    </table>
                 </div>
             </div>
         </div>

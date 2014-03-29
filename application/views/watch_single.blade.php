@@ -21,6 +21,7 @@
             <script src="/assets/vendor/rickshaw/vendor/d3.min.js"></script>
             <script src="/assets/vendor/rickshaw/vendor/d3.layout.min.js"></script>
             <script src="/assets/vendor/rickshaw/rickshaw.js"></script>
+            <script src="/assets/vendor/sorttable/sorttable.js"></script>
             <script>var coreData = '. json_encode($data) .'</script>
             <script src="/assets/js/watch_single_breakdown.js"></script>
             <script src="/assets/js/watch_single_es.js"></script>
