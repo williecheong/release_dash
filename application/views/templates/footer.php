@@ -62,6 +62,19 @@
                                     Retrieves a list of components for each product from Bugzilla and updates the database. List is used for generating "breakdown by component" views on groups.
                                 </p>
                             </div>
+                            <div class="list-group-item">
+                                <h4 class="list-group-item-heading">
+                                    <button class="btn btn-default btn-xs pull-right" data-mytoggler=".navigation-description#help">
+                                        <i class="fa fa-toggle-down"></i>
+                                    </button>
+                                    <a href="/help">
+                                        User manual
+                                    </a>
+                                </h4>
+                                <p class="list-group-item-text navigation-description" id="help">
+                                    Some references/tutorials to help you get started. Recommended for newbies, kittens, puppies, and bored advanced-users.
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -34,6 +34,11 @@ class Admin extends CI_Controller {
         $this->load->view( 'easy_qb' );
     }
 
+    // Brings up the user manual
+    public function help(){
+        $this->load->view( 'help' );
+    }
+
     // Updates the list of components in each product
     public function update_components() {
         // Grab all of the HTML content from this source.
