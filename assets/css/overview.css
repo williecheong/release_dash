@@ -7,10 +7,6 @@
         padding: 1%;
         border: 1px lightgray dashed;
     }
-     
-    textarea {
-        resize: vertical;
-    }
 
     div.versions {
         display: none;

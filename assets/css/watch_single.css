@@ -21,10 +21,6 @@
         display: block;
     }
 
-    textarea {
-        resize: vertical;
-    }
-
     form div.new-query, form div.old-query {
         margin: 0.2%;
         padding: 1%;
