@@ -121,9 +121,28 @@
 /* END OF GRIDSTER STYLES */
 /*****************************************/
 
+/**********************************/
+/* SORTTABLE STYLES */
 
+table#sortable th:not(.sorttable_sorted):not(.sorttable_sorted_reverse):after { 
+    content: "  " 
+}
 
+table#sortable tbody {
+    counter-reset: sortabletablescope;
+}
+table#sortable thead tr::before {
+    content: "";
+    display: table-cell;
+}
+table#sortable tbody tr::before {
+    content: counter(sortabletablescope);
+    counter-increment: sortabletablescope;
+    display: table-cell;
+}
 
+/* END OF SORTTABLE STYLES */
+/*****************************************/
 
 
 

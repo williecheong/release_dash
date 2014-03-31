@@ -275,7 +275,7 @@ jQuery(document).ready(function($) {
             $('span#breakdown-group-title').html( coreData.groups[groupID].title );
             $('.breakdown-graph .breakdown-y-axis').html('');
             $('.breakdown-graph .breakdown-plot').html('');
-            $('.breakdown-table').addClass('text-center').addClass('not-ready').html('<img src="/assets/img/mozchomp.gif">');
+            $('.breakdown-table').addClass('text-center').addClass('not-ready').html('<img src="/assets/img/mozchomp.gif"><div class="breakdown-loading"></div>');
             // End of setting up the component breakdown modal
 
             $('.modal#component-breakdowns').modal('toggle');
