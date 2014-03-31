@@ -1,11 +1,81 @@
+        <!-- Modal for viewing navigation menu -->
+        <div class="modal fade" id="navigation-menu" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">
+                            Navigation menu
+                        </h4>
+                    </div>
+                    <div class="modal-body"> 
+                        <div class="list-group">
+                            <div class="list-group-item">
+                                <h4 class="list-group-item-heading">
+                                    <button class="btn btn-default btn-xs pull-right" data-mytoggler=".navigation-description#overview">
+                                        <i class="fa fa-toggle-down"></i>
+                                    </button>
+                                    <a href="/">
+                                        Overview
+                                    </a>
+                                </h4>
+                                <p class="list-group-item-text navigation-description" id="overview">
+                                    Provides a high level view of all active versions. Also displays the last known release readiness score for each active versions.
+                                </p>
+                            </div>
+                            <div class="list-group-item">
+                                <h4 class="list-group-item-heading">
+                                    <button class="btn btn-default btn-xs pull-right" data-mytoggler=".navigation-description#admin">
+                                        <i class="fa fa-toggle-down"></i>
+                                    </button>
+                                    <a href="/admin">
+                                        Administration
+                                    </a>
+                                </h4>
+                                <p class="list-group-item-text navigation-description" id="admin">
+                                    Login using Persona. Grants privileges to modify groups and queries. For admin permissions, contact responsible team and ask to be added into the white-list.
+                                </p>
+                            </div>
+                            <div class="list-group-item">
+                                <h4 class="list-group-item-heading">
+                                    <button class="btn btn-default btn-xs pull-right" data-mytoggler=".navigation-description#easy_qb">
+                                        <i class="fa fa-toggle-down"></i>
+                                    </button>
+                                    <a href="/admin/easy_qb">
+                                        Qb query builder
+                                    </a>
+                                </h4>
+                                <p class="list-group-item-text navigation-description" id="easy_qb">
+                                    Translation tool for converting a Bugzilla URL into Qb queries. Use this when creating groups and queries on the dashboard.
+                                </p>
+                            </div>
+                            <div class="list-group-item">
+                                <h4 class="list-group-item-heading">
+                                    <button class="btn btn-default btn-xs pull-right" data-mytoggler=".navigation-description#update_components">
+                                        <i class="fa fa-toggle-down"></i>
+                                    </button>
+                                    <a href="/admin/update_components">
+                                        Update components
+                                    </a>
+                                </h4>
+                                <p class="list-group-item-text navigation-description" id="update_components">
+                                    Retrieves a list of components for each product from Bugzilla and updates the database. List is used for generating "breakdown by component" views on groups.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>        
+
         <!-- Footer -->
         <div class="container">
             <hr>
             <footer>
                 <p>&copy; Mozilla - Release Management <?= date("Y"); ?> </p>
             </footer>
-        </div>
-        <!-- /.footer -->
+        </div><!-- /.footer -->
+        
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
         <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/qtip2/2.2.0/basic/jquery.qtip.min.js"></script>
