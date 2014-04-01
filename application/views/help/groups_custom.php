@@ -20,7 +20,7 @@
         </p>
         <strong>References</strong>
         <p>
-            A reference line may be added to the query. This will include an additional plot/number in the dashboard's visualizations that allows users to compare the current data with a prior versions in the corresponding time periods. I.e. Day 5 of current version N is always compared with Day 5 of version N-n. Note that <a href="#groups_tags">soft tags</a> must be used when creating queries with reference lines.
+            A reference line may be added to the query. This will include an additional plot/number (colored with a lighter shade) in the dashboard's visualizations that allows users to compare the current data with a prior versions in the corresponding time periods. I.e. Day 5 of current version N is always compared with Day 5 of version N-n. Note that <a href="#groups_tags">soft tags</a> must be used when creating queries with reference lines.
         </p>
         <strong>Bugzilla URL</strong>
         <p>

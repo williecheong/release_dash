@@ -8,7 +8,7 @@
         </p>
         <strong>Differences from custom groups</strong>
         <p>
-            Because a single default group applies to many different versions, context must be adapted accordingly for the displayed group to provide relevant content. For this purpose, <a href="#groups_tags">soft tags</a> must be used in the entries when creating default groups. Reference lines as described for <a href="#groups_custom">custom groups</a> are also currently unavailable for default groups.
+            Because a default group applies to many different versions, field values must be adapted accordingly for the displayed group to provide contextually relevant content. For this purpose, <a href="#groups_tags">soft tags</a> must be used in the entries when creating default groups. Reference lines as described for <a href="#groups_custom">custom groups</a> are also currently unavailable for default groups.
         </p>
     </div>
 </div>
