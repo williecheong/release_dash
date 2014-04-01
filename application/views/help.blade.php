@@ -12,9 +12,9 @@
         <div class="col-md-9">
             @foreach ($sections as $section_tag => $section)
                 <div class="section">
-                    <h2 id="{{ $section_tag }}">{{ $section['name'] }}</h2>
+                    <h1 id="{{ $section_tag }}">{{ $section['name'] }}</h1>
                     @foreach ( $section['children'] as $child_tag => $child_name )
-                        <h4 id="{{ $section_tag.'_'.$child_tag }}">{{ $child_name }}</h4>
+                        <h3 id="{{ $section_tag.'_'.$child_tag }}">{{ $child_name }}</h3>
                         @if ( file_exists(FCPATH.'application/views/help/'.$section_tag.'_'.$child_tag.'.php') )
                             <?php $this->load->view('help/'.$section_tag.'_'.$child_tag); ?>
                         @endif 

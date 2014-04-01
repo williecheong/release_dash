@@ -50,7 +50,7 @@ class Admin extends CI_Controller {
                 'children' => array(
                     'what'      => 'What is this?',
                     'where'     => 'Where to find?',
-                    'rules'     => 'Rules for Scoring',
+                    'rules'     => 'Computing Scores',
                 )
             ),
             'groups' => array(
