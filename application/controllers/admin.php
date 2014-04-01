@@ -39,15 +39,36 @@ class Admin extends CI_Controller {
         $sections = array(
             'intro' => array(
                 'name'   => 'Introduction',
-                'children' => array(
-                    'why' => 'Why is this awesome?'
+                'children'  => array(
+                    'what'        => 'What is this?',
+                    'who'         => 'Who uses this?',
+                    'get_started' => 'Getting Started'
                 )
             ),
-            'gq' => array(
-                'name'   => 'Groups of Queries',
+            'scores' => array(
+                'name'   => 'Release Readiness Score',
                 'children' => array(
-                    'how_to_make_group' => 'How to make a group?',
-                    'tips_and_tricks'   => 'Tips and tricks'
+                    'what'      => 'What is this?',
+                    'where'     => 'Where to find?',
+                    'rules'     => 'Rules for Scoring',
+                )
+            ),
+            'groups' => array(
+                'name'  => 'Groups',
+                'children' => array(
+                    'what'      => 'What is this?',
+                    'custom'    => 'Custom Groups',
+                    'default'   => 'Default Groups',
+                    'tags'      => 'Soft Tagging',
+                    'components'=> 'Components',
+                    'cache'     => 'Quick Load'
+                )
+            ),
+            'qb'    => array(
+                'name'  => 'Qb queries',
+                'children' => array(
+                    'what'      => 'What is this?',
+                    'builder'   => 'Translate BZ to Qb'
                 )
             )
         );
