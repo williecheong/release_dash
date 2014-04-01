@@ -36,7 +36,7 @@ class Admin extends CI_Controller {
 
     // Brings up the user manual
     public function help(){
-        $this->load->view( 'help' );
+        $this->blade->render('help');
     }
 
     // Updates the list of components in each product

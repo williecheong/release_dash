@@ -33,18 +33,11 @@
         <div class="navbar navbar-inverse navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
-                    
-                    <?php 
-                        // Boolean variable to determine whether or not a menu is needed
-                        $display_menu = ($this->uri->segment(1) == 'for' || $this->session->userdata('email')); 
-                    ?>
-                    <?php if ( $display_menu ) { ?>
-                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                    <?php } ?>
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
                     <a class="navbar-brand" href="/">
                         RRDashboard
                     </a>
