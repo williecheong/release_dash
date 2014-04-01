@@ -5,23 +5,6 @@
     );
 
     $this->load->view('templates/header', $include);
-
-    $sections = array(
-        'intro' => array(
-            'name'   => 'Introduction',
-            'children' => array(
-                'why' => 'Why is this awesome?'
-            )
-        ),
-        'gq' => array(
-            'name'   => 'Groups of Queries',
-            'children' => array(
-                'how_to_make_group' => 'How to make a group?',
-                'tips_and_tricks'   => 'Tips and tricks'
-            )
-        )
-    );
-
 ?>
 
 <div class="container">

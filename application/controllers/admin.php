@@ -35,8 +35,24 @@ class Admin extends CI_Controller {
     }
 
     // Brings up the user manual
-    public function help(){
-        $this->blade->render('help');
+    public function help(){        
+        $sections = array(
+            'intro' => array(
+                'name'   => 'Introduction',
+                'children' => array(
+                    'why' => 'Why is this awesome?'
+                )
+            ),
+            'gq' => array(
+                'name'   => 'Groups of Queries',
+                'children' => array(
+                    'how_to_make_group' => 'How to make a group?',
+                    'tips_and_tricks'   => 'Tips and tricks'
+                )
+            )
+        );
+
+        $this->blade->render('help', array('sections'=>$sections));
     }
 
     // Updates the list of components in each product
