@@ -45,7 +45,7 @@
                 </div>
                 <?php /* The button that links externally to github for references on soft tags */ ?>
                 <div class="well well-sm">
-                    <a class="btn btn-xs btn-default" href="https://github.com/williecheong/release_dash#groups-of-queries" style="width:100%;">
+                    <a class="btn btn-xs btn-default" href="/help#groups_tags" style="width:100%;">
                         References for Soft Tags
                     </a>
                 </div>    
