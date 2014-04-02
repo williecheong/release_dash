@@ -393,6 +393,7 @@
         function fovQb( field, operator, value ){    
             /*********************
             // Possible values for operator
+                x "exact"             => is (found in emailing columns)
                 x "equals"            => is equal to
                 x "notequals"         => is not equal to
                 x "anyexact"          => is equal to any of the strings
@@ -423,11 +424,12 @@
             // End of possible values for operator
             *********************/
             var outer = {};
-
-            if ( operator == 'equals' || operator == 'notequals' ) {
+            value = value.toLowerCase().trim();
+            
+            if ( operator == 'equals' || operator == 'notequals' || operator == 'exact' ) {
                 var inner = {};
 
-                inner[field] = value.toLowerCase();
+                inner[field] = value;
                 outer["term"] = inner;
                 if ( operator == 'notequals' ) {
                     outer = { "not" : outer };
@@ -439,7 +441,6 @@
                 value = value.replace(/ /g, '');
                 value = value.replace(/(,)+/g, ',');
                 value = value.replace(/(^,)|(,$)/g, '');
-                value = value.toLowerCase();
                 value = value.split(',');
 
                 inner[field] = value;
@@ -450,10 +451,10 @@
                 var inner = {};
                 
                 if ( operator == 'casesubstring' ) {
-                    inner[field] = '(' + value.toLowerCase() + ')+';
+                    inner[field] = '(' + value + ')+';
                 } else {
                     // Unable to use regex case insensitive => /.../i 
-                    inner[field] = '(' + value.toLowerCase() + ')+';
+                    inner[field] = '(' + value + ')+';
                 }
 
                 outer['regexp'] = inner;
@@ -465,7 +466,6 @@
                 value = value.replace(/ /g, '');
                 value = value.replace(/(,)+/g, ',');
                 value = value.replace(/(^,)|(,$)/g, '');
-                value = value.toLowerCase();
                 value = value.split(',');
 
                 var clause = 'and';
@@ -488,7 +488,7 @@
             } else if ( operator == 'regexp' || operator == 'matches' || operator == 'notregexp' || operator == 'notmatches' ) {
                 var inner = {};
                 
-                inner[field] = value.toLowerCase();
+                inner[field] = value;
                 outer["regexp"] = inner;
                 if ( operator == 'notregexp' || operator == 'notmatches' ) {
                     outer = { "not" : outer };
@@ -523,9 +523,9 @@
             } else if ( operator == 'changedto' || operator == 'changedfrom' ) {
                 var inner = {};
                 
-                inner = { "term" : {"changes.new_value":value.toLowerCase()} };
+                inner = { "term" : {"changes.new_value":value} };
                 if ( operator == 'changedfrom' ) {
-                    inner = { "term" : {"changes.old_value":value.toLowerCase()} };
+                    inner = { "term" : {"changes.old_value":value} };
                 }
 
                 outer = { 
@@ -557,7 +557,7 @@
                 var inner = {};
                 
                 // This should never happen
-                inner[field] = value.toLowerCase();
+                inner[field] = value;
                 outer[operator] = inner;
             }
             

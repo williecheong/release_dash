@@ -9,6 +9,7 @@ CREATE TABLE `product` (
     `id` int(11) not null auto_increment,
     `tag` varchar(255) not null,   
     `title` varchar(255) not null,
+    `components` text,
     `last_updated` timestamp default current_timestamp on update current_timestamp,
     UNIQUE (`tag`),
     PRIMARY KEY (`id`)
@@ -101,10 +102,13 @@ INSERT INTO `administrator` (`id`, `email`) VALUES
 ('4', 'praghunath@mozilla.com'  ),
 ('5', 'sledru@mozilla.com'      );
 
-INSERT INTO `product` (`id`, `tag`, `title`) VALUES 
-('1', 'firefox', 'Firefox'),
-('2', 'fennec', 'Firefox for Android'),
-('3', 'b2g', 'Firefox OS');
+INSERT INTO `product` (`id`, `tag`, `title`, `components`) VALUES 
+('1', 'firefox', 'Firefox',
+    'Bookmarks & History,Build Config,Developer Tools,Developer Tools: 3D View,Developer Tools: App Manager,Developer Tools: Canvas Debugger,Developer Tools: Console,Developer Tools: Debugger,Developer Tools: Framework,Developer Tools: Graphic Commandline and Toolbar,Developer Tools: Inspector,Developer Tools: Memory,Developer Tools: Netmonitor,Developer Tools: Object Inspector,Developer Tools: Profiler,Developer Tools: Responsive Mode,Developer Tools: Scratchpad,Developer Tools: Source Editor,Developer Tools: Style Editor,Developer Tools: User Stories,Developer Tools: WebGL Shader Editor,Disability Access,Downloads Panel,Extension Compatibility,File Handling,General,Help Documentation,Installer,Keyboard Navigation,Location Bar,Menus,Microsummaries,Migration,PDF Viewer,Page Info Window,Panorama,Phishing Protection,Plugin Click-To-Activate Whitelist,Preferences,Private Browsing,RSS Discovery and Preview,Search,Security,Session Restore,Shell Integration,Shumway,SocialAPI,SocialAPI: Providers,Sync,Tabbed Browser,Theme,Toolbars and Customization,Untriaged,Web Apps,Webapp Runtime,WinQual Reports'),
+('2', 'fennec', 'Firefox for Android',
+    'Add-on Manager,Awesomescreen,Data Providers,Download Manager,General,Graphics, Panning and Zooming,JimDB,Keyboards and IME,Plugins,Readability,Reader Mode,Testing,Text Selection,Theme and Visual Design,Web Apps'),
+('3', 'b2g', 'Firefox OS', 
+    'AudioChannel,BetaTriage,Bluetooth,Emulator,FxA,Gaia,Gaia::Bluetooth File Transfer,Gaia::Browser,Gaia::Build,Gaia::Calendar,Gaia::Camera,Gaia::Clock,Gaia::Contacts,Gaia::Cost Control,Gaia::Dialer,Gaia::E-Mail,Gaia::Everything.me,Gaia::FMRadio,Gaia::First Time Experience,Gaia::Gallery,Gaia::GithubBot,Gaia::Homescreen,Gaia::Keyboard,Gaia::Loop,Gaia::Music,Gaia::Notes,Gaia::PDF Viewer,Gaia::PerformanceTest,Gaia::Ringtones,Gaia::SMS,Gaia::Search,Gaia::Settings,Gaia::System,Gaia::System::Browser Chrome,Gaia::System::Input Mgmt,Gaia::System::Lockscreen,Gaia::System::Window Mgmt,Gaia::TestAgent,Gaia::UI Tests,Gaia::Video,Gaia::Wallpaper,Gaia::Wappush,General,GonkIntegration,Hardware,NFC,Performance,RIL,RTSP,Runtime,Simulator,Vendcom,WMF,Wifi');
 
 INSERT INTO `version` (`id`, `tag`, `title`, `product_id`) VALUES
 ('1',  '25',   'Firefox 25',                '1'),
@@ -165,10 +169,11 @@ INSERT INTO `group` (`id`, `title`, `entity`, `entity_id`, `is_plot`, `is_number
 ('2', 'Unresolved',                     'product', '1', '1', '0'),
 ('3', 'Crashers',                       'product', '1', '1', '0'),
 ('4', 'Regressions',                    'product', '1', '1', '0'),
-('5', 'Nominations(Default)',                    'product', '3', '1', '0'),
-('6', 'Blockers(Default)',                       'product', '3', '1', '0'),
+('5', 'Nominations (Default)',          'product', '3', '1', '0'),
+('6', 'Blockers (Default)',             'product', '3', '1', '0'),
 ('7', 'Blocking Regressions for 1.4',   'version', '15','1', '0'),
-('8', 'Nominated Bugs for 1.4',  'version', '15','1', '0');
+('8', 'Nominated Bugs for 1.4',         'version', '15','1', '0'),
+('9', 'Unassigned Blockers',            'version', '15','1', '0');
 
 INSERT INTO `query` (`id`, `title`, `group_id`, `colour`, `references`, `query_qb`, `query_bz`) VALUES
 ('1', '# Bugs tracking <version_title>',                 '1', 'rgb(194, 127, 127)', '',
@@ -219,7 +224,9 @@ INSERT INTO `query` (`id`, `title`, `group_id`, `colour`, `references`, `query_q
 
 ('12','# Nominations for Blockers ref. <version_title>', '8', '#a6a6a6', '11,12',
     '',
-    '' );
+    '' ),
 
-
+('13','Unassigned blockers',                             '9', '#333333', '',
+    '{"from": "public_bugs","select": {"name": "num","value": "bug_id","aggregate": "count"},"esfilter": {"and": [{"terms": {"bug_status": ["unconfirmed","new","assigned","reopened"]}},{"or": [{"term": {"assigned_to": "nobody@mozilla.org"}}]},{"or": [{"regexp": {"assigned_to": "(nobody@mozilla.org)+"}}]},{"or": [{"regexp": {"assigned_to": "(nobody@mozilla.org)+"}}]},{"or": [{"term": {"cf_blocking_b2g": "1.4+"}}]}]},"edges": [{"range": {"min": "modified_ts","max": "expires_on"},"domain": {"type": "date","min": @birthday,"max": @timestamp,"interval": "day"}}]}',
+    'https://bugzilla.mozilla.org/buglist.cgi?j_top=OR&emailtype3=substring&f1=cf_blocking_b2g&emailtype2=substring&email3=nobody%40mozilla.org&emailassigned_to3=1&o1=equals&emailtype1=exact&emailassigned_to1=1&query_format=advanced&bug_status=UNCONFIRMED&bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED&email2=nobody%40mozilla.org&emailassigned_to2=1&email1=nobody%40mozilla.org&v1=1.4%2B&list_id=9825968' );
 

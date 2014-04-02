@@ -1,7 +1,7 @@
 /* ==========================================================================
     Author's custom styles
     ========================================================================== */
-
+    
     .rrscore { 
         cursor: default;
     }
@@ -19,10 +19,6 @@
 
     li.group:hover div.top-menu {
         display: block;
-    }
-
-    textarea {
-        resize: vertical;
     }
 
     form div.new-query, form div.old-query {
@@ -79,6 +75,14 @@
         bottom: 0;
     }
 
+    .breakdown-plot {
+        position: relative;
+    }
+
+    .breakdown-y-axis {
+        position: absolute;
+    }
+
     .rickshaw_legend .label {
         white-space: normal;
     }
@@ -113,9 +117,28 @@
 /* END OF GRIDSTER STYLES */
 /*****************************************/
 
+/**********************************/
+/* SORTTABLE STYLES */
 
+table#sortable th:not(.sorttable_sorted):not(.sorttable_sorted_reverse):after { 
+    content: "  " 
+}
 
+table#sortable tbody {
+    counter-reset: sortabletablescope;
+}
+table#sortable thead tr::before {
+    content: "";
+    display: table-cell;
+}
+table#sortable tbody tr::before {
+    content: counter(sortabletablescope);
+    counter-increment: sortabletablescope;
+    display: table-cell;
+}
 
+/* END OF SORTTABLE STYLES */
+/*****************************************/
 
 
 

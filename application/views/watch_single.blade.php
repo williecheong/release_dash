@@ -1,13 +1,4 @@
 <?php 
-    // Note that we have received a big $data array
-    // $data contains all the products, 
-    // Their respective versions that are active,
-    // And the respective queries on each version
-
-    //  Now the fun begins where we compile the view:
-    //    First we declare view specific CSS and JS files inside $include
-    //    Then send it to the respective views for appending to the DOM
-    //    As usual, CSS to the header, JS to the footer.
     $include = array( 
         'version'  => $data['title'],
         'top'      => '
@@ -21,7 +12,9 @@
             <script src="/assets/vendor/rickshaw/vendor/d3.min.js"></script>
             <script src="/assets/vendor/rickshaw/vendor/d3.layout.min.js"></script>
             <script src="/assets/vendor/rickshaw/rickshaw.js"></script>
+            <script src="/assets/vendor/sorttable/sorttable.js"></script>
             <script>var coreData = '. json_encode($data) .'</script>
+            <script src="/assets/js/watch_single_breakdown.js"></script>
             <script src="/assets/js/watch_single_es.js"></script>
             <script src="/assets/js/watch_single.js"></script>',
 

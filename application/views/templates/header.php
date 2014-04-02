@@ -17,17 +17,11 @@
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap-theme.min.css">
 
-        <style>
-            body {
-                padding-top: 50px;
-                padding-bottom: 20px;
-            }
-        </style>
-
         <link rel="stylesheet" href="/assets/vendor/rickshaw/rickshaw.min.css">
         <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
         <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/qtip2/2.2.0/basic/jquery.qtip.min.css">
         <link rel="stylesheet" href="/assets/vendor/spectrum/spectrum.css">
+        <link rel="stylesheet" href="/assets/css/main.css">
         <?= ( isset( $top) ? $top : '' ); ?>
         <script src="/assets/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script> 
     </head>
@@ -39,19 +33,13 @@
         <div class="navbar navbar-inverse navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
-                    <?php 
-                        // Boolean variable to determine whether or not a menu is needed
-                        $display_menu = ($this->uri->segment(1) == 'for' || $this->session->userdata('email')); 
-                    ?>
-                    <?php if ( $display_menu ) { ?>
-                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                    <?php } ?>
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
                     <a class="navbar-brand" href="/">
-                        Release Readiness Dashboard
+                        RRDashboard
                     </a>
                     <?php if ( isset($version) ) { ?>
                         <span class="navbar-brand lead rrscore">
@@ -59,21 +47,22 @@
                         </span>
                     <?php } ?>
                 </div>
-                <?php if ( $display_menu ) { ?>
-                    <div class="navbar-collapse collapse">
-                        <div class="navbar-form navbar-right">
-                            <?php if ( $this->uri->segment(1) == 'for' ) { ?>
-                                <a class="btn btn-default" id="es-refresh" href="/<?= uri_string(); ?>?refresh=1">
-                                    <i class="fa fa-refresh"></i> Refresh
-                                </a>
-                            <?php } ?>
-                            <?php if ( $this->session->userdata('email') ) { ?>
-                                <button class="btn btn-danger" id="user-logout">
-                                    <i class="fa fa-sign-out fa-lg"></i> <?= $this->session->userdata('email'); ?>
-                                </button>
-                            <?php } ?>
-                        </div>
-                    </div><!--/.navbar-collapse -->
-                <?php } ?>
+                <div class="navbar-collapse collapse">
+                    <div class="navbar-form navbar-right">
+                        <button class="btn btn-default" data-toggle="modal" data-target="#navigation-menu">
+                            <i class="fa fa-plane fa-lg"></i> Navigate
+                        </button>
+                        <?php if ( $this->uri->segment(1) == 'for' ) { ?>
+                            <a class="btn btn-default" id="es-refresh" href="/<?= uri_string(); ?>?refresh=1">
+                                <i class="fa fa-refresh"></i> Refresh
+                            </a>
+                        <?php } ?>
+                        <?php if ( $this->session->userdata('email') ) { ?>
+                            <button class="btn btn-danger" id="user-logout">
+                                <i class="fa fa-sign-out fa-lg"></i> <?= $this->session->userdata('email'); ?>
+                            </button>
+                        <?php } ?>
+                    </div>
+                </div><!--/.navbar-collapse -->
             </div>
         </div>

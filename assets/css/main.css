@@ -1,0 +1,14 @@
+
+.navigation-description {
+    display: none;
+    text-align: justify;
+}
+
+textarea {
+    resize: vertical;
+}
+
+body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}

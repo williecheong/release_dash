@@ -32,6 +32,10 @@ jQuery(document).ready(function($) {
             show : false
         });
 
+        $('.modal#component-breakdowns').modal({
+            show : false
+        });
+
     /*********************************
         SAVING NEW GROUPS AND QUERIES
     *********************************/
@@ -257,6 +261,37 @@ jQuery(document).ready(function($) {
             // End of setting up the rule boilerplate modal
 
             $('.modal#rule-boilerplate').modal('toggle');
+        });
+
+    /*********************************
+        GETTING THE COMPONENT BREAKDOWN FOR GROUP
+    *********************************/
+        var breakdown_groupID ;
+        // Brings up the modal with the component breakdowns
+        $('.btn#get-component-breakdowns').click(function(){
+            var groupID = $(this).data('group-id');
+            breakdown_groupID = groupID
+            // Setting up the component breakdown modal
+            $('span#breakdown-group-title').html( coreData.groups[groupID].title );
+            $('.breakdown-graph .breakdown-y-axis').html('');
+            $('.breakdown-graph .breakdown-plot').html('');
+            $('.breakdown-table').addClass('text-center').addClass('not-ready').html('<img src="/assets/img/mozchomp.gif"><div class="breakdown-loading"></div>');
+            // End of setting up the component breakdown modal
+
+            $('.modal#component-breakdowns').modal('toggle');
+            
+        });
+
+        $('.modal#component-breakdowns').on('shown.bs.modal', function(e) {
+            initializeBreakdown(breakdown_groupID);           
+        });
+
+
+        $('.modal#component-breakdowns').on('hidden.bs.modal', function(e) {
+            $('span#breakdown-group-title').html('');
+            $('.breakdown-graph .breakdown-y-axis').html('');
+            $('.breakdown-graph .breakdown-plot').html('');
+            $('.breakdown-table').removeClass('text-center').removeClass('not-ready').html('');               
         });
 
     /*****************************
