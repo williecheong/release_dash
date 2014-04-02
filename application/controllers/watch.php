@@ -91,6 +91,10 @@ class Watch extends CI_Controller {
 
             $count_main_queries = 0;
             foreach ( $queries as $query ) {
+                $query_title = '';
+                $query_bugzilla = '';
+                $transformed_query = '';
+
                 if ( is_null($query->references) || empty($query->references) ){
                     // This query is a standard non-reference one
                     // Append the Qb query and other meta-data into $data
@@ -101,19 +105,13 @@ class Watch extends CI_Controller {
                     $transformed_query = $query->query_qb;
                     $transformed_query = replace_version_attr( $transformed_query, $version );
                         
-                        $birthday = $this->version->get_birthday( $version->id );
+                    $birthday = $this->version->get_birthday( $version->id );
+                    $shipday = $this->version->get_shipday( $version->id );
                     $transformed_query = replace_birthday( $transformed_query, $birthday );
-                        $shipday = $this->version->get_shipday( $version->id );
                     $transformed_query = replace_timestamp( $transformed_query, $shipday );
 
                     //  Append the Qb queries and other meta-data into $data
-                    $data['groups'][$group->id]['queries'][$query->id]['title']       = $query_title;
-                    $data['groups'][$group->id]['queries'][$query->id]['colour']      = $query->colour;
-                    $data['groups'][$group->id]['queries'][$query->id]['qb_query']    = $transformed_query;
-                    $data['groups'][$group->id]['queries'][$query->id]['bz_query']    = $query_bugzilla;
                     $data['groups'][$group->id]['queries'][$query->id]['is_reference']= false;
-                    $data['groups'][$group->id]['queries'][$query->id]['es_data']     = ($hard_refresh == 1) ? '' : $this->cache_es_data->retrieve_valid_cache($query->id,$version->id);
-
                     $count_main_queries++;
 
                 } else {
@@ -125,34 +123,37 @@ class Watch extends CI_Controller {
                     $parent_id  = $references[0];
                     $ref_version_id = $references[1];
 
+                    // Grabbing the parent query
                     $parent_query = $this->query->retrieve( array('id' => $parent_id) );
                     $parent_query = $parent_query[0];
 
+                    // Grabbing the a referenced past version.
                     $ref_version = $this->version->retrieve( array('id' => $ref_version_id) );
                     $ref_version = $ref_version[0];
 
                     $query_title = replace_version_attr( $query->title, $ref_version );
-                    $query_bugzilla = '';
-
+                    
                     // Replace soft timestamps with referenced versions' birthday and last shipday
                     $transformed_query = $parent_query->query_qb;
                     $transformed_query = replace_version_attr( $transformed_query, $ref_version );
                         
-                        $birthday = $this->version->get_birthday( $ref_version->id );
+                    $birthday = $this->version->get_birthday( $ref_version->id );
+                    $shipday = $this->version->get_shipday( $ref_version->id );
                     $transformed_query = replace_birthday( $transformed_query, $birthday );
-                        $shipday = $this->version->get_shipday( $ref_version->id );
                     $transformed_query = replace_timestamp( $transformed_query, $shipday );
 
                     // Append the Qb queries and other meta-data into $data
-                    $data['groups'][$group->id]['queries'][$query->id]['title']       = $query_title;
-                    $data['groups'][$group->id]['queries'][$query->id]['colour']      = $query->colour;
-                    $data['groups'][$group->id]['queries'][$query->id]['qb_query']    = $transformed_query;
-                    $data['groups'][$group->id]['queries'][$query->id]['bz_query']    = $query_bugzilla;
                     $data['groups'][$group->id]['queries'][$query->id]['is_reference']= true;                    
                     $data['groups'][$group->id]['queries'][$query->id]['ref_query']   = $parent_id;
                     $data['groups'][$group->id]['queries'][$query->id]['ref_version'] = $ref_version_id;
-                    $data['groups'][$group->id]['queries'][$query->id]['es_data']     = ($hard_refresh == 1) ? '' : $this->cache_es_data->retrieve_valid_cache($query->id,$version->id);
                 }
+                
+                // Append the data prepared from the above IF ELSE statement
+                $data['groups'][$group->id]['queries'][$query->id]['title']       = $query_title;
+                $data['groups'][$group->id]['queries'][$query->id]['colour']      = $query->colour;
+                $data['groups'][$group->id]['queries'][$query->id]['qb_query']    = $transformed_query;
+                $data['groups'][$group->id]['queries'][$query->id]['bz_query']    = $query_bugzilla;
+                $data['groups'][$group->id]['queries'][$query->id]['es_data']     = ($hard_refresh == 1) ? '' : $this->cache_es_data->retrieve_valid_cache($query->id,$version->id);
             }
             // Done looping and loading the queries into the group
             // If group only has one query (excluding any references), enable component breakdown view
