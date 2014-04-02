@@ -173,7 +173,7 @@ INSERT INTO `group` (`id`, `title`, `entity`, `entity_id`, `is_plot`, `is_number
 ('6', 'Blockers (Default)',             'product', '3', '1', '0'),
 ('7', 'Blocking Regressions for 1.4',   'version', '15','1', '0'),
 ('8', 'Nominated Bugs for 1.4',         'version', '15','1', '0'),
-('9', 'Unassigned Blockers'             'version', '15','1', '0');
+('9', 'Unassigned Blockers',            'version', '15','1', '0');
 
 INSERT INTO `query` (`id`, `title`, `group_id`, `colour`, `references`, `query_qb`, `query_bz`) VALUES
 ('1', '# Bugs tracking <version_title>',                 '1', 'rgb(194, 127, 127)', '',
@@ -227,6 +227,6 @@ INSERT INTO `query` (`id`, `title`, `group_id`, `colour`, `references`, `query_q
     '' ),
 
 ('13','Unassigned blockers',                             '9', '#333333', '',
-    'https://bugzilla.mozilla.org/buglist.cgi?j_top=OR&emailtype3=substring&f1=cf_blocking_b2g&emailtype2=substring&email3=nobody%40mozilla.org&emailassigned_to3=1&o1=equals&emailtype1=exact&emailassigned_to1=1&query_format=advanced&bug_status=UNCONFIRMED&bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED&email2=nobody%40mozilla.org&emailassigned_to2=1&email1=nobody%40mozilla.org&v1=1.4%2B&list_id=9825968',
-    '{"from": "public_bugs","select": {"name": "num","value": "bug_id","aggregate": "count"},"esfilter": {"and": [{"terms": {"bug_status": ["unconfirmed","new","assigned","reopened"]}},{"or": [{"term": {"assigned_to": "nobody@mozilla.org"}}]},{"or": [{"regexp": {"assigned_to": "(nobody@mozilla.org)+"}}]},{"or": [{"regexp": {"assigned_to": "(nobody@mozilla.org)+"}}]},{"or": [{"term": {"cf_blocking_b2g": "1.4+"}}]}]},"edges": [{"range": {"min": "modified_ts","max": "expires_on"},"domain": {"type": "date","min": @birthday,"max": @timestamp,"interval": "day"}}]}' );
+    '{"from": "public_bugs","select": {"name": "num","value": "bug_id","aggregate": "count"},"esfilter": {"and": [{"terms": {"bug_status": ["unconfirmed","new","assigned","reopened"]}},{"or": [{"term": {"assigned_to": "nobody@mozilla.org"}}]},{"or": [{"regexp": {"assigned_to": "(nobody@mozilla.org)+"}}]},{"or": [{"regexp": {"assigned_to": "(nobody@mozilla.org)+"}}]},{"or": [{"term": {"cf_blocking_b2g": "1.4+"}}]}]},"edges": [{"range": {"min": "modified_ts","max": "expires_on"},"domain": {"type": "date","min": @birthday,"max": @timestamp,"interval": "day"}}]}',
+    'https://bugzilla.mozilla.org/buglist.cgi?j_top=OR&emailtype3=substring&f1=cf_blocking_b2g&emailtype2=substring&email3=nobody%40mozilla.org&emailassigned_to3=1&o1=equals&emailtype1=exact&emailassigned_to1=1&query_format=advanced&bug_status=UNCONFIRMED&bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED&email2=nobody%40mozilla.org&emailassigned_to2=1&email1=nobody%40mozilla.org&v1=1.4%2B&list_id=9825968' );
 
