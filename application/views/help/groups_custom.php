@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="row pictures text-center">
+    <div class="row col-sm-12">
         <div class="col-xs-4">
             <img class="img-thumbnail" width="100%" src="/assets/img/help/create_custom_group.png">
         </div>

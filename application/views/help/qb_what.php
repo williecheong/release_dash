@@ -1,8 +1,6 @@
 <div class="row">
-    <div class="well well-sm col-sm-10 col-sm-offset-1">
-        <p>
-            {"from": "public_bugs","select": {"name": "num","value": "bug_id","aggregate": "count"},"esfilter": {"and": [{"terms": {"bug_status": ["unconfirmed","new","assigned","reopened"]}},{"and": [{"and": [{"or": [{"term": {"cf_tracking_firefox30": "+"}}]},{"or": [{"not": {"term": {"cf_status_firefox30": "wontfix"}}}]},{"or": [{"not": {"term": {"cf_status_firefox30": "fixed"}}}]},{"or": [{"not": {"term": {"cf_status_firefox30": "unaffected"}}}]},{"or": [{"not": {"term": {"cf_status_firefox30": "verified"}}}]},{"or": [{"not": {"term": {"cf_status_firefox30": "disabled"}}}]},{"or": [{"not": {"term": {"cf_status_firefox30": "verified disabled"}}}]}]},{"not": {"term": {"cf_status_firefox29": "wontfix"}}},{"not": {"term": {"cf_status_firefox29": "affected"}}}]}]},"edges": [{"range": {"min": "modified_ts","max": "expires_on"},"domain": {"type": "date","min": 1391500800000,"max": 1398754800000,"interval": "day"}}]}
-        </p>
+    <div class="well well-sm col-xs-offset-1 col-xs-10">
+        {"from": "public_bugs","select": {"name": "num","value": "bug_id","aggregate": "count"},"esfilter": {"and": [{"terms": {"bug_status": ["unconfirmed","new","assigned","reopened"]}},{"and": [{"and": [{"or": [{"term": {"cf_tracking_firefox30": "+"}}]},{"or": [{"not": {"term": {"cf_status_firefox30": "wontfix"}}}]},{"or": [{"not": {"term": {"cf_status_firefox30": "fixed"}}}]},{"or": [{"not": {"term": {"cf_status_firefox30": "unaffected"}}}]},{"or": [{"not": {"term": {"cf_status_firefox30": "verified"}}}]},{"or": [{"not": {"term": {"cf_status_firefox30": "disabled"}}}]},{"or": [{"not": {"term": {"cf_status_firefox30": "verified disabled"}}}]}]},{"not": {"term": {"cf_status_firefox29": "wontfix"}}},{"not": {"term": {"cf_status_firefox29": "affected"}}}]}]},"edges": [{"range": {"min": "modified_ts","max": "expires_on"},"domain": {"type": "date","min": 1391500800000,"max": 1398754800000,"interval": "day"}}]}
     </div>
     <div class="col-sm-12">
         <p>
