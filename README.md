@@ -6,41 +6,48 @@ Change logs, progress updates and latest developments on [this spreadsheet](http
 ## URL Walkthrough
 #### Landing page
     Provides an overview of all active versions
-    Accessed through ```/``` or `/overview` 
+    Accessed through "/" or "/overview" 
     Code starts executing from: 
         - /application/controllers/overview.php/index
 
 #### Version page
-    - Provides a detailed view of a specific version
-    - Accessed through `/for/[product_tag]/[version_tag]`  
-    - Code starts executing from:
+    Provides a detailed view of a specific version
+    Accessed through "/for/[product_tag]/[version_tag]"
+    Code starts executing from:
         - /application/config/routes.php
         - /application/controllers/watch.php/single
 
 #### Administrator login page
-    - Allows a whitelisted user to sign in using Persona
-    - Accessed through `/admin`
-    - Code starts executing from:
+    Allows a whitelisted user to sign in using Persona
+    Accessed through "/admin"
+    Code starts executing from:
         - /application/controllers/admin.php/index
 
 #### Qb query builder page
-    - Translates Bugzilla URLs into Qb queries
-    - Accessed through `/admin/easy_qb`
-    - Code starts executing from:
+    Translates Bugzilla URLs into Qb queries
+    Accessed through "/admin/easy_qb"
+    Code starts executing from:
         - /application/controllers/admin.php/easy_qb
 
 #### User guide page
-    - A read-able manual to help with getting started
-    - Accessed through `/admin/help` or `/help`
-    - Code starts executing from:
+    Read-able manual to help with getting started
+    Accessed through "/admin/help" or "/help"
+    Code starts executing from:
         - /application/config/routes.php
         - /application/controllers/admin.php/help
 
 #### Update components
-    - Grabs product components from Bugzilla and updates database
-    - Accessed through `/admin/update_components`
-    - Code starts executing from:
+    Grabs product components from Bugzilla and updates database
+    Accessed through "/admin/update_components"
+    Code starts executing from:
         - /application/controllers/admin.php/update_components
+
+#### Update cycle
+    Automatically called when a current cycle is not found
+    Checks for new cycle and updates accordingly
+    Accessed through "/admin/update_cycle"
+    Code starts executing from:
+        - /application/controllers/admin.php/update_cycle
 
 
 ## Deployment        
