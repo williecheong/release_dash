@@ -4,10 +4,44 @@ More awesome *(and possibly unstable)* new features on [the staging site](http:/
 Change logs, progress updates and latest developments on [this spreadsheet](https://docs.google.com/spreadsheet/ccc?key=0ApNDjYXWm5JndDFwLWVlM1BPR3dBdjE1ZVdfWlBwR1E&usp=sharing).
 
 ## URL Walkthrough 
-- `/` OR `/overview` 
+- Landing page
     - Provides an overview of all active versions
-    - Code starts from: 
+    - Accessed through `/` or `/overview` 
+    - Code starts executing from: 
         - /application/controllers/overview.php/index
+
+- Version page
+    - Provides a detailed view of a specific version
+    - Accessed through `/for/[product_tag]/[version_tag]`  
+    - Code starts executing from:
+        - /application/config/routes.php
+        - /application/controllers/watch.php/single
+
+- Administrator login page
+    - Allows a whitelisted user to sign in using Persona
+    - Accessed through `/admin`
+    - Code starts executing from:
+        - /application/controllers/admin.php/index
+
+- Qb query builder page
+    - Translates Bugzilla URLs into Qb queries
+    - Accessed through `/admin/easy_qb`
+    - Code starts executing from:
+        - /application/controllers/admin.php/easy_qb
+
+- User guide page
+    - A read-able manual to help with getting started
+    - Accessed through `/admin/help` or `/help`
+    - Code starts executing from:
+        - /application/config/routes.php
+        - /application/controllers/admin.php/help
+
+- Update components page
+    - Grabs product components from Bugzilla and updates database
+    - Accessed through `/admin/update_components`
+    - Code starts executing from:
+        - /application/controllers/admin.php/update_components
+
 
 ## Deployment        
 #### Requirements
