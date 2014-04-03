@@ -4,25 +4,10 @@ More awesome *(and possibly unstable)* new features on [the staging site](http:/
 Change logs, progress updates and latest developments on [this spreadsheet](https://docs.google.com/spreadsheet/ccc?key=0ApNDjYXWm5JndDFwLWVlM1BPR3dBdjE1ZVdfWlBwR1E&usp=sharing).
 
 ## URL Walkthrough 
-#### `/` OR `/overview` 
-- Provides an overview of all active versions
-- Executes important code from :
-    - /application/controllers/overview.php
-        - /application/models/product.php
-        - /application/models/version.php
-            - /application/models/cycle.php
-                - /application/controllers/admin.php
-        - /application/models/score.php
-        - /application/models/group.php
-        - /application/models/query.php
-    - /application/views/overview.php
-
-#### `/for/[product_tag]/[version_tag]`
-- Provides a dashboard with details for a single version
-- Executes code from :
-    - /application/config/routes.php
-    - /application/co
-
+- `/` OR `/overview` 
+    - Provides an overview of all active versions
+    - Code starts from: 
+        - /application/controllers/overview.php/index
 
 ## Deployment        
 #### Requirements
