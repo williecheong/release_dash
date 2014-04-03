@@ -6,7 +6,7 @@ Change logs, progress updates and latest developments on [this spreadsheet](http
 ## URL Walkthrough
 #### Landing page
     Provides an overview of all active versions
-    Accessed through `/` or `/overview` 
+    Accessed through ```/``` or `/overview` 
     Code starts executing from: 
         - /application/controllers/overview.php/index
 
