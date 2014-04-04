@@ -109,7 +109,19 @@ $autoload['language'] = array();
 |
 */
 
-$autoload['model'] = array('product', 'channel', 'version', 'group', 'query', 'cycle', 'score', 'administrator', 'cache_es_data', 'version_channel_cycle');
+$autoload['model'] = array(
+    'product', 
+    'channel', 
+    'version', 
+    'group', 
+    'query', 
+    'cycle', 
+    'score', 
+    'comment', 
+    'administrator', 
+    'cache_es_data', 
+    'version_channel_cycle'
+);
 
 
 /* End of file autoload.php */
