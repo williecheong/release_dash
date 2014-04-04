@@ -27,12 +27,14 @@ class Misc extends REST_Controller {
         if ( $this->session->userdata('email') ) {
             $admins = $this->administrator->retrieve(array('email' => $this->session->userdata('email')));
             if ( count($admins) < 1 ) {
+                log_message('error', 'Unauthorized '.$this->session->userdata('email').' attempted to login.');
                 $this->authentication->logout();
                 echo "Not administrator";
             } else {
                 echo "OK";
             }
         } else {
+            log_message('error', 'No session was created in /api/misc.php/login_post');
             echo "No session was created.";            
         }
 

@@ -9,12 +9,21 @@ class channel extends CI_Model{
         $current_cycle = $this->cycle->get_current_cycle();
         $cycle_id = $current_cycle->id;
 
-        $mapping = $this->version_channel_cycle->retrieve( array( 'version_id' => $version_id,
-                                                                  'cycle_id'   => $cycle_id  ) );
+        $mapping = $this->version_channel_cycle->retrieve( 
+            array( 
+                'version_id' => $version_id,
+                'cycle_id'   => $cycle_id  
+            ) 
+        );
+
         if ( count($mapping) > 0 ) {
             $mapping = $mapping[0];
             $channel_id = $mapping->channel_id;
-            $channel = $this->channel->retrieve( array( 'id' => $channel_id ) );
+            $channel = $this->channel->retrieve( 
+                array( 
+                    'id' => $channel_id 
+                ) 
+            );
             
             return $channel[0];
         

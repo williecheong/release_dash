@@ -32,6 +32,7 @@ class Scores extends REST_Controller {
                 echo 'OK - Score of '.$score.' insert for version_id='.$version_id.'.';
             }
         } else {
+            log_message('error', 'Missing version_id or score parameters in /api/scores.php/index_post');
             echo 'Missing version_id or score parameters.';
         }
 

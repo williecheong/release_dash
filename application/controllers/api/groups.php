@@ -7,6 +7,7 @@ class Groups extends REST_Controller {
         parent::__construct();
         // Autoloaded Config, Helpers, Models
         if ( !$this->session->userdata('email') ) {
+            log_message('error', 'Unauthorized access attempted in /api/groups.php');
             echo "Failed: Unauthorized access";
             exit();
         }
@@ -79,7 +80,8 @@ class Groups extends REST_Controller {
             $this->group->delete( array( 'id' => $group_id) );
             echo 'OK';
         } else { 
-            // Group not available to delete 
+            // Group not available to delete
+            log_message('error', 'Delete failed - group not found in /api/groups.php/index_delete');
             echo 'Delete failed - group not found';     
         }
         

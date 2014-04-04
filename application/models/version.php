@@ -22,6 +22,8 @@ class version extends CI_Model{
             if( $content === false ) {
                 // Failed to retrieve external version tag
                 // Manually calculate for nightly version number
+                log_message('error', 'Failed to access: '.$source);
+            
                 $new_version_tag = $version->tag + 1;
                 $new_version_number = $version->tag + 1;
             } else {
@@ -35,15 +37,23 @@ class version extends CI_Model{
         // Get the product if it was not specified
         // We need the product title for creating the new version
         if ( empty($product) ) {
-            $product = $this->product->retrieve( array('id'=>$version->product_id) );
+            $product = $this->product->retrieve( 
+                array(
+                    'id' => $version->product_id
+                )
+            );
+            
             $product = $product[0];
         }
 
         // Define the values for the new version to be created
         $new_version_title = $product->title . " " . $new_version_number;
-        $data = array( 'tag'    => $new_version_tag,
-                       'title'  => $new_version_title,
-                       'product_id' => $product->id     );
+        $data = array( 
+            'tag'    => $new_version_tag,
+            'title'  => $new_version_title,
+            'product_id' => $product->id     
+        );
+        
         // Proceed to create that new version in the database
         $new_version_id = $this->version->create( $data );
 
@@ -78,7 +88,10 @@ class version extends CI_Model{
         $this->db->select_min('start');
         $this->db->from('version_channel_cycle');
         $this->db->join('cycle', 'cycle.id = version_channel_cycle.cycle_id');
-        $this->db->where( array( 'version_channel_cycle.version_id' => $version_id ) );
+        $this->db->where( array( 
+            'version_channel_cycle.version_id' => $version_id 
+            )
+        );
         $query = $this->db->get();
 
         // Return that start in timestamp format
@@ -104,17 +117,25 @@ class version extends CI_Model{
             $current_cycle = $this->cycle->get_current_cycle();
             if ( empty($current_cycle) ) { return array(); }
         } else {
-            $current_cycle = $this->cycle->retrieve( array('id' => $cycle_id) );
-                if ( empty($current_cycle) ) { 
-                    return array(); 
-                } else {
-                    $current_cycle = $current_cycle[0];
-                }
+            $current_cycle = $this->cycle->retrieve( 
+                array(
+                    'id' => $cycle_id
+                )
+            );
+            
+            if ( empty($current_cycle) ) { 
+                return array(); 
+            } else {
+                $current_cycle = $current_cycle[0];
+            }
         }
 
         // Get all channels for this product_id
         $channels = $this->channel->retrieve( 
-            array('product_id' => $product_id) );
+            array(
+                'product_id' => $product_id
+            )
+        );
         
         // Build out the query conditions
         // WHERE cycle = current cycle AND ( channels = central OR beta OR ... )
