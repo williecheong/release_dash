@@ -10,6 +10,7 @@ class Overview extends CI_Controller {
 	public function index() {
         // Initialize a data array that becomes coreData JSON
         // Stores all relevant details for product and version
+        log_message('info', 'Accessing controller function in /overview.php/index');
         $data = array();
 
         //  Find a list of all products
@@ -18,7 +19,11 @@ class Overview extends CI_Controller {
             // Store a pretty title for this product
             $data[$product->tag]['id']    = $product->id;
             $data[$product->tag]['title'] = $product->title;
-            $data[$product->tag]['versions_all'] = $this->version->retrieve( array('product_id' => $product->id) );
+            $data[$product->tag]['versions_all'] = $this->version->retrieve( 
+                array(
+                    'product_id' => $product->id
+                )
+            );
             $data[$product->tag]['versions'] = array();
             $data[$product->tag]['groups'] = array();
 
@@ -30,7 +35,12 @@ class Overview extends CI_Controller {
                 $data[$product->tag]['versions'][$version->tag]['channel'] = $version->channel_id;
 
                 // Has a release readiness score been recorded before?
-                $score = $this->score->retrieve( array('version_id'=>$version->id) );
+                $score = $this->score->retrieve( 
+                    array(
+                        'version_id' => $version->id
+                    )
+                );
+                
                 if (count($score) > 0){
                     $data[$product->tag]['versions'][$version->tag]['score'] = $score[0]->score_colour;
                     $data[$product->tag]['versions'][$version->tag]['last_updated'] = $score[0]->last_updated;
@@ -75,7 +85,12 @@ class Overview extends CI_Controller {
                 }
             }
         }
+
         // Send the resulting data array into the view
-        $this->blade->render('overview', array('data'=>$data));
+        $this->blade->render('overview', 
+            array(
+                'data' => $data
+            )
+        );
     }
 }

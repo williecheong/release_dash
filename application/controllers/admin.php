@@ -10,8 +10,11 @@ class Admin extends CI_Controller {
     // Invites user to login
     // If already logged in, dump database
     public function index() {
+        log_message('info', 'Accessing controller function in /admin.php/index');
+
         if ( $this->session->userdata('email') ) {
-            $data = array( 'tables' => array(
+            $data = array( 
+                'tables' => array(
                     'administrator'           => $this->administrator->retrieve(),
                     'product'                 => $this->product->retrieve(),
                     'version'                 => $this->version->retrieve(),
@@ -19,7 +22,9 @@ class Admin extends CI_Controller {
                     'cycle'                   => $this->cycle->retrieve(),
                     'group'                   => $this->group->retrieve(),
                     'query'                   => $this->query->retrieve(),
-                    'version_channel_cycle'   => $this->version_channel_cycle->retrieve()  ));
+                    'version_channel_cycle'   => $this->version_channel_cycle->retrieve()  
+                )
+            );
 
             $this->blade->render('admin_panel', $data);
         
@@ -31,11 +36,15 @@ class Admin extends CI_Controller {
 
     // Make a Qb query easily
     public function easy_qb() {
+        log_message('info', 'Accessing controller function in /admin.php/easy_qb');
+
         $this->load->view( 'easy_qb' );
     }
 
     // Brings up the user manual
-    public function help(){        
+    public function help(){
+        log_message('info', 'Accessing controller function in /admin.php/help');
+
         $sections = array(
             'intro' => array(
                 'name'   => 'Introduction',
@@ -73,11 +82,17 @@ class Admin extends CI_Controller {
             )
         );
 
-        $this->blade->render('help', array('sections'=>$sections));
+        $this->blade->render('help', 
+            array(
+                'sections' => $sections
+            )
+        );
     }
 
     // Updates the list of components in each product
     public function update_components() {
+        log_message('info', 'Accessing controller function in /admin.php/update_components');
+
         // Grab all of the HTML content from this source.
         $source = "https://api-dev.bugzilla.mozilla.org/latest/configuration";
         $content = file_get_contents_via_curl( $source );
@@ -98,9 +113,15 @@ class Admin extends CI_Controller {
             $components = implode(',', $components);
             
             // put the components CSV into the database attached to the product row
-            $this->product->update( array('id'    => $product->id),
-                                    array('components'    => $components,
-                                          'last_updated'  => null)  );
+            $this->product->update( 
+                array(
+                    'id'    => $product->id
+                ),
+                array(
+                    'components'    => $components,
+                    'last_updated'  => null
+                )  
+            );
             
             // Dump an indication on the screen on what has been updated
             echo $product->title . ' components updated to: <br>';
@@ -122,10 +143,13 @@ class Admin extends CI_Controller {
     // Can also be manually run by accessing
     //      http://release-dash.../admin/update_cycle
     public function update_cycle() {
+        log_message('info', 'Accessing controller function in /admin.php/update_cycle');
+
         // Grab all of the HTML content from this source.
         $source = "https://wiki.mozilla.org/Template:CURRENT_CYCLE";
         $content = file_get_contents_via_curl( $source );
         if( $content === false ) {
+            log_message('error', 'Failed to access: '.$source);
             echo 'Failed to access: '.$source;
             return;
         }
@@ -142,9 +166,15 @@ class Admin extends CI_Controller {
 
         // Try and retrieve this cycle from the DB
         // If it exists, there is no new cycle to insert
-        $same_cycle = $this->cycle->retrieve( array( 'start' => $start,
-                                                      'end'  => $end    ));
+        $same_cycle = $this->cycle->retrieve( 
+            array( 
+                'start' => $start,
+                'end'  => $end    
+            )
+        );
+
         if ( count($same_cycle) > 0 ) {
+            log_message('error', 'No new cycle to update.');
             echo 'Cycle ID = '.$same_cycle[0]->id;
             return;
         }
@@ -154,8 +184,16 @@ class Admin extends CI_Controller {
         $delayed_cycle = $this->cycle->retrieve( array( 'start'    => $start,
                                                         'end !='   => $end  ));
         if ( count($delayed_cycle) > 0 ) {
-            $this->cycle->update( array( 'id' => $delayed_cycle[0]->id ), 
-                                  array( 'end'=> $end  ));
+            log_message('error', 'Last cycle end date extended to: '.$end);
+            $this->cycle->update( 
+                array( 
+                    'id' => $delayed_cycle[0]->id 
+                ), 
+                array( 
+                    'end'=> $end  
+                )
+            );
+            
             echo 'Delays in current cycle successfully updated';
             return;
         }
@@ -163,8 +201,12 @@ class Admin extends CI_Controller {
         // Find the previous cycle. The ID is needed
         // Also capture newly extracted cycle in the DB.
         $previous_cycle = $this->cycle->get_latest_cycle();
-        $new_cycle_id = $this->cycle->create( array( 'start' => $start,
-                                                     'end'   => $end  ));
+        $new_cycle_id = $this->cycle->create( 
+            array( 
+                'start' => $start,
+                'end'   => $end  
+            )
+        );
 
         // Start looping through all products
         $products = $this->product->retrieve();
@@ -175,17 +217,26 @@ class Admin extends CI_Controller {
             foreach ( $versions as $version ) {
                 if ( $product->id == 3 ) { 
                     // Check if B2G version already has 2 mappings on this channel
-                    $check_mappings = $this->version_channel_cycle->retrieve( array( 'version_id' => $version->id,
-                                                                                         'channel_id' => $version->channel_id ));
+                    $check_mappings = $this->version_channel_cycle->retrieve( 
+                        array( 
+                            'version_id' => $version->id,
+                            'channel_id' => $version->channel_id 
+                        )
+                    );
+                    
                     if ( count($check_mappings) > 1 ) {
                         // End of cycle for B2G, do bump 
                         $this->_bump_channel_by_version( $version, $new_cycle_id, $product ); 
                     } else {
                         // Mid-cycle for B2G
                         // Map this version on this channel for another cycle
-                        $map_id = $this->version_channel_cycle->create( array(  'version_id' => $version->id, 
-                                                                                'channel_id' => $version->channel_id, 
-                                                                                'cycle_id'   => $new_cycle_id  ));
+                        $map_id = $this->version_channel_cycle->create( 
+                            array(  
+                                'version_id' => $version->id, 
+                                'channel_id' => $version->channel_id, 
+                                'cycle_id'   => $new_cycle_id  
+                            )
+                        );
                     }
                 } else {    
                     // Regular firefox/fennec, just bump as usual
@@ -194,6 +245,7 @@ class Admin extends CI_Controller {
             }
         }
 
+        log_message('info', 'Cycle created successfully');
         echo 'Cycle created successfully';
         return;
     }
@@ -207,15 +259,24 @@ class Admin extends CI_Controller {
     //  Both bump this version AND create latest version if this version is on first channel
     private function _bump_channel_by_version( $version, $new_cycle_id, $product ) {
         // Get the channel details
-        $channel = $this->channel->retrieve( array( 'id' => $version->channel_id ) );
+        $channel = $this->channel->retrieve( 
+            array( 
+                'id' => $version->channel_id 
+            )
+        );
+        
         $channel = $channel[0];
 
         if ( $channel->next_channel != 0 ) {
             // This is not a channel that leads into version deprecation
             // Bump this version into the next channel for this new (current) cycle
-            $map_id = $this->version_channel_cycle->create( array( 'version_id' => $version->id, 
-                                                                   'channel_id' => $channel->next_channel, 
-                                                                   'cycle_id'   => $new_cycle_id  ));
+            $map_id = $this->version_channel_cycle->create( 
+                array( 
+                    'version_id' => $version->id, 
+                    'channel_id' => $channel->next_channel, 
+                    'cycle_id'   => $new_cycle_id  
+                )
+            );
         } 
 
         if ( $channel->is_first != 0 ) { 
@@ -223,9 +284,13 @@ class Admin extends CI_Controller {
             // It will not be expected to have any existing versions entering.
             // A new version needs to board train on this channel. Create and map.
             $new_version_id = $this->version->make_new_for_product( $version, $product );
-            $map_id = $this->version_channel_cycle->create( array( 'version_id' => $new_version_id, 
-                                                                   'channel_id' => $channel->id, 
-                                                                   'cycle_id'   => $new_cycle_id  ));
+            $map_id = $this->version_channel_cycle->create( 
+                array( 
+                    'version_id' => $new_version_id, 
+                    'channel_id' => $channel->id, 
+                    'cycle_id'   => $new_cycle_id  
+                )
+            );
         }
 
         return true;   

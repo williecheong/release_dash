@@ -37,6 +37,7 @@ class Caches extends REST_Controller {
                 echo 'OK - Cached es_data insert for query='.$query_id.'.';
             }
         } else {
+            log_message('error', 'Missing query_id or cached es_data parameters in /api/caches.php/es_data_post');
             echo 'Missing query_id or cached es_data parameters.';
         }
 

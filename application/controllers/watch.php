@@ -11,7 +11,14 @@ class Watch extends CI_Controller {
         // Validate Product and Version 
         // Return lost page if either are not found in the DB
         // If all is well, we have 2 objects for product and version
-            $product = $this->product->retrieve( array( 'tag' => $product_tag ) );
+        log_message('info', 'Accessing controller function in /watch.php/single');
+        
+            $product = $this->product->retrieve( 
+                array( 
+                    'tag' => $product_tag 
+                ) 
+            );
+            
             if ( empty($product) ) {
                 $this->load->view('templates/404_not_found');
                 return; 
@@ -36,29 +43,42 @@ class Watch extends CI_Controller {
         $data = array();
         $data['id'] = $version->id;
         $data['title'] = $version->title;
-        $data['product'] = array(   'id'         => $product->id,
-                                    'tag'        => $product->tag,
-                                    'title'      => $product->title,
-                                    'components' => $product->components,
-                                    'versions'   => $this->version->retrieve(array('product_id'=>$product->id))  );
+        $data['product'] = array(   
+            'id' => $product->id,
+            'tag'        => $product->tag,
+            'title'      => $product->title,
+            'components' => $product->components,
+            'versions'   => $this->version->retrieve( array(
+                    'product_id' => $product->id
+                )
+            )
+        );
         $data['channel'] = $this->channel->for_version( $version->id );
         $data['groups'] = array();
 
         // Retrieving default groups by product
         $by_product = array( 
             'entity'    => 'product',
-            'entity_id' => $product->id );
+            'entity_id' => $product->id 
+        );
+        
         $groups_by_product = $this->group->retrieve( $by_product );
         $data = $this->_groups_to_data( $data, $version, $groups_by_product, true );
 
         // Retrieving custom groups by version
         $by_version = array( 
             'entity'    => 'version',
-            'entity_id' => $version->id );
+            'entity_id' => $version->id 
+        );
+        
         $groups_by_version = $this->group->retrieve( $by_version );
         $data = $this->_groups_to_data( $data, $version, $groups_by_version );
         
-        $this->blade->render('watch_single', array('data'=>$data));
+        $this->blade->render('watch_single', 
+            array(
+                'data' => $data
+            )
+        );
     }
 
     // Receives an existing data array
@@ -86,7 +106,10 @@ class Watch extends CI_Controller {
             }
             
             // Retrieve the stored Qb queries in this group.
-            $by_group = array( 'group_id' => $group->id );
+            $by_group = array( 
+                'group_id' => $group->id 
+            );
+            
             $queries = $this->query->retrieve( $by_group );
 
             $count_main_queries = 0;
@@ -124,11 +147,21 @@ class Watch extends CI_Controller {
                     $ref_version_id = $references[1];
 
                     // Grabbing the parent query
-                    $parent_query = $this->query->retrieve( array('id' => $parent_id) );
+                    $parent_query = $this->query->retrieve( 
+                        array(
+                            'id' => $parent_id
+                        )
+                    );
+                    
                     $parent_query = $parent_query[0];
 
                     // Grabbing the a referenced past version.
-                    $ref_version = $this->version->retrieve( array('id' => $ref_version_id) );
+                    $ref_version = $this->version->retrieve( 
+                        array(
+                            'id' => $ref_version_id
+                        )
+                    );
+                    
                     $ref_version = $ref_version[0];
 
                     $query_title = replace_version_attr( $query->title, $ref_version );
