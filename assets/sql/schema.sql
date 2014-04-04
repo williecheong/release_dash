@@ -89,6 +89,7 @@ CREATE TABLE `score` (
 CREATE TABLE `comment` (
     `id` int(11) not null auto_increment,
     `version_id` int(11) not null,
+    `comment_email` varchar(255),
     `comment_message` text,
     `last_updated` timestamp default current_timestamp on update current_timestamp,
     PRIMARY KEY (`id`)
