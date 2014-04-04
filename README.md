@@ -30,6 +30,7 @@ Change logs, progress updates and latest developments on [this spreadsheet](http
     Accessed through "/" or "/overview" 
     Code starts executing from: 
         - /application/controllers/overview.php/index
+    [More details...](http://blog.williecheong.com/running-with-the-train/)
 
 #### Version page
     Provides a detailed view of a specific version
