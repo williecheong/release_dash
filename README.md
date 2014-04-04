@@ -26,51 +26,45 @@ Change logs, progress updates and latest developments on [this spreadsheet](http
 
 ## URL Walkthrough
 #### Landing page
-- Provides an overview of all active versions
 - Accessed through "/" or "/overview" 
-- Code starts executing from: 
-    - /application/controllers/overview.php/index
+- Provides an overview of all active versions
+- Executes from: `/application/controllers/overview.php/index`
 - [More details...](http://blog.williecheong.com/running-with-the-train/)
 
 #### Version page
-    Provides a detailed view of a specific version
-    Accessed through "/for/[product_tag]/[version_tag]"
-    Code starts executing from:
-        - /application/config/routes.php
-        - /application/controllers/watch.php/single
+- Accessed through "/for/[product]/[version]"
+- Provides a detailed view of a specific version
+- Executes from: `/application/controllers/watch.php/single`
+- [More details about groups of queries...](http://blog.williecheong.com/groups-of-queries/)
+- [More details about group rules...](http://blog.williecheong.com/release-readiness-dashboardrules-for-scoring/)
 
 #### Administrator login page
-    Allows a whitelisted user to sign in using Persona
-    Accessed through "/admin"
-    Code starts executing from:
-        - /application/controllers/admin.php/index
+- Accessed through "/admin"
+- Allows a whitelisted user to sign in using Persona
+- Executes from: /application/controllers/admin.php/index
 
 #### Qb query builder page
-    Translates Bugzilla URLs into Qb queries
-    Accessed through "/admin/easy_qb"
-    Code starts executing from:
-        - /application/controllers/admin.php/easy_qb
+- Accessed through "/admin/easy_qb"
+- Translates Bugzilla URLs into Qb queries
+- Executes from: /application/controllers/admin.php/easy_qb
+- [More details...](http://blog.williecheong.com/release-readiness-dashboardqb-query-builder/)
 
 #### User guide page
-    Read-able manual to help with getting started
-    Accessed through "/admin/help" or "/help"
-    Code starts executing from:
-        - /application/config/routes.php
-        - /application/controllers/admin.php/help
+- Accessed through "/admin/help" or "/help"
+- Read-able manual to help with getting started
+- Executes from: /application/controllers/admin.php/help
 
 #### Update components
-    Grabs product components from Bugzilla and updates database
-    Accessed through "/admin/update_components"
-    Code starts executing from:
-        - /application/controllers/admin.php/update_components
+- Accessed through "/admin/update_components"
+- Grabs product components from Bugzilla and updates database
+- Executes from: /application/controllers/admin.php/update_components
 
 #### Update cycle
-    Automatically called when a current cycle is not found
-    Checks for new cycle and updates accordingly
-    Accessed through "/admin/update_cycle"
-    Code starts executing from:
-        - /application/controllers/admin.php/update_cycle
-
+- Accessed through "/admin/update_cycle"
+- Checks for new cycle and updates accordingly
+- Automatically called when a current cycle is not found
+- Executes from: /application/controllers/admin.php/update_cycle
+- [More details...](http://blog.williecheong.com/running-with-the-train/)
 
 ## Testing
 To be continued
