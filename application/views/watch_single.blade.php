@@ -1,6 +1,7 @@
 <?php 
     $include = array( 
         'version'  => $data['title'],
+        'comment'  => ( isset($comment[0]) ) ? $comment[0] : array() ,
         'top'      => '
             <link rel="stylesheet" href="/assets/vendor/ducksboard-gridster/jquery.gridster.min.css">
             <link rel="stylesheet" href="/assets/css/watch_single.css">',
@@ -113,7 +114,7 @@
 </div><!-- /container -->
 
 <?php 
-    $this->load->view('modals/watch_single');
+    $this->load->view('modals/watch_single', $include);
     $this->load->view('templates/footer', $include); 
 ?>
 

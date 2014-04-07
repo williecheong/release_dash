@@ -35,7 +35,7 @@ class Comments extends REST_Controller {
                             'last_updated' => null
                         )  
                     );
-                    echo 'OK - Comment updated for version_id='.$version_id.'.';
+                    echo 'OK';
                 } else {
                     // Version does not have a comment yet. Do insert
                     $new_comment = array( 
@@ -45,7 +45,7 @@ class Comments extends REST_Controller {
                     );
                     
                     $comment_id = $this->comment->create( $new_comment );
-                    echo 'OK - Comment insert for version_id='.$version_id.'.';
+                    echo 'OK';
                 }
             } else {
                 log_message('error', 'Unauthorized access attempted in /api/comments.php');

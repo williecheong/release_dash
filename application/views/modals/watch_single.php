@@ -153,3 +153,39 @@
         </div>
     </div>
 </div>
+
+<!-- Modal for viewing navigation menu -->
+<div class="modal fade" id="comment-box" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">
+                    Comment for <span class="lead"><?= $version; ?></span>
+                </h4>
+            </div>
+            <div class="modal-body"> 
+                <?php if ( $this->session->userdata('email') ) { ?>
+                    <textarea class="form-control input-comment" rows="15" placeholder="Comments about the status of this release?"><?= ( !empty($comment) ) ? $comment->comment_message : "" ; ?></textarea>
+                    <button class="btn btn-success btn-xs pull-right" id="save-comment" style="margin-top:10px;">
+                        <i class="fa fa-save"></i> Save
+                    </button>
+                <?php } else { ?>
+                    <p>
+                        <?= ( !empty($comment) ) ? $comment->comment_message : "No comments posted so far..." ; ?>
+                    </p>
+                <?php } ?>
+                <?php if ( !empty($comment) ) { ?>
+                    <p>
+                        <small>
+                            <?= $comment->comment_email ; ?><br>
+                            <em>
+                                <?= date( 'F j, Y @ g.ia', strtotime($comment->last_updated) ) ; ?>
+                            </em>
+                        </small>
+                    </p>
+                <?php } ?>
+            </div>
+        </div>
+    </div>
+</div>       
