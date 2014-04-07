@@ -76,7 +76,12 @@ class Watch extends CI_Controller {
         
         $this->blade->render('watch_single', 
             array(
-                'data' => $data
+                'data' => $data,
+                'comment' => $this->comment->retrieve(
+                    array(
+                        "version_id" => $version->id
+                    )
+                )
             )
         );
     }

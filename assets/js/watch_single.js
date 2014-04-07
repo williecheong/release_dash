@@ -307,6 +307,45 @@ jQuery(document).ready(function($) {
         });
 
     /*****************************
+        HANDLING THE COMMENT MODAL FOR VERSION
+    *****************************/
+        $('.btn#save-comment').click(function(){
+            $this = $(this);
+            $this.addClass('disabled');
+            
+            var r = confirm("Confirm saving this comment?");
+            if ( r == true ) {
+                $.ajax({
+                    url: '/api/comments',
+                    type: 'POST',
+                    data: {
+                        version_id : coreData['id'],
+                        version_comment : $('textarea.input-comment').val()
+                    },
+                    success: function(response) {
+                        if ( response == 'OK' ) {
+                            $this.html('<i class="fa fa-check"></i> Success');
+                            setTimeout(function() {
+                                // Refresh page after 1.5 seconds
+                                $this.html('<i class="fa fa-refresh"></i> Refreshing');
+                                location.reload();
+                            }, 1500);
+                        }
+
+                        console.log(response);
+                    }, 
+                    error: function(response) {
+                        alert('Fail: API could not be reached.');
+                        $this.removeClass('disabled');
+                        console.log(response);
+                    }
+                });
+            } else {
+                $this.removeClass('disabled');               
+            }
+        });        
+
+    /*****************************
         MAKE LIFE AWESOME FUNCTIONS
     *****************************/
 
