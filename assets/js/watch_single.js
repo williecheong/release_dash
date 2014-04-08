@@ -529,7 +529,7 @@ jQuery(document).ready(function($) {
                                 '<label class="col-sm-3 control-label" for="query-name">Query Name</label>'+
                                 '<div class="col-sm-9 controls" >'+
                                     '<div class="input-group">'+
-                                        '<input type="text" class="form-control" id="query-name" placeholder="Description for this query." value="'+query.title+'">'+
+                                        '<input type="text" class="form-control" id="query-name" placeholder="Description for this query." value="'+query.raw.title+'">'+
                                         '<span class="input-group-btn">'+
                                             '<button class="btn btn-default colourpicker" type="button" id="q'+query_id+'" style="color:'+query.colour+';">'+
                                                 '<i class="fa fa-tint fa-lg"></i> Color'+
@@ -551,13 +551,13 @@ jQuery(document).ready(function($) {
                             '<div class="form-group">'+
                                 '<label class="col-sm-3 control-label" for="query-bz">Bugzilla URL</label>'+
                                 '<div class="col-sm-9">'+
-                                    '<input class="form-control" id="query-bz" value="'+query.bz_query+'" placeholder="URL that links to this query in Bugzilla.">'+
+                                    '<input class="form-control" id="query-bz" value="'+query.raw.bz_query+'" placeholder="URL that links to this query in Bugzilla.">'+
                                 '</div>'+
                             '</div>'+
                             '<div class="form-group">'+
                                 '<label class="col-sm-3 control-label" for="query-qb">Qb Query</label>'+
                                 '<div class="col-sm-9">'+
-                                    '<textarea class="form-control" rows="3" id="query-qb" placeholder="Query in Qb format as a json object.">'+query.qb_query+'</textarea>'+
+                                    '<textarea class="form-control" rows="3" id="query-qb" placeholder="Query in Qb format as a json object.">'+query.raw.qb_query+'</textarea>'+
                                 '</div>'+
                             '</div>'+
                         '</div>';
