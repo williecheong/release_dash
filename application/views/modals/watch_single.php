@@ -1,6 +1,6 @@
 <!-- Modal for making new group -->
 <div class="modal fade" id="new-group" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -42,7 +42,7 @@
 
 <!-- Modal for viewing/deleting old group -->
 <div class="modal fade" id="old-group" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -52,7 +52,6 @@
             </div>
             <div class="modal-body"> 
                 <form class="form-horizontal" role="form">
-                    <input type="hidden" class="form-control" id="group-id">
                     <div class="form-group">
                         <label class="col-sm-3 control-label" for="group-name">Group Name</label>
                         <div class="col-sm-9">
@@ -72,8 +71,11 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-danger" id="delete-old-group" data-group-id="">
+                <button class="btn btn-danger btn-sm" id="delete-old-group" data-group-id="">
                     <i class="fa fa-times"></i> Delete
+                </button>
+                <button class="btn btn-success" id="update-old-group" data-group-id="">
+                    <i class="fa fa-save"></i> Update
                 </button>
             </div>
         </div>

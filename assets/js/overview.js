@@ -164,7 +164,6 @@
         $('.modal#old-group').find('div.old-query').remove();
 
         // Setting the values inside the modal's form fields
-        $('.modal#old-group').find('input#group-id').val( groupID );
         $('.modal#old-group').find('input#group-name').val( thisGroup.title );
 
         if ( thisGroup.is_plot ) {
@@ -182,20 +181,133 @@
         $.each( thisGroup.queries, function( query_id, query ){
             // Append the html for each query
             $('.modal#old-group').find('form').append( templateOldGroup( query_id, query, productTag ) );
+             // Initializing colorpicker for this new item
+            $(".colourpicker[id='q"+query_id+"']").spectrum({
+                showInput: false,
+                preferredFormat: 'hex6',
+                clickoutFiresChange: true,
+                showButtons: false,
+                move: function(color) {
+                    $(".colourpicker[id='q"+query_id+"']").css( 'color', color.toHexString() );
+                }
+            });
         });
 
         $('.btn#delete-old-group').data('group-id', groupID);
+        $('.btn#update-old-group').data('group-id', groupID );
         // End of setting values in the modal form
-
-        // Disable all the fields here
-        $('.modal#old-group').find('input').attr('disabled', true);
-        $('.modal#old-group').find('select').attr('disabled', true);
-        $('.modal#old-group').find('textarea').attr('disabled', true);
 
         // Fields are populated and disabled. Show modal.
         $('.modal#old-group').modal('toggle');
     });
     
+    // Proceed to update the group
+    $('.btn#update-old-group').click(function(){
+        $this = $(this);
+        $this.addClass('disabled');
+        var groupID = $this.data('group-id');
+
+        // Retrieving input group values into saveGroup
+        var saveGroup = {};
+        saveGroup = {
+            group_id : groupID,
+            group_title : $.trim( $('#group-name').val() ),
+            group_is_plot : $('#group-is-plot:checked').length,
+            group_is_number : $('#group-is-number:checked').length,
+            group_queries : {} 
+        };
+        // End of retrieving input group values into saveGroup
+
+        // Validation for the group's input values
+        if ( saveGroup['group_title'] == '' ) {
+            alert( "Group name cannot be empty." );
+            $this.removeClass('disabled');
+            return false;
+        }
+        
+        if ( (saveGroup['group_is_plot'] + saveGroup['group_is_number']) == 0 ) {
+            alert( "Group has to be either a plot or number." );
+            $this.removeClass('disabled');
+            return false;
+        }
+        
+        if ( $('.old-query').length == 0 ) {
+            // Checks that there is at least one query
+            alert( "No queries found." );
+            $this.removeClass('disabled');
+            return false;
+        } 
+        // End of validation for the group's input values
+
+        // Looping through the input queries to retrieve and check them
+        var queryError = false;
+        $.each( $('.old-query'), function(key, value){ 
+            // Retrieving input group query's values into saveGroup
+            var tempColor = rgb2hex( $('.old-query#'+value.id).find('button.colourpicker').css('color') );
+            saveGroup.group_queries[value.id] = {
+                query_title     : $.trim( $('.old-query#'+value.id).find('input#query-name').val() ),
+                query_colour    : tempColor,
+                query_query_bz  : $('.old-query#'+value.id).find('input#query-bz').val(),
+                query_query_qb  : $('.old-query#'+value.id).find('textarea#query-qb').val()
+            };
+            // End of retrieving input group query's values into saveGroup
+
+            // Validation for the group query's input values
+            if ( saveGroup.group_queries[value.id].query_title == '' ) {
+                alert( 'Query name cannot be empty.' );
+                queryError = true;
+            }
+
+            if ( typeof saveGroup.group_queries[value.id].ref_version == 'undefined' ) {
+                saveGroup.group_queries[value.id].query_query_references = 'none';
+            }
+
+            var isJSON = validateJSON( saveGroup.group_queries[value.id].query_query_qb );
+            if ( !isJSON ) {
+                alert("Qb query must be JSON");
+                queryError = true;
+            }
+            // End of validation for group query's input values
+        });
+
+        // Return if there was failed checks while looping through queries
+        if ( queryError ) {
+            $this.removeClass('disabled');
+            return false;
+        }
+
+        var r = confirm("Confirm saving this group?");
+        if ( r == true ) {
+            // User clicked OK
+            // Proceed to save this group
+            $.ajax({
+                url: '/api/groups',
+                type: 'PUT',
+                data: saveGroup,
+                success: function(response) {
+                    if ( response == 'OK' ) {
+                        $this.html('<i class="fa fa-check"></i> Success');
+                        setTimeout(function() {
+                            // Refresh page after 1.5 seconds
+                            $this.html('<i class="fa fa-refresh"></i> Refreshing');
+                            location.reload();
+                        }, 1500);
+                    }
+
+                    console.log(response);
+                }, 
+                error: function(response) {
+                    alert('Fail: API could not be reached.');
+                    $this.removeClass('disabled');
+                    console.log(response);
+                }
+            });
+        } else {
+            $this.removeClass('disabled');               
+        }
+
+    });
+
     // Proceed to execute and delete the group
     $('.btn#delete-old-group').click(function(){
         $this = $(this);

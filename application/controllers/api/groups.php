@@ -64,6 +64,72 @@ class Groups extends REST_Controller {
         return;
     }
 
+    public function index_put() {
+        $data = $this->put();
+        
+        if ( isset($data['group_id']) ) {
+            // Define the fields that belong to the new group
+            $group_id = $data['group_id'];
+            $group = array();
+            if ( isset($data['group_title']) ) {
+                $group['title'] = $data['group_title'];
+            } 
+
+            if ( isset($data['group_is_plot']) ) {
+                $group['is_plot'] = $data['group_is_plot'];
+            }
+            
+            if ( isset($data['group_is_number']) ) {
+                $group['is_number'] = $data['group_is_number'];
+            }
+
+            // Update the group using the fields we defined above
+            $this->group->update( 
+                array(
+                    'id' => $group_id
+                ),
+                $group 
+            );
+
+            foreach ( $data['group_queries'] as $html_id => $query ) {
+                // Define the fields that belong to the new group
+                // Be sure to also include the group_id of the newly created group
+                $query_id = str_replace('q', '', $html_id);
+                $new_query = array();
+                if ( isset($query['query_title']) ){
+                    $new_query['title'] = $query['query_title'];
+                }
+
+                if ( isset($query['query_query_qb']) ) {
+                    $new_query['query_qb'] = $query['query_query_qb'];
+                }
+
+                if ( isset($query['query_query_bz']) ) {
+                    $new_query['query_bz'] = $query['query_query_bz'];
+                }
+
+                if ( isset($query['query_colour']) ) {
+                    $new_query['colour'] = $query['query_colour'];
+                }
+                
+                // Update the query using the fields we defined above
+                $this->query->update( 
+                    array(
+                        'id' => $query_id
+                    ),
+                    $new_query 
+                );
+            }
+
+            echo 'OK';
+        
+        } else {
+            echo 'Update failed - group ID not specified';
+        }
+
+        return;
+    }
+
     // Used to delete an existing group from the DB
     public function index_delete( $group_id = '' ) {
         // Check that a group has been specified
