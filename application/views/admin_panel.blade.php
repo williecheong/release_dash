@@ -28,26 +28,32 @@
                 <span class="lead">
                     {{ucfirst($table_name)}}
                 </span>
-                <table class="table table-condensed table-hover">
-                    <thead>
-                        <tr>
-                            @foreach ( $table[0] as $property => $value )
-                                <th>{{$property}}</th>
-                            @endforeach
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($table as $row)
+                @if ( !empty($table) ) 
+                    <table class="table table-condensed table-hover">
+                        <thead>
                             <tr>
-                                @foreach ( $row as $value )
-                                    <th>
-                                        {{ htmlspecialchars($value) }}
-                                    </th>
-                                @endforeach           
+                                @foreach ( $table[0] as $property => $value )
+                                    <th>{{$property}}</th>
+                                @endforeach
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @foreach ($table as $row)
+                                <tr>
+                                    @foreach ( $row as $value )
+                                        <th>
+                                            {{ htmlspecialchars($value) }}
+                                        </th>
+                                    @endforeach           
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                @else
+                    <p>
+                        No data to display.
+                    </p>
+                @endif
             </div>
     @endforeach
 </div><!-- /container -->
