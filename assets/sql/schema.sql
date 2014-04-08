@@ -109,7 +109,8 @@ INSERT INTO `administrator` (`id`, `email`) VALUES
 ('2', 'bbajaj@mozilla.com'      ),
 ('3', 'lsblakk@mozilla.com'     ),
 ('4', 'praghunath@mozilla.com'  ),
-('5', 'sledru@mozilla.com'      );
+('5', 'sledru@mozilla.com'      ),
+('6', 'lmandel@mozilla.com'     );
 
 INSERT INTO `product` (`id`, `tag`, `title`, `components`) VALUES 
 ('1', 'firefox', 'Firefox',
