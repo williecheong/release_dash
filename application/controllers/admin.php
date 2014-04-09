@@ -111,6 +111,13 @@ class Admin extends CI_Controller {
             foreach( $config['product'][$product->title]['component'] as $component_name => $component ) {
                 $components[] = $component_name;
             } 
+
+            if ( $product->tag == 'firefox' || $product->tag == 'fennec' ) {
+                foreach( $config['product']['Core']['component'] as $component_name => $component ) {
+                    $components[] = $component_name;
+                }     
+            }
+
             // sort that components array by alphabetical order then join as CSV
             asort($components);
             $components = implode(',', $components);
