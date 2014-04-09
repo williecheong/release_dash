@@ -29,8 +29,7 @@
     $('.btn#new-query-template').click( function() {
         new_query_unique_counter++;
         var thisNum = new_query_unique_counter;
-        var product_tag = $('.modal#new-group').find('.btn#save-new-group').data('product_tag');
-        $('.modal#new-group').find('form').append( templateNewGroup( thisNum, product_tag ));
+        $('.modal#new-group').find('form').append( templateNewGroup( thisNum ));
 
         // Initializing remove button for this new item
         $('button#remove-new-query').click(function(){
@@ -180,7 +179,7 @@
         
         $.each( thisGroup.queries, function( query_id, query ){
             // Append the html for each query
-            $('.modal#old-group').find('form').append( templateOldGroup( query_id, query, productTag ) );
+            $('.modal#old-group').find('form').append( templateOldGroup( query_id, query ) );
              // Initializing colorpicker for this new item
             $(".colourpicker[id='q"+query_id+"']").spectrum({
                 showInput: false,
@@ -341,83 +340,6 @@
             $this.removeClass('disabled');               
         }
     });
-
-/************************
-    VERY IMPORTANT FUNCTIONS
-************************/
-
-/*****************************
-    MAKE LIFE AWESOME FUNCTIONS
-*****************************/
-    function templateNewGroup ( number, product_tag ) {
-        var html = '<div class="new-query" id="q'+ number +'">'+
-                        '<button type="button" class="btn btn-xs btn-default" id="remove-new-query">'+
-                            '<i class="fa fa-times"></i>'+
-                        '</button>'+
-                        '<div class="form-group">'+
-                            '<label class="col-sm-3 control-label" for="new-query-name">Query Name</label>'+
-                            '<div class="col-sm-9 controls">'+
-                                '<div class="input-group">'+
-                                    '<input type="text" class="form-control" id="new-query-name" placeholder="Description for this query.">'+
-                                    '<span class="input-group-btn">'+
-                                        '<button class="btn btn-default colourpicker" type="button" id="'+number+'">'+
-                                            '<i class="fa fa-tint fa-lg"></i> Color'+
-                                        '</button>'+
-                                        '<em id="colorpicker-log"></em>'+
-                                    '</span>'+
-                                '</div>'+
-                            '</div>'+
-                        '</div>'+
-                        '<div class="form-group">'+
-                            '<label class="col-sm-3 control-label" for="new-query-bz">Bugzilla URL</label>'+
-                            '<div class="col-sm-9">'+
-                                '<input class="form-control" id="new-query-bz" placeholder="URL that links to this query in Bugzilla.">'+
-                            '</div>'+
-                        '</div>'+
-                        '<div class="form-group">'+
-                            '<label class="col-sm-3 control-label" for="new-query-qb">Qb Query</label>'+
-                            '<div class="col-sm-9">'+
-                                '<textarea class="form-control" rows="3" id="new-query-qb" placeholder="Query in Qb format as a json object."></textarea>'+
-                            '</div>'+
-                        '</div>'+
-                    '</div>';
-        return html;
-    }
-
-    function templateOldGroup ( query_id, query, product_tag ) {
-        var html = '<div class="old-query" id="q'+ query_id +'">'+
-                        '<div class="form-group">'+
-                            '<input type="hidden" class="form-control" id="query-id">'+
-                        '</div>'+
-                        '<div class="form-group">'+
-                            '<label class="col-sm-3 control-label" for="query-name">Query Name</label>'+
-                            '<div class="col-sm-9 controls" >'+
-                                '<div class="input-group">'+
-                                    '<input type="text" class="form-control" id="query-name" placeholder="Description for this query." value="'+query.title+'">'+
-                                    '<span class="input-group-btn">'+
-                                        '<button class="btn btn-default colourpicker" type="button" id="q'+query_id+'" style="color:'+query.colour+';">'+
-                                            '<i class="fa fa-tint fa-lg"></i> Color'+
-                                        '</button>'+
-                                        '<em id="colorpicker-log"></em>'+
-                                    '</span>'+
-                                '</div>'+
-                            '</div>'+
-                        '</div>'+
-                        '<div class="form-group">'+
-                            '<label class="col-sm-3 control-label" for="query-bz">Bugzilla URL</label>'+
-                            '<div class="col-sm-9">'+
-                                '<input class="form-control" id="query-bz" value="'+query.bz_query+'" placeholder="URL that links to this query in Bugzilla.">'+
-                            '</div>'+
-                        '</div>'+
-                        '<div class="form-group">'+
-                            '<label class="col-sm-3 control-label" for="query-qb">Qb Query</label>'+
-                            '<div class="col-sm-9">'+
-                                '<textarea class="form-control" rows="3" id="query-qb" placeholder="Query in Qb format as a json object.">'+query.qb_query+'</textarea>'+
-                            '</div>'+
-                        '</div>'+
-                    '</div>';
-        return html;
-    }
 
 
 
