@@ -48,9 +48,9 @@
             @foreach ($product['versions'] as $version_tag => $version)
                 <div class="col-sm-{{ floor(12/count($product['versions'])) }} version" id="{{$version_tag}}" style="background:{{$version['score']}};">
                     <a href="/for/{{$product_tag}}/{{$version_tag}}">    
-                        <h2>
-                            {{ $version['title'] }}
-                        </h2>
+                        <h1>
+                            {{ $version_tag }}
+                        </h1>
                     </a>
                     <em class="small pull-right">
                         <?php
