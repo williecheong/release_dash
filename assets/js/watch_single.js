@@ -1,5 +1,4 @@
 jQuery(document).ready(function($) {
-
     /*********************************
         JUST SETTING UP THE PAGE HERE
     *********************************/

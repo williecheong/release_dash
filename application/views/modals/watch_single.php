@@ -186,6 +186,8 @@
                             </em>
                         </small>
                     </p>
+                <?php } else { ?>
+                    <p style="margin-top:20px;"></p>
                 <?php } ?>
             </div>
         </div>
