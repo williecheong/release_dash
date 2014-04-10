@@ -1,16 +1,34 @@
 /*********************************
-    SAVING NEW GROUPS AND QUERIES
+    VALIDATION FOR GROUPS AND QUERIES
 *********************************/
-    function bindQueryEvents( element_id ) {
-        $(".colourpicker[id='"+element_id+"']").spectrum({
-            showInput: false,
-            preferredFormat: 'hex6',
-            clickoutFiresChange: true,
-            showButtons: false,
-            move: function(color) {
-                $(".colourpicker[id='"+element_id+"']").css( 'color', color.toHexString() );
-            }
-        });
+    function validateGroup( saveGroup, queryType ) {
+        // Validation for the group's input values
+        if ( saveGroup['group_title'] == '' ) {
+            return "Group name cannot be empty.";
+        }
+        
+        if ( (saveGroup['group_is_plot'] + saveGroup['group_is_number']) == 0 ) {
+            return "Group has to be either a plot or number.";
+        }
+
+        if ( $('.'+queryType+'-query').length == 0 ) {
+            // Checks that there is at least one query
+            return "No queries found." ;
+        } 
+
+        // OK validation pass
+        return false;
+    }
+
+    function validateQuery( saveQuery ) {
+        if ( saveQuery.query_title == '' ) {
+            return "Query name cannot be empty.";
+        }
+
+        var isJSON = validateJSON( saveQuery.query_query_qb );
+        if ( !isJSON ) {
+            return "Qb query must be JSON";
+        }
 
         return false;
     }

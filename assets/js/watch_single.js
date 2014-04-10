@@ -83,29 +83,18 @@ jQuery(document).ready(function($) {
             };
             // End of retrieving input group values into saveGroup
 
-            // Validation for the new group's input values
-            if ( saveGroup['group_title'] == '' ) {
-                alert( "Group name cannot be empty." );
+            // validateGroup returns false if OK
+            // Returns a message string if not OK
+            var groupError = validateGroup( saveGroup, 'new' );
+            if ( groupError ) {
+                alert( groupError );
                 $this.removeClass('disabled');
                 return false;
             }
-            
-            if ( (saveGroup['group_is_plot'] + saveGroup['group_is_number']) == 0 ) {
-                alert( "Group has to be either a plot or number." );
-                $this.removeClass('disabled');
-                return false;
-            }
-            
-            if ( $('.new-query').length == 0 ) {
-                // Checks that there is at least one new query
-                alert( "No queries found." );
-                $this.removeClass('disabled');
-                return false;
-            } 
             // End of validation for the new group's input values
 
             // Looping through the input queries to retrieve and check them
-            var queryError = false;
+            var queryError = [];
             $.each( $('.new-query'), function(key, value){ 
                 // Retrieving input group query's values into saveGroup
                 var tempColor = rgb2hex( $('.new-query#'+value.id).find('button.colourpicker').css('color') );
@@ -119,26 +108,21 @@ jQuery(document).ready(function($) {
                 };
                 // End of retrieving input group query's values into saveGroup
 
-                // Validation for the group query's input values
-                if ( saveGroup.group_queries[value.id].query_title == '' ) {
-                    alert( 'Query name cannot be empty.' );
-                    queryError = true;
-                }
-
                 if ( typeof saveGroup.group_queries[value.id].ref_version == 'undefined' ) {
                     saveGroup.group_queries[value.id].query_query_references = 'none';
                 }
 
-                var isJSON = validateJSON( saveGroup.group_queries[value.id].query_query_qb );
-                if ( !isJSON ) {
-                    alert("Qb query must be JSON");
-                    queryError = true;
+                // Validation for the group query's input values
+                var tempError = validateQuery( saveGroup.group_queries[value.id] );
+                if ( tempError ) {
+                    queryError.push( tempError );
                 }
                 // End of validation for group query's input values
             });
 
             // Return if there was failed checks while looping through queries
-            if ( queryError ) {
+            if ( queryError.length > 0 ) {
+                alert( queryError.join("\n") );
                 $this.removeClass('disabled');
                 return false;
             }
@@ -247,29 +231,18 @@ jQuery(document).ready(function($) {
             };
             // End of retrieving input group values into saveGroup
 
-            // Validation for the group's input values
-            if ( saveGroup['group_title'] == '' ) {
-                alert( "Group name cannot be empty." );
+            // validateGroup returns false if OK
+            // Returns a message string if not OK
+            var groupError = validateGroup( saveGroup, 'old' );
+            if ( groupError ) {
+                alert( groupError );
                 $this.removeClass('disabled');
                 return false;
             }
-            
-            if ( (saveGroup['group_is_plot'] + saveGroup['group_is_number']) == 0 ) {
-                alert( "Group has to be either a plot or number." );
-                $this.removeClass('disabled');
-                return false;
-            }
-            
-            if ( $('.old-query').length == 0 ) {
-                // Checks that there is at least one query
-                alert( "No queries found." );
-                $this.removeClass('disabled');
-                return false;
-            } 
             // End of validation for the group's input values
 
             // Looping through the input queries to retrieve and check them
-            var queryError = false;
+            var queryError = [];
             $.each( $('.old-query'), function(key, value){ 
                 // Retrieving input group query's values into saveGroup
                 var tempColor = rgb2hex( $('.old-query#'+value.id).find('button.colourpicker').css('color') );
@@ -281,26 +254,21 @@ jQuery(document).ready(function($) {
                 };
                 // End of retrieving input group query's values into saveGroup
 
-                // Validation for the group query's input values
-                if ( saveGroup.group_queries[value.id].query_title == '' ) {
-                    alert( 'Query name cannot be empty.' );
-                    queryError = true;
-                }
-
                 if ( typeof saveGroup.group_queries[value.id].ref_version == 'undefined' ) {
                     saveGroup.group_queries[value.id].query_query_references = 'none';
                 }
 
-                var isJSON = validateJSON( saveGroup.group_queries[value.id].query_query_qb );
-                if ( !isJSON ) {
-                    alert("Qb query must be JSON");
-                    queryError = true;
+                // Validation for the group query's input values
+                var tempError = validateQuery( saveGroup.group_queries[value.id] );
+                if ( tempError ) {
+                    queryError.push( tempError );
                 }
                 // End of validation for group query's input values
             });
 
             // Return if there was failed checks while looping through queries
-            if ( queryError ) {
+            if ( queryError.length > 0 ) {
+                alert( queryError.join("\n") );
                 $this.removeClass('disabled');
                 return false;
             }
