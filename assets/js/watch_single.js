@@ -131,28 +131,7 @@ jQuery(document).ready(function($) {
             if ( r == true ) {
                 // User clicked OK
                 // Proceed to save this group
-                $.ajax({
-                    url: '/api/groups',
-                    type: 'POST',
-                    data: saveGroup,
-                    success: function(response) {
-                        if ( response == 'OK' ) {
-                            $this.html('<i class="fa fa-check"></i> Success');
-                            setTimeout(function() {
-                                // Refresh page after 1.5 seconds
-                                $this.html('<i class="fa fa-refresh"></i> Refreshing');
-                                location.reload();
-                            }, 1500);
-                        }
-
-                        console.log(response);
-                    }, 
-                    error: function(response) {
-                        alert('Fail: API could not be reached.');
-                        $this.removeClass('disabled');
-                        console.log(response);
-                    }
-                });
+                postGroup( saveGroup, $this );
             } else {
                 $this.removeClass('disabled');               
             }
@@ -277,28 +256,7 @@ jQuery(document).ready(function($) {
             if ( r == true ) {
                 // User clicked OK
                 // Proceed to save this group
-                $.ajax({
-                    url: '/api/groups',
-                    type: 'PUT',
-                    data: saveGroup,
-                    success: function(response) {
-                        if ( response == 'OK' ) {
-                            $this.html('<i class="fa fa-check"></i> Success');
-                            setTimeout(function() {
-                                // Refresh page after 1.5 seconds
-                                $this.html('<i class="fa fa-refresh"></i> Refreshing');
-                                location.reload();
-                            }, 1500);
-                        }
-
-                        console.log(response);
-                    }, 
-                    error: function(response) {
-                        alert('Fail: API could not be reached.');
-                        $this.removeClass('disabled');
-                        console.log(response);
-                    }
-                });
+                putGroup( saveGroup, $this );
             } else {
                 $this.removeClass('disabled');               
             }
@@ -313,27 +271,7 @@ jQuery(document).ready(function($) {
 
             var r = confirm("Confirm deleting this group?");
             if ( r == true ) {
-                $.ajax({
-                    url: '/api/groups/index/' + groupID ,
-                    type: 'DELETE',
-                    success: function(response) {
-                        if ( response == 'OK' ) {
-                            $this.html('<i class="fa fa-check"></i> Success');
-                            setTimeout(function() {
-                                // Refresh page after 1.5 seconds
-                                $this.html('<i class="fa fa-refresh"></i> Refreshing');
-                                location.reload();
-                            }, 1500);
-                        }
-
-                        console.log(response);
-                    }, 
-                    error: function(response) {
-                        alert('Fail: API could not be reached.');
-                        $this.removeClass('disabled');
-                        console.log(response);
-                    }
-                });
+                deleteGroup( groupID, $this );
             } else {
                 $this.removeClass('disabled');               
             }
