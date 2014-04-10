@@ -209,12 +209,14 @@
     function templateBreakdownTable( component_table, selectDate, totalCount ) {
         var rows = '';
         $.each(component_table, function(component_name, component_data){
-            var percentage = (component_data / totalCount) * 100;
-            rows += '<tr>'+
-                    '    <td>'+component_name+'</td>'+
-                    '    <td>'+component_data+'</td>'+
-                    '    <td>'+percentage.toFixed(1)+'%</td>'+
-                    '</tr>';
+            if ( component_data != '0' ){
+                var percentage = (component_data / totalCount) * 100;
+                rows += '<tr>'+
+                        '    <td>'+component_name+'</td>'+
+                        '    <td>'+component_data+'</td>'+
+                        '    <td>'+percentage.toFixed(1)+'%</td>'+
+                        '</tr>';
+            }
         });
 
         var html  = '<div class="lead text-right">'+ new Date(selectDate).toDateString() +'</div>';

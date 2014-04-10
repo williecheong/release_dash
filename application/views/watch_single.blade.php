@@ -17,7 +17,8 @@
             <script>var coreData = '. json_encode($data) .'</script>
             <script src="/assets/js/watch_single_breakdown.js"></script>
             <script src="/assets/js/watch_single_es.js"></script>
-            <script src="/assets/js/watch_single.js"></script>',
+            <script src="/assets/js/watch_single.js"></script>
+            <script src="/assets/js/groups_helper.js"></script>',
 
         'rule_scripts' => ''
     );

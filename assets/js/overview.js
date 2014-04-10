@@ -29,8 +29,7 @@
     $('.btn#new-query-template').click( function() {
         new_query_unique_counter++;
         var thisNum = new_query_unique_counter;
-        var product_tag = $('.modal#new-group').find('.btn#save-new-group').data('product_tag');
-        $('.modal#new-group').find('form').append( templateNewGroup( thisNum, product_tag ));
+        $('.modal#new-group').find('form').append( templateNewGroup( thisNum ));
 
         // Initializing remove button for this new item
         $('button#remove-new-query').click(function(){
@@ -67,28 +66,18 @@
         // End of retrieving input group values into saveGroup
 
         // Validation for the new group's input values
-        if ( saveGroup['group_title'] == '' ) {
-            alert( "Group name cannot be empty." );
+        // validateGroup returns false if OK
+        // Returns a message string if not OK
+        var groupError = validateGroup( saveGroup, 'new' );
+        if ( groupError ) {
+            alert( groupError );
             $this.removeClass('disabled');
             return false;
         }
-        
-        if ( (saveGroup['group_is_plot'] + saveGroup['group_is_number']) == 0 ) {
-            alert( "Group has to be either a plot or number." );
-            $this.removeClass('disabled');
-            return false;
-        }
-        
-        if ( $('.new-query').length == 0 ) {
-            // Checks that there is at least one new query
-            alert( "No queries found." );
-            $this.removeClass('disabled');
-            return false;
-        } 
         // End of validation for the new group's input values
 
         // Looping through the input queries to retrieve and check them
-        var queryError = false;
+        var queryError = [];
         $.each( $('.new-query'), function(key, value){ 
             // Retrieving input group query's values into saveGroup
             var tempColor = rgb2hex( $('.new-query#'+value.id).find('button.colourpicker').css('color') );
@@ -101,21 +90,16 @@
             // End of retrieving input group query's values into saveGroup
 
             // Validation for the group query's input values
-            if ( saveGroup.group_queries[value.id].query_title == '' ) {
-                alert( 'Query name cannot be empty.' );
-                queryError = true;
-            }
-
-            var isJSON = validateJSON( saveGroup.group_queries[value.id].query_query_qb );
-            if ( !isJSON ) {
-                alert("Qb query must be JSON");
-                queryError = true;
+            var tempError = validateQuery( saveGroup.group_queries[value.id] );
+            if ( tempError ) {
+                queryError.push( tempError );
             }
             // End of validation for group query's input values
         });
 
         // Return if there was failed checks while looping through queries
-        if ( queryError ) {
+        if ( queryError.length > 0 ) {
+            alert( queryError.join("\n") );
             $this.removeClass('disabled');
             return false;
         }
@@ -124,28 +108,7 @@
         if ( r == true ) {
             // User clicked OK
             // Proceed to save this group
-            $.ajax({
-                url: '/api/groups',
-                type: 'POST',
-                data: saveGroup,
-                success: function(response) {
-                    if ( response == 'OK' ) {
-                        $this.html('<i class="fa fa-check"></i> Success');
-                        setTimeout(function() {
-                            // Refresh page after 1.5 seconds
-                            $this.html('<i class="fa fa-refresh"></i> Refreshing');
-                            location.reload();
-                        }, 1500);
-                    }
-
-                    console.log(response);
-                }, 
-                error: function(response) {
-                    alert('Fail: API could not be reached.');
-                    $this.removeClass('disabled');
-                    console.log(response);
-                }
-            });
+            postGroup( saveGroup, $this );
         } else {
             $this.removeClass('disabled');               
         }   
@@ -164,7 +127,6 @@
         $('.modal#old-group').find('div.old-query').remove();
 
         // Setting the values inside the modal's form fields
-        $('.modal#old-group').find('input#group-id').val( groupID );
         $('.modal#old-group').find('input#group-name').val( thisGroup.title );
 
         if ( thisGroup.is_plot ) {
@@ -181,21 +143,94 @@
         
         $.each( thisGroup.queries, function( query_id, query ){
             // Append the html for each query
-            $('.modal#old-group').find('form').append( templateOldGroup( query_id, query, productTag ) );
+            $('.modal#old-group').find('form').append( templateOldGroup( query_id, query ) );
+             // Initializing colorpicker for this new item
+            $(".colourpicker[id='q"+query_id+"']").spectrum({
+                showInput: false,
+                preferredFormat: 'hex6',
+                clickoutFiresChange: true,
+                showButtons: false,
+                move: function(color) {
+                    $(".colourpicker[id='q"+query_id+"']").css( 'color', color.toHexString() );
+                }
+            });
         });
 
         $('.btn#delete-old-group').data('group-id', groupID);
+        $('.btn#update-old-group').data('group-id', groupID );
         // End of setting values in the modal form
-
-        // Disable all the fields here
-        $('.modal#old-group').find('input').attr('disabled', true);
-        $('.modal#old-group').find('select').attr('disabled', true);
-        $('.modal#old-group').find('textarea').attr('disabled', true);
 
         // Fields are populated and disabled. Show modal.
         $('.modal#old-group').modal('toggle');
     });
     
+    // Proceed to update the group
+    $('.btn#update-old-group').click(function(){
+        $this = $(this);
+        $this.addClass('disabled');
+        var groupID = $this.data('group-id');
+
+        // Retrieving input group values into saveGroup
+        var saveGroup = {};
+        saveGroup = {
+            group_id : groupID,
+            group_title : $.trim( $('#group-name').val() ),
+            group_is_plot : $('#group-is-plot:checked').length,
+            group_is_number : $('#group-is-number:checked').length,
+            group_queries : {} 
+        };
+        // End of retrieving input group values into saveGroup
+
+        // Validation for the group's input values
+        // validateGroup returns false if OK
+        // Returns a message string if not OK
+        var groupError = validateGroup( saveGroup, 'old' );
+        if ( groupError ) {
+            alert( groupError );
+            $this.removeClass('disabled');
+            return false;
+        }
+        // End of validation for the group's input values
+
+        // Looping through the input queries to retrieve and check them
+        var queryError = [];
+        $.each( $('.old-query'), function(key, value){ 
+            // Retrieving input group query's values into saveGroup
+            var tempColor = rgb2hex( $('.old-query#'+value.id).find('button.colourpicker').css('color') );
+            saveGroup.group_queries[value.id] = {
+                query_title     : $.trim( $('.old-query#'+value.id).find('input#query-name').val() ),
+                query_colour    : tempColor,
+                query_query_bz  : $('.old-query#'+value.id).find('input#query-bz').val(),
+                query_query_qb  : $('.old-query#'+value.id).find('textarea#query-qb').val()
+            };
+            // End of retrieving input group query's values into saveGroup
+
+            // Validation for the group query's input values
+            var tempError = validateQuery( saveGroup.group_queries[value.id] );
+            if ( tempError ) {
+                queryError.push( tempError );
+            }
+            // End of validation for group query's input values
+        });
+
+        // Return if there was failed checks while looping through queries
+        if ( queryError.length > 0 ) {
+            alert( queryError.join("\n") );
+            $this.removeClass('disabled');
+            return false;
+        }
+
+        var r = confirm("Confirm saving this group?");
+        if ( r == true ) {
+            // User clicked OK
+            // Proceed to save this group
+            putGroup( saveGroup, $this );
+        } else {
+            $this.removeClass('disabled');               
+        }
+
+    });
+
     // Proceed to execute and delete the group
     $('.btn#delete-old-group').click(function(){
         $this = $(this);
@@ -204,108 +239,11 @@
 
         var r = confirm("Confirm deleting this group?");
         if ( r == true ) {
-            $.ajax({
-                url: '/api/groups/index/' + groupID ,
-                type: 'DELETE',
-                success: function(response) {
-                    if ( response == 'OK' ) {
-                        $this.html('<i class="fa fa-check"></i> Success');
-                        setTimeout(function() {
-                            // Refresh page after 1.5 seconds
-                            $this.html('<i class="fa fa-refresh"></i> Refreshing');
-                            location.reload();
-                        }, 1500);
-                    }
-
-                    console.log(response);
-                }, 
-                error: function(response) {
-                    alert('Fail: API could not be reached.');
-                    $this.removeClass('disabled');
-                    console.log(response);
-                }
-            });
+            deleteGroup( groupID, $this );
         } else {
             $this.removeClass('disabled');               
         }
     });
-
-/************************
-    VERY IMPORTANT FUNCTIONS
-************************/
-
-/*****************************
-    MAKE LIFE AWESOME FUNCTIONS
-*****************************/
-    function templateNewGroup ( number, product_tag ) {
-        var html = '<div class="new-query" id="q'+ number +'">'+
-                        '<button type="button" class="btn btn-xs btn-default" id="remove-new-query">'+
-                            '<i class="fa fa-times"></i>'+
-                        '</button>'+
-                        '<div class="form-group">'+
-                            '<label class="col-sm-3 control-label" for="new-query-name">Query Name</label>'+
-                            '<div class="col-sm-9 controls">'+
-                                '<div class="input-group">'+
-                                    '<input type="text" class="form-control" id="new-query-name" placeholder="Description for this query.">'+
-                                    '<span class="input-group-btn">'+
-                                        '<button class="btn btn-default colourpicker" type="button" id="'+number+'">'+
-                                            '<i class="fa fa-tint fa-lg"></i> Color'+
-                                        '</button>'+
-                                        '<em id="colorpicker-log"></em>'+
-                                    '</span>'+
-                                '</div>'+
-                            '</div>'+
-                        '</div>'+
-                        '<div class="form-group">'+
-                            '<label class="col-sm-3 control-label" for="new-query-bz">Bugzilla URL</label>'+
-                            '<div class="col-sm-9">'+
-                                '<input class="form-control" id="new-query-bz" placeholder="URL that links to this query in Bugzilla.">'+
-                            '</div>'+
-                        '</div>'+
-                        '<div class="form-group">'+
-                            '<label class="col-sm-3 control-label" for="new-query-qb">Qb Query</label>'+
-                            '<div class="col-sm-9">'+
-                                '<textarea class="form-control" rows="3" id="new-query-qb" placeholder="Query in Qb format as a json object."></textarea>'+
-                            '</div>'+
-                        '</div>'+
-                    '</div>';
-        return html;
-    }
-
-    function templateOldGroup ( query_id, query, product_tag ) {
-        var html = '<div class="old-query" id="q'+ query_id +'">'+
-                        '<div class="form-group">'+
-                            '<input type="hidden" class="form-control" id="query-id">'+
-                        '</div>'+
-                        '<div class="form-group">'+
-                            '<label class="col-sm-3 control-label" for="query-name">Query Name</label>'+
-                            '<div class="col-sm-9 controls" >'+
-                                '<div class="input-group">'+
-                                    '<input type="text" class="form-control" id="query-name" placeholder="Description for this query." value="'+query.title+'">'+
-                                    '<span class="input-group-btn">'+
-                                        '<button class="btn btn-default colourpicker" type="button" id="q'+query_id+'" style="color:'+query.colour+';">'+
-                                            '<i class="fa fa-tint fa-lg"></i> Color'+
-                                        '</button>'+
-                                        '<em id="colorpicker-log"></em>'+
-                                    '</span>'+
-                                '</div>'+
-                            '</div>'+
-                        '</div>'+
-                        '<div class="form-group">'+
-                            '<label class="col-sm-3 control-label" for="query-bz">Bugzilla URL</label>'+
-                            '<div class="col-sm-9">'+
-                                '<input class="form-control" id="query-bz" value="'+query.bz_query+'" placeholder="URL that links to this query in Bugzilla.">'+
-                            '</div>'+
-                        '</div>'+
-                        '<div class="form-group">'+
-                            '<label class="col-sm-3 control-label" for="query-qb">Qb Query</label>'+
-                            '<div class="col-sm-9">'+
-                                '<textarea class="form-control" rows="3" id="query-qb" placeholder="Query in Qb format as a json object.">'+query.qb_query+'</textarea>'+
-                            '</div>'+
-                        '</div>'+
-                    '</div>';
-        return html;
-    }
 
 
 

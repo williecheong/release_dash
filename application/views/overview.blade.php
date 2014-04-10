@@ -2,6 +2,7 @@
     $include = array( 
         'top'       => '<link rel="stylesheet" href="/assets/css/overview.css">',
         'bottom'    => '<script src="/assets/js/overview.js"></script>
+                        <script src="/assets/js/groups_helper.js"></script>
                         <script>var coreData = '. json_encode($data) .'</script>'
     );
  
@@ -48,9 +49,9 @@
             @foreach ($product['versions'] as $version_tag => $version)
                 <div class="col-sm-{{ floor(12/count($product['versions'])) }} version" id="{{$version_tag}}" style="background:{{$version['score']}};">
                     <a href="/for/{{$product_tag}}/{{$version_tag}}">    
-                        <h2>
-                            {{ $version['title'] }}
-                        </h2>
+                        <h1>
+                            {{ $version_tag }}
+                        </h1>
                     </a>
                     <em class="small pull-right">
                         <?php

@@ -54,7 +54,7 @@
                         </button>
                         <?php if ( $this->uri->segment(1) == 'for' ) { ?>
                             <button class="btn btn-default" data-toggle="modal" data-target="#comment-box">
-                                <i class="fa fa-comment"></i> Comment
+                                <i class="fa fa-comment"></i> Summary
                             </button>
                             <a class="btn btn-default" id="es-refresh" href="/<?= uri_string(); ?>?refresh=1">
                                 <i class="fa fa-refresh"></i> Refresh

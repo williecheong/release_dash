@@ -140,6 +140,12 @@ class Watch extends CI_Controller {
 
                     //  Append the Qb queries and other meta-data into $data
                     $data['groups'][$group->id]['queries'][$query->id]['is_reference']= false;
+                    $data['groups'][$group->id]['queries'][$query->id]['raw']         = array(
+                        'title' => $query->title,
+                        'qb_query' => $query->query_qb,
+                        'bz_query' => $query->query_bz
+                    );
+                    
                     $count_main_queries++;
 
                 } else {
