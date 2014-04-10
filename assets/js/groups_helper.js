@@ -15,7 +15,6 @@
             // Checks that there is at least one query
             return "No queries found." ;
         } 
-
         // OK validation pass
         return false;
     }
@@ -29,7 +28,6 @@
         if ( !isJSON ) {
             return "Qb query must be JSON";
         }
-
         return false;
     }
     
@@ -59,8 +57,6 @@
                 console.log(response);
             }
         });
-
-        return false;
     }
 
     function putGroup( saveGroup, $this ){
@@ -86,8 +82,6 @@
                 console.log(response);
             }
         });
-
-        return false;
     }
 
     function deleteGroup( groupID, $this ){
@@ -112,8 +106,6 @@
                 console.log(response);
             }
         });
-        
-        return false;
     } 
 
 /*****************************
