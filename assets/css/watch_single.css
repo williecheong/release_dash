@@ -6,6 +6,10 @@
         cursor: default;
     }
 
+    .btn#get-component-breakdowns {
+        display: none;
+    }
+
     #about-rule-boilerplate {
         display: none;
         margin: 1%;

@@ -96,6 +96,9 @@
         // If this group has a rule, apply it
         if ( coreData.groups[group_id].has_rule ) { applyStatus( group_id ); }
 
+        // Component breakdown is available only after main plot is done loading
+        $('.btn#get-component-breakdowns[data-group-id="'+group_id+'"]').show('slow'); 
+
         // Remove the Bugzilla chomping GIF icon
         removeLoader( 'g' + group_id );
     }
