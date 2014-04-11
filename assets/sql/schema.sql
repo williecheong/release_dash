@@ -183,7 +183,9 @@ INSERT INTO `group` (`id`, `title`, `entity`, `entity_id`, `is_plot`, `is_number
 ('6', 'Blockers (Default)',             'product', '3', '1', '0'),
 ('7', 'Blocking Regressions for 1.4',   'version', '15','1', '0'),
 ('8', 'Nominated Bugs for 1.4',         'version', '15','1', '0'),
-('9', 'Unassigned Blockers',            'version', '15','1', '0');
+('9', 'Unassigned Blockers',            'version', '15','1', '0'),
+('10','Tracking but not fixed',         'version', '5', '1', '1'),
+('11','Approvals for mozilla beta',     'version', '5', '1', '0');
 
 INSERT INTO `query` (`id`, `title`, `group_id`, `colour`, `references`, `query_qb`, `query_bz`) VALUES
 ('1', '# Bugs tracking <version_title>',                 '1', 'rgb(194, 127, 127)', '',
@@ -214,29 +216,36 @@ INSERT INTO `query` (`id`, `title`, `group_id`, `colour`, `references`, `query_q
     '{"from": "public_bugs","select": {"name": "num","value": "bug_id","aggregate": "count"},"esfilter": {"and": [{"term": {"cf_blocking_b2g": "<version_tag:.>+"}},{"terms": {"bug_status": ["unconfirmed","new","assigned","reopened"]}}]},"edges": [{"range": {"min": "modified_ts","max": "expires_on"},"domain": {"type": "date","min": @birthday,"max": @timestamp,"interval": "day"}}]}',
     'https://bugzilla.mozilla.org/buglist.cgi?j_top=OR&f1=cf_blocking_b2g&o1=equals&query_format=advanced&bug_status=UNCONFIRMED&bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED&v1=<version_tag:.>%2B&list_id=9613974' ),
 
-
 ('8', '# Blocking Regressions',                          '6', 'rgb(108, 10, 238)', '',
     '{"from": "public_bugs","select": {"name": "num","value": "bug_id","aggregate": "count"},"esfilter": {"and": [{"terms": {"bug_status": ["unconfirmed","new","assigned","reopened"]}},{"and": [{"regexp": {"keywords": "(regression)+"}}]},{"or": [{"term": {"cf_blocking_b2g": "<version_tag:.>+"}}]}]},"edges": [{"range": {"min": "modified_ts","max": "expires_on"},"domain": {"type": "date","min": @birthday,"max": @timestamp,"interval": "day"}}]}',
     'https://bugzilla.mozilla.org/buglist.cgi?j_top=OR&keywords=regression%2C%20&keywords_type=allwords&o1=equals&v1=<version_tag:.>%2B&f1=cf_blocking_b2g&query_format=advanced&bug_status=UNCONFIRMED&bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED&list_id=9753592' ),
-
 
 ('9', '# Blocking Regressions',                          '7', 'rgb(51, 51, 51)', '',
     '{"from": "public_bugs","select": {"name": "num","value": "bug_id","aggregate": "count"},"esfilter": {"and": [{"terms": {"bug_status": ["new","assigned","reopened","resolved","verified","closed"]}},{"terms": {"resolution": ["fixed","wontfix"]}},{"or": [{"regexp": {"keywords": "(regression)+"}}]},{"or": [{"or": [{"term": {"cf_blocking_b2g": "<version_tag:.>+"}}]}]}]},"edges": [{"range": {"min": "modified_ts","max": "expires_on"},"domain": {"type": "date","min": @birthday,"max": @timestamp,"interval": "day"}}]}',
     'https://bugzilla.mozilla.org/buglist.cgi?j_top=OR&keywords=regression%2C%20&keywords_type=anywords&f1=cf_blocking_b2g&columnlist=product%2Ccomponent%2Cassigned_to%2Cbug_status%2Cresolution%2Cshort_desc%2Cchangeddate%2Ckeywords%2Ccf_blocking_b2g&o1=anywordssubstr&resolution=FIXED&resolution=WONTFIX&query_format=advanced&bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED&bug_status=RESOLVED&bug_status=VERIFIED&bug_status=CLOSED&v1=1.4%2B&list_id=9731018' ),
 
-('10','# Blocking Regressions ref. <version_title>',     '7', '#a6a6a6', '9,12',
-    '',
-    '' ),
+('10','# Blocking Regressions ref. <version_title>',     '7', '#a6a6a6', '9,12', '', '' ),
 
 ('11','# Nominations for Blockers',                      '8', 'rgb(51, 51, 51)', '',
     '{"from": "public_bugs","select": {"name": "num","value": "bug_id","aggregate": "count"},"esfilter": {"and": [{"term": {"cf_blocking_b2g": "<version_tag:.>?"}}]},"edges": [{"range": {"min": "modified_ts","max": "expires_on"},"domain": {"type": "date","min": @birthday,"max": @timestamp,"interval": "day"}}]}',
     'https://bugzilla.mozilla.org/buglist.cgi?j_top=OR&f1=cf_blocking_b2g&o1=equals&query_format=advanced&bug_status=UNCONFIRMED&bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED&bug_status=RESOLVED&bug_status=VERIFIED&bug_status=CLOSED&v1=<version_tag:.>%3F&list_id=9613973' ),
 
-('12','# Nominations for Blockers ref. <version_title>', '8', '#a6a6a6', '11,12',
-    '',
-    '' ),
+('12','# Nominations for Blockers ref. <version_title>', '8', '#a6a6a6', '11,12', '', '' ),
 
 ('13','Unassigned blockers',                             '9', '#333333', '',
     '{"from": "public_bugs","select": {"name": "num","value": "bug_id","aggregate": "count"},"esfilter": {"and": [{"terms": {"bug_status": ["unconfirmed","new","assigned","reopened"]}},{"or": [{"term": {"assigned_to": "nobody@mozilla.org"}}]},{"or": [{"regexp": {"assigned_to": "(nobody@mozilla.org)+"}}]},{"or": [{"regexp": {"assigned_to": "(nobody@mozilla.org)+"}}]},{"or": [{"term": {"cf_blocking_b2g": "1.4+"}}]}]},"edges": [{"range": {"min": "modified_ts","max": "expires_on"},"domain": {"type": "date","min": @birthday,"max": @timestamp,"interval": "day"}}]}',
-    'https://bugzilla.mozilla.org/buglist.cgi?j_top=OR&emailtype3=substring&f1=cf_blocking_b2g&emailtype2=substring&email3=nobody%40mozilla.org&emailassigned_to3=1&o1=equals&emailtype1=exact&emailassigned_to1=1&query_format=advanced&bug_status=UNCONFIRMED&bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED&email2=nobody%40mozilla.org&emailassigned_to2=1&email1=nobody%40mozilla.org&v1=1.4%2B&list_id=9825968' );
+    'https://bugzilla.mozilla.org/buglist.cgi?j_top=OR&emailtype3=substring&f1=cf_blocking_b2g&emailtype2=substring&email3=nobody%40mozilla.org&emailassigned_to3=1&o1=equals&emailtype1=exact&emailassigned_to1=1&query_format=advanced&bug_status=UNCONFIRMED&bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED&email2=nobody%40mozilla.org&emailassigned_to2=1&email1=nobody%40mozilla.org&v1=1.4%2B&list_id=9825968' ),
+
+('14','Tracking but not fixed',                          '10','#333333', '',
+    '{"from": "public_bugs","select": {"name": "num","value": "bug_id","aggregate": "count"},"esfilter": {"and": [{"terms": {"bug_status": ["new","assigned","reopened"]}},{"and": [{"and": [{"or": [{"term": {"cf_tracking_firefox<version_tag>": "+"}}]},{"or": [{"not": {"term": {"cf_status_firefox<version_tag>": "wontfix"}}}]},{"or": [{"not": {"term": {"cf_status_firefox<version_tag>": "fixed"}}}]},{"or": [{"not": {"term": {"cf_status_firefox<version_tag>": "unaffected"}}}]},{"or": [{"not": {"term": {"cf_status_firefox<version_tag>": "verified"}}}]},{"or": [{"not": {"term": {"cf_status_firefox<version_tag>": "disabled"}}}]},{"or": [{"not": {"term": {"cf_status_firefox<version_tag>": "verified disabled"}}}]}]}]}]},"edges": [{"range": {"min": "modified_ts","max": "expires_on"},"domain": {"type": "date","min": @birthday,"max": @timestamp,"interval": "day"}}]}',
+    'https://bugzilla.mozilla.org/buglist.cgi?cmdtype=runnamed&namedcmd=Tracking29%2B-Remaining&list_id=9868088' ),
+
+('15','Tracking but not fixed ref. <version_title>',     '10', '#a6a6a6', '14,4', '', '' ),
+
+('16','Approvals for mozilla beta',                      '11', '#333333', '',
+    '{"from": "public_bugs","select": {"name": "num","value": "bug_id","aggregate": "count"},"esfilter": {"and": [{"and": [{"and": [{"or": [{"term": {"flagtypes.name": "approval-mozilla-beta?"}}]}]}]}]},"edges": [{"range": {"min": "modified_ts","max": "expires_on"},"domain": {"type": "date","min": @birthday,"max": @timestamp,"interval": "day"}}]}',
+    'https://bugzilla.mozilla.org/query.cgi?field0-0-0=flagtypes.name&field0-0-1=flagtypes.name&field0-0-2=flagtypes.name&field0-0-3=flagtypes.name&field1-0-0=requestees.login_name&query_format=advanced&type0-0-0=substring&type0-0-1=substring&type0-0-2=substring&type0-0-3=substring&type1-0-0=substring&value0-0-1=approval-mozilla-beta%3F&known_name=approval-mozilla-beta' )
+
+
+
 
