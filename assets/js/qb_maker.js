@@ -278,6 +278,9 @@
                     openedBrackets--;
                 }
 
+                // Sometimes we get end up with multiple commas
+                customParams = customParams.replace(/[,]+/g , ",");
+
                 try {
                     var customJson = JSON.parse(customParams);
                     customJson = deleteEmpty( customJson );
