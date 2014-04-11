@@ -1,4 +1,55 @@
 /*********************************
+    QUICK QB QUERIES
+*********************************/
+    function quickQbmaker( $button ) {
+        var $target = $button.closest('div.new-query').find('textarea#new-query-qb');
+
+        $button.addClass('disabled');
+        $target.attr('disabled', true);
+
+        bzURL = $button.closest('div.input-group').find('input#new-query-bz').val();
+        var bzURL = bzURL.split('?');
+        if ( !bzURL[1] ) {
+            // If it is not found, we have a problem
+            alert('No bugzilla query found.');
+            $button.removeClass('disabled');
+            $target.removeAttr('disabled');
+            return;
+        }
+
+        // Generate the URL as a string then send a request to our dashboard
+        // The dashboard's API performs a CURL on bugzilla and returns the page as a string of HTML
+        // Note: It is not possible to do javascript requests to external sites, hence the internal API
+        var bzQueryURL = 'https://bugzilla.mozilla.org/query.cgi?' + bzURL[1];
+
+        $.ajax({
+            url: '/api/misc/exthtml',
+            data: { source : bzQueryURL },
+            type: 'POST',
+            success: function( response ) {
+                // Start building the Qb query with all our parameters
+                var qbQuery = bzSearchToQb( response, '@birthday', '@timestamp', 'public_bugs' );
+                
+                $button.removeClass('disabled');
+                $target.removeAttr('disabled');
+
+                $target.css( 'background', '#E5FFDD' );
+                $target.text( qbQuery );
+                setTimeout(function() {
+                    $target.css( 'background', '' );
+                }, 1500);
+            }, 
+            error: function(response) {
+                alert('Fail: Bugzilla could not be reached.');
+                $button.removeClass('disabled');
+                $target.removeAttr('disabled');
+                console.log(response);
+            }
+        });
+    }
+                    
+
+/*********************************
     VALIDATION FOR GROUPS AND QUERIES
 *********************************/
     function validateGroup( saveGroup, queryType ) {
@@ -153,8 +204,15 @@
                         refOptions+
                         '<div class="form-group">'+
                             '<label class="col-sm-3 control-label" for="new-query-bz">Bugzilla URL</label>'+
-                            '<div class="col-sm-9">'+
-                                '<input class="form-control" id="new-query-bz" placeholder="URL that links to this query in Bugzilla.">'+
+                            '<div class="col-sm-9 controls">'+
+                                '<div class="input-group">'+
+                                    '<input class="form-control" id="new-query-bz" placeholder="URL that links to this query in Bugzilla.">'+
+                                    '<span class="input-group-btn">'+
+                                        '<button class="btn btn-primary quick-qb" type="button" id="'+number+'">'+
+                                            '<i class="fa fa-magic fa-lg"></i> Qb'+
+                                        '</button>'+
+                                    '</span>'+
+                                '</div>'+
                             '</div>'+
                         '</div>'+
                         '<div class="form-group">'+
@@ -210,8 +268,15 @@
                         refOptions+
                         '<div class="form-group">'+
                             '<label class="col-sm-3 control-label" for="query-bz">Bugzilla URL</label>'+
-                            '<div class="col-sm-9">'+
-                                '<input class="form-control" id="query-bz" value="'+((isCustom) ? query.raw.bz_query : query.bz_query)+'" placeholder="URL that links to this query in Bugzilla.">'+
+                            '<div class="col-sm-9 controls">'+
+                                '<div class="input-group">'+    
+                                    '<input class="form-control" id="query-bz" value="'+((isCustom) ? query.raw.bz_query : query.bz_query)+'" placeholder="URL that links to this query in Bugzilla.">'+
+                                    '<span class="input-group-btn">'+
+                                        '<button class="btn btn-primary quick-qb disabled" type="button" id="q'+query_id+'">'+
+                                            '<i class="fa fa-magic fa-lg"></i> Qb'+
+                                        '</button>'+
+                                    '</span>'+
+                                '</div>'+
                             '</div>'+
                         '</div>'+
                         '<div class="form-group">'+

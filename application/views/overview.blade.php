@@ -3,6 +3,7 @@
         'top'       => '<link rel="stylesheet" href="/assets/css/overview.css">',
         'bottom'    => '<script src="/assets/js/overview.js"></script>
                         <script src="/assets/js/groups_helper.js"></script>
+                        <script src="/assets/js/qb_maker.js"></script>
                         <script>var coreData = '. json_encode($data) .'</script>'
     );
  

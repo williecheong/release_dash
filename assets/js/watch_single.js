@@ -64,6 +64,11 @@ jQuery(document).ready(function($) {
                     $(".colourpicker[id='"+thisNum+"']").css( 'color', color.toHexString() );
                 }
             });
+
+            $('.quick-qb[id="'+thisNum+'"]').click(function(){
+                var $this = $(this);
+                quickQbmaker($this);
+            });
         });
 
         // Proceed to execute and save the group

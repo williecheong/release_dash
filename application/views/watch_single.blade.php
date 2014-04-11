@@ -18,7 +18,8 @@
             <script src="/assets/js/watch_single_breakdown.js"></script>
             <script src="/assets/js/watch_single_es.js"></script>
             <script src="/assets/js/watch_single.js"></script>
-            <script src="/assets/js/groups_helper.js"></script>',
+            <script src="/assets/js/groups_helper.js"></script>
+            <script src="/assets/js/qb_maker.js"></script>',
 
         'rule_scripts' => ''
     );
