@@ -383,8 +383,8 @@ jQuery(document).ready(function($) {
                 'Options to determine how this group will aggregate into release readiness score for this version\n'+
                 '**************************/\n'+
                 'aggregateOptions['+group_id+'] = {\n'+
-                '    "isInsignificant"  : false,   // if set to true, version score will not be affected by this group\n'+
-                '    "isShipwrecker"    : false    // if set to true, version is immediately red if this group is red\n'+     
+                '    "isShipwrecker"    : false,  // if set to true, version is immediately red if this group is red\n'+     
+                '    "isSignificant"    : true    // if set to false, version score will not be affected by this group\n'+
                 '};\n'+
                 '\n'+
                 '/**************************\n'+

@@ -259,13 +259,26 @@
                 var greenCount  = 0;
                 var yellowCount = 0;
                 var redCount    = 0;
+                
                 $.each( ruledGroups, function( group_id, group ){
-                    if ( group.status == 'green' ){
-                        greenCount++;
-                    } else if ( group.status == 'yellow' ){
-                        yellowCount++;
-                    } else if ( group.status == 'red' ){
-                        redCount++
+                    if ( aggregateOptions[group_id].isShipwrecker && group.status == 'red' ) {
+                        redCount = redCount + 9999999 ; //maxout the redcount
+                    
+                    } else if ( aggregateOptions[group_id].isSignificant ) {
+                        
+                        if ( group.status == 'green' ){
+                            greenCount++;
+                        
+                        } else if ( group.status == 'yellow' ){
+                            yellowCount++;
+                        
+                        } else if ( group.status == 'red' ){
+                            redCount++;
+                        
+                        }
+                    
+                    } else { 
+                        // do nothing. group is not shipwrecker and not significant
                     }
                 });
 
