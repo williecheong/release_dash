@@ -1,9 +1,10 @@
 <?php 
     $include = array( 
         'top'       => '<link rel="stylesheet" href="/assets/css/overview.css">',
-        'bottom'    => '<script src="/assets/js/overview.js"></script>
-                        <script src="/assets/js/groups_helper.js"></script>
-                        <script src="/assets/js/qb_maker.js"></script>
+        'bottom'    => '<script src="/assets/js/overview/main.js"></script>
+                        <script src="/assets/js/common/helpers_groups.js"></script>
+                        <script src="/assets/js/common/templates_groups.js"></script>
+                        <script src="/assets/js/common/qb_maker.js"></script>
                         <script>var coreData = '. json_encode($data) .'</script>'
     );
  

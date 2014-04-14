@@ -4,7 +4,7 @@
     //    Then send it to the respective views for appending to the DOM
     //    As usual, CSS to the header, JS to the footer.
     $include = array( 
-        'bottom'    => '<script src="/assets/js/admin_login.js"></script>'
+        'bottom'    => '<script src="/assets/js/admin/login.js"></script>'
     );
 ?>
 

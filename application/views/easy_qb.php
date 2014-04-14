@@ -1,8 +1,8 @@
 <?php 
     $include = array( 
         'top'    => '<link rel="stylesheet" href="/assets/css/easy_qb.css">',
-        'bottom' => '<script src="/assets/js/qb_maker.js"></script>
-                     <script src="/assets/js/easy_qb.js"></script>'
+        'bottom' => '<script src="/assets/js/common/qb_maker.js"></script>
+                     <script src="/assets/js/easy_qb/main.js"></script>'
     );
 
     $this->load->view('templates/header', $include);

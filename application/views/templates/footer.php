@@ -95,7 +95,7 @@
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
         <script src="/assets/vendor/spectrum/spectrum.js"></script>
         <script src="//login.persona.org/include.js"></script>
-        <script src="/assets/js/main.js"></script>
+        <script src="/assets/js/common/main.js"></script>
         <script>
             <?php /*********************** 
                 Setup for Persona

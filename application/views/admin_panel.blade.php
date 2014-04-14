@@ -5,7 +5,7 @@
     //    As usual, CSS to the header, JS to the footer.
     $include = array( 
         'top'       => '<link rel="stylesheet" href="/assets/css/admin_panel.css">',
-        'bottom'    => '<script src="/assets/js/admin_panel.js"></script>'
+        'bottom'    => '<script src="/assets/js/admin/panel.js"></script>'
     );
 ?>
 

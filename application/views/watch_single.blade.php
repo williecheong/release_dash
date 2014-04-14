@@ -15,11 +15,14 @@
             <script src="/assets/vendor/rickshaw/rickshaw.js"></script>
             <script src="/assets/vendor/sorttable/sorttable.js"></script>
             <script>var coreData = '. json_encode($data) .'</script>
-            <script src="/assets/js/watch_single_breakdown.js"></script>
-            <script src="/assets/js/watch_single_es.js"></script>
-            <script src="/assets/js/watch_single.js"></script>
-            <script src="/assets/js/groups_helper.js"></script>
-            <script src="/assets/js/qb_maker.js"></script>',
+
+            <script src="/assets/js/watch_single/helpers_breakdown.js"></script>
+            <script src="/assets/js/watch_single/helpers_es.js"></script>
+            <script src="/assets/js/watch_single/main.js"></script>
+            
+            <script src="/assets/js/common/helpers_groups.js"></script>
+            <script src="/assets/js/common/templates_groups.js"></script>
+            <script src="/assets/js/common/qb_maker.js"></script>',
 
         'rule_scripts' => ''
     );

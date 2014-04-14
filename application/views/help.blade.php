@@ -1,7 +1,7 @@
 <?php 
     $include = array( 
         'top'    => '<link rel="stylesheet" href="/assets/css/help.css">',
-        'bottom' => '<script src="/assets/js/help.js"></script>'
+        'bottom' => '<script src="/assets/js/help/main.js"></script>'
     );
 
     $this->load->view('templates/header', $include);
