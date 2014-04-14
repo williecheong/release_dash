@@ -79,7 +79,7 @@
                 } else {
                     // Component data is here. Let's get that table loaded
                     var dated = $('.breakdown-plot.rickshaw_graph .detail .x_label').html();
-                    var dated = new Date( dated.trim() ).getTime();
+                    dated = new Date( dated.trim() ).getTime();
                     runBreakdown(group_id, dated);
                 }
             });
