@@ -10,6 +10,16 @@
         show : false
     });
 
+    // Proceed to execute and save the group
+    $('.btn#save-new-group').on('click', handlerCreateGroup);
+
+    // Proceed to update the group
+    $('.btn#update-old-group').on('click', handlerUpdateGroup);
+
+    // Proceed to execute and delete the group
+    $('.btn#delete-old-group').on('click', handlerDeleteGroup);
+
+
 /*********************************
     SAVING NEW GROUPS AND QUERIES
 *********************************/
@@ -19,7 +29,6 @@
         
         // Clean up modal from prior viewing of existing groups
         $('.modal#new-group').find('div.new-query').remove();
-
         $('.modal#new-group').find('.btn#save-new-group').data('product_tag', product_tag );
         $('.modal#new-group').modal('toggle');
     });
@@ -52,72 +61,6 @@
         });
     });
 
-    // Proceed to execute and save the group
-    $('.btn#save-new-group').click(function(){
-        $this = $(this);
-        $this.addClass('disabled');
-        var product_tag = $(this).data('product_tag');
-
-        // Retrieving input group values into saveGroup
-        var saveGroup = {};
-        saveGroup = {
-            group_entity : "product",
-            group_entity_id : coreData[product_tag]['id'],
-            group_title : $.trim( $('#new-group-name').val() ),
-            group_is_plot : $('#new-group-is-plot:checked').length,
-            group_is_number : $('#new-group-is-number:checked').length,
-            group_queries : {} 
-        };
-        // End of retrieving input group values into saveGroup
-
-        // Validation for the new group's input values
-        // validateGroup returns false if OK
-        // Returns a message string if not OK
-        var groupError = validateGroup( saveGroup, 'new' );
-        if ( groupError ) {
-            alert( groupError );
-            $this.removeClass('disabled');
-            return false;
-        }
-        // End of validation for the new group's input values
-
-        // Looping through the input queries to retrieve and check them
-        var queryError = [];
-        $.each( $('.new-query'), function(key, value){ 
-            // Retrieving input group query's values into saveGroup
-            var tempColor = rgb2hex( $('.new-query#'+value.id).find('button.colourpicker').css('color') );
-            saveGroup.group_queries[value.id] = {
-                query_title     : $.trim( $('.new-query#'+value.id).find('input#new-query-name').val() ),
-                query_colour    : tempColor,
-                query_query_bz  : $('.new-query#'+value.id).find('input#new-query-bz').val(),
-                query_query_qb  : $('.new-query#'+value.id).find('textarea#new-query-qb').val()
-            };
-            // End of retrieving input group query's values into saveGroup
-
-            // Validation for the group query's input values
-            var tempError = validateQuery( saveGroup.group_queries[value.id] );
-            if ( tempError ) {
-                queryError.push( tempError );
-            }
-            // End of validation for group query's input values
-        });
-
-        // Return if there was failed checks while looping through queries
-        if ( queryError.length > 0 ) {
-            alert( queryError.join("\n") );
-            $this.removeClass('disabled');
-            return false;
-        }
-
-        var r = confirm("Confirm saving this group?");
-        if ( r == true ) {
-            // User clicked OK
-            // Proceed to save this group
-            postGroup( saveGroup, $this );
-        } else {
-            $this.removeClass('disabled');               
-        }   
-    });
 
 /*****************************************
     EDITING EXISTING GROUPS AND QUERIES
@@ -169,87 +112,6 @@
         $('.modal#old-group').modal('toggle');
     });
     
-    // Proceed to update the group
-    $('.btn#update-old-group').click(function(){
-        $this = $(this);
-        $this.addClass('disabled');
-        var groupID = $this.data('group-id');
-
-        // Retrieving input group values into saveGroup
-        var saveGroup = {};
-        saveGroup = {
-            group_id : groupID,
-            group_title : $.trim( $('#group-name').val() ),
-            group_is_plot : $('#group-is-plot:checked').length,
-            group_is_number : $('#group-is-number:checked').length,
-            group_queries : {} 
-        };
-        // End of retrieving input group values into saveGroup
-
-        // Validation for the group's input values
-        // validateGroup returns false if OK
-        // Returns a message string if not OK
-        var groupError = validateGroup( saveGroup, 'old' );
-        if ( groupError ) {
-            alert( groupError );
-            $this.removeClass('disabled');
-            return false;
-        }
-        // End of validation for the group's input values
-
-        // Looping through the input queries to retrieve and check them
-        var queryError = [];
-        $.each( $('.old-query'), function(key, value){ 
-            // Retrieving input group query's values into saveGroup
-            var tempColor = rgb2hex( $('.old-query#'+value.id).find('button.colourpicker').css('color') );
-            saveGroup.group_queries[value.id] = {
-                query_title     : $.trim( $('.old-query#'+value.id).find('input#query-name').val() ),
-                query_colour    : tempColor,
-                query_query_bz  : $('.old-query#'+value.id).find('input#query-bz').val(),
-                query_query_qb  : $('.old-query#'+value.id).find('textarea#query-qb').val()
-            };
-            // End of retrieving input group query's values into saveGroup
-
-            // Validation for the group query's input values
-            var tempError = validateQuery( saveGroup.group_queries[value.id] );
-            if ( tempError ) {
-                queryError.push( tempError );
-            }
-            // End of validation for group query's input values
-        });
-
-        // Return if there was failed checks while looping through queries
-        if ( queryError.length > 0 ) {
-            alert( queryError.join("\n") );
-            $this.removeClass('disabled');
-            return false;
-        }
-
-        var r = confirm("Confirm saving this group?");
-        if ( r == true ) {
-            // User clicked OK
-            // Proceed to save this group
-            putGroup( saveGroup, $this );
-        } else {
-            $this.removeClass('disabled');               
-        }
-
-    });
-
-    // Proceed to execute and delete the group
-    $('.btn#delete-old-group').click(function(){
-        $this = $(this);
-        $this.addClass('disabled');
-        var groupID = $this.data('group-id');
-
-        var r = confirm("Confirm deleting this group?");
-        if ( r == true ) {
-            deleteGroup( groupID, $this );
-        } else {
-            $this.removeClass('disabled');               
-        }
-    });
-
 
 
 
