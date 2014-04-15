@@ -19,10 +19,6 @@ jQuery(document).ready(function($) {
         }
 
         // Initializes the bootstrap modals
-        $('.modal#new-group').modal({
-            show : false 
-        });
-        
         $('.modal#old-group').modal({ 
             show : false
         });
@@ -38,11 +34,6 @@ jQuery(document).ready(function($) {
     /*********************************
         SAVING NEW GROUPS AND QUERIES
     *********************************/
-        // Brings up the modal for adding a new group
-        $('.btn#add-new-group').click(function(){
-            $('.modal#new-group').modal('toggle');
-        });
-
         // Append a new HTML query template for the group
         var new_query_unique_counter = 0;
         $('.btn#new-query-template').click( function() {
@@ -51,8 +42,8 @@ jQuery(document).ready(function($) {
             $('.modal#new-group').find('form').append( templateNewGroup( thisNum ));
 
             // Initializing remove button for this new item
-            $('button#remove-new-query').click(function(){
-                $(this).closest('div.new-query').remove();
+            $('button#remove-query').click(function(){
+                $(this).closest('div.query').remove();
             });
             // Initializing colorpicker for this new item
             $(".colourpicker[id='"+thisNum+"']").spectrum({
@@ -73,19 +64,16 @@ jQuery(document).ready(function($) {
 
         // Proceed to execute and save the group
         $('.btn#save-new-group').click(function(){
-            $this = $(this);
-            $this.addClass('disabled');
+            $button = $(this);
+            $modal = $button.closest('.modal');
+
+            $button.addClass('disabled');
 
             // Retrieving input group values into saveGroup
             var saveGroup = {};
-            saveGroup = {
-                group_entity : "version",
-                group_entity_id : coreData['id'],
-                group_title : $.trim( $('#new-group-name').val() ),
-                group_is_plot : $('#new-group-is-plot:checked').length,
-                group_is_number : $('#new-group-is-number:checked').length,
-                group_queries : {} 
-            };
+            saveGroup = extractGroup( $modal );
+            saveGroup.group_entity = "version";
+            saveGroup.group_entity_id = coreData['id'];
             // End of retrieving input group values into saveGroup
 
             // validateGroup returns false if OK
@@ -93,52 +81,18 @@ jQuery(document).ready(function($) {
             var groupError = validateGroup( saveGroup, 'new' );
             if ( groupError ) {
                 alert( groupError );
-                $this.removeClass('disabled');
+                $button.removeClass('disabled');
                 return false;
             }
             // End of validation for the new group's input values
-
-            // Looping through the input queries to retrieve and check them
-            var queryError = [];
-            $.each( $('.new-query'), function(key, value){ 
-                // Retrieving input group query's values into saveGroup
-                var tempColor = rgb2hex( $('.new-query#'+value.id).find('button.colourpicker').css('color') );
-                saveGroup.group_queries[value.id] = {
-                    query_title     : $.trim( $('.new-query#'+value.id).find('input#new-query-name').val() ),
-                    query_colour    : tempColor,
-                    query_query_bz  : $('.new-query#'+value.id).find('input#new-query-bz').val(),
-                    query_query_qb  : $('.new-query#'+value.id).find('textarea#new-query-qb').val(),
-                    ref_version     : $('.new-query#'+value.id).find('select#new-query-reference option:selected').val(),
-                    ref_colour       : shadeColor(tempColor, 45)
-                };
-                // End of retrieving input group query's values into saveGroup
-
-                if ( typeof saveGroup.group_queries[value.id].ref_version == 'undefined' ) {
-                    saveGroup.group_queries[value.id].query_query_references = 'none';
-                }
-
-                // Validation for the group query's input values
-                var tempError = validateQuery( saveGroup.group_queries[value.id] );
-                if ( tempError ) {
-                    queryError.push( tempError );
-                }
-                // End of validation for group query's input values
-            });
-
-            // Return if there was failed checks while looping through queries
-            if ( queryError.length > 0 ) {
-                alert( queryError.join("\n") );
-                $this.removeClass('disabled');
-                return false;
-            }
             
             var r = confirm("Confirm saving this group?");
             if ( r == true ) {
                 // User clicked OK
                 // Proceed to save this group
-                postGroup( saveGroup, $this );
+                postGroup( saveGroup, $button );
             } else {
-                $this.removeClass('disabled');               
+                $button.removeClass('disabled');               
             }
         });
 
@@ -200,85 +154,48 @@ jQuery(document).ready(function($) {
         
         // Proceed to update the group
         $('.btn#update-old-group').click(function(){
-            $this = $(this);
-            $this.addClass('disabled');
-            var groupID = $this.data('group-id');
+            $button = $(this);
+            $modal = $button.closest('.modal');
+
+            $button.addClass('disabled');
+            var groupID = $button.data('group-id');
 
             // Retrieving input group values into saveGroup
             var saveGroup = {};
-            saveGroup = {
-                group_id : groupID,
-                group_title : $.trim( $('#group-name').val() ),
-                group_is_plot : $('#group-is-plot:checked').length,
-                group_is_number : $('#group-is-number:checked').length,
-                group_queries : {} 
-            };
+            saveGroup = extractGroup( $modal );
             // End of retrieving input group values into saveGroup
 
             // validateGroup returns false if OK
-            // Returns a message string if not OK
             var groupError = validateGroup( saveGroup, 'old' );
             if ( groupError ) {
                 alert( groupError );
-                $this.removeClass('disabled');
+                $button.removeClass('disabled');
                 return false;
             }
             // End of validation for the group's input values
-
-            // Looping through the input queries to retrieve and check them
-            var queryError = [];
-            $.each( $('.old-query'), function(key, value){ 
-                // Retrieving input group query's values into saveGroup
-                var tempColor = rgb2hex( $('.old-query#'+value.id).find('button.colourpicker').css('color') );
-                saveGroup.group_queries[value.id] = {
-                    query_title     : $.trim( $('.old-query#'+value.id).find('input#query-name').val() ),
-                    query_colour    : tempColor,
-                    query_query_bz  : $('.old-query#'+value.id).find('input#query-bz').val(),
-                    query_query_qb  : $('.old-query#'+value.id).find('textarea#query-qb').val()
-                };
-                // End of retrieving input group query's values into saveGroup
-
-                if ( typeof saveGroup.group_queries[value.id].ref_version == 'undefined' ) {
-                    saveGroup.group_queries[value.id].query_query_references = 'none';
-                }
-
-                // Validation for the group query's input values
-                var tempError = validateQuery( saveGroup.group_queries[value.id] );
-                if ( tempError ) {
-                    queryError.push( tempError );
-                }
-                // End of validation for group query's input values
-            });
-
-            // Return if there was failed checks while looping through queries
-            if ( queryError.length > 0 ) {
-                alert( queryError.join("\n") );
-                $this.removeClass('disabled');
-                return false;
-            }
 
             var r = confirm("Confirm saving this group?");
             if ( r == true ) {
                 // User clicked OK
                 // Proceed to save this group
-                putGroup( saveGroup, $this );
+                putGroup( saveGroup, $button );
             } else {
-                $this.removeClass('disabled');               
+                $button.removeClass('disabled');               
             }
 
         });
 
         // Proceed to execute and delete the group
         $('.btn#delete-old-group').click(function(){
-            $this = $(this);
-            $this.addClass('disabled');
-            var groupID = $this.data('group-id');
+            $button = $(this);
+            $button.addClass('disabled');
+            var groupID = $button.data('group-id');
 
             var r = confirm("Confirm deleting this group?");
             if ( r == true ) {
-                deleteGroup( groupID, $this );
+                deleteGroup( groupID, $button );
             } else {
-                $this.removeClass('disabled');               
+                $button.removeClass('disabled');               
             }
         });
 
@@ -367,63 +284,4 @@ jQuery(document).ready(function($) {
                 $this.removeClass('disabled');               
             }
         });        
-
-    /*****************************
-        MAKE LIFE AWESOME FUNCTIONS
-    *****************************/
-        function templateRuleBoilerplate ( group_id ) {
-            var tempNames = ["alpha", "beta", "gamma", "delta", "epsilon", "zeta", "eta", "theta", "iota", "kappa", "lambda", "mu"];
-
-            var variables = '';
-            var i = 0;
-            $.each( coreData.groups[group_id].queries, function( query_id, query ){
-                variables += ''+
-                '        // Data for Query: ' + query.title + '\n' +
-                '    var '+tempNames[i]+' = coreData.groups['+group_id+'].queries['+query_id+'].es_data;\n';
-                i++;
-            });
-            
-            var html = ''+
-                '/**************************\n'+
-                'Options to determine how this group will aggregate into release readiness score for this version\n'+
-                '**************************/\n'+
-                'aggregateOptions['+group_id+'] = {\n'+
-                '    "isShipwrecker"    : false,  // if set to true, version is immediately red if this group is red\n'+     
-                '    "isSignificant"    : true    // if set to false, version score will not be affected by this group\n'+
-                '};\n'+
-                '\n'+
-                '/**************************\n'+
-                'Warning: Do not change the function name\n'+
-                '**************************/\n'+
-                'function rule_'+group_id+'() {\n'+
-                '    // Gets the channel tag e.g. release, beta, aurora, etc \n'+
-                '    var channel = coreData.channel.tag;\n'+
-                '\n'+
-                '    // Defining the data available in this group\n'+
-                '    // Rename the variables to better fit your context\n'+
-                variables +
-                '\n'+
-                '    // Write scripts to manipulate group data here.\n'+
-                '\n'+
-                '    // Set the conditions that determine what to return\n'+
-                '    // Recognized return values = [green", "yellow", "red"]\n'+
-                '    // OR return any preferred custom colours in a valid CSS format\n'+
-                '    if ( false ) {\n'+
-                '        return "red";\n'+
-                '    } else if ( false ) { \n'+
-                '        return "yellow"\n'+
-                '    } else {\n'+
-                '        return "green";\n'+
-                '    } \n'+
-                '}\n'+
-                '\n'+
-                '/****************\n'+
-                'Optional: Custom helper functions to use above\n'+
-                'To prevent conflicts with other functions on this dashboard\n'+
-                'Please follow this naming convention - rule_'+group_id+'_whateverYouWant()\n'+
-                '****************/\n'+
-                '\n'+
-                '\n';
-            return html;
-        }
 });

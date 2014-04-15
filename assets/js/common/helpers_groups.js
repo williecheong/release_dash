@@ -2,12 +2,12 @@
     QUICK QB QUERIES
 *********************************/
     function quickQbmaker( $button ) {
-        var $target = $button.closest('div.new-query').find('textarea#new-query-qb');
+        var $target = $button.closest('div.query').find('textarea#query-qb');
 
         $button.addClass('disabled');
         $target.attr('disabled', true);
 
-        bzURL = $button.closest('div.input-group').find('input#new-query-bz').val();
+        bzURL = $button.closest('div.input-group').find('input#query-bz').val();
         var bzURL = bzURL.split('?');
         if ( !bzURL[1] ) {
             // If it is not found, we have a problem
@@ -47,12 +47,48 @@
             }
         });
     }
-                    
+
+
+/*********************************
+    EXTRACTION OF GROUPS AND QUERIES FROM A MODAL
+*********************************/
+    function extractGroup( $modal ) {
+        var saveGroup = {};
+        saveGroup = {
+            group_title : $.trim( $modal.find('#group-name').val() ),
+            group_is_plot : $modal.find('#group-is-plot:checked').length,
+            group_is_number : $modal.find('#group-is-number:checked').length,
+            group_queries : {} 
+        };
+
+        $.each( $modal.find('.query'), function(key, value){ 
+            // Retrieving input group query's values into saveGroup
+            var tempColor = rgb2hex( $modal.find('.query#'+value.id).find('button.colourpicker').css('color') );
+            
+            saveGroup.group_queries[value.id] = {
+                query_title     : $.trim( $modal.find('.query#'+value.id).find('input#query-name').val() ),
+                query_colour    : tempColor,
+                query_query_bz  : $modal.find('.query#'+value.id).find('input#query-bz').val(),
+                query_query_qb  : $modal.find('.query#'+value.id).find('textarea#query-qb').val(),
+                ref_version     : $modal.find('.query#'+value.id).find('select#query-reference option:selected').val(),
+                ref_colour      : shadeColor(tempColor, 45)
+            };
+            // End of retrieving input group query's values into saveGroup
+
+            if ( typeof saveGroup.group_queries[value.id].ref_version == 'undefined' ) {
+                saveGroup.group_queries[value.id].query_query_references = 'none';
+            }
+            // End of validation for group query's input values
+        });
+
+        return saveGroup;
+    }
+    
 
 /*********************************
     VALIDATION FOR GROUPS AND QUERIES
 *********************************/
-    function validateGroup( saveGroup, queryType ) {
+    function validateGroup( saveGroup ) {
         // Validation for the group's input values
         if ( saveGroup['group_title'] == '' ) {
             return "Group name cannot be empty.";
@@ -62,10 +98,25 @@
             return "Group has to be either a plot or number.";
         }
 
-        if ( $('.'+queryType+'-query').length == 0 ) {
-            // Checks that there is at least one query
-            return "No queries found." ;
-        } 
+        var queryCount = 0;
+        var queryError = [];
+        $.each( saveGroup.group_queries, function(key, value){ 
+            // Validation for the group query's input values
+            var tempError = validateQuery( value );
+            if ( tempError ) {
+                queryError.push( tempError );
+            }
+            queryCount++;
+        });
+
+        if ( queryCount == 0 ) {
+            return "No queries found.";
+        }
+
+        if ( queryError.length > 0 ) {
+            return queryError.join("\n");
+        }
+
         // OK validation pass
         return false;
     }

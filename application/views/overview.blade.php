@@ -72,7 +72,7 @@
 
 <?php 
     if ( $this->session->userdata('email') ) {
-        $this->load->view('modals/overview'); 
+        $this->load->view('modals/group_details'); 
     }
     $this->load->view('templates/footer', $include); 
 ?>

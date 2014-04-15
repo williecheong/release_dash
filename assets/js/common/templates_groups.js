@@ -6,9 +6,9 @@
         var refOptions = '';
         if ( coreData.hasOwnProperty('product') ) { 
             refOptions +=   '<div class="form-group">'+
-                                '<label class="col-sm-3 control-label" for="new-query-reference">References</label>'+
+                                '<label class="col-sm-3 control-label" for="query-reference">References</label>'+
                                 '<div class="col-sm-9 controls">'+
-                                   '<select class="form-control" id="new-query-reference">'+
+                                   '<select class="form-control" id="query-reference">'+
                                         '<option value="none">None</option>';
 
             $.each( coreData.product.versions, function(key, version){
@@ -22,15 +22,15 @@
                             '</div>';
         }
 
-        var html = '<div class="new-query" id="q'+ number +'">'+
-                        '<button type="button" class="btn btn-xs btn-default" id="remove-new-query">'+
+        var html = '<div class="query" id="q'+ number +'">'+
+                        '<button type="button" class="btn btn-xs btn-default" id="remove-query">'+
                             '<i class="fa fa-times"></i>'+
                         '</button>'+
                         '<div class="form-group">'+
-                            '<label class="col-sm-3 control-label" for="new-query-name">Query Name</label>'+
+                            '<label class="col-sm-3 control-label" for="query-name">Query Name</label>'+
                             '<div class="col-sm-9 controls">'+
                                 '<div class="input-group">'+
-                                    '<input type="text" class="form-control" id="new-query-name" placeholder="Description for this query.">'+
+                                    '<input type="text" class="form-control" id="query-name" placeholder="Description for this query.">'+
                                     '<span class="input-group-btn">'+
                                         '<button class="btn btn-default colourpicker" type="button" id="'+number+'">'+
                                             '<i class="fa fa-tint fa-lg"></i> Color'+
@@ -42,10 +42,10 @@
                         '</div>'+
                         refOptions+
                         '<div class="form-group">'+
-                            '<label class="col-sm-3 control-label" for="new-query-bz">Bugzilla URL</label>'+
+                            '<label class="col-sm-3 control-label" for="query-bz">Bugzilla URL</label>'+
                             '<div class="col-sm-9 controls">'+
                                 '<div class="input-group">'+
-                                    '<input class="form-control" id="new-query-bz" placeholder="URL that links to this query in Bugzilla.">'+
+                                    '<input class="form-control" id="query-bz" placeholder="URL that links to this query in Bugzilla.">'+
                                     '<span class="input-group-btn">'+
                                         '<button class="btn btn-primary quick-qb" type="button" id="'+number+'">'+
                                             '<i class="fa fa-magic fa-lg"></i> Qb'+
@@ -55,9 +55,9 @@
                             '</div>'+
                         '</div>'+
                         '<div class="form-group">'+
-                            '<label class="col-sm-3 control-label" for="new-query-qb">Qb Query</label>'+
+                            '<label class="col-sm-3 control-label" for="query-qb">Qb Query</label>'+
                             '<div class="col-sm-9">'+
-                                '<textarea class="form-control" rows="3" id="new-query-qb" placeholder="Query in Qb format as a json object."></textarea>'+
+                                '<textarea class="form-control" rows="3" id="query-qb" placeholder="Query in Qb format as a json object."></textarea>'+
                             '</div>'+
                         '</div>'+
                     '</div>';
@@ -70,9 +70,9 @@
         if ( coreData.hasOwnProperty('product') ) { 
             isCustom = true;
             refOptions +=   '<div class="form-group">'+
-                                '<label class="col-sm-3 control-label" for="old-query-reference">References</label>'+
+                                '<label class="col-sm-3 control-label" for="query-reference">References</label>'+
                                 '<div class="col-sm-9 controls">'+
-                                   '<select class="form-control" id="old-query-reference" disabled>'+
+                                   '<select class="form-control" id="query-reference" disabled>'+
                                         '<option value="none">None</option>';
 
             $.each( coreData.product.versions, function(key, version){
@@ -86,7 +86,7 @@
                             '</div>';
         }
 
-        var html = '<div class="old-query" id="q'+ query_id +'">'+
+        var html = '<div class="query" id="q'+ query_id +'">'+
                         '<div class="form-group">'+
                             '<input type="hidden" class="form-control" id="query-id">'+
                         '</div>'+
