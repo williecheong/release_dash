@@ -29,7 +29,7 @@ jQuery(document).ready(function($) {
         var product_tag = $(this).closest('div.product.row').attr('id');
         
         // Clean up modal from prior viewing of existing groups
-        $('.modal#new-group').find('div.new-query').remove();
+        $('.modal#new-group').find('div.query').remove();
         $('.modal#new-group').find('.btn#save-new-group').data('product_tag', product_tag );
         $('.modal#new-group').modal('toggle');
     });
@@ -40,8 +40,8 @@ jQuery(document).ready(function($) {
         $('.modal#new-group').find('form').append( templateNewGroup( thisNum ));
 
         // Initializing remove button for this new item
-        $('button#remove-new-query').click(function(){
-            $(this).closest('div.new-query').remove();
+        $('button#remove-query').click(function(){
+            $(this).closest('div.query').remove();
         });
         // Initializing colorpicker for this new item
         $(".colourpicker[id='"+thisNum+"']").spectrum({
