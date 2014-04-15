@@ -163,6 +163,7 @@ jQuery(document).ready(function($) {
             // Retrieving input group values into saveGroup
             var saveGroup = {};
             saveGroup = extractGroup( $modal );
+            saveGroup.group_id = groupID;
             // End of retrieving input group values into saveGroup
 
             // validateGroup returns false if OK

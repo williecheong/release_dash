@@ -63,14 +63,15 @@
 
         $.each( $modal.find('.query'), function(key, value){ 
             // Retrieving input group query's values into saveGroup
+            var $queryHTML = $modal.find('.query#'+value.id);
             var tempColor = rgb2hex( $modal.find('.query#'+value.id).find('button.colourpicker').css('color') );
             
             saveGroup.group_queries[value.id] = {
-                query_title     : $.trim( $modal.find('.query#'+value.id).find('input#query-name').val() ),
+                query_title     : $.trim( $queryHTML.find('input#query-name').val() ),
                 query_colour    : tempColor,
-                query_query_bz  : $modal.find('.query#'+value.id).find('input#query-bz').val(),
-                query_query_qb  : $modal.find('.query#'+value.id).find('textarea#query-qb').val(),
-                ref_version     : $modal.find('.query#'+value.id).find('select#query-reference option:selected').val(),
+                query_query_bz  : $queryHTML.find('input#query-bz').val(),
+                query_query_qb  : $queryHTML.find('textarea#query-qb').val(),
+                ref_version     : $queryHTML.find('select#query-reference option:selected').val(),
                 ref_colour      : shadeColor(tempColor, 45)
             };
             // End of retrieving input group query's values into saveGroup
