@@ -2,8 +2,8 @@
 Options to determine how this group will aggregate into release readiness score for this version
 **************************/
 aggregateOptions[2] = {
-    "isInsignificant"  : false,   // if set to true, version score will not be affected by this group
-    "isShipwrecker"    : false    // if set to true, version is immediately red if this group is red
+    "isShipwrecker"  : false,  // if set to true, version is immediately red if this group is red    
+    "isSignificant"  : true    // if set to false, version score will not be affected by this group
 };
 
 /**************************

@@ -14,7 +14,7 @@ Change logs, progress updates and latest developments on [this spreadsheet](http
 - Database credentials for *development* in `/application/config/database.php`
 - Landing page (base_url) for *development* in `/application/config/config.php`
 - Configuration for other environments in `/application/config/[environment]/______.php`
-- If neccessary, modify white-listed dashboard administrators in `/assets/sql/schema.sql`
+- If necessary, modify white-listed dashboard administrators in `/assets/sql/schema.sql`
 
 #### Instructions
 1. Clone the repository into the web directory

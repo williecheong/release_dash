@@ -96,6 +96,9 @@
         // If this group has a rule, apply it
         if ( coreData.groups[group_id].has_rule ) { applyStatus( group_id ); }
 
+        // Component breakdown is available only after main plot is done loading
+        $('.btn#get-component-breakdowns[data-group-id="'+group_id+'"]').show('slow'); 
+
         // Remove the Bugzilla chomping GIF icon
         removeLoader( 'g' + group_id );
     }
@@ -256,13 +259,26 @@
                 var greenCount  = 0;
                 var yellowCount = 0;
                 var redCount    = 0;
+                
                 $.each( ruledGroups, function( group_id, group ){
-                    if ( group.status == 'green' ){
-                        greenCount++;
-                    } else if ( group.status == 'yellow' ){
-                        yellowCount++;
-                    } else if ( group.status == 'red' ){
-                        redCount++
+                    if ( aggregateOptions[group_id].isShipwrecker && group.status == 'red' ) {
+                        redCount = redCount + 9999999 ; //maxout the redcount
+                    
+                    } else if ( aggregateOptions[group_id].isSignificant ) {
+                        
+                        if ( group.status == 'green' ){
+                            greenCount++;
+                        
+                        } else if ( group.status == 'yellow' ){
+                            yellowCount++;
+                        
+                        } else if ( group.status == 'red' ){
+                            redCount++;
+                        
+                        }
+                    
+                    } else { 
+                        // do nothing. group is not shipwrecker and not significant
                     }
                 });
 

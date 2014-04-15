@@ -15,10 +15,16 @@
             <script src="/assets/vendor/rickshaw/rickshaw.js"></script>
             <script src="/assets/vendor/sorttable/sorttable.js"></script>
             <script>var coreData = '. json_encode($data) .'</script>
-            <script src="/assets/js/watch_single_breakdown.js"></script>
-            <script src="/assets/js/watch_single_es.js"></script>
-            <script src="/assets/js/watch_single.js"></script>
-            <script src="/assets/js/groups_helper.js"></script>',
+
+            <script src="/assets/js/watch_single/helpers_breakdown.js"></script>
+            <script src="/assets/js/watch_single/helpers_es.js"></script>
+            <script src="/assets/js/watch_single/templates.js"></script>
+            <script src="/assets/js/watch_single/main.js"></script>
+            
+            <script src="/assets/js/common/helpers_groups.js"></script>
+            <script src="/assets/js/common/handlers_groups.js"></script>
+            <script src="/assets/js/common/templates_groups.js"></script>
+            <script src="/assets/js/common/qb_maker.js"></script>',
 
         'rule_scripts' => ''
     );
@@ -103,7 +109,7 @@
                 {{-- Show the grid that prompts creating a new custom group --}}
                 <li class="non-group" data-row="1" data-col="1" data-sizex="1" data-sizey="1">
                     <div class="text-center group-title">
-                        <button type="button" class="btn btn-success" id="add-new-group">
+                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#new-group">
                             <i class="fa fa-bar-chart-o fa-lg"></i>
                         </button>
                     </div>
@@ -115,6 +121,7 @@
 </div><!-- /container -->
 
 <?php 
+    $this->load->view('modals/group_details');
     $this->load->view('modals/watch_single', $include);
     $this->load->view('templates/footer', $include); 
 ?>

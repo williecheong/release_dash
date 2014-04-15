@@ -2,7 +2,7 @@
     Author's custom styles
     ========================================================================== */
 
-    form div.new-query, form div.old-query {
+    form div.query {
         margin: 0.2%;
         padding: 1%;
         border: 1px lightgray dashed;

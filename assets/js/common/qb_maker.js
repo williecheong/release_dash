@@ -278,6 +278,9 @@
                     openedBrackets--;
                 }
 
+                // Sometimes we get end up with multiple commas
+                customParams = customParams.replace(/[,]+/g , ",");
+
                 try {
                     var customJson = JSON.parse(customParams);
                     customJson = deleteEmpty( customJson );
@@ -363,10 +366,10 @@
                 var inner = {};
                 
                 if ( operator == 'casesubstring' ) {
-                    inner[field] = '(' + value + ')+';
+                    inner[field] = '(' + value.replace(/\W+/g, "") + ')+';
                 } else {
                     // Unable to use regex case insensitive => /.../i 
-                    inner[field] = '(' + value + ')+';
+                    inner[field] = '(' + value.replace(/\W+/g, "") + ')+';
                 }
 
                 outer['regexp'] = inner;
@@ -389,7 +392,7 @@
                 $.each( value, function(key, arrayValue){
                     var inner = {};
                     // Unable to use regex case insensitive => /.../i 
-                    inner[field] = '(' + arrayValue + ')+';
+                    inner[field] = '(' + arrayValue.replace(/\W+/g, "") + ')+';
                     outer[clause].push( {"regexp" : inner} );
                 });
 
@@ -400,7 +403,7 @@
             } else if ( operator == 'regexp' || operator == 'matches' || operator == 'notregexp' || operator == 'notmatches' ) {
                 var inner = {};
                 
-                inner[field] = value;
+                inner[field] = value.replace(/\W+/g, "");
                 outer["regexp"] = inner;
                 if ( operator == 'notregexp' || operator == 'notmatches' ) {
                     outer = { "not" : outer };

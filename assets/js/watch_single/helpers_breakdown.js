@@ -75,11 +75,11 @@
             $('.breakdown-plot svg').click(function(){
                 if ( $('.breakdown-table').hasClass('not-ready') ) {
                     // Do nothing, component data not done loading yet
-                    $('div.breakdown-loading').html('Loading component data');
+                    $('div.breakdown-loading').html('Still loading component data');
                 } else {
                     // Component data is here. Let's get that table loaded
                     var dated = $('.breakdown-plot.rickshaw_graph .detail .x_label').html();
-                    var dated = new Date( dated.trim() ).getTime();
+                    dated = new Date( dated.trim() ).getTime();
                     runBreakdown(group_id, dated);
                 }
             });

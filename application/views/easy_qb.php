@@ -1,8 +1,8 @@
 <?php 
     $include = array( 
         'top'    => '<link rel="stylesheet" href="/assets/css/easy_qb.css">',
-        'bottom' => '<script src="/assets/js/qb_maker.js"></script>
-                     <script src="/assets/js/easy_qb.js"></script>'
+        'bottom' => '<script src="/assets/js/common/qb_maker.js"></script>
+                     <script src="/assets/js/easy_qb/main.js"></script>'
     );
 
     $this->load->view('templates/header', $include);
@@ -14,7 +14,7 @@
             <div role="form">
                 <?php /* The user input field for the Bugzilla URL to parse */ ?>
                 <div class="form-group">
-                    <label for="bz-url">Bugzilla URL Parser</label>
+                    <label for="bz-url">Bugzilla URL (Do not use named commands)</label>
                     <input type="text" class="form-control" id="bz-url" placeholder="Enter unshortened Bugzilla URL">
                 </div>
                 <?php /* The user input fields for start and end dates of the output Qb */ ?>
@@ -34,19 +34,19 @@
                     <i class="fa fa-magic"></i> Qb query
                 </button>
                 <?php /* The radio buttons for specifying whether Qb will pull from private or public cluster */ ?>
-                <div class="radio">    
+                <div class="radio">
                     <label class="radio-inline">
-                        <input type="radio" name="query-cluster" id="private_cluster" checked=""> Private Cluster
+                        <input type="radio" name="query-cluster" id="public_cluster" checked=""> Public Cluster
                     </label>
                 </div>
                 <div class="radio">
                     <label class="radio-inline">
-                        <input type="radio" name="query-cluster" id="public_cluster"> Public Cluster
+                        <input type="radio" name="query-cluster" id="private_cluster"> Private Cluster
                     </label>
                 </div>
                 <?php /* The button that links externally to github for references on soft tags */ ?>
                 <div class="well well-sm">
-                    <a class="btn btn-xs btn-default" href="/help#groups_tags" style="width:100%;">
+                    <a class="btn btn-xs btn-default" href="/help#groups_tags" target="_blank" style="width:100%;">
                         References for Soft Tags
                     </a>
                 </div>    

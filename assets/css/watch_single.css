@@ -6,6 +6,10 @@
         cursor: default;
     }
 
+    .btn#get-component-breakdowns {
+        display: none;
+    }
+
     #about-rule-boilerplate {
         display: none;
         margin: 1%;
@@ -21,7 +25,7 @@
         display: block;
     }
 
-    form div.new-query, form div.old-query {
+    form div.query {
         margin: 0.2%;
         padding: 1%;
         border: 1px lightgray dashed;
