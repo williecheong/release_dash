@@ -17,8 +17,8 @@
     }   
 
     div.top-menu {
-        float: right;
         display: none;
+        position: absolute;
     }   
 
     li.group:hover div.top-menu {

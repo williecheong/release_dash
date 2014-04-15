@@ -4,24 +4,24 @@
     <div class="top-menu">
         <?php /* Only administrators are allowed to see the group editing pencil */ ?>
         <?php if ( !$group['is_default']  && $this->session->userdata('email') ) { ?>
-            <button class="btn btn-xs pull-right" id="edit-old-group" title="<i class='fa fa-pencil'></i> Edit group" data-group-id="<?= $group_id; ?>">
+            <button class="btn btn-xs pull-left" id="edit-old-group" title="<i class='fa fa-pencil'></i> Edit group" data-group-id="<?= $group_id; ?>">
                 <i class="fa fa-pencil fa-lg"></i>
             </button>
         <?php } ?>
         <?php /* Button that activates the modal for component breakdowns */ ?>
         <?php if ( $group['enableComponents'] ) { ?>
-            <button class="btn btn-xs pull-right" id="get-component-breakdowns" title="<i class='fa fa-sitemap'></i> Components" data-group-id="<?= $group_id; ?>">
+            <button class="btn btn-xs pull-left" id="get-component-breakdowns" title="<i class='fa fa-sitemap'></i> Components" data-group-id="<?= $group_id; ?>">
                 <i class="fa fa-sitemap fa-lg"></i>
             </button>
         <?php } ?>
         <?php /* Boilerplate for rules should be accessible to anyone who wishes to contribute a script */ ?>
-        <button class="btn btn-xs pull-right" id="get-rule-boilerplate" title="<i class='fa fa-tachometer'></i> Rules" data-group-id="<?= $group_id; ?>">
+        <button class="btn btn-xs pull-left" id="get-rule-boilerplate" title="<i class='fa fa-tachometer'></i> Rules" data-group-id="<?= $group_id; ?>">
             <i class="fa fa-tachometer fa-lg"></i>
         </button>
         <?php foreach ( $group['queries'] as $query ) { ?>
             <?php /* Print a color coded bug link for every URL field that is not empty */ ?>
             <?php if ( !empty($query['bz_query']) ) { ?>
-                <a class="btn btn-xs pull-right" href="<?= $query['bz_query']; ?>" target="_blank" title="<?= $query['title']; ?>" style="color:<?= $query['colour']; ?>;">
+                <a class="btn btn-xs pull-left" href="<?= $query['bz_query']; ?>" target="_blank" title="<?= $query['title']; ?>" style="color:<?= $query['colour']; ?>;">
                     <i class="fa fa-bug fa-lg"></i>
                 </a>
             <?php } ?>
