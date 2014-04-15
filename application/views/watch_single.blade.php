@@ -22,6 +22,7 @@
             <script src="/assets/js/watch_single/main.js"></script>
             
             <script src="/assets/js/common/helpers_groups.js"></script>
+            <script src="/assets/js/common/handlers_groups.js"></script>
             <script src="/assets/js/common/templates_groups.js"></script>
             <script src="/assets/js/common/qb_maker.js"></script>',
 
