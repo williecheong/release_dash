@@ -74,35 +74,36 @@ jQuery(document).ready(function($) {
 *****************************************/
     // Brings up the modal for adding a new group
     $('.btn#edit-old-group').click(function(){
+        var $modal = $('.modal#old-group');
         var groupID = $(this).data('group-id');
         var thisGroup = coreData.groups[groupID];
 
         // Clean up modal from prior viewing of existing groups
-        $('.modal#old-group').find('div.old-query').remove();
+        $modal.find('div.query').remove();
 
         // Setting the values inside the modal's form fields
-        $('.modal#old-group').find('input#group-name').val( thisGroup.title );
+        $modal.find('input#group-name').val( thisGroup.title );
 
         if ( thisGroup.is_plot ) {
-            $('.modal#old-group').find('input#group-is-plot').prop( "checked", true );
+            $modal.find('input#group-is-plot').prop( "checked", true );
         } else {
-            $('.modal#old-group').find('input#group-is-plot').prop( "checked", false );
+            $modal.find('input#group-is-plot').prop( "checked", false );
         }
 
         if ( thisGroup.is_number ) {
-            $('.modal#old-group').find('input#group-is-number').prop( "checked", true );
+            $modal.find('input#group-is-number').prop( "checked", true );
         } else {
-            $('.modal#old-group').find('input#group-is-number').prop( "checked", false );
+            $modal.find('input#group-is-number').prop( "checked", false );
         }
         
         $.each( thisGroup.queries, function( key, value ){
             if ( value.is_reference ){
                 setTimeout(function(){
-                    $('.modal#old-group').find('div.old-query#q'+value.ref_query).find('select#old-query-reference option[value="'+value.ref_version+'"]').prop("selected", true);
+                    $modal.find('div.query#q'+value.ref_query).find('select#query-reference option[value="'+value.ref_version+'"]').prop("selected", true);
                 }, 100);
             } else {
                 // Append the html for each query
-                $('.modal#old-group').find('form').append( templateOldGroup( key, value ) );
+                $modal.find('form').append( templateOldGroup( key, value ) );
                 
                 // Initializing colorpicker for this new item
                 $(".colourpicker[id='q"+key+"']").spectrum({
@@ -122,7 +123,7 @@ jQuery(document).ready(function($) {
         // End of setting values in the modal form
 
         // Fields are populated and disabled. Show modal.
-        $('.modal#old-group').modal('toggle');
+        $modal.modal('toggle');
     });
 
 /*********************************
