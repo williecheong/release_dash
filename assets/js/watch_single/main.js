@@ -44,10 +44,8 @@ jQuery(document).ready(function($) {
     SAVING NEW GROUPS AND QUERIES
 *********************************/
     // Append a new HTML query template for the group
-    var new_query_unique_counter = 0;
     $('.btn#new-query-template').click( function() {
-        new_query_unique_counter++;
-        var thisNum = new_query_unique_counter;
+        var thisNum = uniqueid();
         $('.modal#new-group').find('form').append( templateNewGroup( thisNum ));
 
         // Initializing remove button for this new item
