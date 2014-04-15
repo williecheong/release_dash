@@ -3,13 +3,18 @@
         $modal = $button.closest('.modal');
 
         $button.addClass('disabled');
-        var product_tag = $button.data('product_tag');
-
+        
         // Retrieving input group values into saveGroup
         var saveGroup = {};
         saveGroup = extractGroup( $modal );
-        saveGroup.group_entity = "product";
-        saveGroup.group_entity_id = coreData[product_tag]['id'];
+        if ( coreData.hasOwnProperty('product') ) { 
+            saveGroup.group_entity = "version";
+            saveGroup.group_entity_id = coreData['id'];
+        } else {
+            saveGroup.group_entity = "product";
+            var product_tag = $button.data('product_tag');
+            saveGroup.group_entity_id = coreData[product_tag]['id'];
+        }
         // End of retrieving input group values into saveGroup
 
         // validateGroup returns false if OK
@@ -31,20 +36,21 @@
             $button.removeClass('disabled');               
         }   
     }
-        
+
     handlerUpdateGroup = function(){
         $button = $(this);
         $modal = $button.closest('.modal');
 
         $button.addClass('disabled');
-        var groupID = $button.data('group-id');
-
+        var groupID = $button.attr('data-group-id');
+        
         // Retrieving input group values into saveGroup
         var saveGroup = {};
         saveGroup = extractGroup( $modal );
         saveGroup.group_id = groupID;
         // End of retrieving input group values into saveGroup
 
+        console.log(saveGroup);        
         // validateGroup returns false if OK
         var groupError = validateGroup( saveGroup );
         if ( groupError ) {
@@ -67,7 +73,7 @@
     handlerDeleteGroup = function(){
         $this = $(this);
         $this.addClass('disabled');
-        var groupID = $this.data('group-id');
+        var groupID = $this.attr('data-group-id');
 
         var r = confirm("Confirm deleting this group?");
         if ( r == true ) {

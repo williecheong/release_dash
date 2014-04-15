@@ -118,8 +118,8 @@ jQuery(document).ready(function($) {
             }
         });
 
-        $('.btn#delete-old-group').data( 'group-id', groupID );
-        $('.btn#update-old-group').data( 'group-id', groupID );
+        $('.btn#delete-old-group').attr('data-group-id', groupID );
+        $('.btn#update-old-group').attr('data-group-id', groupID );
         // End of setting values in the modal form
 
         // Fields are populated and disabled. Show modal.

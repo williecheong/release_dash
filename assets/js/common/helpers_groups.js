@@ -81,7 +81,7 @@
             }
             // End of validation for group query's input values
         });
-
+        
         return saveGroup;
     }
     

@@ -71,10 +71,10 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-danger btn-sm" id="delete-old-group" data-group-id="">
+                <button class="btn btn-danger btn-sm" id="delete-old-group">
                     <i class="fa fa-times"></i> Delete
                 </button>
-                <button class="btn btn-success" id="update-old-group" data-group-id="">
+                <button class="btn btn-success" id="update-old-group">
                     <i class="fa fa-save"></i> Update
                 </button>
             </div>
