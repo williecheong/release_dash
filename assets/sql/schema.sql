@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS  `ci_sessions` (
+CREATE TABLE IF NOT EXISTS `ci_sessions` (
     session_id varchar(40) DEFAULT '0' NOT NULL,
     ip_address varchar(45) DEFAULT '0' NOT NULL,
     user_agent varchar(120) NOT NULL,
@@ -8,14 +8,14 @@ CREATE TABLE IF NOT EXISTS  `ci_sessions` (
     KEY `last_activity_idx` (`last_activity`)
 );
 
-CREATE TABLE `administrator` (
+CREATE TABLE IF NOT EXISTS `administrator` (
     `id` int(11) not null auto_increment,
     `email` varchar(255) not null,
     `last_updated` timestamp default current_timestamp on update current_timestamp,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
-CREATE TABLE `product` (
+CREATE TABLE IF NOT EXISTS `product` (
     `id` int(11) not null auto_increment,
     `tag` varchar(255) not null,   
     `title` varchar(255) not null,
@@ -25,7 +25,7 @@ CREATE TABLE `product` (
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
-CREATE TABLE `version` (
+CREATE TABLE IF NOT EXISTS `version` (
     `id` int(11) not null auto_increment,
     `tag` varchar(255) not null,
     `title` varchar(255) not null,
@@ -35,7 +35,7 @@ CREATE TABLE `version` (
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
-CREATE TABLE `channel` (
+CREATE TABLE IF NOT EXISTS `channel` (
     `id` int(11) not null auto_increment,
     `tag` varchar(255) not null,
     `title` varchar(255) not null,
@@ -47,7 +47,7 @@ CREATE TABLE `channel` (
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
-CREATE TABLE `cycle` (
+CREATE TABLE IF NOT EXISTS `cycle` (
     `id` int(11) not null auto_increment,
     `start` datetime not null,   
     `end` datetime not null,
@@ -55,7 +55,7 @@ CREATE TABLE `cycle` (
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
-CREATE TABLE `version_channel_cycle` (
+CREATE TABLE IF NOT EXISTS `version_channel_cycle` (
     `id` int(11) not null auto_increment,
     `version_id` int(11) not null,
     `channel_id` int(11) not null,
@@ -65,7 +65,7 @@ CREATE TABLE `version_channel_cycle` (
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
-CREATE TABLE `group` (
+CREATE TABLE IF NOT EXISTS `group` (
     `id` int(11) not null auto_increment,
     `title` varchar(255) not null,
     `entity` varchar(255) not null,
@@ -76,7 +76,7 @@ CREATE TABLE `group` (
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
-CREATE TABLE `query` (
+CREATE TABLE IF NOT EXISTS `query` (
     `id` int(11) not null auto_increment,
     `title` varchar(255) not null,
     `group_id` int(11) not null,
@@ -88,7 +88,7 @@ CREATE TABLE `query` (
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
-CREATE TABLE `score` (
+CREATE TABLE IF NOT EXISTS `score` (
     `id` int(11) not null auto_increment,
     `version_id` int(11) not null,
     `score_colour` varchar(255),
@@ -96,7 +96,7 @@ CREATE TABLE `score` (
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
-CREATE TABLE `comment` (
+CREATE TABLE IF NOT EXISTS `comment` (
     `id` int(11) not null auto_increment,
     `version_id` int(11) not null,
     `comment_email` varchar(255),
@@ -105,7 +105,7 @@ CREATE TABLE `comment` (
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
-CREATE TABLE `cache_es_data` (
+CREATE TABLE IF NOT EXISTS `cache_es_data` (
     `id` int(11) not null auto_increment,
     `version_id` int(11) not null,
     `query_id` int(11) not null,
@@ -113,16 +113,6 @@ CREATE TABLE `cache_es_data` (
     `last_updated` timestamp default current_timestamp on update current_timestamp,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
-
-CREATE TABLE IF NOT EXISTS  `ci_sessions` (
-    session_id varchar(40) DEFAULT '0' NOT NULL,
-    ip_address varchar(45) DEFAULT '0' NOT NULL,
-    user_agent varchar(120) NOT NULL,
-    last_activity int(10) unsigned DEFAULT 0 NOT NULL,
-    user_data text NOT NULL,
-    PRIMARY KEY (session_id),
-    KEY `last_activity_idx` (`last_activity`)
-);
 
 INSERT INTO `administrator` (`id`, `email`) VALUES 
 ('1', 'wcheong@mozilla.com'     ),
