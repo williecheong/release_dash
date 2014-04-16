@@ -4,9 +4,10 @@ services:
     ${name}-db: mysql
 hooks:
     post-staging:
-        #- dbshell < assets/sql/schema.sql
-
+        - dbshell < assets/sql/schema.sql
 
 # we need to not run schema.sql on every post-staging (Lukas look at other hooks)
 # how to migrate schema without clobbering db on update?
 # could temporarily use migrate.sql and increment but also look into permanent solution for auto-deploy
+
+#  for PHP sessions http://docs.stackato.com/2.10/deploy/languages/php.html
