@@ -18,17 +18,19 @@ Change logs, progress updates and latest developments on [this spreadsheet](http
 #### Instructions for deployment on Stackato
 1. Clone the repository onto your local machine
 2. Setup production database credentials as specified above
-    - Verify `/stackato.yml` is OK (already set up)
-    - You might want to change the `name` value
-3. Enter the root directory of the cloned repository using Terminal
+3. On `/stackato.yml`, modify the following:
+    - Change the `name` value for your copy of the dashboard
+    - The rest has already been setup for you
+3. `cd` into the root directory of the cloned repository using Terminal
 4. Assuming that stackato is already installed, execute `$ stackato push`
-5. The web application now live on the internet
-    - Application's database is set up but still empty
-    - Populate the database with data in `/assets/sql/dataset.sql`
-        - Tunnel into the MySQL service via Stackato on Terminal
-        - OR 
-        - Deploy phpMyAdmin for Stackato (recommended)
-6. In future, update the code base on 
+5. The web application is now live on the internet
+    - Application's database (MySQL service) is set up but still empty
+    - Populate the database with data in `/assets/sql/dataset.sql` by:
+        - Tunnel into the MySQL service via Stackato
+        - **OR** Deploy phpMyAdmin for Stackato (recommended)
+6. In future, update the code base by using Terminal
+    - `cd` into the dashboard's repository on your local machine
+    - Run the command for `$ stackato update [dashboard's appname]`
 
 #### Instructions for deploying phpMyAdmin on Stackato
 1. Clone [this repository](https://github.com/Stackato-Apps/phpmyadmin) onto your local machine
