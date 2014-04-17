@@ -28,7 +28,7 @@ Change logs, progress updates and latest developments on [this spreadsheet](http
     - Populate the database with data in `/assets/sql/dataset.sql` by:
         - Tunnel into the MySQL service via Stackato
         - **OR** Deploy phpMyAdmin for Stackato (recommended)
-6. In future, update the code base by using Terminal
+6. In future, update the code base by using Terminal:
     - `cd` into the dashboard's repository on your local machine
     - Run the command for `$ stackato update [dashboard's appname]`
 
@@ -39,7 +39,7 @@ Change logs, progress updates and latest developments on [this spreadsheet](http
     - `services` Remove MySQL from being created (not needed)
     - `PMA_USERNAME` Login credentials for accessing phpMyAdmin
     - `PMA_PASSWORD` Login credentials for accessing phpMyAdmin
-3. Enter the root directory of the cloned repository using Terminal
+3. `cd` into the root directory of the cloned repository using Terminal
 4. Assuming that stackato is already installed, execute `$ stackato push`
 5. phpMyAdmin is now live on the internet.
     - However, it is still not binded to the application's database
