@@ -19,8 +19,8 @@ Change logs, progress updates and latest developments on [this spreadsheet](http
 1. Clone the repository onto your local machine
 2. Setup production database credentials as specified above
 3. On `/stackato.yml`, modify the following:
-    - Change the `name` value for your copy of the dashboard
-    - The rest has already been setup for you
+    - Change the `name` for your copy of the dashboard
+    - The rest of the configs have already been setup for you
 3. `cd` into the root directory of the cloned repository using Terminal
 4. Assuming that stackato is already installed, execute `$ stackato push`
 5. The web application is now live on the internet
