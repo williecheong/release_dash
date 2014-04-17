@@ -4,10 +4,6 @@ Change logs, progress updates and latest developments on [this spreadsheet](http
 
 
 ## Deployment        
-#### Requirements
-- Standard Web Stack: Apache, MySQL, PHP 5.3 and above
-- For deployment on local machine, try LAMP, [MAMP](http://www.mamp.info/en/downloads/) or [WAMP](http://www.wampserver.com/en/)
-
 #### Database credentials
 - Environment *development* stored in `/application/config/database.php`
 - Environment *production* stored in `/application/config/production/database.php` 
@@ -47,6 +43,10 @@ Change logs, progress updates and latest developments on [this spreadsheet](http
         - Identify the MySQL service that was created with the dashboard application
         - Run the command for `$ stackato bind-service <servicename> [phpMyAdmin's appname]`
         - Logging into phpMyAdmin should now display all the schema and data used by the dashboard
+
+#### Instructions for deployment on other hosting services
+- Standard Web Stack: Apache, MySQL, PHP 5.3 and above
+- For deployment on local machine, try LAMP, [MAMP](http://www.mamp.info/en/downloads/) or [WAMP](http://www.wampserver.com/en/)
 
 
 ## URL Walkthrough
