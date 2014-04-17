@@ -14,7 +14,7 @@
 | path to your installation.
 |
 */
-$config['base_url'] = 'https://release-dash.paas.allizom.org';
+$config['base_url'] = 'http://release-dash.paas.allizom.org';
 
 /*
 |--------------------------------------------------------------------------
@@ -247,7 +247,7 @@ $config['encryption_key'] = 'J6WiDr84858Sw26J33gTQCHFe02Eqwva';
 $config['sess_cookie_name']     = 'release-dash';
 $config['sess_expiration']      = 7200;
 $config['sess_expire_on_close'] = TRUE;
-$config['sess_encrypt_cookie']  = FALSE;
+$config['sess_encrypt_cookie']  = TRUE;
 $config['sess_use_database']    = TRUE;
 $config['sess_table_name']      = 'ci_sessions';
 $config['sess_match_ip']        = TRUE;

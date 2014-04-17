@@ -1,5 +1,10 @@
 # so that we can deploy with 'stackato push --no-prompt'
 name: release-dash
+instances: 1
+framework:
+  type: php
+  runtime: php
+mem: 128
 services: 
     ${name}-db: mysql
 hooks:

@@ -1,7 +1,0 @@
-applications:
-  .:
-    name: release_dash
-    instances: 1
-    framework:
-      name: php
-    mem: 128
