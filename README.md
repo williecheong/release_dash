@@ -1,27 +1,50 @@
 # Release Readiness Dashboard
 Dashboards for tracking [Release Statuses of Mozillian Awesomeness](https://release-dash.paas.allizom.org).<br>
-More awesome *(and possibly unstable)* new features on [the staging site](http://release-dash.williecheong.com).<br>
-Change logs, progress updates and latest developments on [this spreadsheet](https://docs.google.com/spreadsheet/ccc?key=0ApNDjYXWm5JndDFwLWVlM1BPR3dBdjE1ZVdfWlBwR1E&usp=sharing).
+Change logs, progress updates and latest developments on [this spreadsheet](https://docs.google.com/spreadsheet/ccc?key=0ApNDjYXWm5JndDFwLWVlM1BPR3dBdjE1ZVdfWlBwR1E&usp=sharing)
 
 
 ## Deployment        
 #### Requirements
 - Standard Web Stack: Apache, MySQL, PHP 5.3 and above
-- For deployment on local machine, try LAMP, [MAMP](http://www.mamp.info/en/downloads/) or [WAMP](http://www.wampserver.com/en/). 
+- For deployment on local machine, try LAMP, [MAMP](http://www.mamp.info/en/downloads/) or [WAMP](http://www.wampserver.com/en/)
 
-#### Configuration
-- Define *production*, *staging* and *development* environments in `/index.php`
-- Database credentials for *development* in `/application/config/database.php`
-- Landing page (base_url) for *development* in `/application/config/config.php`
-- Configuration for other environments in `/application/config/[environment]/______.php`
-- If necessary, modify white-listed dashboard administrators in `/assets/sql/schema.sql`
+#### Database credentials
+- Environment *development* stored in `/application/config/database.php`
+- Environment *production* stored in `/application/config/production/database.php` 
+    - Actual file is gitignored to protect your private credentials
+    - Template is saved as `/application/config/production/database_template.php`
+    - Use inline variables when deployed as Stackato application with a binded MySQL service
 
-#### Instructions
-1. Clone the repository into the web directory
-2. Set up a new MySQL database service on the machine
-3. Define database credentials as specified in Configuration above
-4. Load the database schema and initial data from `/assets/sql/schema.sql`
-5. Done: RRDashboard is now live.
+#### Instructions for deployment on Stackato
+1. Clone the repository onto your local machine
+2. Setup production database credentials as specified above
+    - Verify `/stackato.yml` is OK (already set up)
+    - You might want to change the `name` value
+3. Enter the root directory of the cloned repository using Terminal
+4. Assuming that stackato is already installed, execute `$ stackato push`
+5. The web application now live on the internet
+    - Application's database is set up but still empty
+    - Populate the database with data in `/assets/sql/dataset.sql`
+        - Tunnel into the MySQL service via Stackato on Terminal
+        - OR 
+        - Deploy phpMyAdmin for Stackato (recommended)
+6. In future, update the code base on 
+
+#### Instructions for deploying phpMyAdmin on Stackato
+1. Clone [this repository](https://github.com/Stackato-Apps/phpmyadmin) onto your local machine
+2. Open `/stackato.yml` and modify the 
+    - `name` Sub-domain where phpMyAdmin will be accessed
+    - `services` Remove MySQL from being created (not needed)
+    - `PMA_USERNAME` Login credentials for accessing phpMyAdmin
+    - `PMA_PASSWORD` Login credentials for accessing phpMyAdmin
+3. Enter the root directory of the cloned repository using Terminal
+4. Assuming that stackato is already installed, execute `$ stackato push`
+5. phpMyAdmin is now live on the internet.
+    - However, it is still not binded to the application's database
+    - To do this:
+        - Identify the MySQL service that was created with the dashboard application
+        - Run the command for `$ stackato bind-service <servicename> [phpMyAdmin's appname]`
+        - Logging into phpMyAdmin should now display all the schema and data used by the dashboard
 
 
 ## URL Walkthrough
