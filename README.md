@@ -4,7 +4,7 @@ Change logs, progress updates and latest developments on [this spreadsheet](http
 
 
 ## Deployment        
-#### Database credentials
+#### Configuring the Database credentials
 - Environment *development* stored in `/application/config/database.php`
 - Environment *production* stored in `/application/config/production/database.php` 
     - Actual file is gitignored to protect your private credentials
