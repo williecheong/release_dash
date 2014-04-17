@@ -48,10 +48,26 @@
 $active_group = 'default';
 $active_record = TRUE;
 
-$db['default']['hostname'] = '';
-$db['default']['username'] = '';
-$db['default']['password'] = '';
-$db['default']['database'] = '';
+/* 
+    // For use with Stackato deployment with a binded MySQL service
+    $services_json  = json_decode(getenv("VCAP_SERVICES"),true);
+    $stackato_mysql = array();
+    foreach($services_json["mysql"] as $E) {
+        $mysql_config = $E["credentials"];
+        $stackato_mysql = array(
+            'hostname' => $mysql_config["hostname"],
+            'username' => $mysql_config["username"],
+            'password' => $mysql_config["password"],
+            'database' => $mysql_config["name"]
+        );
+        break;
+    }
+*/
+
+$db['default']['hostname'] = ''; // $stackato_mysql["hostname"]
+$db['default']['username'] = ''; // $stackato_mysql["username"]
+$db['default']['password'] = ''; // $stackato_mysql["password"]
+$db['default']['database'] = ''; // $stackato_mysql["database"]
 $db['default']['dbdriver'] = 'mysql';
 $db['default']['dbprefix'] = '';
 $db['default']['pconnect'] = TRUE;
