@@ -25,7 +25,7 @@ Change logs, progress updates and latest developments on [this spreadsheet](http
         - Tunnel into the MySQL service via Stackato
         - **OR** Deploy phpMyAdmin for Stackato (recommended)
 6. In future, update the code base by using Terminal:
-    - `cd` into the dashboard's repository on your local machine
+    - `$ cd` into the dashboard's repository on your local machine
     - Run the command for `$ stackato update [dashboard's appname]`
 
 #### Instructions for deploying phpMyAdmin on Stackato
