@@ -17,7 +17,7 @@ Change logs, progress updates and latest developments on [this spreadsheet](http
 3. Open `/stackato.yml` and modify the following:
     - `name` Sub-domain where the dashboard will be accessed
     - The rest of the configs have already been setup for you
-3. `cd` into the root directory of the cloned repository using Terminal
+3. `$ cd` into the root directory of the cloned repository using Terminal
 4. Assuming that stackato is already installed, execute `$ stackato push`
 5. The web application is now live on the internet
     - Application's database (MySQL service) is set up but still empty
@@ -35,11 +35,10 @@ Change logs, progress updates and latest developments on [this spreadsheet](http
     - `services` Remove MySQL from being created (not needed)
     - `PMA_USERNAME` Login credentials for accessing phpMyAdmin
     - `PMA_PASSWORD` Login credentials for accessing phpMyAdmin
-3. `cd` into the root directory of the cloned repository using Terminal
+3. `$ cd` into the root directory of the cloned repository using Terminal
 4. Assuming that stackato is already installed, execute `$ stackato push`
 5. phpMyAdmin is now live on the internet
-    - However, it is still not binded to the application's database
-    - To do this:
+    - However, it is still not binded to the application's database. To do this:
         - Identify the MySQL service that was created with the dashboard application
         - Run the command for `$ stackato bind-service <servicename> [phpMyAdmin's appname]`
         - Logging into phpMyAdmin should now display all the schema and data used by the dashboard
