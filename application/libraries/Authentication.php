@@ -29,7 +29,7 @@ class Authentication {
     public function login($assertion) {
         // verify assertion
         $result = $this->verify_assertion($assertion);
-
+        
         // check for success
         if ($result->status === 'okay') {
             $this->email = $result->email;
@@ -44,7 +44,7 @@ class Authentication {
     }
 
     private function verify_assertion($assertion) {
-        $audience = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'];
+        $audience = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . $_SERVER['SERVER_NAME'];
         $postdata = 'assertion=' . urlencode($assertion) . '&audience=' . urlencode($audience);
 
         $this->CI->load->helper('post');

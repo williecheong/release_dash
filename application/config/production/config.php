@@ -14,7 +14,7 @@
 | path to your installation.
 |
 */
-$config['base_url'] = 'https://release-dash.paas.allizom.org';
+$config['base_url'] = 'http://release-dash.paas.allizom.org';
 
 /*
 |--------------------------------------------------------------------------
