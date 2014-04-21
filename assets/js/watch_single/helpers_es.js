@@ -283,14 +283,13 @@
                 });
 
                 var score = '';
-                if ( greenCount > yellowCount && greenCount > redCount ){
-                    score = 'lightgreen';
-
-                } else if ( yellowCount > redCount ) {
-                    score = 'orange';
-                
-                } else {
+                var highScore = Math.max(redCount, yellowCount, greenCount);
+                if ( highScore == redCount ){
                     score = 'red';
+                } else if ( highScore == yellowCount ) {
+                    score = 'orange';
+                } else {
+                    score = 'lightgreen';
                 }
 
                 // Did we specify that we didn't want to save when applying this score?
