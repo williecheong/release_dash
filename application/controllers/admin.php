@@ -104,7 +104,10 @@ class Admin extends CI_Controller {
             $source = "https://api-dev.bugzilla.mozilla.org/latest/bug";
             $source .= "?chfieldto=Now&chfieldfrom=".date('Y-m-d', strtotime('6 months ago'))."&chfield=bug_status&chfieldvalue=NEW&include_fields=component";
             $source .= "&product=". str_replace(' ', '%20', $product->title); // php cURL does not allow whitespace in URL
-            $source .= "&product=Core";
+            if ( $product->tag == 'firefox' || $product->tag == 'fennec' ) {
+                $source .= "&product=Core";
+            }
+            
             $content = file_get_contents_via_curl( $source );
             $buglist = json_decode($content, true);
             
