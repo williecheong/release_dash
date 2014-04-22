@@ -283,7 +283,7 @@
                 });
 
                 var score = '';
-                if ( greenCount != 0 && yellowCount !== 0 && redCount !== 0 ) {
+                if ( greenCount != 0 || yellowCount != 0 || redCount != 0 ) {
                     var highScore = Math.max(redCount, yellowCount, greenCount);
                     if ( highScore == redCount ){
                         score = 'red';
@@ -293,7 +293,7 @@
                         score = 'lightgreen';
                     }
                 }
-                
+
                 // Did we specify that we didn't want to save when applying this score?
                 if ( toSave ) {
                     saveAggregate(score)
