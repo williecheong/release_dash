@@ -21,8 +21,6 @@
 
 if ( $_SERVER['SERVER_ADDR'] == '127.0.0.1' ) {
     define('ENVIRONMENT', 'development');
-} else if ( $_SERVER['SERVER_ADDR'] == '173.236.228.231' ) {
-	define('ENVIRONMENT', 'staging');
 } else {
     define('ENVIRONMENT', 'production');
 }
@@ -42,12 +40,11 @@ if (defined('ENVIRONMENT'))
 	{
 		case 'development':
 			error_reporting(E_ALL);
-		break;
+			break;
 	
-		case 'staging':
 		case 'production':
 			error_reporting(E_ALL);
-		break;
+			break;
 
 		default:
 			exit('The application environment is not set correctly.');
