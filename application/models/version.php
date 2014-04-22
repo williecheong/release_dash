@@ -11,10 +11,23 @@ class version extends CI_Model{
         $new_version_number = '';
         if ( $version->product_id == 3 ) {
             // B2G alert
-            $break_tag = explode('_', $version->tag);
-            $break_tag[1]++;
-            $new_version_tag = implode('_', $break_tag);
-            $new_version_number = implode('.', $break_tag);
+            $source = "https://wiki.mozilla.org/Template:B2G_DEV_VERSION";
+            $content = file_get_contents_via_curl( $source );
+            if( $content === false ) {
+                // Failed to retrieve external version tag
+                // Manually calculate for next B2G version number
+                log_message('error', 'Failed to access: '.$source);
+                
+                $break_tag = explode('_', $version->tag);
+                $break_tag[1]++;
+                $new_version_tag = implode('_', $break_tag);
+                $new_version_number = implode('_', $break_tag);
+            } else {
+                // Extract externally retrieved version tag
+                preg_match("/<p>(.*?)<\/p>/s", $content, $match);
+                $new_version_tag =  str_replace('.', '_', trim($match[1]) );    
+                $new_version_number = str_replace('.', '_', trim($match[1]) );
+            }
         } else {
             // Firefox / Fennec alert
             $source = 'https://wiki.mozilla.org/Template:CENTRAL_VERSION';

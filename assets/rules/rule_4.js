@@ -30,13 +30,12 @@ function rule_4() {
     // Set the conditions that determine what to return
     // Recognized return values = [green", "yellow", "red"]
     // OR return any preferred custom colours in a valid CSS format
-    if ( (shipday - current < oneday && regressionCount != 0 && channel == 'beta') 
-        || ( regressionCount != 0 && channel == 'release') ) {
+    if ( shipday - current < oneday && regressionCount != 0 && channel == 'beta' )  {
         // We have regressions and less than 1 day to ship
         return "red" ;
     
-    } else if ( regressionCount == 0 ) {
-        // Good, we have no bugs
+    } else if ( regressionCount < 6 ) {
+        // Good, we have bug count below the threshold
         return "green";
     
     } else {

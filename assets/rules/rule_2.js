@@ -30,13 +30,12 @@ function rule_2() {
     // Set the conditions that determine what to return
     // Recognized return values = [green", "yellow", "red"]
     // OR return any preferred custom colours in a valid CSS format
-    if ( (shipday - current < oneday && bugCount != 0 && channel == 'beta') 
-        || ( bugCount != 0 && channel == 'release') ) {
+    if ( shipday - current < oneday && bugCount != 0 && channel == 'beta' ) {
         // We have bugs and less than 1 day to ship
         return "red" ;
     
-    } else if ( bugCount == 0 ) {
-        // Good, we have no bugs
+    } else if ( bugCount < 6 ) {
+        // Good, we have a bug count below threshold
         return "green";
     
     } else {

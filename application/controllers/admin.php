@@ -96,26 +96,26 @@ class Admin extends CI_Controller {
     public function update_components() {
         log_message('info', 'Accessing controller function in /admin.php/update_components');
 
-        // Grab all of the HTML content from this source.
-        $source = "https://api-dev.bugzilla.mozilla.org/latest/configuration";
-        $content = file_get_contents_via_curl( $source );
-        $config = json_decode($content, true);
-        
         //  Find a list of all products
         $products = $this->product->retrieve();
         foreach ( $products as $product ) {
-            $components = array();
+            // Retrieve a list of all bugs in the last 6 months. We only need the component field
+            // Reasoning: We don't want to waste time loading data for components don't have a history of having bugs
+            $source = "https://api-dev.bugzilla.mozilla.org/latest/bug";
+            $source .= "?chfieldto=Now&chfieldfrom=".date('Y-m-d', strtotime('6 months ago'))."&chfield=bug_status&chfieldvalue=NEW&include_fields=component";
+            $source .= "&product=". str_replace(' ', '%20', $product->title); // php cURL does not allow whitespace in URL
+            if ( $product->tag == 'firefox' || $product->tag == 'fennec' ) {
+                $source .= "&product=Core";
+            }
+            
+            $content = file_get_contents_via_curl( $source );
+            $buglist = json_decode($content, true);
             
             // component names are stored in the BZ config array as keys
             // loop and assign those keys as values in our component array
-            foreach( $config['product'][$product->title]['component'] as $component_name => $component ) {
-                $components[] = $component_name;
-            } 
-
-            if ( $product->tag == 'firefox' || $product->tag == 'fennec' ) {
-                foreach( $config['product']['Core']['component'] as $component_name => $component ) {
-                    $components[] = $component_name;
-                }     
+            $components = array();
+            foreach( $buglist['bugs'] as $bug ) {
+                $components[$bug['component']] = $bug['component'];
             }
 
             // sort that components array by alphabetical order then join as CSV
