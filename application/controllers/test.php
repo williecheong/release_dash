@@ -23,6 +23,7 @@ class Test extends CI_Controller {
         $this->_test_version_models();
         $this->_test_helpers();
 
+        echo "<style>th{width:20%;}</style>";
         echo $this->unit->report();
         return;
     }
