@@ -1,3 +1,74 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> 
+<html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <link rel="shortcut icon" href="/assets/img/{{ ENVIRONMENT }}.ico" type="image/x-icon">
+        <link rel="icon" href="/assets/img/{{ ENVIRONMENT }}.ico" type="image/x-icon">
+        <title>@yield('title')</title>
+        <meta name="description" content="A dashboard for monitoring the readiness of new releases for Mozilla products.">
+        <meta name="viewport" content="width=device-width">
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="/assets/vendor/rickshaw/rickshaw.min.css">
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/qtip2/2.2.0/jquery.qtip.min.css">
+        <link rel="stylesheet" href="/assets/vendor/spectrum/spectrum.css">
+        <link rel="stylesheet" href="/assets/css/main.css">
+        
+        @yield('css')
+
+        <script src="/assets/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script> 
+    </head>
+    
+    <body>
+        <!--[if lt IE 7]>
+            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+        <![endif]-->
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="/">
+                        RRDashboard
+                    </a>
+                    @yield('sub_title')
+                </div>
+                <div class="navbar-collapse collapse">
+                    <div class="navbar-form navbar-right">
+                        <button class="btn btn-default" data-toggle="modal" data-target="#navigation-menu">
+                            <i class="fa fa-plane fa-lg"></i> Navigate
+                        </button>
+                        <?php if ( $this->uri->segment(1) == 'for' ) { ?>
+                            <button class="btn btn-default" data-toggle="modal" data-target="#comment-box">
+                                <i class="fa fa-comment"></i> Summary
+                            </button>
+                            <a class="btn btn-default" id="es-refresh" href="/<?= uri_string(); ?>?refresh=1">
+                                <i class="fa fa-refresh"></i> Refresh
+                            </a>
+                        <?php } ?>
+                        <?php if ( $this->session->userdata('email') ) { ?>
+                            <button class="btn btn-danger" id="user-logout">
+                                <i class="fa fa-sign-out fa-lg"></i> <?= $this->session->userdata('email'); ?>
+                            </button>
+                        <?php } ?>
+                    </div>
+                </div><!--/.navbar-collapse -->
+            </div>
+        </div>
+
+        @yield('content')
+        @yield('modals')
+
         <!-- Modal for viewing navigation menu -->
         <div class="modal fade" id="navigation-menu" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-sm">
@@ -85,13 +156,13 @@
         <div class="container">
             <hr>
             <footer>
-                <p>&copy; Mozilla - Release Management <?= date("Y"); ?> </p>
+                <p>&copy; Mozilla - Release Management {{ date("Y") }}</p>
             </footer>
         </div><!-- /.footer -->
         
         <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
         <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/qtip2/2.2.0/basic/jquery.qtip.min.js"></script>
+        <script src="//cdn.jsdelivr.net/qtip2/2.2.0/jquery.qtip.min.js"></script>
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
         <script src="/assets/vendor/spectrum/spectrum.js"></script>
         <script src="//login.persona.org/include.js"></script>
@@ -103,7 +174,7 @@
                     https://github.com/EllisLab/CodeIgniter/wiki/Persona-Login
             ***********************/ ?>
             navigator.id.watch({
-                loggedInUser: <?= $this->session->userdata('email') ? '"'.$this->session->userdata('email').'"' : 'null' ; ?>,
+                loggedInUser: {{ $this->session->userdata('email') ? '"'.$this->session->userdata('email').'"' : 'null' }},
                 onlogin: function (assertion) {
                     $.ajax({
                         type: 'POST',
@@ -139,7 +210,8 @@
                 }
             });
         </script>
-        <?= ( isset($bottom) ) ? $bottom : '' ; ?>
-        <?= ( isset($rule_scripts) ) ? $rule_scripts : '' ; ?>
+        @yield('javascript')
+        @yield('rules')
     </body>
 </html>
+

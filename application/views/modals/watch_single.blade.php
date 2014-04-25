@@ -79,32 +79,34 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title" id="myModalLabel">
-                    Comment for <span class="lead"><?= $version; ?></span>
+                    Comment for 
+                    <span class="lead">{{ $data['title'] }}</span>
                 </h4>
             </div>
             <div class="modal-body"> 
-                <?php if ( $this->session->userdata('email') ) { ?>
-                    <textarea class="form-control input-comment" rows="15" placeholder="Comments about the status of this release?"><?= ( !empty($comment) ) ? $comment->comment_message : "" ; ?></textarea>
+                @if ( $this->session->userdata('email') ) 
+                    <textarea class="form-control input-comment" rows="15" placeholder="Comments about the status of this release?">{{ ( count($comments) > 0 ) ? $comments[0]->comment_message : "" }}</textarea>
                     <button class="btn btn-success btn-xs pull-right" id="save-comment" style="margin-top:10px;">
                         <i class="fa fa-save"></i> Save
                     </button>
-                <?php } else { ?>
+                @else
                     <p>
-                        <?= ( !empty($comment) ) ? $comment->comment_message : "No comments posted so far..." ; ?>
+                        {{ ( count($comments) > 0 ) ? $comments[0]->comment_message : "No comments posted so far..." }}
                     </p>
-                <?php } ?>
-                <?php if ( !empty($comment) ) { ?>
+                @endif
+                
+                @if ( count($comments) > 0 )
                     <p>
                         <small>
-                            <?= $comment->comment_email ; ?><br>
+                             {{ $comments[0]->comment_email }}<br>
                             <em>
-                                <?= date( 'F j, Y @ g.ia', strtotime($comment->last_updated) ) ; ?>
+                                {{ date( 'F j, Y @ g.ia', strtotime($comments[0]->last_updated) ) }}
                             </em>
                         </small>
                     </p>
-                <?php } else { ?>
+                @else
                     <p style="margin-top:20px;"></p>
-                <?php } ?>
+                @endif
             </div>
         </div>
     </div>

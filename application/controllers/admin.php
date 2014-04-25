@@ -32,7 +32,7 @@ class Admin extends CI_Controller {
             $this->blade->render('admin_panel', $data);
         
         } else {
-            $this->load->view('admin_login');
+            $this->blade->render('admin_login');
         }   
         return;
     }
@@ -41,7 +41,7 @@ class Admin extends CI_Controller {
     public function easy_qb() {
         log_message('info', 'Accessing controller function in /admin.php/easy_qb');
 
-        $this->load->view( 'easy_qb' );
+        $this->blade->render('easy_qb');
     }
 
     // Brings up the user manual

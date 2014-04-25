@@ -283,13 +283,15 @@
                 });
 
                 var score = '';
-                var highScore = Math.max(redCount, yellowCount, greenCount);
-                if ( highScore == redCount ){
-                    score = 'red';
-                } else if ( highScore == yellowCount ) {
-                    score = 'orange';
-                } else {
-                    score = 'lightgreen';
+                if ( greenCount != 0 || yellowCount != 0 || redCount != 0 ) {
+                    var highScore = Math.max(redCount, yellowCount, greenCount);
+                    if ( highScore == redCount ){
+                        score = 'red';
+                    } else if ( highScore == yellowCount ) {
+                        score = 'orange';
+                    } else {
+                        score = 'lightgreen';
+                    }
                 }
 
                 // Did we specify that we didn't want to save when applying this score?

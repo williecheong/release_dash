@@ -6,7 +6,13 @@
 
     // Initializing qtip for better tooltips
     $('[title!=""]').qtip({
-        position: { my: 'top right', at: 'bottom right' }
+        style: {
+            classes: 'qtip-dark qtip-shadow qtip-rounded'
+        },
+        position: { 
+            my: 'top right', 
+            at: 'bottom right' 
+        }
     });
 
     // Persona logout
