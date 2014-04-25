@@ -91,11 +91,13 @@ Change logs, progress updates and latest developments on [this spreadsheet](http
 - [More details...](http://blog.williecheong.com/running-with-the-train/)
 
 ## Testing
-To be continued
-
+#### Unit tests
+- Accessed and run through "/test"
+- Currently testing CRUD for `version` model and helper functions
+- Needs unit tests for other models as well as functions derived from base CRUD
+- Creates a test version on each run, uses it then deletes it immediately at the end
 
 ## Troubleshoot
-To be continued<br>
 Reach out to [Willie Cheong](http://williecheong.com) for undocumented problems.
 
 
