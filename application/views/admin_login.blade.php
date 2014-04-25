@@ -1,7 +1,7 @@
 @layout('templates/layout')
 
 @section('title')
-    Release Readiness Dashboard :: User Manual
+    Release Readiness Dashboard :: Login
 @endsection
 
 @section('css')

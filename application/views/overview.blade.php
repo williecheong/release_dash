@@ -80,7 +80,7 @@
     <script src="/assets/js/common/handlers_groups.js"></script>
     <script src="/assets/js/common/templates_groups.js"></script>
     <script src="/assets/js/common/qb_maker.js"></script>
-    <script>var coreData = '. json_encode($data) .'</script>
+    <script>var coreData = {{ json_encode($data) }}</script>
 @endsection
 
 

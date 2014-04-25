@@ -43,11 +43,7 @@
                     <a class="navbar-brand" href="/">
                         RRDashboard
                     </a>
-                    <?php if ( isset($version) ) { ?>
-                        <span class="navbar-brand lead rrscore">
-                            <?= $version; ?>
-                        </span>
-                    <?php } ?>
+                    @yield('sub_title')
                 </div>
                 <div class="navbar-collapse collapse">
                     <div class="navbar-form navbar-right">
