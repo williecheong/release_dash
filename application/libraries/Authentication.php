@@ -36,6 +36,7 @@ class Authentication {
             $this->CI->session->set_userdata(array('email' => $result->email));
         } else {
             log_message('error', 'Persona '.$result->status.': '.$result->reason);
+            return $result->reason;
         }
     }
 
