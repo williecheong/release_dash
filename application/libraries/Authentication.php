@@ -47,10 +47,11 @@ class Authentication {
     }
 
     private function verify_assertion($assertion) {
+        $audience = 'https://' . $_SERVER['SERVER_NAME'];
         // $audience = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . $_SERVER['SERVER_NAME'];
-        $audience = base_url();
+        // $audience = base_url();
         $postdata = 'assertion=' . urlencode($assertion) . '&audience=' . urlencode($audience);
-        echo $audience;
+        // echo $audience;
 
         $this->CI->load->helper('post');
         $result = post_request('https://verifier.login.persona.org/verify',$postdata);
