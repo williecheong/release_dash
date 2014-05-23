@@ -19,7 +19,7 @@ class Misc extends REST_Controller {
 
     // Referenced from:
     //  https://github.com/EllisLab/CodeIgniter/wiki/Persona-Login
-public function login_post() {
+    public function login_post() {
         $login_result = '';
         if ( isset($_POST['assertion']) ) {
             $login_result = $this->authentication->login($_POST['assertion']);
@@ -35,7 +35,7 @@ public function login_post() {
             }
         } else {
             log_message('error', 'No session was created in /api/misc.php/login_post');
-            echo $login_result;
+            echo "No session was created because: \n" . $login_result;
         }
         return;
     }
