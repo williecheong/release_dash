@@ -35,7 +35,15 @@ class Authentication {
             $this->email = $result->email;
             $this->CI->session->set_userdata(array('email' => $result->email));
         } else {
-            log_message('error', 'Persona '.$result->status.': '.$result->reason);
+            $result = $this->verify_assertion($assertion, 'http://');
+            
+            if ( $result->status === 'okay' ) {
+                $this->email = $result->email;
+                $this->CI->session->set_userdata(array('email' => $result->email));
+            } else {
+                log_message('error', 'Persona '.$result->status.': '.$result->reason);
+                return $result->reason;
+            }
         }
     }
 
@@ -45,13 +53,12 @@ class Authentication {
         $this->CI->session->sess_destroy();
     }
 
-    private function verify_assertion($assertion) {
-        $audience = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . $_SERVER['SERVER_NAME'];
+    private function verify_assertion($assertion, $head = 'https://') {
+        $audience = $head . $_SERVER['SERVER_NAME'];
         $postdata = 'assertion=' . urlencode($assertion) . '&audience=' . urlencode($audience);
-
+        
         $this->CI->load->helper('post');
         $result = post_request('https://verifier.login.persona.org/verify',$postdata);
-
         return json_decode($result);
     }
 }
