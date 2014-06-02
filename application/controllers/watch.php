@@ -98,7 +98,7 @@ class Watch extends CI_Controller {
         foreach ( $groups as $group ) {
             $group_title = replace_version_attr( $group->title, $version );
 
-            $data['groups'][$group->id]['title'] = $group_title;
+            $data['groups'][$group->id]['title'] = $group_title; // Change this as needed
             $data['groups'][$group->id]['is_plot']  = ($group->is_plot == '1') ? true : false ;
             $data['groups'][$group->id]['is_number'] = ($group->is_number == '1') ? true : false ;
             $data['groups'][$group->id]['has_rule'] = file_exists( FCPATH.'assets/rules/rule_'.$group->id.'.js' );
