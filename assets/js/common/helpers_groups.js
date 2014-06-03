@@ -11,7 +11,7 @@
         var bzURL = bzURL.split('?');
         if ( !bzURL[1] ) {
             // If it is not found, we have a problem
-            alert('No bugzilla query found.');
+            alert('No bugzilla query found.z');
             $button.removeClass('disabled');
             $target.removeAttr('disabled');
             return;

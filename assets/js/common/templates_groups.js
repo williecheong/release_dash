@@ -26,6 +26,18 @@
                         '<button type="button" class="btn btn-xs btn-default" id="remove-query">'+
                             '<i class="fa fa-times"></i>'+
                         '</button>'+
+
+                        '<div class="form-group">'+
+                            '<label class="col-sm-3 control-label" for="query-name">Data Source</label>'+
+                            '<div class="col-sm-9 controls">'+
+                               '<select class="form-control data-source" id="'+number+'">'+
+                                    '<option value="none">Bugzilla</option>'+
+                                    '<option value="talos">Talos</option>'+
+                                    '<option value="crash-stats">Crash Stats</option>'+
+                               '</select>'+
+                            '</div>'+
+                        '</div>'+
+
                         '<div class="form-group">'+
                             '<label class="col-sm-3 control-label" for="query-name">Query Name</label>'+
                             '<div class="col-sm-9 controls">'+
