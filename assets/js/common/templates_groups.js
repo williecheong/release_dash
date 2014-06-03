@@ -2,6 +2,27 @@
     BLOCK TEMPLATES FOR QUERIES OF
     NEW GROUPS AND EXISTING GROUPS
 *****************************/
+
+    function templateDataInput (dataSource, number) {
+        html = '';
+        if (dataSource == "crash-stats") {
+                html =       '<div class="form-group">'+
+                                '<label class="col-sm-3 control-label" for="query-bz">Bugzilla URL</label>'+
+                                '<div class="col-sm-9 controls">'+
+                                    '<div class="input-group">'+
+                                        '<input class="form-control" id="query-bz" placeholder="URL that links to this query in Bugzilla.">'+
+                                        '<span class="input-group-btn">'+
+                                            '<button class="btn btn-primary quick-qb" type="button" id="'+1+'">'+
+                                                '<i class="fa fa-magic fa-lg"></i> Qb'+
+                                            '</button>'+
+                                        '</span>'+
+                                    '</div>'+
+                                '</div>'+
+                            '</div>';
+        }
+        return html
+    }
+
     function templateNewGroup ( number ) {
         var refOptions = '';
         if ( coreData.hasOwnProperty('product') ) { 
@@ -31,47 +52,49 @@
                             '<label class="col-sm-3 control-label" for="query-name">Data Source</label>'+
                             '<div class="col-sm-9 controls">'+
                                '<select class="form-control data-source" id="'+number+'">'+
-                                    '<option value="none">Bugzilla</option>'+
+                                    '<option value="bugzilla">Bugzilla</option>'+
                                     '<option value="talos">Talos</option>'+
                                     '<option value="crash-stats">Crash Stats</option>'+
                                '</select>'+
                             '</div>'+
                         '</div>'+
 
-                        '<div class="form-group">'+
-                            '<label class="col-sm-3 control-label" for="query-name">Query Name</label>'+
-                            '<div class="col-sm-9 controls">'+
-                                '<div class="input-group">'+
-                                    '<input type="text" class="form-control" id="query-name" placeholder="Description for this query.">'+
-                                    '<span class="input-group-btn">'+
-                                        '<button class="btn btn-default colourpicker" type="button" id="'+number+'">'+
-                                            '<i class="fa fa-tint fa-lg"></i> Color'+
-                                        '</button>'+
-                                        '<em id="colorpicker-log"></em>'+
-                                    '</span>'+
+                        '<div class="data-form" id="'+number+'">'+
+                            '<div class="form-group">'+
+                                '<label class="col-sm-3 control-label" for="query-name">Query Name</label>'+
+                                '<div class="col-sm-9 controls">'+
+                                    '<div class="input-group">'+
+                                        '<input type="text" class="form-control" id="query-name" placeholder="Description for this query.">'+
+                                        '<span class="input-group-btn">'+
+                                            '<button class="btn btn-default colourpicker" type="button" id="'+number+'">'+
+                                                '<i class="fa fa-tint fa-lg"></i> Color'+
+                                            '</button>'+
+                                            '<em id="colorpicker-log"></em>'+
+                                        '</span>'+
+                                    '</div>'+
                                 '</div>'+
                             '</div>'+
-                        '</div>'+
-                        refOptions+
-                        '<div class="form-group">'+
-                            '<label class="col-sm-3 control-label" for="query-bz">Bugzilla URL</label>'+
-                            '<div class="col-sm-9 controls">'+
-                                '<div class="input-group">'+
-                                    '<input class="form-control" id="query-bz" placeholder="URL that links to this query in Bugzilla.">'+
-                                    '<span class="input-group-btn">'+
-                                        '<button class="btn btn-primary quick-qb" type="button" id="'+number+'">'+
-                                            '<i class="fa fa-magic fa-lg"></i> Qb'+
-                                        '</button>'+
-                                    '</span>'+
+                            refOptions+
+                            '<div class="form-group">'+
+                                '<label class="col-sm-3 control-label" for="query-bz">Bugzilla URL</label>'+
+                                '<div class="col-sm-9 controls">'+
+                                    '<div class="input-group">'+
+                                        '<input class="form-control" id="query-bz" placeholder="URL that links to this query in Bugzilla.">'+
+                                        '<span class="input-group-btn">'+
+                                            '<button class="btn btn-primary quick-qb" type="button" id="'+number+'">'+
+                                                '<i class="fa fa-magic fa-lg"></i> Qb'+
+                                            '</button>'+
+                                        '</span>'+
+                                    '</div>'+
                                 '</div>'+
                             '</div>'+
-                        '</div>'+
-                        '<div class="form-group">'+
-                            '<label class="col-sm-3 control-label" for="query-qb">Qb Query</label>'+
-                            '<div class="col-sm-9">'+
-                                '<textarea class="form-control" rows="3" id="query-qb" placeholder="Query in Qb format as a json object."></textarea>'+
+                            '<div class="form-group">'+
+                                '<label class="col-sm-3 control-label" for="query-qb">Qb Query</label>'+
+                                '<div class="col-sm-9">'+
+                                    '<textarea class="form-control" rows="3" id="query-qb" placeholder="Query in Qb format as a json object."></textarea>'+
+                                '</div>'+
                             '</div>'+
-                        '</div>'+
+                        '</div>'+ //---data-form
                     '</div>';
         return html;
     }
