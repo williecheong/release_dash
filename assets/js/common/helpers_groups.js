@@ -138,6 +138,7 @@
     POST PUT AJAX REQUESTS
 *****************************/
     function postGroup( saveGroup, $this ) {
+        alert(JSON.stringify(saveGroup));
         $.ajax({
             url: '/api/groups',
             type: 'POST',

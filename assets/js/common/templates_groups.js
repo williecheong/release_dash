@@ -7,60 +7,63 @@
         html = '';
         if (dataSource == "crash-stats") {
                 html =       '<div class="form-group">'+
+                                '<label class="col-sm-3 control-label" for="query-bz">Query</label>'+
+                                '<div class="col-sm-9 controls">'+
+                                    '<input class="form-control" id="query-bz" placeholder="The query of the crash-stats API">'+
+                                '</div>'+
+                            '</div>'+
+                            '<div class="form-group">'+
+                                '<label class="col-sm-3 control-label" for="query-bz">Product</label>'+
+                                '<div class="col-sm-9 controls">'+
+                                    '<input class="form-control" id="query-bz" placeholder="Firefox, for example">'+
+                                '</div>'+
+                            '</div>'+
+                            '<div class="form-group">'+
+                                '<label class="col-sm-3 control-label" for="query-bz">Version</label>'+
+                                '<div class="col-sm-9 controls">'+
+                                    '<input class="form-control" id="query-bz" placeholder="32.0a1, for example">'+
+                                '</div>'+
+                            '</div>'+
+                            '<div class="form-group">'+
+                                '<label class="col-sm-3 control-label" for="query-bz">Start Date</label>'+
+                                '<div class="col-sm-9 controls">'+
+                                    '<input class="form-control" id="query-bz" placeholder="2012-01-01, for example">'+
+                                '</div>'+
+                            '</div>'+
+                            '<div class="form-group">'+
+                                '<label class="col-sm-3 control-label" for="query-bz">End Date</label>'+
+                                '<div class="col-sm-9 controls">'+
+                                    '<input class="form-control" id="query-bz" placeholder="2014-07-01, for example">'+
+                                '</div>'+
+                            '</div>'+
+                            '<div class="form-group">'+
                                 '<label class="col-sm-3 control-label" for="query-bz">Bugzilla URL</label>'+
                                 '<div class="col-sm-9 controls">'+
-                                    '<div class="input-group">'+
-                                        '<input class="form-control" id="query-bz" placeholder="URL that links to this query in Bugzilla.">'+
-                                        '<span class="input-group-btn">'+
-                                            '<button class="btn btn-primary quick-qb" type="button" id="'+1+'">'+
-                                                '<i class="fa fa-magic fa-lg"></i> Qb'+
-                                            '</button>'+
-                                        '</span>'+
-                                    '</div>'+
+                                    '<input class="form-control" id="query-bz" placeholder="URL that links to this query in Bugzilla.">'+
                                 '</div>'+
-                            '</div>';
-        }
-        return html
-    }
-
-    function templateNewGroup ( number ) {
-        var refOptions = '';
-        if ( coreData.hasOwnProperty('product') ) { 
-            refOptions +=   '<div class="form-group">'+
-                                '<label class="col-sm-3 control-label" for="query-reference">References</label>'+
-                                '<div class="col-sm-9 controls">'+
-                                   '<select class="form-control" id="query-reference">'+
-                                        '<option value="none">None</option>';
-
-            $.each( coreData.product.versions, function(key, version){
-                if ( parseInt(version.id) < parseInt(coreData.id) ) {
-                    refOptions +=       '<option value="'+version.id+'">'+version.title+'</option>';
-                }
-            });
-
-            refOptions +=           '</select>'+
-                                '</div>'+
-                            '</div>';
-        }
-
-        var html = '<div class="query" id="q'+ number +'">'+
-                        '<button type="button" class="btn btn-xs btn-default" id="remove-query">'+
-                            '<i class="fa fa-times"></i>'+
-                        '</button>'+
-
-                        '<div class="form-group">'+
-                            '<label class="col-sm-3 control-label" for="query-name">Data Source</label>'+
-                            '<div class="col-sm-9 controls">'+
-                               '<select class="form-control data-source" id="'+number+'">'+
-                                    '<option value="bugzilla">Bugzilla</option>'+
-                                    '<option value="talos">Talos</option>'+
-                                    '<option value="crash-stats">Crash Stats</option>'+
-                               '</select>'+
                             '</div>'+
-                        '</div>'+
 
-                        '<div class="data-form" id="'+number+'">'+
-                            '<div class="form-group">'+
+                            '';
+        } else if (dataSource == "bugzilla") {
+            var refOptions = '';
+            if ( coreData.hasOwnProperty('product') ) { 
+                refOptions +=   '<div class="form-group">'+
+                                    '<label class="col-sm-3 control-label" for="query-reference">References</label>'+
+                                    '<div class="col-sm-9 controls">'+
+                                       '<select class="form-control" id="query-reference">'+
+                                            '<option value="none">None</option>';
+
+                $.each( coreData.product.versions, function(key, version){
+                    if ( parseInt(version.id) < parseInt(coreData.id) ) {
+                        refOptions +=       '<option value="'+version.id+'">'+version.title+'</option>';
+                    }
+                });
+
+                refOptions +=           '</select>'+
+                                    '</div>'+
+                                '</div>';
+            }
+            html =          '<div class="form-group">'+
                                 '<label class="col-sm-3 control-label" for="query-name">Query Name</label>'+
                                 '<div class="col-sm-9 controls">'+
                                     '<div class="input-group">'+
@@ -93,8 +96,34 @@
                                 '<div class="col-sm-9">'+
                                     '<textarea class="form-control" rows="3" id="query-qb" placeholder="Query in Qb format as a json object."></textarea>'+
                                 '</div>'+
+                            '</div>';
+
+        } else if (dataSource == "talos") {
+            html = "incomplete";
+        }
+        return html
+    }
+
+    function templateNewGroup ( number ) {
+        var html = '<div class="query" id="q'+ number +'">'+
+                        '<button type="button" class="btn btn-xs btn-default" id="remove-query">'+
+                            '<i class="fa fa-times"></i>'+
+                        '</button>'+
+
+                        '<div class="form-group">'+
+                            '<label class="col-sm-3 control-label" for="query-name">Data Source</label>'+
+                            '<div class="col-sm-9 controls">'+
+                               '<select class="form-control data-source" id="'+number+'">'+
+                                    '<option value="bugzilla">Bugzilla</option>'+
+                                    '<option value="talos">Talos</option>'+
+                                    '<option value="crash-stats">Crash Stats</option>'+
+                               '</select>'+
                             '</div>'+
-                        '</div>'+ //---data-form
+                        '</div>'+
+
+                        '<div class="data-form" id="'+number+'">'+
+                            templateDataInput('bugzilla',number)+
+                        '</div>'+
                     '</div>';
         return html;
     }
