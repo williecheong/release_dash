@@ -174,6 +174,7 @@ class Watch extends CI_Controller {
                     );
                     
                     $ref_version = $ref_version[0];
+                    // $ref_version = 1;
 
                     $query_title = replace_version_attr( $query->title, $ref_version );
                     
@@ -182,7 +183,11 @@ class Watch extends CI_Controller {
                     $transformed_query = replace_version_attr( $transformed_query, $ref_version );
                         
                     $birthday = $this->version->get_birthday( $ref_version->id );
+                    // $birthday = 1 ;
+
                     $shipday = $this->version->get_shipday( $ref_version->id );
+                    // $shipday = 1 ;
+
                     $transformed_query = replace_birthday( $transformed_query, $birthday );
                     $transformed_query = replace_timestamp( $transformed_query, $shipday );
 

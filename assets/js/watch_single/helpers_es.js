@@ -14,8 +14,11 @@
     function startLoading() {
         $.each( coreData.groups, function( group_id, group_value ) {
             $.each( group_value.queries, function( query_id, query_value ) {
-                console.log(query_id);
-                if ( query_value.es_data !== '' ) {
+                if ($.parseJSON( query_value.qb_query )['talos'] == 1) {
+                    coreData.groups[group_id].queries[query_id]['es_data'] = [{x:1391500800,y:2},{x:1391587200,y:0}];
+                    executeAll( group_id );
+
+                } else if ( query_value.es_data !== '' ) {
 
                     // We have some es_data sent in from the server.
                     // Use that instead of loading fresh data from ElasticSearch
@@ -54,6 +57,7 @@
                                 tempStore.push( { x: d , y: value } );
                             });
                             coreData.groups[group_id].queries[query_id]['es_data'] = tempStore;
+                            console.log(tempStore);
                             // End of formatting the returned ElasticSearch data for Rickshaw compatibility
 
                             // Checks for complete es_data through this group.
