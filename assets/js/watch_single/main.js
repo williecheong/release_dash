@@ -70,7 +70,7 @@ jQuery(document).ready(function($) {
 
 
         // Change the fields based on the data source selected
-        $('select.data-source[id="'+thisNum+'"]').change(function() {
+        $('select#data-source').change(function() {
             // console.log("the value is "+$(this).val());
             dataSource = $(this).val();
             $(".data-form[id='"+thisNum+"']").html(templateDataInput(dataSource, thisNum));

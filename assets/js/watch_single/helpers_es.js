@@ -14,7 +14,9 @@
     function startLoading() {
         $.each( coreData.groups, function( group_id, group_value ) {
             $.each( group_value.queries, function( query_id, query_value ) {
+                console.log(query_id);
                 if ( query_value.es_data !== '' ) {
+
                     // We have some es_data sent in from the server.
                     // Use that instead of loading fresh data from ElasticSearch
 
@@ -37,10 +39,10 @@
                     }
 
                 } else {
+
                     // The es_data field appears to be blank.
                     // Server did not give us anything to load up
                     // Go to the ElasticSearch cluster and pull fresh data
-
                     ESQueryRunner( 
                         $.parseJSON( query_value.qb_query ), 
                         function( response ){ // Executes after data is returned from ES.

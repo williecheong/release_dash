@@ -113,7 +113,7 @@
                         '<div class="form-group">'+
                             '<label class="col-sm-3 control-label" for="query-name">Data Source</label>'+
                             '<div class="col-sm-9 controls">'+
-                               '<select class="form-control data-source" id="'+number+'">'+
+                               '<select class="form-control" id="data-source">'+
                                     '<option value="bugzilla">Bugzilla</option>'+
                                     '<option value="talos">Talos</option>'+
                                     '<option value="crash-stats">Crash Stats</option>'+

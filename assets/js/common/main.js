@@ -22,6 +22,7 @@
 
     function validateJSON(input){
         try {
+            console.log(input);
             var testStr = input;
             testStr = testStr.replace(/@birthday/g, '"@birthday"');
             testStr = testStr.replace(/@timestamp/g, '"@timestamp"');
