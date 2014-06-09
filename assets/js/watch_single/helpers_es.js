@@ -15,8 +15,17 @@
         $.each( coreData.groups, function( group_id, group_value ) {
             $.each( group_value.queries, function( query_id, query_value ) {
                 if ($.parseJSON( query_value.qb_query )['talos'] == 1) {
-                    coreData.groups[group_id].queries[query_id]['es_data'] = [{x:1391500800,y:2},{x:1391587200,y:0}];
-                    executeAll( group_id );
+                    $.ajax({
+                        type: "POST",
+                        url: "http://127.0.0.1:5000/_get_data",
+                        data: {'api':'talos'},
+                        success: function(data) {
+                           coreData.groups[group_id].queries[query_id]['es_data'] = data['series_data'];
+                           executeAll( group_id );
+                        }
+                    });
+
+                    
 
                 } else if ( query_value.es_data !== '' ) {
 
