@@ -65,7 +65,7 @@
             // Retrieving input group query's values into saveGroup
             var $queryHTML = $modal.find('.query#'+value.id);
             
-            if ($queryHTML.find('select#data-source').val() == 'talos') {
+            if ($queryHTML.find('select#data-source').val() == 'nonexistentvalue') {
                 saveGroup.group_queries[value.id] = {
                     query_title     : "new",
                     query_query_bz  : "talos",

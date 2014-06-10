@@ -14,19 +14,22 @@
     function startLoading() {
         $.each( coreData.groups, function( group_id, group_value ) {
             $.each( group_value.queries, function( query_id, query_value ) {
-                if ($.parseJSON( query_value.qb_query )['talos'] == 1) {
+                if ($.parseJSON( query_value.qb_query )['source'] == 'talos' || $.parseJSON( query_value.qb_query )['source'] == 'crash-stats') {
+                    console.log($.parseJSON(query_value.qb_query)['val']);
                     $.ajax({
                         type: "POST",
-                        url: "http://127.0.0.1:5000/_get_data",
-                        data: {'api':'talos'},
+                        url: "https://dashapi.paas.allizom.org/_get_data",
+                        data: {
+                            // source : JSON.stringify($.parseJSON(query_value.qb_query)['source']),
+                            source : $.parseJSON(query_value.qb_query)['source'],
+                            data   : JSON.stringify($.parseJSON(query_value.qb_query)['data'])
+                        },
+                        // processData: false,
                         success: function(data) {
                            coreData.groups[group_id].queries[query_id]['es_data'] = data['series_data'];
                            executeAll( group_id );
                         }
                     });
-
-                    
-
                 } else if ( query_value.es_data !== '' ) {
 
                     // We have some es_data sent in from the server.
