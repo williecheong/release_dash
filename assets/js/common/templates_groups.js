@@ -55,7 +55,7 @@
                             '<div class="form-group">'+
                                 '<label class="col-sm-3 control-label" for="query-qb">Crash-Stats Query</label>'+
                                 '<div class="col-sm-9">'+
-                                    '<textarea class="form-control" rows="3" id="query-qb" placeholder="Query in Qb format as a json object."></textarea>'+
+                                    '<textarea class="form-control" rows="3" id="query-qb" placeholder="{"source":"crash-stats","data":{"days_ago":2}}"></textarea>'+
                                 '</div>'+
                             '</div>';
         } else if (dataSource == "bugzilla") {
@@ -162,7 +162,9 @@
                             '<div class="form-group">'+
                                 '<label class="col-sm-3 control-label" for="query-qb">Talos Query</label>'+
                                 '<div class="col-sm-9">'+
-                                    '<textarea class="form-control" rows="3" id="query-qb" placeholder="Query in Qb format as a json object."></textarea>'+
+                                    '<textarea class="form-control" rows="3" id="query-qb" placeholder="'+
+                                    'talos query'+
+                                    '"></textarea>'+
                                 '</div>'+
                             '</div>';
         }
