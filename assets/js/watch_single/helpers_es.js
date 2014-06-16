@@ -15,10 +15,10 @@
         $.each( coreData.groups, function( group_id, group_value ) {
             $.each( group_value.queries, function( query_id, query_value ) {
                 if ($.parseJSON( query_value.qb_query )['source'] == 'talos' || $.parseJSON( query_value.qb_query )['source'] == 'crash-stats') {
-                    console.log($.parseJSON(query_value.qb_query)['val']);
                     $.ajax({
                         type: "POST",
                         url: "https://dashapi.paas.allizom.org/_get_data",
+                        // url: "http://127.0.0.1:5000/_get_data",
                         data: {
                             // source : JSON.stringify($.parseJSON(query_value.qb_query)['source']),
                             source : $.parseJSON(query_value.qb_query)['source'],
