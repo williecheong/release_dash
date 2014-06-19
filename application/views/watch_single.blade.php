@@ -11,6 +11,7 @@
 @endsection
 
 @section('css')
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/assets/vendor/ducksboard-gridster/jquery.gridster.min.css">
     <link rel="stylesheet" href="/assets/css/watch_single.css">
 @endsection
@@ -111,6 +112,8 @@
     <script src="/assets/vendor/rickshaw/rickshaw.js"></script>
     <script src="/assets/vendor/sorttable/sorttable.js"></script>
     <script>var coreData = {{ json_encode($data) }}</script>
+
+    <script src="http://telemetry.mozilla.org/v1/telemetry.js"></script> 
 
     <script src="/assets/js/watch_single/helpers_breakdown.js"></script>
     <script src="/assets/js/watch_single/helpers_es.js"></script>

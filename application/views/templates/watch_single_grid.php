@@ -45,7 +45,7 @@
     <?php } ?>
     <?php /* Every grid starts off as one that needs to be loading */ ?>
     <div class="text-center group-title" id="g<?= $group_id; ?>">
-        <img class="load-status" src="/assets/img/mozchomp.gif">
+        <i class="fa fa-spinner fa-spin load-status fa-5x"></i>
         <h4><?= $group['title']; ?></h4>
     </div>
 </li>
