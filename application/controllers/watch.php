@@ -98,7 +98,7 @@ class Watch extends CI_Controller {
         foreach ( $groups as $group ) {
             $group_title = replace_version_attr( $group->title, $version );
 
-            $data['groups'][$group->id]['title'] = $group_title;
+            $data['groups'][$group->id]['title'] = $group_title; // Change this as needed
             $data['groups'][$group->id]['is_plot']  = ($group->is_plot == '1') ? true : false ;
             $data['groups'][$group->id]['is_number'] = ($group->is_number == '1') ? true : false ;
             $data['groups'][$group->id]['has_rule'] = file_exists( FCPATH.'assets/rules/rule_'.$group->id.'.js' );
@@ -174,6 +174,7 @@ class Watch extends CI_Controller {
                     );
                     
                     $ref_version = $ref_version[0];
+                    // $ref_version = 1;
 
                     $query_title = replace_version_attr( $query->title, $ref_version );
                     
@@ -182,7 +183,11 @@ class Watch extends CI_Controller {
                     $transformed_query = replace_version_attr( $transformed_query, $ref_version );
                         
                     $birthday = $this->version->get_birthday( $ref_version->id );
+                    // $birthday = 1 ;
+
                     $shipday = $this->version->get_shipday( $ref_version->id );
+                    // $shipday = 1 ;
+
                     $transformed_query = replace_birthday( $transformed_query, $birthday );
                     $transformed_query = replace_timestamp( $transformed_query, $shipday );
 

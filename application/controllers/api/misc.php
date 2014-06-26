@@ -20,10 +20,10 @@ class Misc extends REST_Controller {
     // Referenced from:
     //  https://github.com/EllisLab/CodeIgniter/wiki/Persona-Login
     public function login_post() {
+        $login_result = '';
         if ( isset($_POST['assertion']) ) {
-            $this->authentication->login($_POST['assertion']);
+            $login_result = $this->authentication->login($_POST['assertion']);
         }
-
         if ( $this->session->userdata('email') ) {
             $admins = $this->administrator->retrieve(array('email' => $this->session->userdata('email')));
             if ( count($admins) < 1 ) {
@@ -35,9 +35,8 @@ class Misc extends REST_Controller {
             }
         } else {
             log_message('error', 'No session was created in /api/misc.php/login_post');
-            echo "No session was created.";            
+            echo "No session was created because: \n" . $login_result;
         }
-
         return;
     }
 

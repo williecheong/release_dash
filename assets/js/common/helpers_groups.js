@@ -61,25 +61,38 @@
             group_queries : {} 
         };
 
-        $.each( $modal.find('.query'), function(key, value){ 
+        $.each( $modal.find('.query'), function(key, value){
             // Retrieving input group query's values into saveGroup
             var $queryHTML = $modal.find('.query#'+value.id);
-            var tempColor = rgb2hex( $modal.find('.query#'+value.id).find('button.colourpicker').css('color') );
             
-            saveGroup.group_queries[value.id] = {
-                query_title     : $.trim( $queryHTML.find('input#query-name').val() ),
-                query_colour    : tempColor,
-                query_query_bz  : $queryHTML.find('input#query-bz').val(),
-                query_query_qb  : $queryHTML.find('textarea#query-qb').val(),
-                ref_version     : $queryHTML.find('select#query-reference option:selected').val(),
-                ref_colour      : shadeColor(tempColor, 45)
-            };
-            // End of retrieving input group query's values into saveGroup
+            if ($queryHTML.find('select#data-source').val() == 'nonexistentvalue') {
+                saveGroup.group_queries[value.id] = {
+                    query_title     : "new",
+                    query_query_bz  : "talos",
+                    query_query_qb  : '{"talos":1}',
+                    ref_version     : "talosref",
+                }; 
+                // if ( typeof saveGroup.group_queries[value.id].ref_version == 'undefined' ) {
+                //     saveGroup.group_queries[value.id].query_query_references = 'none';
+                // }
+            } else {
+                var tempColor = rgb2hex( $modal.find('.query#'+value.id).find('button.colourpicker').css('color') );
+                
+                saveGroup.group_queries[value.id] = {
+                    query_title     : $.trim( $queryHTML.find('input#query-name').val() ),
+                    query_colour    : tempColor,
+                    query_query_bz  : $queryHTML.find('input#query-bz').val(),
+                    query_query_qb  : $queryHTML.find('textarea#query-qb').val(),
+                    ref_version     : $queryHTML.find('select#query-reference option:selected').val(),
+                    ref_colour      : shadeColor(tempColor, 45)
+                };
+                // End of retrieving input group query's values into saveGroup
 
-            if ( typeof saveGroup.group_queries[value.id].ref_version == 'undefined' ) {
-                saveGroup.group_queries[value.id].query_query_references = 'none';
+                if ( typeof saveGroup.group_queries[value.id].ref_version == 'undefined' ) {
+                    saveGroup.group_queries[value.id].query_query_references = 'none';
+                }
+                // End of validation for group query's input values
             }
-            // End of validation for group query's input values
         });
         
         return saveGroup;
@@ -138,6 +151,7 @@
     POST PUT AJAX REQUESTS
 *****************************/
     function postGroup( saveGroup, $this ) {
+        // alert(JSON.stringify(saveGroup));
         $.ajax({
             url: '/api/groups',
             type: 'POST',

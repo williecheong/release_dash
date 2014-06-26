@@ -31,7 +31,8 @@
         border: 1px lightgray dashed;
     } 
 
-    img.load-status{
+    i.load-status{
+        vertical-align: middle;
         max-width: 30%;
     }
 

@@ -67,6 +67,15 @@ jQuery(document).ready(function($) {
             var $this = $(this);
             quickQbmaker($this);
         });
+
+
+        // Change the fields based on the data source selected
+        $('select#data-source').change(function() {
+            // console.log("the value is "+$(this).val());
+            dataSource = $(this).val();
+            $(".data-form[id='"+thisNum+"']").html(templateDataInput(dataSource, thisNum));
+        });
+
     });
 
 /*****************************************

@@ -58,8 +58,8 @@ jQuery(document).ready(function($) {
             var $this = $(this);
             quickQbmaker($this);
         });
+        
     });
-
 
 /*****************************************
     EDITING EXISTING GROUPS AND QUERIES

@@ -14,7 +14,72 @@
     function startLoading() {
         $.each( coreData.groups, function( group_id, group_value ) {
             $.each( group_value.queries, function( query_id, query_value ) {
-                if ( query_value.es_data !== '' ) {
+                if ($.parseJSON( query_value.qb_query )['source'] == 'talos' || $.parseJSON( query_value.qb_query )['source'] == 'crash-stats') {
+                    $.ajax({
+                        type: "POST",
+                        url: "https://dashapi.paas.allizom.org/_get_data",
+                        // url: "http://127.0.0.1:5000/_get_data",
+                        data: {
+                            // source : JSON.stringify($.parseJSON(query_value.qb_query)['source']),
+                            source : $.parseJSON(query_value.qb_query)['source'],
+                            data   : JSON.stringify($.parseJSON(query_value.qb_query)['data'])
+                        },
+                        // processData: false,
+                        success: function(data) {
+                           coreData.groups[group_id].queries[query_id]['es_data'] = data['series_data'];
+                           executeAll( group_id );
+                        }
+                    });
+                } else if ( $.parseJSON( query_value.qb_query )['source'] == 'telemetry' ) {
+
+                    // Initialize telemetry.js
+                    Telemetry.init(function() {
+                        // Get versions available
+                        var versions = Telemetry.versions();
+        
+                        // Let's just use the first version
+                        var version = versions[0];
+                        if ('version' in $.parseJSON(query_value.qb_query)['data']) {
+                            version = $.parseJSON(query_value.qb_query)['data']['version'];
+                        }
+                        
+                        // Fetch measures
+                        // print("Loading measures for " + version);
+                        Telemetry.measures(version, function(measures) {
+                            
+                            // Choose a measure
+                            var measure = Object.keys(measures)[8];
+                            if ('measure' in $.parseJSON(query_value.qb_query)['data']) {
+                                measure = $.parseJSON(query_value.qb_query)['data']['measure'];
+                            }
+
+                            Telemetry.loadEvolutionOverBuilds(
+                                version,
+                                measure,
+                                function(histogramEvolution) 
+                            {
+                               
+                                // Let's create a list of {x: ..., y: ...} data points of submissions and
+                                // timestamps to plot with any common Javascript library.
+                                var data = histogramEvolution.map(function(date, histogram, index) {
+                                  return {
+                                    x:  (date.getTime()  / 1000), // Use get unix timestamp
+                                    y:  histogram.submissions()
+                                  };
+                                });
+                                // Use your favorite graph library to plot `data`
+
+                                coreData.groups[group_id].queries[query_id]['es_data'] = data;
+                                executeAll( group_id );
+
+                            });
+                        });
+                    });
+
+
+
+                } else if ( query_value.es_data !== '' ) {
+
                     // We have some es_data sent in from the server.
                     // Use that instead of loading fresh data from ElasticSearch
 
@@ -37,10 +102,10 @@
                     }
 
                 } else {
+
                     // The es_data field appears to be blank.
                     // Server did not give us anything to load up
                     // Go to the ElasticSearch cluster and pull fresh data
-
                     ESQueryRunner( 
                         $.parseJSON( query_value.qb_query ), 
                         function( response ){ // Executes after data is returned from ES.
@@ -52,6 +117,7 @@
                                 tempStore.push( { x: d , y: value } );
                             });
                             coreData.groups[group_id].queries[query_id]['es_data'] = tempStore;
+                            console.log(tempStore);
                             // End of formatting the returned ElasticSearch data for Rickshaw compatibility
 
                             // Checks for complete es_data through this group.
@@ -347,7 +413,7 @@
     }
 
     function removeLoader( group_key ) {
-        $('.group-title#'+group_key+' img.load-status').remove();
+        $('.group-title#'+group_key+' i.load-status').remove();
     }
 
     function todayIndex( rickshawArray ) {
