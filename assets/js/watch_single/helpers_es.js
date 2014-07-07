@@ -106,6 +106,8 @@
                     // The es_data field appears to be blank.
                     // Server did not give us anything to load up
                     // Go to the ElasticSearch cluster and pull fresh data
+                    
+                    console.log("about to attempt esquery");
                     try {
                         ESQueryRunner( 
                             $.parseJSON( query_value.qb_query ), 
