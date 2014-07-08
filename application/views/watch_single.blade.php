@@ -31,17 +31,100 @@
           </h4>
        </div>
        <div id="collapse-{{ $category }}" class="panel-collapse collapse in">
-         <div class="panel-body">
-            Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred 
-            nesciunt sapiente ea proident. Ad vegan excepteur butcher vice 
-            lomo.
-         </div>
+        <div class="gridster">
+            <ul class="grids">
+
+
+
+
+
+              {{-- Loop and filter four times to print in priority sequence --}}
+              {{--    1. Default plots  --}}
+              {{--    2. Default numbers  --}}
+              {{--    3. Custom plots  --}}
+              {{--    4. Custom numbers  --}}
+              @foreach ( $data['groups'] as $group_id => $group )
+                  @if ( $group['is_plot'] && $group['is_default'] && $group['category'] == $category)
+                      <?php 
+                          $this->load->view(
+                              '/templates/watch_single_grid', 
+                              array(  'group_id'  => $group_id,
+                                      'group'     => $group, 
+                                      'type'      => 'make_plot' 
+                                      ) 
+                                  ); 
+                      ?>
+                  @endif {{-- End if default group that is_plot --}}
+              @endforeach {{-- End foreach query_group --}}
+
+              @foreach ( $data['groups'] as $group_id => $group )
+                  @if ( $group['is_number'] && $group['is_default'] && $group['category'] == $category ) 
+                      <?php 
+                          $this->load->view(
+                              '/templates/watch_single_grid', 
+                              array(  'group_id'  => $group_id,
+                                      'group'     => $group, 
+                                      'type'      => 'make_number' 
+                                      ) 
+                                  ); 
+                      ?>
+                  @endif {{-- End if default group that is_number --}}
+              @endforeach {{-- End foreach query_group --}}
+
+              @foreach ( $data['groups'] as $group_id => $group ) 
+                  @if ( $group['is_plot'] && !$group['is_default'] && $group['category'] == $category ) 
+                      <?php 
+                          $this->load->view(
+                              '/templates/watch_single_grid', 
+                              array(  'group_id'  => $group_id,
+                                      'group'     => $group, 
+                                      'type'      => 'make_plot' 
+                                      ) 
+                                  ); 
+                      ?>
+                  @endif {{-- End if non-default group that is_plot --}}
+              @endforeach {{-- End foreach query_group --}}
+
+              @foreach ( $data['groups'] as $group_id => $group )
+                  @if ( $group['is_number'] && !$group['is_default'] && $group['category'] == $category )
+                      <?php 
+                          $this->load->view(
+                              '/templates/watch_single_grid', 
+                              array(  'group_id'  => $group_id,
+                                      'group'     => $group, 
+                                      'type'      => 'make_number' 
+                                      ) 
+                                  ); 
+                      ?>
+                  @endif {{-- End if non-default group that is_number --}}
+              @endforeach {{-- End foreach query_group --}}
+
+
+
+
+
+
+
+
+            </ul><!-- grids -->
+        </div><!-- gridster -->
        </div>
     </div>
   @endforeach {{-- End foreach --}}
 
 
 </div><!-- /accoridan -->
+
+              @if ( $this->session->userdata('email') )
+                  {{-- Show the grid that prompts creating a new custom group --}}
+                  <li class="non-group" data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+                      <div class="text-center group-title">
+                          <button type="button" class="btn btn-success" data-toggle="modal" data-target="#new-group">
+                              <i class="fa fa-bar-chart-o fa-lg"></i>
+                          </button>
+                      </div>
+                  </li>
+              @endif
 
 
 
@@ -55,79 +138,8 @@
         {{-- Because this view is all about the grids --}}
         <div class="gridster">
             <ul class="grids">
-                {{-- Loop and filter four times to print in priority sequence --}}
-                {{--    1. Default plots  --}}
-                {{--    2. Default numbers  --}}
-                {{--    3. Custom plots  --}}
-                {{--    4. Custom numbers  --}}
-                @foreach ( $data['groups'] as $group_id => $group )
-                    @if ( $group['is_plot'] && $group['is_default'] )
-                        <?php 
-                            $this->load->view(
-                                '/templates/watch_single_grid', 
-                                array(  'group_id'  => $group_id,
-                                        'group'     => $group, 
-                                        'type'      => 'make_plot' 
-                                        ) 
-                                    ); 
-                        ?>
-                    @endif {{-- End if default group that is_plot --}}
-                @endforeach {{-- End foreach query_group --}}
-
-                @foreach ( $data['groups'] as $group_id => $group )
-                    @if ( $group['is_number'] && $group['is_default'] ) 
-                        <?php 
-                            $this->load->view(
-                                '/templates/watch_single_grid', 
-                                array(  'group_id'  => $group_id,
-                                        'group'     => $group, 
-                                        'type'      => 'make_number' 
-                                        ) 
-                                    ); 
-                        ?>
-                    @endif {{-- End if default group that is_number --}}
-                @endforeach {{-- End foreach query_group --}}
-
-                @foreach ( $data['groups'] as $group_id => $group ) 
-                    @if ( $group['is_plot'] && !$group['is_default'] ) 
-                        <?php 
-                            $this->load->view(
-                                '/templates/watch_single_grid', 
-                                array(  'group_id'  => $group_id,
-                                        'group'     => $group, 
-                                        'type'      => 'make_plot' 
-                                        ) 
-                                    ); 
-                        ?>
-                    @endif {{-- End if non-default group that is_plot --}}
-                @endforeach {{-- End foreach query_group --}}
-
-                @foreach ( $data['groups'] as $group_id => $group )
-                    @if ( $group['is_number'] && !$group['is_default'] )
-                        <?php 
-                            $this->load->view(
-                                '/templates/watch_single_grid', 
-                                array(  'group_id'  => $group_id,
-                                        'group'     => $group, 
-                                        'type'      => 'make_number' 
-                                        ) 
-                                    ); 
-                        ?>
-                    @endif {{-- End if non-default group that is_number --}}
-                @endforeach {{-- End foreach query_group --}}
-
-                @if ( $this->session->userdata('email') )
-                    {{-- Show the grid that prompts creating a new custom group --}}
-                    <li class="non-group" data-row="1" data-col="1" data-sizex="1" data-sizey="1">
-                        <div class="text-center group-title">
-                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#new-group">
-                                <i class="fa fa-bar-chart-o fa-lg"></i>
-                            </button>
-                        </div>
-                    </li>
-                @endif
-            </ul>
-
+               
+            </ul><!-- grids -->
         </div><!-- gridster -->
 
 
