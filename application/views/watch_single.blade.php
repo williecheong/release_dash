@@ -19,19 +19,39 @@
 @section('content')
 
 
-             <div class="container">
 <div class="panel-group" id="accordion">
-   <div class="panel panel-default">
-      <div class="panel-heading">
-         <h4 class="panel-title">
-            <a data-toggle="collapse" data-parent="#accordion" 
-               href="#collapseOne">
-               Click me to exapand. Click me again to collapse.
-               Section 1--hide method
-            </a>
-         </h4>
-      </div>
-      <div id="collapseOne" class="panel-collapse collapse in">
+  @foreach ( $data['categories'] as $category )
+    <div class="panel panel-success">
+       <div class="panel-heading">
+          <h4 class="panel-title">
+             <a data-toggle="collapse" data-parent="#accordion" 
+                href="#collapse-{{ $category }}">
+                {{ $category }}
+             </a>
+          </h4>
+       </div>
+       <div id="collapse-{{ $category }}" class="panel-collapse collapse in">
+         <div class="panel-body">
+            Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred 
+            nesciunt sapiente ea proident. Ad vegan excepteur butcher vice 
+            lomo.
+         </div>
+       </div>
+    </div>
+  @endforeach {{-- End foreach --}}
+
+
+</div><!-- /accoridan -->
+
+
+
+
+
+
+
+<div class="container">
+
+
         {{-- Because this view is all about the grids --}}
         <div class="gridster">
             <ul class="grids">
@@ -109,64 +129,9 @@
             </ul>
 
         </div><!-- gridster -->
-      </div>
-   </div>
-   <div class="panel panel-success">
-      <div class="panel-heading">
-         <h4 class="panel-title">
-            <a data-toggle="collapse" data-parent="#accordion" 
-               href="#collapseTwo">
-               Click me to exapand. Click me again to collapse.
-               Section 2--show method
-            </a>
-         </h4>
-      </div>
-      <div id="collapseTwo" class="panel-collapse collapse">
-         <div class="panel-body">
-            Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred 
-            nesciunt sapiente ea proident. Ad vegan excepteur butcher vice 
-            lomo.
-         </div>
-      </div>
-   </div>
-   <div class="panel panel-info">
-      <div class="panel-heading">
-         <h4 class="panel-title">
-            <a data-toggle="collapse" data-parent="#accordion" 
-               href="#collapseThree">
-               Click me to exapand. Click me again to collapse.
-               Section 3--toggle method
-            </a>
-         </h4>
-      </div>
-      <div id="collapseThree" class="panel-collapse collapse">
-         <div class="panel-body">
-            Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred 
-            nesciunt sapiente ea proident. Ad vegan excepteur butcher vice 
-            lomo.
-         </div>
-      </div>
-   </div>
-   <div class="panel panel-warning">
-      <div class="panel-heading">
-         <h4 class="panel-title">
-            <a data-toggle="collapse" data-parent="#accordion" 
-               href="#collapseFour">
-               Click me to exapand. Click me again to collapse.
-               Section 4--options method
-            </a>
-         </h4>
-      </div>
-      <div id="collapseFour" class="panel-collapse collapse">
-         <div class="panel-body">
-            Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred 
-            nesciunt sapiente ea proident. Ad vegan excepteur butcher vice 
-            lomo.
-         </div>
-      </div>
-   </div>
-</div><!-- /accoridan -->
-    </div><!-- /container -->
+
+
+</div><!-- /container -->
 
 
 
@@ -182,12 +147,9 @@
 @section('javascript')
 
     <script type="text/javascript">
-       $(function () { $('#collapseFour').collapse({
-          toggle: false
-       })});
-       $(function () { $('#collapseTwo').collapse('show')});
-       $(function () { $('#collapseThree').collapse('toggle')});
-       $(function () { $('#collapseOne').collapse('hide')});
+        @foreach ( $data['categories'] as $category )
+          $(function () { $('#collapse-{{ $category }}').collapse()});
+        @endforeach {{-- End foreach --}}
     </script>  
 
 
