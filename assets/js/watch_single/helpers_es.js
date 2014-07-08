@@ -106,51 +106,44 @@
                     // The es_data field appears to be blank.
                     // Server did not give us anything to load up
                     // Go to the ElasticSearch cluster and pull fresh data
-                    
-                    console.log("about to attempt esquery");
-                    try {
-                        ESQueryRunner( 
-                            $.parseJSON( query_value.qb_query ), 
-                            function( response ){ // Executes after data is returned from ES.
-                                // Format the returned ElasticSearch data for Rickshaw compatibility
-                                var tempStore = new Array();
-                                $.each( response.cube, function( key, value ) {
-                                    // Put the data we have in an array for plotting {date, count}
-                                    var d = response.edges[0]['domain'].partitions[key].value.getTime() / 1000;
-                                    tempStore.push( { x: d , y: value } );
-                                });
-                                coreData.groups[group_id].queries[query_id]['es_data'] = tempStore;
-                                console.log(tempStore);
-                                // End of formatting the returned ElasticSearch data for Rickshaw compatibility
+                    ESQueryRunner( 
+                        $.parseJSON( query_value.qb_query ), 
+                        function( response ){ // Executes after data is returned from ES.
+                            // Format the returned ElasticSearch data for Rickshaw compatibility
+                            var tempStore = new Array();
+                            $.each( response.cube, function( key, value ) {
+                                // Put the data we have in an array for plotting {date, count}
+                                var d = response.edges[0]['domain'].partitions[key].value.getTime() / 1000;
+                                tempStore.push( { x: d , y: value } );
+                            });
+                            coreData.groups[group_id].queries[query_id]['es_data'] = tempStore;
+                            console.log(tempStore);
+                            // End of formatting the returned ElasticSearch data for Rickshaw compatibility
 
-                                // Checks for complete es_data through this group.
-                                var dataMissing = false;
-                                $.each( coreData.groups[group_id].queries, function( key, value ) {
-                                    if( value.es_data == '' ) { dataMissing = true; }
-                                });
+                            // Checks for complete es_data through this group.
+                            var dataMissing = false;
+                            $.each( coreData.groups[group_id].queries, function( key, value ) {
+                                if( value.es_data == '' ) { dataMissing = true; }
+                            });
 
-                                if ( dataMissing === false ) {
-                                    // OK all data present in group. Let's roll!
-                                    executeAll( group_id );
+                            if ( dataMissing === false ) {
+                                // OK all data present in group. Let's roll!
+                                executeAll( group_id );
 
-                                    // Attempt to aggregate the score 
-                                    // Only actually runs when all groups with rules are complete
-                                    var score = aggregateScores();
-                                    $('.rrscore').css('color', score);
-                                    
-                                } else {
-                                    // Do nothing, probably still retrieving data
-                                    console.log("Not all data is ready for "+group_value.title+".");
-                                }   
+                                // Attempt to aggregate the score 
+                                // Only actually runs when all groups with rules are complete
+                                var score = aggregateScores();
+                                $('.rrscore').css('color', score);
+                                
+                            } else {
+                                // Do nothing, probably still retrieving data
+                                console.log("Not all data is ready for "+group_value.title+".");
+                            }   
 
-                                // Store this in the cache for future use!
-                                cacheESData( query_id, coreData.groups[group_id].queries[query_id]['es_data'] );
-                            }
-                        );
-                    }
-                    catch(err) {
-                        console.log(err);
-                    }
+                            // Store this in the cache for future use!
+                            cacheESData( query_id, coreData.groups[group_id].queries[query_id]['es_data'] );
+                        }
+                    );
                 }
             });
         });
