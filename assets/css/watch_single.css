@@ -67,6 +67,10 @@
         bottom: 40%;
     }
 
+    #accordion {
+        margin-top: 8px;
+    }
+
 /***********************/
 /* GRAPHING PROPERTIES */
 
