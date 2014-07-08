@@ -74,6 +74,16 @@
 
     }
 
+    a.panel {
+        color: inherit;
+        background: inherit;
+    }
+    a.panel:hover 
+    {
+         color:#00A0C6; 
+         cursor:pointer;  
+    }
+
 /***********************/
 /* GRAPHING PROPERTIES */
 

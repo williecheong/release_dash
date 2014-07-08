@@ -23,20 +23,15 @@
   @foreach ( $data['categories'] as $category )
     <div class="panel panel-success">
        <div class="panel-heading">
+             <a data-toggle="collapse" data-parent="#accordion" href="#collapse-{{ $category }}" class = "in_panel">
           <h4 class="panel-title">
-             <a data-toggle="collapse" data-parent="#accordion" 
-                href="#collapse-{{ $category }}">
                 {{ $category }}
-             </a>
           </h4>
+             </a>
        </div>
        <div id="collapse-{{ $category }}" class="panel-collapse collapse in">
         <div class="gridster">
             <ul class="grids">
-
-
-
-
 
               {{-- Loop and filter four times to print in priority sequence --}}
               {{--    1. Default plots  --}}
@@ -100,6 +95,16 @@
               @endforeach {{-- End foreach query_group --}}
 
 
+              @if ( $this->session->userdata('email') )
+                  {{-- Show the grid that prompts creating a new custom group --}}
+                  <li class="non-group" data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+                      <div class="text-center group-title">
+                          <button type="button" class="btn btn-success" data-toggle="modal" data-target="#new-group">
+                              <i class="fa fa-bar-chart-o fa-lg"></i>
+                          </button>
+                      </div>
+                  </li>
+              @endif
 
 
 
@@ -115,16 +120,6 @@
 
 </div><!-- /accoridan -->
 
-              @if ( $this->session->userdata('email') )
-                  {{-- Show the grid that prompts creating a new custom group --}}
-                  <li class="non-group" data-row="1" data-col="1" data-sizex="1" data-sizey="1">
-                      <div class="text-center group-title">
-                          <button type="button" class="btn btn-success" data-toggle="modal" data-target="#new-group">
-                              <i class="fa fa-bar-chart-o fa-lg"></i>
-                          </button>
-                      </div>
-                  </li>
-              @endif
 
 
 
