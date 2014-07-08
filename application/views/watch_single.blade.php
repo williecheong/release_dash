@@ -17,7 +17,21 @@
 @endsection
 
 @section('content')
-    <div class="container">
+
+
+             <div class="container">
+<div class="panel-group" id="accordion">
+   <div class="panel panel-default">
+      <div class="panel-heading">
+         <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" 
+               href="#collapseOne">
+               Click me to exapand. Click me again to collapse.
+               Section 1--hide method
+            </a>
+         </h4>
+      </div>
+      <div id="collapseOne" class="panel-collapse collapse in">
         {{-- Because this view is all about the grids --}}
         <div class="gridster">
             <ul class="grids">
@@ -94,8 +108,70 @@
                 @endif
             </ul>
 
-        </div>
+        </div><!-- gridster -->
+      </div>
+   </div>
+   <div class="panel panel-success">
+      <div class="panel-heading">
+         <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" 
+               href="#collapseTwo">
+               Click me to exapand. Click me again to collapse.
+               Section 2--show method
+            </a>
+         </h4>
+      </div>
+      <div id="collapseTwo" class="panel-collapse collapse">
+         <div class="panel-body">
+            Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred 
+            nesciunt sapiente ea proident. Ad vegan excepteur butcher vice 
+            lomo.
+         </div>
+      </div>
+   </div>
+   <div class="panel panel-info">
+      <div class="panel-heading">
+         <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" 
+               href="#collapseThree">
+               Click me to exapand. Click me again to collapse.
+               Section 3--toggle method
+            </a>
+         </h4>
+      </div>
+      <div id="collapseThree" class="panel-collapse collapse">
+         <div class="panel-body">
+            Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred 
+            nesciunt sapiente ea proident. Ad vegan excepteur butcher vice 
+            lomo.
+         </div>
+      </div>
+   </div>
+   <div class="panel panel-warning">
+      <div class="panel-heading">
+         <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" 
+               href="#collapseFour">
+               Click me to exapand. Click me again to collapse.
+               Section 4--options method
+            </a>
+         </h4>
+      </div>
+      <div id="collapseFour" class="panel-collapse collapse">
+         <div class="panel-body">
+            Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred 
+            nesciunt sapiente ea proident. Ad vegan excepteur butcher vice 
+            lomo.
+         </div>
+      </div>
+   </div>
+</div><!-- /accoridan -->
     </div><!-- /container -->
+
+
+
+
+
 @endsection
 
 @section('modals')
@@ -104,6 +180,18 @@
 @endsection
 
 @section('javascript')
+
+    <script type="text/javascript">
+       $(function () { $('#collapseFour').collapse({
+          toggle: false
+       })});
+       $(function () { $('#collapseTwo').collapse('show')});
+       $(function () { $('#collapseThree').collapse('toggle')});
+       $(function () { $('#collapseOne').collapse('hide')});
+    </script>  
+
+
+
     <script src="/assets/vendor/Qb/html/js/imports/import.js" type="application/javascript;version=1.7"></script>
     <script src="/assets/vendor/Qb/html/js/ESQueryRunner.js" type="application/javascript;version=1.7"></script>
     <script src="/assets/vendor/ducksboard-gridster/jquery.gridster.min.js"></script>
@@ -112,12 +200,6 @@
     <script src="/assets/vendor/rickshaw/rickshaw.js"></script>
     <script src="/assets/vendor/sorttable/sorttable.js"></script>
     <script>var coreData = {{ json_encode($data) }}</script>
-
-   <!-- <script src="http://telemetry.mozilla.org/v1/telemetry.js"></script>  -->
-    
-
-
-   <!-- begin -->
 
     <script src="/assets/js/common/telemetry.js"></script>
     <script src="/assets/js/watch_single/helpers_breakdown.js"></script>
