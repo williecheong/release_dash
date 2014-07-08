@@ -74,6 +74,14 @@ class Watch extends CI_Controller {
         $groups_by_version = $this->group->retrieve( $by_version );
         $data = $this->_groups_to_data( $data, $version, $groups_by_version );
         
+        // Adding the list of categories
+        $data['categories'] = array(
+            'bugzilla',
+            'talos',
+            'crash-stats',
+            'telemetry'
+        );
+
         $this->blade->render('watch_single', 
             array(
                 'data' => $data,
