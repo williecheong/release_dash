@@ -102,6 +102,7 @@ class Watch extends CI_Controller {
             $data['groups'][$group->id]['is_plot']  = ($group->is_plot == '1') ? true : false ;
             $data['groups'][$group->id]['is_number'] = ($group->is_number == '1') ? true : false ;
             $data['groups'][$group->id]['has_rule'] = file_exists( FCPATH.'assets/rules/rule_'.$group->id.'.js' );
+            $data['groups'][$group->id]['category'] = "default";
             $data['groups'][$group->id]['queries'] = array();    
 
             if ( $is_default ) {
