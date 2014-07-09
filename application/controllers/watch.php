@@ -232,27 +232,9 @@ class Watch extends CI_Controller {
     // returns the determined source of the group
     private function _query_source( $query = array() ) {
         $source = 'bugzilla';
-        // array_key_exists('source', json_decode($query['qb_query'], true));
         if (array_key_exists('source', json_decode($query['qb_query'], true))) {
-            // $query['info'] = json_decode($query['qb_query'], true);
             $source = json_decode($query['qb_query'])->source;
         }
-        // if (array_key_exists('source', json_decode($query['qb_query'], true))) {
-        //     $source = json_decode($query['qb_query'], true)['source'];
-        // }
-        // else {
-        //     $source = 'bugzilla';
-        // }
-
-        // if ( $source == 'talos' ) {
-        //     return 'talos';
-        // } elseif ( $source == 'crash-stats' ) {
-        //     return 'crash-stats';
-        // } elseif ( $source == 'telemetry' ) {
-        //     return 'telemetry';
-        // } else {
-        //     return 'bugzilla';
-        // }
         return $source;
     }
 
