@@ -219,13 +219,13 @@
                                 '<div class="col-sm-9">'+
                                     '<textarea class="form-control" rows="3" id="query-qb" placeholder="'+
                                     'telemetry query'+
-                                    // '{'+
-                                    //     '"data": {'+
-                                    //         '"version": "release/31",'+
-                                    //         '"measure":"PLUGIN_CALLED_DIRECTLY"'+
-                                    //     '},'+
-                                    //     '"source": "telemetry"'+
-                                    // '}'+
+                                    // '{\n
+                                    //     "data": {\n
+                                    //         "version": "release/31",\n
+                                    //         "measure":"PLUGIN_CALLED_DIRECTLY"\n
+                                    //     },\n
+                                    //     "source": "telemetry"\n
+                                    // }\n'+
                                     '"></textarea>'+
                                 '</div>'+
                             '</div>';
