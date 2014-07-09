@@ -104,6 +104,8 @@
                 var search_field_row = [ 'longdesc', 'bug_file_loc', 'status_whiteboard', 'keywords', 'bug_id', 'votes' ];
                 $.each( search_field_row, function( key, rowName ){
                     tempVal = $subject.find('div.search_field_row').find('input#'+rowName).val() ;  
+                    console.log($subject.find('div.search_field_row').find('input#'+rowName));
+                    console.log("tempVal: "+tempVal);
                     if ( tempVal.length > 0 ){
                         var tempOpr = '';
                         if ( rowName == 'votes' ){
@@ -280,13 +282,17 @@
 
                 // Sometimes we get end up with multiple commas
                 customParams = customParams.replace(/[,]+/g , ",");
+                console.log("customParams: "+customParams);
 
                 try {
                     var customJson = JSON.parse(customParams);
                     customJson = deleteEmpty( customJson );
+                    console.log("customJson: "+customJson);
+
                     if ( !$.isEmptyObject(customJson) ) {
                         esfilterObj.and.push( customJson );        
                     }
+
 
                 } catch (e) {
                     alert( "Failed: Could not parse custom fields" );
