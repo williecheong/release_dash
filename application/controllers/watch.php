@@ -74,6 +74,14 @@ class Watch extends CI_Controller {
         $groups_by_version = $this->group->retrieve( $by_version );
         $data = $this->_groups_to_data( $data, $version, $groups_by_version );
         
+        // Adding the list of categories
+        $data['categories'] = array(
+            'bugzilla',
+            'talos',
+            'crash-stats',
+            'telemetry'
+        );
+
         $this->blade->render('watch_single', 
             array(
                 'data' => $data,
@@ -203,13 +211,42 @@ class Watch extends CI_Controller {
                 $data['groups'][$group->id]['queries'][$query->id]['qb_query']    = $transformed_query;
                 $data['groups'][$group->id]['queries'][$query->id]['bz_query']    = $query_bugzilla;
                 $data['groups'][$group->id]['queries'][$query->id]['es_data']     = ($hard_refresh == 1) ? '' : $this->cache_es_data->retrieve_valid_cache($query->id,$version->id);
+                
+                // Determine the query data source
+                $data['groups'][$group->id]['queries'][$query->id]['source']      = $this->_query_source( $data['groups'][$group->id]['queries'][$query->id] );        
+
             }
             // Done looping and loading the queries into the group
             // If group only has one query (excluding any references), enable component breakdown view
             $data['groups'][$group->id]['enableComponents'] = ($count_main_queries == 1) ? true : false ;
 
+            // Use the first query's source as the group category
+            $data['groups'][$group->id]['category'] = $data['groups'][$group->id]['queries'][key($data['groups'][$group->id]['queries'])]['source']; 
+
         }
 
         return $data;
+    }
+
+
+    // returns the determined source of the group
+    private function _query_source( $query = array() ) {
+        $source = '';
+        if (array_key_exists('source', json_decode($query['qb_query'], true))) {
+            $source = json_decode($query['qb_query'], true)['source'];
+        } else {
+            $source = 'bugzilla';
+        }
+
+        if ( $source == 'talos' ) {
+            return 'talos';
+        } elseif ( $source == 'crash-stats' ) {
+            return 'crash-stats';
+        } elseif ( $source == 'telemetry' ) {
+            return 'telemetry';
+        } else {
+            return 'bugzilla';
+        }
+        return 'bugzilla';
     }
 }
