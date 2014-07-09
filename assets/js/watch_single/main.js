@@ -124,7 +124,9 @@ jQuery(document).ready(function($) {
                         $(".colourpicker[id='q"+key+"']").css( 'color', color.toHexString() );
                     }
                 });
-            }
+            } 
+
+
         });
 
         $('.btn#delete-old-group').attr('data-group-id', groupID );
