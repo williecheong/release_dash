@@ -228,8 +228,7 @@ class Watch extends CI_Controller {
         return $data;
     }
 
-
-    // returns the determined source of the group
+    // returns the determined source of the query
     private function _query_source( $query = array() ) {
         $source = 'bugzilla';
         if (array_key_exists('source', json_decode($query['qb_query'], true))) {

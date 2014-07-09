@@ -167,7 +167,74 @@
                                     '"></textarea>'+
                                 '</div>'+
                             '</div>';
+        }  else if (dataSource == "telemetry") {
+            var refOptions = '';
+            if ( coreData.hasOwnProperty('product') ) { 
+                refOptions +=   '<div class="form-group hidden">'+
+                                    '<label class="col-sm-3 control-label" for="query-reference">References</label>'+
+                                    '<div class="col-sm-9 controls">'+
+                                       '<select class="form-control" id="query-reference">'+
+                                            '<option value="none">None</option>';
+
+                $.each( coreData.product.versions, function(key, version){
+                    if ( parseInt(version.id) < parseInt(coreData.id) ) {
+                        refOptions +=       '<option value="'+version.id+'">'+version.title+'</option>';
+                    }
+                });
+
+                refOptions +=           '</select>'+
+                                    '</div>'+
+                                '</div>';
+            }
+            html =          '<div class="form-group">'+
+                                '<label class="col-sm-3 control-label" for="query-name">Query Name</label>'+
+                                '<div class="col-sm-9 controls">'+
+                                    '<div class="input-group">'+
+                                        '<input type="text" class="form-control" id="query-name" placeholder="Description for this query.">'+
+                                        '<span class="input-group-btn">'+
+                                            '<button class="btn btn-default colourpicker" type="button" id="'+number+'">'+
+                                                '<i class="fa fa-tint fa-lg"></i> Color'+
+                                            '</button>'+
+                                            '<em id="colorpicker-log"></em>'+
+                                        '</span>'+
+                                    '</div>'+
+                                '</div>'+
+                            '</div>'+
+                            refOptions+
+                            '<div class="form-group hidden">'+
+                                '<label class="col-sm-3 control-label" for="query-bz">Bugzilla URL</label>'+
+                                '<div class="col-sm-9 controls">'+
+                                    '<div class="input-group">'+
+                                        '<input class="form-control" id="query-bz" placeholder="URL that links to this query in Bugzilla.">'+
+                                        '<span class="input-group-btn">'+
+                                            '<button class="btn btn-primary quick-qb" type="button" id="'+number+'">'+
+                                                '<i class="fa fa-magic fa-lg"></i> Qb'+
+                                            '</button>'+
+                                        '</span>'+
+                                    '</div>'+
+                                '</div>'+
+                            '</div>'+
+                            '<div class="form-group">'+
+                                '<label class="col-sm-3 control-label" for="query-qb">Telemetry Query</label>'+
+                                '<div class="col-sm-9">'+
+                                    '<textarea class="form-control" rows="3" id="query-qb" placeholder="'+
+                                    'telemetry query'+
+                                    // '{'+
+                                    //     '"data": {'+
+                                    //         '"version": "release/31",'+
+                                    //         '"measure":"PLUGIN_CALLED_DIRECTLY"'+
+                                    //     '},'+
+                                    //     '"source": "telemetry"'+
+                                    // '}'+
+                                    '"></textarea>'+
+                                '</div>'+
+                            '</div>';
         }
+
+
+
+
+
         return html
     }
 
@@ -184,6 +251,7 @@
                                     '<option value="bugzilla">Bugzilla</option>'+
                                     '<option value="talos">Talos</option>'+
                                     '<option value="crash-stats">Crash Stats</option>'+
+                                    '<option value="telemetry">Telemetry</option>'+
                                '</select>'+
                             '</div>'+
                         '</div>'+
