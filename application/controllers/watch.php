@@ -231,8 +231,10 @@ class Watch extends CI_Controller {
     // returns the determined source of the query
     private function _query_source( $query = array() ) {
         $source = 'bugzilla';
-        if (property_exists(json_decode($query['qb_query']), 'source')) {
-            $source = json_decode($query['qb_query'])->source;
+        if (!is_null(json_decode($query['qb_query']))) {
+            if (property_exists(json_decode($query['qb_query']), 'source')) {
+                $source = json_decode($query['qb_query'])->source;
+            }
         }
         return $source;
     }

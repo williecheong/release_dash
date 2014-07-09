@@ -264,6 +264,7 @@
     }
 
     function templateOldGroup ( query_id, query ) {
+        console.log(query);
         var refOptions = '';
         var isCustom = false;
         if ( coreData.hasOwnProperty('product') ) { 

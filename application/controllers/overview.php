@@ -72,7 +72,10 @@ class Overview extends CI_Controller {
                         $data[$product->tag]['groups'][$group->id]['queries'][$query->id]['colour']   = $query->colour;
                         $data[$product->tag]['groups'][$group->id]['queries'][$query->id]['qb_query'] = $query->query_qb;
                         $data[$product->tag]['groups'][$group->id]['queries'][$query->id]['bz_query'] = $query->query_bz;
-                        
+
+                        // Determine the query data source
+                        $data[$product->tag]['groups'][$group->id]['queries'][$query->id]['source']   = $this->_query_source( $data[$product->tag]['groups'][$group->id]['queries'][$query->id] );        
+
                     } else {
                         // This query is a reference one. It references a parent query.
                         // Append referenced version's ID as a property to parent query's object in $data
@@ -83,6 +86,10 @@ class Overview extends CI_Controller {
                            
                     }
                 }
+
+                // Use the first query's source as the group category
+                $data[$product->tag]['groups'][$group->id]['category'] = $data[$product->tag]['groups'][$group->id]['queries'][key($data[$product->tag]['groups'][$group->id]['queries'])]['source']; 
+
             }
         }
 
@@ -92,5 +99,16 @@ class Overview extends CI_Controller {
                 'data' => $data
             )
         );
+    }
+
+    // returns the determined source of the query
+    private function _query_source( $query = array() ) {
+        $source = 'bugzilla';
+        if (!is_null(json_decode($query['qb_query']))) {
+            if (property_exists(json_decode($query['qb_query']), 'source')) {
+                $source = json_decode($query['qb_query'])->source;
+            }
+        }
+        return $source;
     }
 }
