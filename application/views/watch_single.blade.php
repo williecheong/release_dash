@@ -19,6 +19,8 @@
 @section('content')
 
 
+
+
 <div class="panel-group" id="accordion">
   @foreach ( $data['categories'] as $category )
     <div class="panel panel-success">
@@ -106,39 +108,13 @@
                   </li>
               @endif
 
-
-
-
-
-
             </ul><!-- grids -->
         </div><!-- gridster -->
        </div>
     </div>
   @endforeach {{-- End foreach --}}
 
-
 </div><!-- /accoridan -->
-
-
-
-
-
-
-
-
-<div class="container">
-
-
-        {{-- Because this view is all about the grids --}}
-        <div class="gridster">
-            <ul class="grids">
-               
-            </ul><!-- grids -->
-        </div><!-- gridster -->
-
-
-</div><!-- /container -->
 
 
 
@@ -153,7 +129,8 @@
 
 @section('javascript')
 
-    <script type="text/javascript">
+
+   <script type="text/javascript">
         @foreach ( $data['categories'] as $category )
           $(function () { $('#collapse-{{ $category }}').collapse()});
         @endforeach {{-- End foreach --}}
