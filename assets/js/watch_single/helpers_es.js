@@ -122,7 +122,6 @@
                                 tempStore.push( { x: d , y: value } );
                             });
                             coreData.groups[group_id].queries[query_id]['es_data'] = tempStore;
-                            console.log(tempStore);
                             // End of formatting the returned ElasticSearch data for Rickshaw compatibility
 
                             // Checks for complete es_data through this group.
@@ -216,6 +215,7 @@
         });
 
         // Start the plot
+        // document.querySelector('.plot#g'+group_id).innerHTML = "";
         var graph = new Rickshaw.Graph({
             element: document.querySelector('.plot#g'+group_id),
             width: $('.group#g' + group_id).width() * 0.90,
@@ -439,6 +439,12 @@
                 version_score : score
             },
             success: function(response) {
+                // For the selenium hacking
+                var div = document.createElement("div");
+                div.setAttribute("id", "pageCompletedSignal")
+                document.body.appendChild(div);
+
+                console.log("done!");
                 console.log(response);
             }, 
             error: function(response) {
