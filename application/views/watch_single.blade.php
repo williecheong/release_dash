@@ -23,7 +23,7 @@
 
 <div class="panel-group" id="accordion">
   @foreach ( $data['categories'] as $category )
-    <div class="panel panel-success">
+    <div class="panel panel-default" id="panel-{{ $category }}">
        <div class="panel-heading">
              <a data-toggle="collapse" data-parent="#accordion" href="#collapse-{{ $category }}" class = "in_panel">
           <h4 class="panel-title">
@@ -130,12 +130,12 @@
 @section('javascript')
 
 
+
    <script type="text/javascript">
         @foreach ( $data['categories'] as $category )
           $(function () { $('#collapse-{{ $category }}').collapse()});
         @endforeach {{-- End foreach --}}
     </script>  
-
 
 
     <script src="/assets/vendor/Qb/html/js/imports/import.js" type="application/javascript;version=1.7"></script>

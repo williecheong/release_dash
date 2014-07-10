@@ -28,6 +28,9 @@
                         success: function(data) {
                            coreData.groups[group_id].queries[query_id]['es_data'] = data['series_data'];
                            executeAll( group_id );
+
+                           var score = aggregateScores(false); 
+                           $('.rrscore').css('color', score);
                         }
                     });
                 } else if ( $.parseJSON( query_value.qb_query )['source'] == 'telemetry' ) {
@@ -72,6 +75,8 @@
                                 coreData.groups[group_id].queries[query_id]['es_data'] = data;
                                 executeAll( group_id );
 
+                                var score = aggregateScores(false); 
+                                $('.rrscore').css('color', score);
                             });
                         });
                     });
@@ -347,6 +352,72 @@
                         // do nothing. group is not shipwrecker and not significant
                     }
                 });
+
+                var catColoring = {};
+
+                $.each( coreData.categories, function(id,  category ){
+                    catColoring[category] = {};
+                    catColoring[category]['greenCount'] = 0;
+                    catColoring[category]['yellowCount'] = 0;
+                    catColoring[category]['redCount'] = 0;
+                    catColoring[category]['score'] = 0;
+
+                    $.each( ruledGroups, function( group_id, group ){
+                        if ( group.category == category ) {
+                            if ( aggregateOptions[group_id].isShipwrecker && group.status == 'red' ) {
+                                catColoring[category]['redCount'] = catColoring[category]['redCount'] + 9999999 ; //maxout the redcount
+                            
+                            } else if ( aggregateOptions[group_id].isSignificant ) {
+                                
+                                if ( group.status == 'green' ){
+                                    catColoring[category]['greenCount']++;
+                                
+                                } else if ( group.status == 'yellow' ){
+                                    catColoring[category]['yellowCount']++;
+                                
+                                } else if ( group.status == 'red' ){
+                                    catColoring[category]['redCount']++;
+                                
+                                }
+                            
+                            } else { 
+                                // do nothing. group is not shipwrecker and not significant
+                            }
+                        }
+                    });
+                    
+                    if ( catColoring[category]['greenCount'] != 0 || catColoring[category]['yellowCount'] != 0 || catColoring[category]['redCount'] != 0 ) {
+                        var highScore = Math.max(catColoring[category]['redCount'], catColoring[category]['yellowCount'], catColoring[category]['greenCount']);
+                        console.log(highScore);
+                        if ( highScore == catColoring[category]['redCount'] ){
+                             $('#panel-'+category).on('hide.bs.collapse', function () {
+                                  $(this).removeClass('panel-default');
+                             });
+                            $('#panel-'+category).on('show.bs.collapse', function () {
+                                  $(this).addClass('panel-danger');
+                             });
+                        } else if ( highScore == catColoring[category]['yellowCount'] ) {
+                             $('#panel-'+category).on('hide.bs.collapse', function () {
+                                  $(this).removeClass('panel-default');
+                             });
+                            $('#panel-'+category).on('show.bs.collapse', function () {
+                                  $(this).addClass('panel-warning');
+                             });
+                        } else {
+                             $('#panel-'+category).on('hide.bs.collapse', function () {
+                                  $(this).removeClass('panel-default');
+                             });
+                            $('#panel-'+category).on('show.bs.collapse', function () {
+                                  $(this).addClass('panel-success');
+                             });
+
+                        }
+                    }
+
+                });
+                
+                console.log(catColoring);
+
 
                 var score = '';
                 if ( greenCount != 0 || yellowCount != 0 || redCount != 0 ) {
