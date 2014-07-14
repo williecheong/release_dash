@@ -133,7 +133,7 @@
 
    <script type="text/javascript">
         @foreach ( $data['categories'] as $category )
-          $(function () { $('#collapse-{{ $category }}').collapse()});
+          // $(function () { $('#collapse-{{ $category }}').collapse()});
         @endforeach {{-- End foreach --}}
     </script>  
 

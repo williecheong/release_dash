@@ -3,6 +3,32 @@
     NEW GROUPS AND EXISTING GROUPS
 *****************************/
 
+    function categoryOptions (groupid, group, categories) {
+        var html = '';
+        html += '<select class="form-control" id="data-source">';
+        html += '<option value="' + group['category'] + '">' +  group['category'] + '</option>';
+        $.each(categories, function(key, value){
+            if (value != group['category']) {
+                html += '<option value="' + value + '">' +  value + '</option>';
+            }
+        });
+        html += '</select>';
+        console.log(html);
+        return html;
+    }
+
+
+    function categoryNewOptions (categories) {
+        var html = '';
+        html += '<select class="form-control" id="data-source">';
+        $.each(categories, function(key, value){
+            html += '<option value="' + value + '">' +  value + '</option>';
+        });
+        html += '</select>';
+        console.log(html);
+        return html;
+    }
+
     function templateDataInput (dataSource, number) {
         html = '';
         if (dataSource == "crash-stats") {
@@ -264,7 +290,6 @@
     }
 
     function templateOldGroup ( query_id, query ) {
-        console.log(query);
         var refOptions = '';
         var isCustom = false;
         if ( coreData.hasOwnProperty('product') ) { 

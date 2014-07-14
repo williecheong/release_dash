@@ -17,6 +17,12 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label class="col-sm-3 control-label" for="query-name">Category</label>
+                        <div class="col-sm-9 controls" id="category-options">
+                        <!-- Put the select options in -->
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <div class="col-sm-offset-3 col-sm-9">
                             <label class="checkbox-inline">
                                 <input type="checkbox" id="group-is-plot"> Show plot 
@@ -56,6 +62,12 @@
                         <label class="col-sm-3 control-label" for="group-name">Group Name</label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" id="group-name" placeholder="Description for this set of queries.">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="query-name">Category</label>
+                        <div class="col-sm-9 controls" id="category-options">
+                        <!-- Put the select options in -->
                         </div>
                     </div>
                     <div class="form-group">

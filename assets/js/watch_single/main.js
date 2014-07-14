@@ -43,6 +43,10 @@ jQuery(document).ready(function($) {
 /*********************************
     SAVING NEW GROUPS AND QUERIES
 *********************************/
+
+    // Set the modal category dropdown
+    $('.modal#new-group').find('#category-options').html( categoryNewOptions( coreData['categories']) );
+
     // Append a new HTML query template for the group
     $('.btn#new-query-template').click( function() {
         var thisNum = uniqueid();
@@ -103,6 +107,9 @@ jQuery(document).ready(function($) {
             $modal.find('input#group-is-number').prop( "checked", false );
         }
         
+        // Set the modal category dropdown
+        $modal.find('#category-options').html( categoryOptions(groupID, thisGroup, coreData['categories']) );
+
         $.each( thisGroup.queries, function( key, value ){
             if ( value.is_reference ){
                 setTimeout(function(){
