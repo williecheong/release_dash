@@ -1,0 +1,1 @@
+UPDATE `release_dash`.`group` SET `category` = 'default' WHERE `group`.`category` IS NULL;

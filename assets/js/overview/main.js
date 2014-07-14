@@ -25,7 +25,7 @@ jQuery(document).ready(function($) {
     SAVING NEW GROUPS AND QUERIES
 *********************************/
     // Set the modal category dropdown
-    $('.modal#new-group').find('#category-options').html( categoryNewOptions( coreData['categories']) );
+    // $('.modal#new-group').find('#category-options').html( categoryNewOptions( coreData['categories']) );
 
     // Brings up the modal for adding a new group
     $('.btn#add-new-group').click(function(){
@@ -102,7 +102,7 @@ jQuery(document).ready(function($) {
         }
 
         // Set the modal category dropdown
-        $modal.find('#category-options').html( categoryOptions(groupID, thisGroup, coreData['categories']) );
+        // $modal.find('#category-options').html( categoryOptions(groupID, thisGroup, coreData['categories']) );
         
         $.each( thisGroup.queries, function( query_id, query ){
             // Append the html for each query
