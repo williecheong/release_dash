@@ -56,6 +56,14 @@ class Watch extends CI_Controller {
         $data['channel'] = $this->channel->for_version( $version->id );
         $data['groups'] = array();
 
+        // Adding the list of categories
+        $data['categories'] = array(
+            // 'bugzilla',
+            // 'talos',
+            // 'crash-stats',
+            // 'telemetry'
+            'default'
+        );
         // Retrieving default groups by product
         $by_product = array( 
             'entity'    => 'product',
@@ -71,16 +79,10 @@ class Watch extends CI_Controller {
             'entity_id' => $version->id 
         );
         
+
         $groups_by_version = $this->group->retrieve( $by_version );
         $data = $this->_groups_to_data( $data, $version, $groups_by_version );
         
-        // Adding the list of categories
-        $data['categories'] = array(
-            'bugzilla',
-            'talos',
-            'crash-stats',
-            'telemetry'
-        );
 
         $this->blade->render('watch_single', 
             array(
@@ -126,6 +128,7 @@ class Watch extends CI_Controller {
             $queries = $this->query->retrieve( $by_group );
 
             $count_main_queries = 0;
+
             foreach ( $queries as $query ) {
                 $query_title = '';
                 $query_bugzilla = '';
@@ -221,9 +224,16 @@ class Watch extends CI_Controller {
             $data['groups'][$group->id]['enableComponents'] = ($count_main_queries == 1) ? true : false ;
 
             // Use the first query's source as the group category
-            $data['groups'][$group->id]['category'] = $data['groups'][$group->id]['queries'][key($data['groups'][$group->id]['queries'])]['source']; 
+            $data['groups'][$group->id]['category'] = $group->category; 
+
+            // Add the category to the categories if not in it already
+            if (empty($data['categories']) || !in_array($group->category, $data['categories'])) {
+                array_push($data['categories'], $group->category);
+            }
 
         }
+
+
 
         return $data;
     }

@@ -1,2 +1,2 @@
 ALTER TABLE `group`
-	ADD `category` varchar(255) default `default`;
+	ADD `category` varchar(255);
