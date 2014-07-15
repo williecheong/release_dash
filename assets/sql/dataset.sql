@@ -68,18 +68,18 @@ INSERT INTO `version_channel_cycle` (`version_id`, `channel_id`, `cycle_id`) VAL
 ('12','9', '4'), ('12','9', '5'), ('12','10','6'),
 ('15','9', '6');
 
-INSERT INTO `group` (`id`, `title`, `entity`, `entity_id`, `is_plot`, `is_number`) VALUES
-('1', 'Tracked vs Fixed',               'product', '1', '1', '0'),
-('2', 'Unresolved',                     'product', '1', '1', '0'),
-('3', 'Crashers',                       'product', '1', '1', '0'),
-('4', 'Regressions',                    'product', '1', '1', '0'),
-('5', 'Nominations (Default)',          'product', '3', '1', '0'),
-('6', 'Blockers (Default)',             'product', '3', '1', '0'),
-('7', 'Blocking Regressions for 1.4',   'version', '15','1', '0'),
-('8', 'Nominated Bugs for 1.4',         'version', '15','1', '0'),
-('9', 'Unassigned Blockers',            'version', '15','1', '0'),
-('10','Tracking but not fixed',         'version', '5', '1', '1'),
-('11','Approvals for mozilla beta',     'version', '5', '1', '0');
+INSERT INTO `group` (`id`, `title`, `entity`, `entity_id`, `is_plot`, `is_number`, `category') VALUES
+('1', 'Tracked vs Fixed',               'product', '1', '1', '0', 'default'),
+('2', 'Unresolved',                     'product', '1', '1', '0', 'default'),
+('3', 'Crashers',                       'product', '1', '1', '0', 'default'),
+('4', 'Regressions',                    'product', '1', '1', '0', 'default'),
+('5', 'Nominations (Default)',          'product', '3', '1', '0', 'default'),
+('6', 'Blockers (Default)',             'product', '3', '1', '0', 'default'),
+('7', 'Blocking Regressions for 1.4',   'version', '15','1', '0', 'default'),
+('8', 'Nominated Bugs for 1.4',         'version', '15','1', '0', 'default'),
+('9', 'Unassigned Blockers',            'version', '15','1', '0', 'default'),
+('10','Tracking but not fixed',         'version', '5', '1', '1', 'default'),
+('11','Approvals for mozilla beta',     'version', '5', '1', '0', 'default');
 
 INSERT INTO `query` (`id`, `title`, `group_id`, `colour`, `references`, `query_qb`, `query_bz`) VALUES
 ('1', '# Bugs tracking <version_title>',                 '1', 'rgb(194, 127, 127)', '',
