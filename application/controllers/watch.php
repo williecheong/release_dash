@@ -223,7 +223,7 @@ class Watch extends CI_Controller {
             // If group only has one query (excluding any references), enable component breakdown view
             $data['groups'][$group->id]['enableComponents'] = ($count_main_queries == 1) ? true : false ;
 
-            // Use the first query's source as the group category
+            // Use the databse category as the category
             $data['groups'][$group->id]['category'] = $group->category; 
 
             // Add the category to the categories if not in it already

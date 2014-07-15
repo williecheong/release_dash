@@ -5,7 +5,7 @@
 
     function categoryOptions (groupid, group, categories) {
         var html = '';
-        html += '<select class="form-control" id="data-source">';
+        html += '<select class="form-control" id="group-category">';
         html += '<option value="' + group['category'] + '">' +  group['category'] + '</option>';
         $.each(categories, function(key, value){
             if (value != group['category']) {
@@ -13,19 +13,17 @@
             }
         });
         html += '</select>';
-        console.log(html);
         return html;
     }
 
 
     function categoryNewOptions (categories) {
         var html = '';
-        html += '<select class="form-control" id="data-source">';
+        html += '<select class="form-control" id="group-category">';
         $.each(categories, function(key, value){
             html += '<option value="' + value + '">' +  value + '</option>';
         });
         html += '</select>';
-        console.log(html);
         return html;
     }
 

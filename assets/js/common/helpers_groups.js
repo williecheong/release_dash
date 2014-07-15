@@ -58,6 +58,7 @@
             group_title : $.trim( $modal.find('#group-name').val() ),
             group_is_plot : $modal.find('#group-is-plot:checked').length,
             group_is_number : $modal.find('#group-is-number:checked').length,
+            group_category : $.trim( $modal.find('#group-category').val() ),
             group_queries : {} 
         };
 

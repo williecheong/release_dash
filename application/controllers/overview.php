@@ -13,6 +13,7 @@ class Overview extends CI_Controller {
         log_message('info', 'Accessing controller function in /overview.php/index');
         $data = array();
 
+
         //  Find a list of all products
         $products = $this->product->retrieve();
         foreach ( $products as $product ) {
@@ -58,6 +59,7 @@ class Overview extends CI_Controller {
                 $data[$product->tag]['groups'][$group->id]['is_plot']  = ($group->is_plot == '1') ? true : false ;
                 $data[$product->tag]['groups'][$group->id]['is_number'] = ($group->is_number == '1') ? true : false ;
                 $data[$product->tag]['groups'][$group->id]['is_default'] = true;
+                $data[$product->tag]['groups'][$group->id]['category'] = $group->category;
                 $data[$product->tag]['groups'][$group->id]['queries'] = array();
 
                 // Retrieve the stored Qb queries in this group.
@@ -82,14 +84,19 @@ class Overview extends CI_Controller {
                         $reference = explode(',', $query->references);
                         $parent_id = $reference[0];
                         $ref_version_id = $reference[1];
-                        $data[$product->tag]['groups'][$group->id]['queries'][$parent_id]['reference'] = $ref_version_id;
-                           
+                        $data[$product->tag]['groups'][$group->id]['queries'][$parent_id]['reference'] = $ref_version_id;           
                     }
                 }
-
-                // Use the first query's source as the group category
-                $data[$product->tag]['groups'][$group->id]['category'] = $data[$product->tag]['groups'][$group->id]['queries'][key($data[$product->tag]['groups'][$group->id]['queries'])]['source']; 
-
+            }
+        }
+        // Adding the list of categories
+        $data['categories'] = array();
+        $groups = $this->group->retrieve();
+        
+        foreach ($groups as $group) {
+            // Add the category to the categories if not in it already
+            if (empty($data['categories']) || !in_array($group->category, $data['categories'])) {
+                array_push($data['categories'], $group->category);
             }
         }
 
