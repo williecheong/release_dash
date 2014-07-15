@@ -84,7 +84,9 @@
          cursor:pointer;  
     }
 
-
+    #main-content {
+        visibility:hidden;
+    }
 
 /***********************/
 /* GRAPHING PROPERTIES */

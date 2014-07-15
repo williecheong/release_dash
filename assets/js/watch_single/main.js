@@ -2,6 +2,10 @@ jQuery(document).ready(function($) {
 /*********************************
     JUST SETTING UP THE PAGE HERE
 *********************************/
+
+    // Make page visible on load
+    $("#main-content").css("visibility","visible");
+
     // Initializing duckster gridster
     var gridsterWidth = $('.gridster').width();
     if ( gridsterWidth  < 600 ){
