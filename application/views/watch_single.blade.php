@@ -14,112 +14,115 @@
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/assets/vendor/ducksboard-gridster/jquery.gridster.min.css">
     <link rel="stylesheet" href="/assets/css/watch_single.css">
+    <!-- For the sidebar ... perhaps rename this file -->
+    <link rel="stylesheet" href="/assets/css/help.css">
+
 @endsection
 
 @section('content')
+ <div class="container">
+    <div class="row">
+        <div class="col-md-9">
+          @foreach ( $data['categories'] as $category_id => $category )
+            <div class="section">
+                <h1 id="category-{{ $category_id }}">{{ $category }}</h1>
+                  <div id="gridster-{{ $category_id }}" class="gridster" >
+                      <ul class="grids">
+
+                        {{-- Loop and filter four times to print in priority sequence --}}
+                        {{--    1. Default plots  --}}
+                        {{--    2. Default numbers  --}}
+                        {{--    3. Custom plots  --}}
+                        {{--    4. Custom numbers  --}}
+                        @foreach ( $data['groups'] as $group_id => $group )
+                            @if ( $group['is_plot'] && $group['is_default'] && $group['category'] == $category)
+                                <?php 
+                                    $this->load->view(
+                                        '/templates/watch_single_grid', 
+                                        array(  'group_id'  => $group_id,
+                                                'group'     => $group, 
+                                                'type'      => 'make_plot' 
+                                                ) 
+                                            ); 
+                                ?>
+                            @endif {{-- End if default group that is_plot --}}
+                        @endforeach {{-- End foreach query_group --}}
+
+                        @foreach ( $data['groups'] as $group_id => $group )
+                            @if ( $group['is_number'] && $group['is_default'] && $group['category'] == $category ) 
+                                <?php 
+                                    $this->load->view(
+                                        '/templates/watch_single_grid', 
+                                        array(  'group_id'  => $group_id,
+                                                'group'     => $group, 
+                                                'type'      => 'make_number' 
+                                                ) 
+                                            ); 
+                                ?>
+                            @endif {{-- End if default group that is_number --}}
+                        @endforeach {{-- End foreach query_group --}}
+
+                        @foreach ( $data['groups'] as $group_id => $group ) 
+                            @if ( $group['is_plot'] && !$group['is_default'] && $group['category'] == $category ) 
+                                <?php 
+                                    $this->load->view(
+                                        '/templates/watch_single_grid', 
+                                        array(  'group_id'  => $group_id,
+                                                'group'     => $group, 
+                                                'type'      => 'make_plot' 
+                                                ) 
+                                            ); 
+                                ?>
+                            @endif {{-- End if non-default group that is_plot --}}
+                        @endforeach {{-- End foreach query_group --}}
+
+                        @foreach ( $data['groups'] as $group_id => $group )
+                            @if ( $group['is_number'] && !$group['is_default'] && $group['category'] == $category )
+                                <?php 
+                                    $this->load->view(
+                                        '/templates/watch_single_grid', 
+                                        array(  'group_id'  => $group_id,
+                                                'group'     => $group, 
+                                                'type'      => 'make_number' 
+                                                ) 
+                                            ); 
+                                ?>
+                            @endif {{-- End if non-default group that is_number --}}
+                        @endforeach {{-- End foreach query_group --}}
 
 
+                        @if ( $this->session->userdata('email') )
+                            {{-- Show the grid that prompts creating a new custom group --}}
+                            <li class="non-group" data-row="1" data-col="1" data-sizex="1" data-sizey="1" data-toggle="modal" data-target="#new-group">
+                                <div class="text-center center-block group-title">
+                                    <!-- <button type="button" class="btn btn-success" > -->
+                                        <i class="fa fa-plus fa-lg" ></i>
+                                    <!-- </button> -->
+                                </div>
+                            </li>
+                        @endif
 
+                      </ul><!-- grids -->
+                  </div><!-- gridster --> 
+            </div>
+          @endforeach
+          <hr>
+        </div>
+        <div class="col-md-3" id="rightCol">
+            <ul class="nav nav-stacked" id="sidebar">
+                @foreach ( $data['categories'] as $category_id => $category )
+                    <li>
+                      <a href="#category-{{ $category_id }}">
+                        <span class="badge" id="badge-{{ $category }}">{{ $category }}</span>
+                        
+                      </a>
 
-<div class="panel-group" id="accordion">
-  @foreach ( $data['categories'] as $category )
-    <div class="panel panel-default" id="panel-{{ $category }}">
-       <div class="panel-heading">
-             <a data-toggle="collapse" data-parent="#accordion" href="#collapse-{{ $category }}" class = "in_panel">
-          <h4 class="panel-title">
-                {{ $category }}
-          </h4>
-             </a>
-       </div>
-       <div id="collapse-{{ $category }}" class="panel-collapse collapse in">
-        <div class="gridster">
-            <ul class="grids">
-
-              {{-- Loop and filter four times to print in priority sequence --}}
-              {{--    1. Default plots  --}}
-              {{--    2. Default numbers  --}}
-              {{--    3. Custom plots  --}}
-              {{--    4. Custom numbers  --}}
-              @foreach ( $data['groups'] as $group_id => $group )
-                  @if ( $group['is_plot'] && $group['is_default'] && $group['category'] == $category)
-                      <?php 
-                          $this->load->view(
-                              '/templates/watch_single_grid', 
-                              array(  'group_id'  => $group_id,
-                                      'group'     => $group, 
-                                      'type'      => 'make_plot' 
-                                      ) 
-                                  ); 
-                      ?>
-                  @endif {{-- End if default group that is_plot --}}
-              @endforeach {{-- End foreach query_group --}}
-
-              @foreach ( $data['groups'] as $group_id => $group )
-                  @if ( $group['is_number'] && $group['is_default'] && $group['category'] == $category ) 
-                      <?php 
-                          $this->load->view(
-                              '/templates/watch_single_grid', 
-                              array(  'group_id'  => $group_id,
-                                      'group'     => $group, 
-                                      'type'      => 'make_number' 
-                                      ) 
-                                  ); 
-                      ?>
-                  @endif {{-- End if default group that is_number --}}
-              @endforeach {{-- End foreach query_group --}}
-
-              @foreach ( $data['groups'] as $group_id => $group ) 
-                  @if ( $group['is_plot'] && !$group['is_default'] && $group['category'] == $category ) 
-                      <?php 
-                          $this->load->view(
-                              '/templates/watch_single_grid', 
-                              array(  'group_id'  => $group_id,
-                                      'group'     => $group, 
-                                      'type'      => 'make_plot' 
-                                      ) 
-                                  ); 
-                      ?>
-                  @endif {{-- End if non-default group that is_plot --}}
-              @endforeach {{-- End foreach query_group --}}
-
-              @foreach ( $data['groups'] as $group_id => $group )
-                  @if ( $group['is_number'] && !$group['is_default'] && $group['category'] == $category )
-                      <?php 
-                          $this->load->view(
-                              '/templates/watch_single_grid', 
-                              array(  'group_id'  => $group_id,
-                                      'group'     => $group, 
-                                      'type'      => 'make_number' 
-                                      ) 
-                                  ); 
-                      ?>
-                  @endif {{-- End if non-default group that is_number --}}
-              @endforeach {{-- End foreach query_group --}}
-
-
-              @if ( $this->session->userdata('email') )
-                  {{-- Show the grid that prompts creating a new custom group --}}
-                  <li class="non-group" data-row="1" data-col="1" data-sizex="1" data-sizey="1">
-                      <div class="text-center group-title">
-                          <button type="button" class="btn btn-success" data-toggle="modal" data-target="#new-group">
-                              <i class="fa fa-bar-chart-o fa-lg"></i>
-                          </button>
-                      </div>
-                  </li>
-              @endif
-
-            </ul><!-- grids -->
-        </div><!-- gridster -->
-       </div>
-    </div>
-  @endforeach {{-- End foreach --}}
-
-</div><!-- /accoridan -->
-
-
-
-
-
+                    </li>
+                @endforeach
+            </ul>
+        </div> 
+      </div>
+  </div><!-- /container -->
 @endsection
 
 @section('modals')
@@ -137,6 +140,8 @@
         @endforeach {{-- End foreach --}}
     </script>  
 
+    <!-- For the sidebar ... perhaps rename this file -->
+    <script src="/assets/js/help/main.js"></script>
 
     <script src="/assets/vendor/Qb/html/js/imports/import.js" type="application/javascript;version=1.7"></script>
     <script src="/assets/vendor/Qb/html/js/ESQueryRunner.js" type="application/javascript;version=1.7"></script>
