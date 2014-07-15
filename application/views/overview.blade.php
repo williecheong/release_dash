@@ -11,6 +11,7 @@
 @section('content')
     <div class="container">
         @foreach ($data as $product_tag => $product)
+            @if ( $product_tag != 'categories' )
             {{-- Print the heading title for each product --}}
             <div class="row text-center product" id="{{$product_tag}}">
                 {{-- Clicking on this also toggles the active versions below. --}}
@@ -64,6 +65,7 @@
                     </div>
                 @endforeach
             </div>
+            @endif
         @endforeach
     </div><!-- /container -->
 @endsection

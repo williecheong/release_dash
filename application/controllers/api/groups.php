@@ -22,6 +22,7 @@ class Groups extends REST_Controller {
                 'title'     => isset($data['group_title'])     ? $data['group_title']     : '' ,
                 'entity'    => isset($data['group_entity'])    ? $data['group_entity']    : '' ,
                 'entity_id' => isset($data['group_entity_id']) ? $data['group_entity_id'] : '' ,
+                'category'  => isset($data['group_category'])  ? $data['group_category']  : '' ,
                 'is_plot'   => isset($data['group_is_plot'])   ? $data['group_is_plot']   : '' ,
                 'is_number' => isset($data['group_is_number']) ? $data['group_is_number'] : ''  ); 
         // Create the new group using the fields we defined above
@@ -76,12 +77,17 @@ class Groups extends REST_Controller {
             } 
 
             if ( isset($data['group_is_plot']) ) {
-                $group['is_plot'] = $data['group_is_plot'];
+                $group['is_plot'] = $data['group_is_plot'];                
             }
             
             if ( isset($data['group_is_number']) ) {
                 $group['is_number'] = $data['group_is_number'];
             }
+
+            if ( isset($data['group_is_plot']) ) {
+                $group['category'] = $data['group_category'];
+            }
+
 
             // Update the group using the fields we defined above
             $this->group->update( 
