@@ -25,7 +25,7 @@
         <div class="col-md-9">
           @foreach ( $data['categories'] as $category_id => $category )
             <div class="section">
-                <h1 id="category-{{ $category_id }}">{{ $category }}</h1>
+                <h2 id="category-{{ $category_id }}">{{ $category }}</h2>
                   <div id="gridster-{{ $category_id }}" class="gridster" >
                       <ul class="grids">
 
