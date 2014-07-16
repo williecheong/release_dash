@@ -114,9 +114,7 @@
                     <li>
                       <a href="#category-{{ $category_id }}">
                         <span class="badge" id="badge-{{ $category }}">{{ $category }}</span>
-                        
                       </a>
-
                     </li>
                 @endforeach
             </ul>
