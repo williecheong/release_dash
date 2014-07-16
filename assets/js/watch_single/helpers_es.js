@@ -274,6 +274,10 @@
                 }
             }
 
+            if (logNumber.toString().length > 4) {
+                logNumber = logNumber.toPrecision(3).toString();
+            };
+
             $('.group-number #q'+key).html(
                 '<h2 style="color:'+font_colour+';">' + 
                     logNumber + 

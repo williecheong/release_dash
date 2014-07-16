@@ -26,6 +26,7 @@
           @foreach ( $data['categories'] as $category_id => $category )
             <div class="section">
                 <h2 id="category-{{ $category_id }}">{{ $category }}</h2>
+                <hr></hr>
                   <div id="gridster-{{ $category_id }}" class="gridster" >
                       <ul class="grids">
 
@@ -106,7 +107,6 @@
                   </div><!-- gridster --> 
             </div>
           @endforeach
-          <hr>
         </div>
         <div class="col-md-3" id="rightCol">
             <ul class="nav nav-stacked" id="sidebar">
