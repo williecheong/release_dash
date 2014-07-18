@@ -91,14 +91,11 @@
                             @endif {{-- End if non-default group that is_number --}}
                         @endforeach {{-- End foreach query_group --}}
 
-
                         @if ( $this->session->userdata('email') )
                             {{-- Show the grid that prompts creating a new custom group --}}
                             <li class="non-group" data-row="1" data-col="1" data-sizex="1" data-sizey="1" data-toggle="modal" data-target="#new-group">
                                 <div class="text-center center-block group-title">
-                                    <!-- <button type="button" class="btn btn-success" > -->
-                                        <i class="fa fa-plus fa-lg" ></i>
-                                    <!-- </button> -->
+                                    <i class="fa fa-plus fa-lg" ></i>
                                 </div>
                             </li>
                         @endif

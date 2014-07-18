@@ -73,6 +73,17 @@ class Watch extends CI_Controller {
         $groups_by_product = $this->group->retrieve( $by_product );
         $data = $this->_groups_to_data( $data, $version, $groups_by_product, true );
 
+
+        $groups_all = $this->group->retrieve();
+
+        foreach ( $groups_all as $group ) {
+            // Add the category to the categories if not in it already
+            if (empty($data['categories']) || !in_array($group->category, $data['categories'])) {
+                array_push($data['categories'], $group->category);
+            }
+
+        }
+
         // Retrieving custom groups by version
         $by_version = array( 
             'entity'    => 'version',
@@ -226,10 +237,6 @@ class Watch extends CI_Controller {
             // Use the databse category as the category
             $data['groups'][$group->id]['category'] = $group->category; 
 
-            // Add the category to the categories if not in it already
-            if (empty($data['categories']) || !in_array($group->category, $data['categories'])) {
-                array_push($data['categories'], $group->category);
-            }
 
         }
 
