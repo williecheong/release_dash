@@ -1,5 +1,5 @@
 <?php /* Loads a view for a single grid, which could be sized either for a plot or number */ ?>
-<li class="group<?= ($group['is_default'] ) ? ' is-default' : ''; ?>" id="g<?= $group_id; ?>" data-row="1" data-col="1" data-sizex="<?= ($type == 'make_plot')? 3 : min(2, count($group['queries'])); ?>" data-sizey="<?= ($type == 'make_plot')? 2 : 1; ?>">
+<li class="group<?= ($group['is_default'] ) ? ' is-default' : ''; ?>" id="g<?= $group_id; ?>" data-row="1" data-col="1" data-sizex="<?= ($type == 'make_plot')? 3 : min(2, 2*count($group['queries'])) ; ?>" data-sizey="<?= ($type == 'make_plot')? 2 : 1; ?>">
     <?php /* Loads up the top menu and everything that should be in it */ ?>
     <div class="top-menu">
         <?php /* Only administrators are allowed to see the group editing pencil */ ?>

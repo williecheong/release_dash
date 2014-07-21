@@ -14,11 +14,12 @@
     function startLoading() {
         $.each( coreData.groups, function( group_id, group_value ) {
             $.each( group_value.queries, function( query_id, query_value ) {
+                console.log( query_value.qb_query );
                 if ($.parseJSON( query_value.qb_query )['source'] == 'talos' || $.parseJSON( query_value.qb_query )['source'] == 'crash-stats') {
                     $.ajax({
                         type: "POST",
-                        url: "https://dashapi.paas.allizom.org/_get_data",
-                        // url: "http://127.0.0.1:5000/_get_data",
+                        // url: "https://dashapi.paas.allizom.org/_get_data",
+                        url: "http://127.0.0.1:5000/_get_data",
                         data: {
                             // source : JSON.stringify($.parseJSON(query_value.qb_query)['source']),
                             source : $.parseJSON(query_value.qb_query)['source'],
@@ -111,6 +112,7 @@
                     // The es_data field appears to be blank.
                     // Server did not give us anything to load up
                     // Go to the ElasticSearch cluster and pull fresh data
+                    console.log( query_value.qb_query );
                     ESQueryRunner( 
                         $.parseJSON( query_value.qb_query ), 
                         function( response ){ // Executes after data is returned from ES.

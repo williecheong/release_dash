@@ -57,13 +57,8 @@ class Watch extends CI_Controller {
         $data['groups'] = array();
 
         // Adding the list of categories
-        $data['categories'] = array(
-            // 'bugzilla',
-            // 'talos',
-            // 'crash-stats',
-            // 'telemetry'
-            'default'
-        );
+        $data['categories'] = array();
+        
         // Retrieving default groups by product
         $by_product = array( 
             'entity'    => 'product',
