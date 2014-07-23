@@ -136,7 +136,7 @@
                                 '</div>'+
                             '</div>';
 
-        } else if (dataSource == "talos") {
+        } else if (dataSource == "graphs") {
             var refOptions = '';
             if ( coreData.hasOwnProperty('product') ) { 
                 refOptions +=   '<div class="form-group hidden">'+
@@ -184,10 +184,10 @@
                                 '</div>'+
                             '</div>'+
                             '<div class="form-group">'+
-                                '<label class="col-sm-3 control-label" for="query-qb">Talos Query</label>'+
+                                '<label class="col-sm-3 control-label" for="query-qb">Graphs Query</label>'+
                                 '<div class="col-sm-9">'+
                                     '<textarea class="form-control" rows="3" id="query-qb" placeholder="'+
-                                    'talos query'+
+                                    'graphs query'+
                                     '"></textarea>'+
                                 '</div>'+
                             '</div>';
@@ -273,7 +273,7 @@
                             '<div class="col-sm-9 controls">'+
                                '<select class="form-control" id="data-source">'+
                                     '<option value="bugzilla">Bugzilla</option>'+
-                                    '<option value="talos">Talos</option>'+
+                                    '<option value="graphs">Graphs</option>'+
                                     '<option value="crash-stats">Crash Stats</option>'+
                                     '<option value="telemetry">Telemetry</option>'+
                                '</select>'+
@@ -311,22 +311,22 @@
 
         var sourceOption = '';
         if (query.source == 'bugzilla') {
-            sourceOption = '<option value="talos">Talos</option>'+
+            sourceOption = '<option value="graphs">Graphs</option>'+
             '<option selected value="bugzilla">Bugzilla</option>'+
             '<option value="crash-stats">Crash Stats</option>'+
             '<option value="telemetry">Telemetry</option>';
         } else if (query.source == 'crash-stats') {
-            sourceOption = '<option value="talos">Talos</option>'+
+            sourceOption = '<option value="graphs">Graphs</option>'+
             '<option value="bugzilla">Bugzilla</option>'+
             '<option selected value="crash-stats">Crash Stats</option>'+
             '<option value="telemetry">Telemetry</option>';
         } else if (query.source == 'telemetry') {
-            sourceOption = '<option value="talos">Talos</option>'+
+            sourceOption = '<option value="graphs">Graphs</option>'+
             '<option value="bugzilla">Bugzilla</option>'+
             '<option value="crash-stats">Crash Stats</option>'+
             '<option selected value="telemetry">Telemetry</option>';
-        } else if (query.source == 'talos') {
-            sourceOption = '<option selected value="talos">Talos</option>'+
+        } else if (query.source == 'graphs') {
+            sourceOption = '<option selected value="graphs">Graphs</option>'+
             '<option value="bugzilla">Bugzilla</option>'+
             '<option value="crash-stats">Crash Stats</option>'+
             '<option value="telemetry">Telemetry</option>';
@@ -445,7 +445,7 @@
                     '</div>'+
                 '</div>'+
             '</div>';
-        } else if (query.source == 'talos') {
+        } else if (query.source == 'graphs') {
             filledForms = 
                 '<div class="form-group">'+
                     '<label class="col-sm-3 control-label" for="query-name">Query Name</label>'+
@@ -476,7 +476,7 @@
                     '</div>'+
                 '</div>'+
                 '<div class="form-group">'+
-                    '<label class="col-sm-3 control-label" for="query-qb">Talos Query</label>'+
+                    '<label class="col-sm-3 control-label" for="query-qb">Graphs Query</label>'+
                     '<div class="col-sm-9">'+
                         '<textarea class="form-control" rows="3" id="query-qb" placeholder="Query in Qb format as a json object.">'+((isCustom) ? query.raw.qb_query : query.qb_query)+'</textarea>'+
                     '</div>'+
