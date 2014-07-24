@@ -15,7 +15,30 @@
         $.each( coreData.groups, function( group_id, group_value ) {
             $.each( group_value.queries, function( query_id, query_value ) {
                 console.log( query_value.qb_query );
-                if ($.parseJSON( query_value.qb_query )['source'] == 'graphs' || $.parseJSON( query_value.qb_query )['source'] == 'crash-stats') {
+                if ( query_value.es_data !== '' ) {
+
+                    // We have some es_data sent in from the server.
+                    // Use that instead of loading fresh data from ElasticSearch
+
+                    coreData.groups[group_id].queries[query_id]['es_data'] = $.parseJSON( query_value.es_data );
+
+                    // Checks for complete es_data through this group.
+                    var dataInvalid = false;
+                    $.each( coreData.groups[group_id].queries, function( key, value ) {
+                        if( typeof value.es_data !== 'object' ) { dataInvalid = true; }
+                    });
+
+                    if ( dataInvalid === false ) {
+                        executeAll( group_id );
+
+                        //sets function parameter toSave = false
+                        var score = aggregateScores(false); 
+                        $('.rrscore').css('color', score);
+
+                    } else {
+                        console.log("Not all data is ready for "+group_value.title+".");
+                    }
+                } else if ($.parseJSON( query_value.qb_query )['source'] == 'graphs' || $.parseJSON( query_value.qb_query )['source'] == 'crash-stats') {
                     $.ajax({
                         type: "POST",
                         // url: "https://dashapi.paas.allizom.org/_get_data",
@@ -32,8 +55,12 @@
 
                            var score = aggregateScores(false); 
                            $('.rrscore').css('color', score);
+
+                            // Store this in the cache for future use!
+                            cacheESData( query_id, coreData.groups[group_id].queries[query_id]['es_data'] );
                         }
                     });
+
                 } else if ( $.parseJSON( query_value.qb_query )['source'] == 'telemetry' ) {
 
                     // Initialize telemetry.js
@@ -78,34 +105,11 @@
 
                                 var score = aggregateScores(false); 
                                 $('.rrscore').css('color', score);
+                                // Store this in the cache for future use!
+                                cacheESData( query_id, coreData.groups[group_id].queries[query_id]['es_data'] );
                             });
                         });
                     });
-
-
-
-                } else if ( query_value.es_data !== '' ) {
-
-                    // We have some es_data sent in from the server.
-                    // Use that instead of loading fresh data from ElasticSearch
-
-                    coreData.groups[group_id].queries[query_id]['es_data'] = $.parseJSON( query_value.es_data );
-                    // Checks for complete es_data through this group.
-                    var dataInvalid = false;
-                    $.each( coreData.groups[group_id].queries, function( key, value ) {
-                        if( typeof value.es_data !== 'object' ) { dataInvalid = true; }
-                    });
-
-                    if ( dataInvalid === false ) {
-                        executeAll( group_id );
-
-                        //sets function parameter toSave = false
-                        var score = aggregateScores(false); 
-                        $('.rrscore').css('color', score);
-
-                    } else {
-                        console.log("Not all data is ready for "+group_value.title+".");
-                    }
 
                 } else {
 
