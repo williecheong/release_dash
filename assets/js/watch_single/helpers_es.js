@@ -41,8 +41,8 @@
                 } else if ($.parseJSON( query_value.qb_query )['source'] == 'graphs' || $.parseJSON( query_value.qb_query )['source'] == 'crash-stats') {
                     $.ajax({
                         type: "POST",
-                        // url: "https://dashapi.paas.allizom.org/_get_data",
-                        url: "http://127.0.0.1:5000/_get_data",
+                        url: "https://dashapi.paas.allizom.org/_get_data",
+                        // url: "http://127.0.0.1:5000/_get_data",
                         data: {
                             // source : JSON.stringify($.parseJSON(query_value.qb_query)['source']),
                             source : $.parseJSON(query_value.qb_query)['source'],
