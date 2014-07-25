@@ -63,6 +63,8 @@
 
                 } else if ( $.parseJSON( query_value.qb_query )['source'] == 'telemetry' ) {
 
+                    queryData = $.parseJSON( query_value.qb_query )['data']
+
                     // Initialize telemetry.js
                     Telemetry.init(function() {
                         // Get versions available
@@ -89,7 +91,6 @@
                                 measure,
                                 function(histogramEvolution) 
                             {
-                               
                                 // Let's create a list of {x: ..., y: ...} data points of submissions and
                                 // timestamps to plot with any common Javascript library.
                                 var data = histogramEvolution.map(function(date, histogram, index) {
@@ -98,8 +99,22 @@
                                     y:  histogram.submissions()
                                   };
                                 });
-                                // Use your favorite graph library to plot `data`
 
+                                // Remove data ouside of range
+                                data = data.filter(function(elm){
+                                    queryData = $.parseJSON( query_value.qb_query )['data']
+                                    if ('start_date' in queryData && (elm['x']*1000 < queryData['start_date']) ) {
+                                      return false;
+                                    }
+                                    if ('end_date' in queryData && (elm['x']*1000  > queryData['end_date']) ) {
+                                      return false;
+                                    }   
+                                    return true;
+                                });
+
+
+
+                                // Use your favorite graph library to plot `data`
                                 coreData.groups[group_id].queries[query_id]['es_data'] = data;
                                 executeAll( group_id );
 
