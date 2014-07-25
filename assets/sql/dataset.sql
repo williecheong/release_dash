@@ -68,7 +68,7 @@ INSERT INTO `version_channel_cycle` (`version_id`, `channel_id`, `cycle_id`) VAL
 ('12','9', '4'), ('12','9', '5'), ('12','10','6'),
 ('15','9', '6');
 
-INSERT INTO `group` (`id`, `title`, `entity`, `entity_id`, `is_plot`, `is_number`, `category') VALUES
+INSERT INTO `group` (`id`, `title`, `entity`, `entity_id`, `is_plot`, `is_number`, `category`) VALUES
 ('1', 'Tracked vs Fixed',               'product', '1', '1', '0', 'default'),
 ('2', 'Unresolved',                     'product', '1', '1', '0', 'default'),
 ('3', 'Crashers',                       'product', '1', '1', '0', 'default'),
